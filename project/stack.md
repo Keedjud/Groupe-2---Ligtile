@@ -91,7 +91,7 @@ URLs résultantes par espace :
 
 #### Gestion d'état partagé — composable module-level
 
-Pour partager de l'état entre composants (ex : progression du quizz entre la partie 1 et la partie 2), on utilise le **pattern composable avec ref au niveau du module** — sans Pinia ni Vuex.
+Pour partager de l'état entre composants (ex : progression du quizz entre la partie 1 et la partie 2), on utilise le **pattern composable avec ref au niveau du module** — sans Pinia ni Vue.
 
 ```js
 // composables/useQuizStore.js
