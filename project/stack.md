@@ -70,8 +70,6 @@
 
 **Point d'attention pour le co-branding :** Les sites cobrandés doivent adopter les couleurs de chaque entreprise partenaire. DaisyUI supporte le theming via des variables CSS — les couleurs primaires/secondaires du dashboard peuvent être injectées dynamiquement dans le HTML (`data-theme` ou variables inline) sans dupliquer de CSS. Ce point doit être architecturé dès la phase de modélisation pour ne pas bloquer le développement en cours de sprint.
 
-**Décision retenue :** Bon choix. Se documenter sur le système de thèmes DaisyUI avant d'attaquer le développement des sites cobrandés.
-
 ---
 
 ### MySQL — Base de données
@@ -86,7 +84,7 @@ Aucun challenge : choix sans alternative dans le cadre de ce projet.
 
 **Pourquoi :** Le brief impose Git. GitHub est la plateforme Git la plus utilisée, et elle est nécessaire pour faire fonctionner GitHub Actions. Le brief demande explicitement les bonnes pratiques Git (branches, pas de données sensibles).
 
-**Bonnes pratiques à respecter obligatoirement :**
+**Bonnes pratiques à respecter:**
 - Ne jamais committer le fichier `.env`
 - Utiliser des branches de fonctionnalité (`feature/`, `fix/`)
 - Protéger la branche `main` avec des PR reviews
