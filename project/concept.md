@@ -48,6 +48,7 @@ Sites générés automatiquement pour chaque collecte, aux couleurs de l'entrepr
    
    - **Partie 2 — Questions informatives** (non-éliminatoires, skippables) :
      - But : rappeler des informations importantes ("Ah oui, c'est juste, il y a ça").
+     - Question concernant les préscriptions médicamenteuses et les départs de voyages sont un peu à part 
      - Une "mauvaise" réponse affiche une **pop-up** expliquant pourquoi cela peut être problématique, avec un lien vers la section de prévention correspondante.
      - L'employé peut **passer cette partie** pour accéder directement à l'inscription.
 
