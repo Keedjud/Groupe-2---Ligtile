@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <title>Laravel 12 + Vue 3</title>
+  <title>Laravel 13 + Vue 3</title>
   @vite(['resources/css/app.css', 'resources/js/app.js'])
 </head>
 <body>
