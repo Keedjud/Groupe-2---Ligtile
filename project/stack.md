@@ -82,20 +82,70 @@ Aucun challenge : choix sans alternative dans le cadre de ce projet.
 
 ---
 
-### GitHub — Versioning
+### GitHub — Versioning & stratégie de branches
 
 **Pourquoi :** Le brief impose Git. GitHub est la plateforme Git la plus utilisée, et elle est nécessaire pour faire fonctionner GitHub Actions. Le brief demande explicitement les bonnes pratiques Git (branches, pas de données sensibles).
 
-**Bonnes pratiques à respecter obligatoirement :**
-- Ne jamais committer le fichier `.env`
-- Utiliser des branches de fonctionnalité (`feature/`, `fix/`)
-- Protéger la branche `main` avec des PR reviews
+#### Modèle de branches
+
+```
+feature/xxx ──┐
+feature/yyy ──┼──→ develop ──→ main (production)
+fix/xxx ──────┘
+```
+
+| Branche | Rôle | Déploiement |
+|---------|------|-------------|
+| `main` | Code en production, toujours stable | Oui — déclenche le déploiement automatique |
+| `develop` | Intégration — seule branche autorisée à merger dans `main` | Non |
+| `feature/nom` | Développement d'une fonctionnalité | Non |
+| `fix/nom` | Correction de bug | Non |
+
+#### Convention de nommage
+
+- `feature/` — nouvelle fonctionnalité : `feature/quiz-eliminatoire`, `feature/dashboard-collecte`
+- `fix/` — correction : `fix/cobrand-theme`, `fix/sanctum-cookie`
+- Noms en minuscules, mots séparés par des tirets, courts et lisibles
+
+#### Workflow PR
+
+1. Chaque développeur crée sa branche depuis `develop` : `git checkout -b feature/ma-feature develop`
+2. Une fois la feature terminée, ouverture d'une **PR vers `develop`** — 1 review requise
+3. Merge dans `develop` → le workflow Actions vérifie le build
+4. Quand `develop` est stable et prête à partir en production, ouverture d'une **PR de `develop` vers `main`** — 1 review requise
+5. Merge dans `main` → déploiement automatique déclenché
+
+#### Branch protection rules à configurer sur GitHub
+
+**Sur `main`** (`Settings → Branches → Add branch ruleset`) :
+- Require a pull request before merging
+- Required approvals : 1
+- Dismiss stale pull request approvals when new commits are pushed
+- Require status checks to pass (workflow `build-check` sur develop, ou le workflow deploy)
+- Do not allow bypassing the above settings
+
+**Sur `develop`** :
+- Require a pull request before merging
+- Required approvals : 1
+- Pas de status check bloquant obligatoire (mais le workflow de build check s'y déclenche quand même)
+
+#### Bonnes pratiques obligatoires
+- Ne jamais committer `.env` (ajouter au `.gitignore` dès le début)
+- Ne jamais pusher directement sur `main` ou `develop`
+- Supprimer les branches de feature après merge (`git branch -d feature/xxx`)
 
 ---
 
 ### GitHub Actions — CI/CD
 
-**Pourquoi :** Automatise le déploiement à chaque push sur `main`, répond à l'exigence du brief de fournir une procédure de mise en production.
+**Pourquoi :** Automatise le déploiement à chaque push sur `main` et valide les builds sur `develop`, répond à l'exigence du brief de fournir une procédure de mise en production.
+
+Deux workflows distincts sont mis en place :
+
+| Workflow | Déclencheur | Action |
+|----------|-------------|--------|
+| `build-check.yml` | Push sur `develop` | Vérifie que le build PHP et front ne cassent pas — sans déployer |
+| `deploy.yml` | Push sur `main` | Déploie sur le serveur Infomaniak |
 
 **Architecture retenue : GitHub Actions → bare repo serveur → hook post-receive**
 
@@ -104,7 +154,7 @@ Le bare repo et son hook `post-receive` sont à mettre en place sur le serveur I
 ```
 Push vers GitHub (main)
         ↓
-GitHub Actions (runner ubuntu)
+GitHub Actions — deploy.yml (runner ubuntu)
         ↓  git push via SSH
 Bare repo sur serveur Infomaniak
         ↓  hook post-receive
@@ -242,6 +292,46 @@ jobs:
 
 ---
 
+#### Workflow build check sur `develop`
+
+Créer `.github/workflows/build-check.yml` :
+
+```yaml
+name: Build check
+
+on:
+  push:
+    branches: [develop]
+  pull_request:
+    branches: [develop]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Setup PHP
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: '8.3'
+
+      - name: Install PHP dependencies
+        run: composer install --no-dev --optimize-autoloader --quiet
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      - name: Install JS dependencies and build
+        run: npm ci && npm run build
+```
+
+Ce workflow ne déploie rien — il s'assure uniquement que `composer install` et `npm run build` passent sans erreur. Si le build échoue, la PR vers `develop` (ou le push direct) est signalée en erreur dans GitHub, ce qui alerte l'équipe avant que ça atteigne `main`.
+
+---
+
 ### Infomaniak — Hébergement
 
 **Pourquoi :** Imposé par le brief. Infomaniak est un hébergeur suisse, ce qui est cohérent avec un projet des HUG (données médicales sensibles, souveraineté des données).
@@ -259,5 +349,7 @@ jobs:
 |-------|----------|--------|
 | Architecture | API REST Laravel + SPA Vue 3 découplée | Appliquer les acquis cours, pas de nouveau framework |
 | Déploiement | GitHub Actions → push SSH → bare repo + hook | Infrastructure à créer sur Infomaniak, workflow Actions minimal |
+| Branches | `feature/fix` → `develop` → `main` | Convention standard, `develop` seule branche à merger dans `main` |
+| CI sur `develop` | Workflow build-check (sans déploiement) | Détecte les erreurs de build avant qu'elles atteignent `main` |
 | Co-branding | Theming DaisyUI via variables CSS dynamiques | À architecturer dès la modélisation |
 | Périmètre Vue | SPA complète | Cohérent avec l'architecture API REST retenue |
