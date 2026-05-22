@@ -19,9 +19,9 @@ Site vitrine accessible à tous. Il comprend :
 
 ---
 
-### 2. Dashboard CTS (`dashboard.hug-collecte.ch`)
+### 2. Dashboard CTS (`hug-collecte.ch/dashboard`)
 
-Interface de gestion réservée au CTS, non-répertoriée et protégée par login.
+Interface de gestion réservée au CTS, protégée par login.
 
 **Flux d'utilisation :**
 1. Après la prise de contact via le site public, les deux parties s'accordent par téléphone sur les dates, le lieu et les informations nécessaires.
