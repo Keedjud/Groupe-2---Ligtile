@@ -99,7 +99,7 @@ Sites générés automatiquement pour chaque collecte, aux couleurs de l'entrepr
 
    - **Partie 1 — Questions éliminatoires** (intemporelles, peu nombreuses) :
      - But : filtrer les personnes non-éligibles avant qu'elles ne bloquent des créneaux.
-     - Une mauvaise réponse redirige l'employé vers la section de prévention correspondante sur le site public.
+     - Une mauvaise réponse redirige l'employé vers la section de prévention correspondante sur le site cobrandé.
    
    - **Partie 2 — Questions informatives** (non-éliminatoires, skippables) :
      - But : rappeler des informations importantes ("Ah oui, c'est juste, il y a ça").
@@ -121,6 +121,6 @@ Un API fictif est imaginé entre le CTS et Onedoc permettant de récupérer en t
 
 | Espace | Utilisateur | Accès |
 |--------|-------------|-------|
-| Dashboard | CTS uniquement | Login requis, URL non-répertoriée |
+| Dashboard | CTS uniquement | Login requis |
 | Site public | Tout le monde | Public |
 | Sites cobrandés | Employés de l'entreprise partenaire | Public (lien distribué par l'entreprise) |
