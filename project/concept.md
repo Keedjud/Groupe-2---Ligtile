@@ -21,14 +21,69 @@ Site vitrine accessible à tous. Il comprend :
 
 ### 2. Dashboard CTS (`hug-collecte.ch/dashboard`)
 
-Interface de gestion réservée au CTS, protégée par login.
+Interface de gestion réservée au CTS, protégée par login. Elle comprend deux écrans distincts accessibles via la navigation interne.
+
+---
+
+#### 2a. Gestion des collectes (`#collectes`)
+
+Page principale du dashboard. Le CTS y visualise toutes les collectes (en cours, à venir, passées).
 
 **Flux d'utilisation :**
 1. Après la prise de contact via le site public, les deux parties s'accordent par téléphone sur les dates, le lieu et les informations nécessaires.
 2. L'entreprise fournit au CTS ses **couleurs principales** et son **logo** (pour le co-branding).
-3. Le CTS se connecte au dashboard et saisit toutes les informations de la collecte.
+3. Le CTS se connecte au dashboard et saisit toutes les informations de la collecte via le formulaire de création.
 4. Le dashboard **génère automatiquement le site cobrandé** et son lien (`hug-collecte.ch/{id_collecte}`).
 5. Le lien est transmis à l'entreprise partenaire dans le kit de communication.
+
+**Actions disponibles depuis cette page :**
+- **Créer une nouvelle collecte** — navigue vers le formulaire (`#nouvelle-collecte`).
+- **Accéder au détail d'une collecte** — navigue vers la page de détail (`#collecte-{id}`) en cliquant directement sur la collecte souhaitée.
+
+---
+
+#### 2b. Formulaire de collecte (`#nouvelle-collecte` / `#editer-{id}`)
+
+Page à part entière pour la création et la modification d'une collecte. Le même composant est réutilisé pour les deux cas — vide pour une création, pré-rempli pour une modification.
+
+**Contenu du formulaire :**
+- Informations de l'entreprise partenaire (nom, email de contact)
+- Date, lieu, horaires de la collecte
+- Lien Onedoc pour l'inscription des employés
+- Couleurs de co-branding (color picker) et upload du logo
+
+---
+
+#### 2c. Détail d'une collecte (`#collecte-{id}`)
+
+Page de détail accessible en cliquant sur une collecte depuis la liste. Permet de consulter toutes les informations et de modifier la collecte.
+
+**Contenu :**
+- Informations complètes de la collecte
+- Lien du site cobrandé (avec bouton copier)
+- Compteur d'inscrits en temps réel (polling API Onedoc fictif)
+- Aperçu du co-branding (couleurs + logo)
+- Bouton **Modifier** — navigue vers le formulaire pré-rempli (`#editer-{id}`)
+
+---
+
+#### 2b. Dashboard des métriques (`#metriques`)
+
+Écran de surveillance des KPIs, accessible depuis la navigation du dashboard. Permet au CTS de suivre ses performances globales.
+
+**KPIs suivis (sujet à modification) :**
+
+| Métrique | Description |
+|----------|-------------|
+| Nombre total de collectes organisées | Sur une période sélectionnable |
+| Nombre total d'inscrits | Cumul tous événements confondus |
+| Taux de remplissage moyen | Inscrits / capacité cible par collecte |
+| Taux de conversion quiz | % d'employés ayant terminé le quiz parmi ceux l'ayant commencé |
+| Taux d'élimination partie 1 | % d'employés non-éligibles détectés en partie 1 |
+| Principale cause d'élimination | Question éliminatoire la plus fréquemment échouée |
+| Taux de skip partie 2 | % d'employés ayant sauté la partie informative |
+| Nombre de demandes de contact | Formulaire de contact du site public |
+| Collectes par entreprise | Nombre de collectes par entreprise partenaire |
 
 ---
 

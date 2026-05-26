@@ -142,8 +142,6 @@ Tous les composants qui appellent `useQuizStore()` partagent la même instance d
 
 **Point d'attention pour le co-branding :** Les sites cobrandés doivent adopter les couleurs de chaque entreprise partenaire. DaisyUI supporte le theming via des variables CSS — les couleurs primaires/secondaires du dashboard peuvent être injectées dynamiquement dans le HTML (`data-theme` ou variables inline) sans dupliquer de CSS. Ce point doit être architecturé dès la phase de modélisation pour ne pas bloquer le développement en cours de sprint.
 
-**Décision retenue :** Bon choix. Se documenter sur le système de thèmes DaisyUI avant d'attaquer le développement des sites cobrandés.
-
 ---
 
 ### MySQL — Base de données
