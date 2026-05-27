@@ -15,7 +15,7 @@ return new class extends Migration
         $table->foreignId('address_id')->constrained()->restrictOnDelete();
         $table->datetime('start_date');
         $table->datetime('end_date');
-        $table->integer('nb_registered');
+        $table->integer('nb_registered')->nullable();
         $table->string('primary_color');
         $table->string('secondary_color');
         $table->string('logo_url');
