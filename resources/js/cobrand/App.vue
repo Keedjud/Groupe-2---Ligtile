@@ -2,7 +2,7 @@
 </template>
 
 <script setup>
-const props = defineProps({
+defineProps({
     collecteId: { type: String, required: true },
 });
 </script>
