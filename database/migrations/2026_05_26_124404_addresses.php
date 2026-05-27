@@ -8,9 +8,13 @@ return new class extends Migration
 {
     public function up(): void
 {
-    Schema::create('labels', function (Blueprint $table) {
+    Schema::create('addresses', function (Blueprint $table) {
         $table->id();
-        $table->string('name', 50);
+        $table->integer('postal_code');
+        $table->string('city', 50);
+        $table->string('street', 50);
+        $table->integer('number');
+        $table->timestamps();
     });
 }
 
@@ -20,6 +24,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('labels');
+        Schema::dropIfExists('addresses');
     }
 };

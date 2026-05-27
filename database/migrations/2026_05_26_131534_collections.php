@@ -21,6 +21,7 @@ return new class extends Migration
         $table->string('logo_url');
         $table->string('onedoc_url');
         $table->string('public_token');
+        $table->timestamps();
     });
 }
 

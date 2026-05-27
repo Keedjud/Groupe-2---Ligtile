@@ -14,6 +14,7 @@ return new class extends Migration
         $table->foreignId('trophee_id')->constrained()->restrictOnDelete();
         $table->unique(['company_id', 'trophee_id']);
         $table->integer('rank');
+        $table->timestamps();
     });
 }
 

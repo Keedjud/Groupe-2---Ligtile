@@ -11,13 +11,14 @@ return new class extends Migration
      */
     public function up(): void
 {
-    Schema::create('company_labels', function (Blueprint $table) {
+    Schema::create('companies_labels', function (Blueprint $table) {
         $table->id();
         $table->foreignId('label_id')->constrained()->restrictOnDelete();
         $table->foreignId('company_id')->constrained()->restrictOnDelete();
         $table->unique(['label_id','company_id']);
         $table->datetime('start_date');//doit correspondre à la date de collection
         $table->datetime('end_date'); //2 ans après
+        $table->timestamps();
     });
 }
 
@@ -27,6 +28,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('company_labels');
+        Schema::dropIfExists('companies_labels');
     }
 };
