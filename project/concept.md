@@ -12,6 +12,7 @@ Le projet est une plateforme multi-sites destinée à faciliter l'organisation d
 
 Site vitrine accessible à tous. Il comprend :
 
+- **Splash screen** — affiché à l'arrivée sur le site, il indique clairement qu'il s'agit d'un **projet étudiant** et propose un lien de redirection vers le vrai site des HUG. L'utilisateur peut fermer le splash pour accéder au site.
 - **Formulaire de contact** — permet à une entreprise de contacter le CTS pour organiser une collecte.
 - **Page Trophées** — met en avant les trophées des années précédentes.
 - **Page Label** — présente le label CTS et les entreprises labellisées.
@@ -48,9 +49,16 @@ Page à part entière pour la création et la modification d'une collecte. Le m�
 
 **Contenu du formulaire :**
 - Informations de l'entreprise partenaire (nom, email de contact)
-- Date, lieu, horaires de la collecte
+- Date de début et date de fin de la collecte, lieu, horaires
 - Lien Onedoc pour l'inscription des employés
 - Couleurs de co-branding (color picker) et upload du logo
+
+**Responsabilité des dates :**
+La saisie correcte des dates est entièrement sous la responsabilité du CTS. Aucune contrainte d'intégrité n'est imposée côté base de données sur les dates (cohérence, chevauchement, etc.) — le CTS dispose déjà de ses propres processus internes pour valider ces informations lors de la prise de décision.
+
+**Disponibilité du site cobrandé :**
+- **Date de début de disponibilité** — automatique : correspond à la date d'ajout de la collecte en base de données.
+- **Date de fin de disponibilité** — automatique : 3 jours après la date de fin de collecte saisie.
 
 ---
 
@@ -114,6 +122,12 @@ Sites générés automatiquement pour chaque collecte, aux couleurs de l'entrepr
 ## Intégration API fictive CTS ↔ Onedoc
 
 Un API fictif est imaginé entre le CTS et Onedoc permettant de récupérer en temps réel le nombre d'inscrits à une collecte. Cette métrique est affichée sur la page d'accueil du site cobrandé pour un suivi en direct de la collecte.
+
+---
+
+## Footer
+
+Un footer est présent sur **toutes les pages** des trois espaces (site public, dashboard, sites cobrandés). Il mentionne explicitement que la plateforme est un **projet étudiant** réalisé dans le cadre d'un cours, sans lien officiel avec les HUG ou le CTS.
 
 ---
 
