@@ -11,7 +11,7 @@ return new class extends Migration
     Schema::create('collections', function (Blueprint $table) {
         $table->id();
         $table->foreignId('company_id')->constrained()->restrictOnDelete();
-        $table->foreignId('user_id')->constrained()->nullOnDelete();
+        $table->foreignId('user_id')->nullable()->constrained()->nullOnDelete();
         $table->foreignId('address_id')->constrained()->restrictOnDelete();
         $table->datetime('start_date');
         $table->datetime('end_date');

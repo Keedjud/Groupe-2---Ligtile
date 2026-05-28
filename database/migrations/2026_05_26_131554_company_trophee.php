@@ -8,7 +8,7 @@ return new class extends Migration
 {
     public function up(): void
 {
-    Schema::create('company_trophees', function (Blueprint $table) {
+    Schema::create('company_trophee', function (Blueprint $table) {
         $table->id();
         $table->foreignId('company_id')->constrained()->restrictOnDelete();
         $table->foreignId('trophee_id')->constrained()->restrictOnDelete();
