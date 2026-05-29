@@ -4,6 +4,7 @@
 <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="robots" content="noindex, nofollow">
     <title>Collecte de sang — CTS HUG</title>
     @vite(['resources/js/cobrand/app.js'])
 </head>
