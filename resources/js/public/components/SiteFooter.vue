@@ -14,7 +14,7 @@ const legal = [
 
 <template>
   <footer class="w-full bg-beige-50">
-    <div class="mx-auto flex max-w-[1512px] flex-col items-start gap-3 p-3 text-left
+    <div class="flex w-full flex-col items-start gap-3 px-4 py-3 text-left
                 lg:flex-row lg:items-center lg:justify-between lg:gap-4 lg:px-[60px]">
 
       <div class="flex flex-col items-start gap-[22px] lg:flex-row lg:items-center lg:gap-3.5">
