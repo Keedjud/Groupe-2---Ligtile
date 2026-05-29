@@ -2,6 +2,7 @@
 import PublicDefaultLayout from './layouts/PublicDefaultLayout.vue'
 import { useHashRoute } from '@/composables/router'
 
+import SplashScreen from './components/SplashScreen.vue'
 import Home from './views/Home.vue'
 import Trophees from './views/Trophees.vue'
 import Label from './views/Label.vue'
@@ -21,6 +22,7 @@ const { currentComponent, currentRoute } = useHashRoute(routes)
 </script>
 
 <template>
+  <SplashScreen />
   <PublicDefaultLayout :current="currentRoute.key">
     <component :is="currentComponent" />
   </PublicDefaultLayout>
