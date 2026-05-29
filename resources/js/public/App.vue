@@ -1,7 +1,7 @@
 <script setup>
-import DefaultLayout from './layouts/DefaultLayout.vue'
+import PublicDefaultLayout from './layouts/PublicDefaultLayout.vue'
 </script>
 
 <template>
-  <DefaultLayout current="informations" />
+  <PublicDefaultLayout />
 </template>
