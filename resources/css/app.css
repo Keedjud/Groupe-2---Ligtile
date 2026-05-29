@@ -11,6 +11,115 @@
 
 @plugin "@tailwindcss/typography";
 @theme {
-    --font-sans: 'Instrument Sans', ui-sans-serif, system-ui, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji',
-        'Segoe UI Symbol', 'Noto Color Emoji';
+  --font-sans: "DM Sans", sans-serif;
+
+  --text-small: 14px;
+  --text-regular: 16px;
+  --text-h5: 20px;
+  --text-h4: 23px;
+  --text-h3: 25px;
+  --text-h2: 28px;
+  --text-h1: 32px;
+
+  --color-light-primary: rgba(38, 38, 38, 1);
+  --color-light-secondary: rgba(127, 127, 127, 1);
+  --color-light-tertiary: rgba(191, 191, 191, 1);
+  --color-light-palette-white: rgba(255, 255, 255, 1);
+  --color-light-palette-black: rgba(0, 0, 0, 1);
+  --color-light-palette-red: rgba(255, 59, 48, 1);
+  --color-light-palette-orange: rgba(255, 149, 0, 1);
+  --color-light-palette-yellow: rgba(255, 204, 0, 1);
+  --color-light-palette-green: rgba(40, 205, 65, 1);
+  --color-light-palette-mint: rgba(0, 199, 190, 1);
+  --color-light-palette-teal: rgba(89, 173, 196, 1);
+  --color-light-palette-cyan: rgba(85, 190, 240, 1);
+  --color-light-palette-blue: rgba(0, 122, 255, 1);
+  --color-light-palette-indigo: rgba(88, 86, 214, 1);
+  --color-light-palette-purple: rgba(175, 82, 222, 1);
+  --color-light-palette-pink: rgba(255, 45, 85, 1);
+  --color-light-palette-brown: rgba(162, 132, 94, 1);
+  --color-light-palette-gray: rgba(142, 142, 147, 1);
+  --color-light-palette-accent: rgba(47, 124, 245, 1);
+
+  --color-dark-primary: rgba(221, 221, 221, 1);
+  --color-dark-secondary: rgba(153, 153, 153, 1);
+  --color-dark-tertiary: rgba(86, 86, 86, 1);
+  --color-dark-palette-white: rgba(255, 255, 255, 1);
+  --color-dark-palette-black: rgba(0, 0, 0, 1);
+  --color-dark-palette-red: rgba(255, 69, 58, 1);
+  --color-dark-palette-orange: rgba(255, 159, 10, 1);
+  --color-dark-palette-yellow: rgba(255, 214, 10, 1);
+  --color-dark-palette-green: rgba(50, 215, 75, 1);
+  --color-dark-palette-mint: rgba(102, 212, 207, 1);
+  --color-dark-palette-teal: rgba(106, 196, 220, 1);
+  --color-dark-palette-cyan: rgba(90, 200, 245, 1);
+  --color-dark-palette-blue: rgba(10, 132, 255, 1);
+  --color-dark-palette-indigo: rgba(94, 92, 230, 1);
+  --color-dark-palette-purple: rgba(191, 90, 242, 1);
+  --color-dark-palette-pink: rgba(255, 55, 95, 1);
+  --color-dark-palette-brown: rgba(172, 142, 104, 1);
+  --color-dark-palette-gray: rgba(152, 152, 157, 1);
+  --color-dark-palette-accent: rgba(47, 124, 245, 1);
+
+  --color-violet-50: rgba(251, 245, 252, 1);
+  --color-violet-100: rgba(247, 232, 251, 1);
+  --color-violet-200: rgba(239, 210, 244, 1);
+  --color-violet-300: rgba(229, 175, 235, 1);
+  --color-violet-400: rgba(215, 129, 224, 1);
+  --color-violet-500: rgba(196, 86, 205, 1);
+  --color-violet-600: rgba(167, 58, 174, 1);
+  --color-violet-700: rgba(136, 46, 139, 1);
+  --color-violet-800: rgba(109, 39, 111, 1);
+  --color-violet-900: rgba(104, 23, 100, 1);
+  --color-violet-950: rgba(54, 17, 54, 1);
+
+  --color-rouge-50: rgba(252, 240, 240, 1);
+  --color-rouge-100: rgba(251, 223, 222, 1);
+  --color-rouge-200: rgba(248, 197, 196, 1);
+  --color-rouge-300: rgba(242, 160, 157, 1);
+  --color-rouge-400: rgba(234, 111, 105, 1);
+  --color-rouge-500: rgba(222, 69, 58, 1);
+  --color-rouge-600: rgba(202, 53, 40, 1);
+  --color-rouge-700: rgba(166, 43, 32, 1);
+  --color-rouge-800: rgba(134, 37, 29, 1);
+  --color-rouge-900: rgba(109, 35, 30, 1);
+  --color-rouge-950: rgba(57, 17, 14, 1);
+
+  --color-vert-50: rgba(242, 249, 248, 1);
+  --color-vert-100: rgba(212, 238, 235, 1);
+  --color-vert-200: rgba(170, 221, 216, 1);
+  --color-vert-300: rgba(124, 196, 192, 1);
+  --color-vert-400: rgba(94, 171, 169, 1);
+  --color-vert-500: rgba(64, 137, 137, 1);
+  --color-vert-600: rgba(49, 107, 108, 1);
+  --color-vert-700: rgba(41, 84, 86, 1);
+  --color-vert-800: rgba(36, 67, 68, 1);
+  --color-vert-900: rgba(33, 56, 58, 1);
+  --color-vert-950: rgba(18, 32, 34, 1);
+
+  --color-beige-50: rgba(245, 240, 231, 1);
+  --color-beige-100: rgba(240, 234, 221, 1);
+  --color-beige-200: rgba(226, 212, 187, 1);
+  --color-beige-300: rgba(206, 183, 146, 1);
+  --color-beige-400: rgba(186, 148, 105, 1);
+  --color-beige-500: rgba(172, 124, 79, 1);
+  --color-beige-600: rgba(158, 105, 68, 1);
+  --color-beige-700: rgba(128, 84, 57, 1);
+  --color-beige-800: rgba(101, 68, 51, 1);
+  --color-beige-900: rgba(82, 56, 43, 1);
+  --color-beige-950: rgba(43, 29, 24, 1);
+
+  --color-brand-bg-beige: #F5F0E7;
+  --color-brand-bg-pink: rgba(255, 185, 185, 1);
+  --color-brand-bg-purple: rgba(209, 172, 237, 1);
+
+  --color-texte-primary-light: rgba(255, 255, 255, 1);
+  --color-texte-primary-dark: var(--color-violet-950);
+  --color-texte-secondary: rgba(104, 23, 100, 1);
+
+  --color-button-primary: var(--color-violet-900);
+  --color-button-secondary: rgba(255, 255, 255, 1);
+
+  --color-gris-50: rgba(210, 206, 206, 1);
+  --color-form-bg: rgba(251, 250, 248, 1);
 }
