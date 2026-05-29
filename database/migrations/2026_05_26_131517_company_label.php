@@ -10,18 +10,17 @@ return new class extends Migration
      * Run the migrations.
      */
     public function up(): void
-{
-    Schema::create('company_label', function (Blueprint $table) {
-        $table->id();
-        $table->foreignId('label_id')->constrained()->restrictOnDelete();
-        $table->foreignId('company_id')->constrained()->restrictOnDelete();
-        $table->unique(['label_id','company_id']);
-        $table->datetime('start_date');//doit correspondre à la date de collection
-        $table->datetime('end_date'); //2 ans après
-        $table->timestamps();
-    });
-}
-
+    {
+        Schema::create('company_label', function (Blueprint $table) {
+            $table->id();
+            $table->foreignId('label_id')->constrained()->restrictOnDelete();
+            $table->foreignId('company_id')->constrained()->restrictOnDelete();
+            $table->unique(['label_id','company_id']);
+            $table->datetime('start_date');//doit correspondre à la date de collection
+            $table->datetime('end_date'); //2 ans après
+            $table->timestamps();
+        });
+    }
 
     /**
      * Reverse the migrations.

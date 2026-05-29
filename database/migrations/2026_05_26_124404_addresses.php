@@ -6,18 +6,20 @@ use Illuminate\Support\Facades\Schema;
 
 return new class extends Migration
 {
+    /**
+     * Run the migrations.
+     */
     public function up(): void
-{
-    Schema::create('addresses', function (Blueprint $table) {
-        $table->id();
-        $table->integer('postal_code');
-        $table->string('city', 50);
-        $table->string('street', 50);
-        $table->integer('number');
-        $table->timestamps();
-    });
-}
-
+    {
+        Schema::create('addresses', function (Blueprint $table) {
+            $table->id();
+            $table->integer('postal_code');
+            $table->string('city', 100);
+            $table->string('street', 100);
+            $table->integer('number');
+            $table->timestamps();
+        });
+    }
 
     /**
      * Reverse the migrations.
