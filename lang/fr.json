@@ -29,7 +29,7 @@
     "Regards,": "Cordialement,",
     "Register": "Inscription",
     "Reset Password": "Réinitialisation du mot de passe",
-    "Reset your password": "Reset your password",
+    "Reset your password": "Réinitialisez votre mot de passe",
     "results": "résultats",
     "Server Error": "Erreur serveur",
     "Service Unavailable": "Service indisponible",
@@ -44,7 +44,7 @@
     "Too Many Requests": "Trop de requêtes",
     "Unauthorized": "Non autorisé",
     "Verify Email Address": "Vérifier l'adresse e-mail",
-    "Verify your email address": "Verify your email address",
+    "Verify your email address": "Vérifiez votre adresse e-mail",
     "Whoops!": "Oups !",
     "You are receiving this email because we received a password reset request for your account.": "Vous recevez cet e-mail car nous avons reçu une demande de réinitialisation de mot de passe pour votre compte."
 }
