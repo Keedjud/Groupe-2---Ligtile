@@ -1,5 +1,5 @@
 <script setup>
-import { reactive, ref, onMounted, onBeforeUnmount } from 'vue'
+import { reactive, ref } from 'vue'
 
 const form = reactive({
   company_name: '', company_size: '',
@@ -10,21 +10,6 @@ const form = reactive({
 function submit() {
   // TODO: brancher l'envoi du formulaire au backend
 }
-
-function scrollToRdvIfNeeded() {
-  if (window.location.hash === '#/prendre-rdv') {
-    document.getElementById('prendre-rdv')?.scrollIntoView({ behavior: 'smooth', block: 'start' })
-  }
-}
-
-onMounted(() => {
-  scrollToRdvIfNeeded()
-  window.addEventListener('hashchange', scrollToRdvIfNeeded)
-})
-
-onBeforeUnmount(() => {
-  window.removeEventListener('hashchange', scrollToRdvIfNeeded)
-})
 
 const pourquoiScroll = ref(null)
 const pourquoiIndex = ref(0)

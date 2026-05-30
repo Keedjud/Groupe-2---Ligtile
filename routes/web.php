@@ -9,6 +9,9 @@ Route::get('/', fn() => view('public'));
 // l'authentification est gérée par Sanctum sur les routes API)
 Route::get('/dashboard', fn() => view('dashboard'));
 
+// Page partagée entre toutes les SPAs — doit être avant le catchall cobrand
+Route::get('/a-propos', fn() => view('a-propos'));
+
 // Sites cobrandés — toutes les URLs restantes qui ne sont pas des routes réservées
 Route::get('/{collecteId}', fn(string $collecteId) => view('cobrand', ['collecteId' => $collecteId]))
     ->where('collecteId', '[a-zA-Z0-9_\-]+');
