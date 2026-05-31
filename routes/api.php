@@ -4,7 +4,10 @@ use App\Http\Controllers\Api\v1\ApiTropheeController;
 use App\Http\Controllers\Api\v1\LabelCompanyController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\API\ContactController;
 
+
+Route::post('/contact', [ContactController::class, 'contact']);
 Route::get('/user', function (Request $request) {
     return $request->user();
 })->middleware('auth:sanctum');
