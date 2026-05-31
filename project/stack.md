@@ -4,14 +4,14 @@
 
 | Couche | Technologie | Statut dans le brief |
 |--------|-------------|----------------------|
-| Back-end | Laravel 13 | Imposé |
+| Back-end | Laravel 13, PHP 8.4 | Imposé |
 | Authentification | Sanctum | Choix (inclus dans Laravel) |
-| Front-end | Vue 3 | Imposé |
-| Styling | Tailwind CSS + DaisyUI | Libre choix |
-| Base de données | MySQL | Imposé |
+| Front-end | Vue 3 (Composition API) | Imposé |
+| Styling | Tailwind CSS 4 + DaisyUI 5 | Libre choix |
+| Base de données | SQLite (local) / MariaDB (production) | Imposé (MySQL) |
 | Versioning | GitHub | Imposé (Git) |
 | CI/CD | GitHub Actions | Choix |
-| Hébergement | Infomaniak (FTP/SSH) | Imposé |
+| Hébergement | Infomaniak (SSH) | Imposé |
 
 ---
 
@@ -144,11 +144,15 @@ Tous les composants qui appellent `useQuizStore()` partagent la même instance d
 
 ---
 
-### MySQL — Base de données
+### Base de données
 
-**Pourquoi :** Imposé par le brief. Bien intégré dans Laravel via Eloquent. Standard pour les hébergements Infomaniak.
+**Production :** MariaDB sur Infomaniak (imposé par le brief — compatible MySQL, Laravel ne fait pas la différence au niveau du driver).
 
-Aucun challenge : choix sans alternative dans le cadre de ce projet.
+**Développement local :** SQLite — chaque développeur dispose de sa propre base locale sans serveur à installer. Le fichier `database/database.sqlite` est créé automatiquement par `php artisan migrate`. Cette approche évite la dépendance à une base de données partagée et simplifie l'onboarding.
+
+La configuration dans `.env` :
+- Local : `DB_CONNECTION=sqlite` (aucune autre variable DB nécessaire)
+- Production : `DB_CONNECTION=mysql` + host, port, database, username, password
 
 ---
 
@@ -161,7 +165,8 @@ Aucun challenge : choix sans alternative dans le cadre de ce projet.
 ```
 feature/xxx ──┐
 feature/yyy ──┼──→ develop ──→ main (production)
-fix/xxx ──────┘
+fix/xxx ───────┤
+chore/xxx ────┘
 ```
 
 | Branche | Rôle | Déploiement |
@@ -170,11 +175,13 @@ fix/xxx ──────┘
 | `develop` | Intégration — seule branche autorisée à merger dans `main` | Non |
 | `feature/nom` | Développement d'une fonctionnalité | Non |
 | `fix/nom` | Correction de bug | Non |
+| `chore/nom` | Tâches techniques sans impact fonctionnel (CI, config, dépendances) | Non |
 
 #### Convention de nommage
 
 - `feature/` — nouvelle fonctionnalité : `feature/quiz-eliminatoire`, `feature/dashboard-collecte`
 - `fix/` — correction : `fix/cobrand-theme`, `fix/sanctum-cookie`
+- `chore/` — maintenance technique : `chore/update-ci`, `chore/bump-dependencies`
 - Noms en minuscules, mots séparés par des tirets, courts et lisibles
 
 #### Workflow PR
@@ -238,19 +245,18 @@ Déploiement automatique
 Se connecter en SSH au serveur, puis :
 
 ```bash
-# Créer le bare repo (dépôt nu, sans working tree)
-mkdir -p ~/repos/hug-collecte.git
-cd ~/repos/hug-collecte.git
-git init --bare
+# Structure par site — tout ce qui concerne hug-collecte est dans le même dossier
+mkdir -p ~/sites/hug-collecte.ch/repos/hug-collecte.git
+mkdir -p ~/sites/hug-collecte.ch/www/hug-collecte
 
-# Créer le répertoire de travail (là où tourne l'application)
-mkdir -p ~/www/hug-collecte
+cd ~/sites/hug-collecte.ch/repos/hug-collecte.git
+git init --bare
 ```
 
 Créer le hook `post-receive` :
 
 ```bash
-nano ~/repos/hug-collecte.git/hooks/post-receive
+nano ~/sites/hug-collecte.ch/repos/hug-collecte.git/hooks/post-receive
 ```
 
 Contenu du hook :
@@ -259,36 +265,42 @@ Contenu du hook :
 #!/bin/bash
 set -e
 
-WORK_TREE=~/www/hug-collecte
-BARE_REPO=~/repos/hug-collecte.git
+REPO_DIR="$HOME/sites/hug-collecte.ch/repos/hug-collecte.git"
+WORK_DIR="$HOME/sites/hug-collecte.ch/www/hug-collecte"
 
-echo "--- Déploiement en cours ---"
+echo "==> Déploiement en cours..."
 
-GIT_WORK_TREE=$WORK_TREE git checkout -f main
+git --work-tree="$WORK_DIR" --git-dir="$REPO_DIR" checkout main --force
 
-cd $WORK_TREE
+cd "$WORK_DIR"
 
-echo "→ Installation des dépendances PHP..."
-composer install --no-dev --optimize-autoloader --quiet
+export NVM_DIR="$HOME/.nvm"
+[ -s "$NVM_DIR/nvm.sh" ] && . "$NVM_DIR/nvm.sh"
 
-echo "→ Build des assets front-end..."
-npm ci --quiet && npm run build
+echo "==> Installation des dépendances PHP..."
+composer install --no-dev --optimize-autoloader --no-interaction
 
-echo "→ Migrations base de données..."
+echo "==> Installation des dépendances Node..."
+npm ci
+
+echo "==> Build des assets..."
+npm run build
+
+echo "==> Migrations..."
 php artisan migrate --force
 
-echo "→ Mise en cache Laravel..."
+echo "==> Optimisation Laravel..."
 php artisan config:cache
 php artisan route:cache
 php artisan view:cache
 
-echo "--- Déploiement terminé ---"
+echo "==> Déploiement terminé ✓"
 ```
 
 Rendre le hook exécutable :
 
 ```bash
-chmod +x ~/repos/hug-collecte.git/hooks/post-receive
+chmod +x ~/sites/hug-collecte.ch/repos/hug-collecte.git/hooks/post-receive
 ```
 
 ---
@@ -317,10 +329,11 @@ Copier le contenu de la clé **privée** (`cat ~/.ssh/deploy_key`) — elle sera
 
 | Secret | Valeur |
 |--------|--------|
-| `SSH_PRIVATE_KEY` | Contenu de `~/.ssh/deploy_key` (clé privée) |
-| `SSH_HOST` | IP ou domaine SSH du serveur Infomaniak |
-| `SSH_USER` | Nom d'utilisateur SSH |
-| `REMOTE_BARE_REPO_PATH` | Chemin absolu du bare repo (ex: `/home/user/repos/hug-collecte.git`) |
+| `SSH_PRIVATE_KEY` | Contenu de `~/.ssh/github_actions` (clé privée générée sur le serveur) |
+| `SSH_HOST` | Domaine SSH du serveur Infomaniak |
+| `SSH_USER` | Nom d'utilisateur SSH Infomaniak |
+| `REMOTE_BARE_REPO_PATH` | Chemin absolu du bare repo (ex: `/home/clients/.../sites/hug-collecte.ch/repos/hug-collecte.git`) |
+| `SSH_KNOWN_HOSTS` | Empreinte du serveur — obtenue via `Get-Content ~/.ssh/known_hosts \| Select-String "SSH_HOST"` en local |
 
 ---
 
@@ -349,11 +362,12 @@ jobs:
           SSH_HOST: ${{ secrets.SSH_HOST }}
           SSH_USER: ${{ secrets.SSH_USER }}
           REMOTE_PATH: ${{ secrets.REMOTE_BARE_REPO_PATH }}
+          SSH_KNOWN_HOSTS: ${{ secrets.SSH_KNOWN_HOSTS }}
         run: |
           mkdir -p ~/.ssh
           echo "$SSH_PRIVATE_KEY" > ~/.ssh/id_rsa
           chmod 600 ~/.ssh/id_rsa
-          ssh-keyscan -H "$SSH_HOST" >> ~/.ssh/known_hosts
+          echo "$SSH_KNOWN_HOSTS" >> ~/.ssh/known_hosts
           git remote add production "$SSH_USER@$SSH_HOST:$REMOTE_PATH"
           git push production main --force
 ```
@@ -419,7 +433,7 @@ Ce workflow ne déploie rien — il s'assure uniquement que `composer install` e
 |-------|----------|--------|
 | Architecture | API REST Laravel + SPA Vue 3 découplée | Appliquer les acquis cours, pas de nouveau framework |
 | Déploiement | GitHub Actions → push SSH → bare repo + hook | Infrastructure à créer sur Infomaniak, workflow Actions minimal |
-| Branches | `feature/fix` → `develop` → `main` | Convention standard, `develop` seule branche à merger dans `main` |
+| Branches | `feature/fix/chore` → `develop` → `main` | Convention standard, `develop` seule branche à merger dans `main` |
 | CI sur `develop` | Workflow build-check (sans déploiement) | Détecte les erreurs de build avant qu'elles atteignent `main` |
 | Co-branding | Theming DaisyUI via variables CSS dynamiques | À architecturer dès la modélisation |
 | Architecture Vue | Multi-entry : 3 apps Vue indépendantes | Un espace = une app, pas de rechargement entre espaces différents |

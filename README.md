@@ -1,58 +1,129 @@
-<p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400" alt="Laravel Logo"></a></p>
+# Ligtile — Plateforme de collectes de sang CTS
 
-<p align="center">
-<a href="https://github.com/laravel/framework/actions"><img src="https://github.com/laravel/framework/workflows/tests/badge.svg" alt="Build Status"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/dt/laravel/framework" alt="Total Downloads"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/v/laravel/framework" alt="Latest Stable Version"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/l/laravel/framework" alt="License"></a>
-</p>
+Projet étudiant — HEIG-VD, semestre 4.
 
-## About Laravel
+Plateforme multi-sites Laravel + Vue 3 destinée à faciliter l'organisation de collectes de sang en entreprise pour le CTS (Centre de Transfusion Sanguine).
 
-Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel takes the pain out of development by easing common tasks used in many web projects, such as:
+---
 
-- [Simple, fast routing engine](https://laravel.com/docs/routing).
-- [Powerful dependency injection container](https://laravel.com/docs/container).
-- Multiple back-ends for [session](https://laravel.com/docs/session) and [cache](https://laravel.com/docs/cache) storage.
-- Expressive, intuitive [database ORM](https://laravel.com/docs/eloquent).
-- Database agnostic [schema migrations](https://laravel.com/docs/migrations).
-- [Robust background job processing](https://laravel.com/docs/queues).
-- [Real-time event broadcasting](https://laravel.com/docs/broadcasting).
+## Stack technique
 
-Laravel is accessible, powerful, and provides tools required for large, robust applications.
+- **Back-end** : Laravel 13, PHP 8.4
+- **Front-end** : Vue 3 (Composition API), Vite, Tailwind CSS 4, DaisyUI 5
+- **Base de données** : SQLite (local) / MariaDB (production)
+- **Auth** : Laravel Sanctum (sessions cookie)
+- **Déploiement** : GitHub Actions → bare repo → post-receive hook (Infomaniak)
 
-## Learning Laravel
+---
 
-Laravel has the most extensive and thorough [documentation](https://laravel.com/docs) and video tutorial library of all modern web application frameworks, making it a breeze to get started with the framework.
+## Prérequis
 
-In addition, [Laracasts](https://laracasts.com) contains thousands of video tutorials on a range of topics including Laravel, modern PHP, unit testing, and JavaScript. Boost your skills by digging into our comprehensive video library.
+- PHP 8.4+
+- Composer
+- Node.js 20+
+- Git
 
-You can also watch bite-sized lessons with real-world projects on [Laravel Learn](https://laravel.com/learn), where you will be guided through building a Laravel application from scratch while learning PHP fundamentals.
+---
 
-## Agentic Development
+## Installation
 
-Laravel's predictable structure and conventions make it ideal for AI coding agents like Claude Code, Cursor, and GitHub Copilot. Install [Laravel Boost](https://laravel.com/docs/ai) to supercharge your AI workflow:
+### 1. Cloner le dépôt
 
 ```bash
-composer require laravel/boost --dev
-
-php artisan boost:install
+git clone https://github.com/Keedjud/Groupe-2---Ligtile.git
+cd Groupe-2---Ligtile
 ```
 
-Boost provides your agent 15+ tools and skills that help agents build Laravel applications while following best practices.
+### 2. Installer les dépendances
 
-## Contributing
+```bash
+composer install
+npm install
+```
 
-Thank you for considering contributing to the Laravel framework! The contribution guide can be found in the [Laravel documentation](https://laravel.com/docs/contributions).
+### 3. Configurer l'environnement
 
-## Code of Conduct
+```bash
+cp .env.example .env
+php artisan key:generate
+```
 
-In order to ensure that the Laravel community is welcoming to all, please review and abide by the [Code of Conduct](https://laravel.com/docs/contributions#code-of-conduct).
+Le fichier `.env` est pré-configuré pour SQLite — aucun serveur de base de données à installer.
 
-## Security Vulnerabilities
+### 4. Créer la base de données et lancer les migrations
 
-If you discover a security vulnerability within Laravel, please send an e-mail to Taylor Otwell via [taylor@laravel.com](mailto:taylor@laravel.com). All security vulnerabilities will be promptly addressed.
+```bash
+php artisan migrate
+```
 
-## License
+Laravel crée automatiquement le fichier `database/database.sqlite` s'il n'existe pas.
 
-The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
+### 5. Lancer le serveur de développement
+
+Dans deux terminaux séparés :
+
+```bash
+# Terminal 1 — serveur PHP
+php artisan serve
+
+# Terminal 2 — compilation des assets avec hot reload
+npm run dev
+```
+
+Le site est accessible sur [http://localhost:8000](http://localhost:8000).
+
+---
+
+## Structure front-end
+
+Le front-end est organisé en **trois SPAs indépendantes** :
+
+| Entrée | URL | Description |
+|--------|-----|-------------|
+| `resources/js/public/app.js` | `/` | Site public vitrine |
+| `resources/js/dashboard/app.js` | `/dashboard` | Interface de gestion CTS |
+| `resources/js/cobrand/app.js` | `/{id}` | Sites cobrandés par collecte |
+
+**Choix architecturaux :**
+- Pas de Vue Router — navigation par `window.location.hash` + `hashchange`
+- Pas de Pinia — état partagé via le pattern composable à niveau module
+- Alias `@` → `resources/js/`
+
+---
+
+## Branches
+
+| Branche | Rôle |
+|---------|------|
+| `main` | Production — déclenche le déploiement automatique |
+| `develop` | Intégration — déclenche le build check |
+| `feature/*` | Développement de fonctionnalités |
+| `fix/*` | Corrections de bugs |
+| `chore/*` | Tâches techniques (CI, config, etc.) |
+
+**Flux de travail :**
+1. Créer une branche depuis `develop` : `git checkout -b feature/ma-fonctionnalite`
+2. Développer et commiter
+3. Ouvrir une PR vers `develop`
+4. Une fois validée, merger dans `develop`
+5. Quand `develop` est stable, ouvrir une PR vers `main` pour déployer
+
+---
+
+## Déploiement
+
+Le déploiement est entièrement automatisé via GitHub Actions.
+
+Tout push sur `main` déclenche le workflow `.github/workflows/deploy.yml` qui :
+1. Pousse le code vers le bare repo sur Infomaniak via SSH
+2. Le hook `post-receive` prend le relais : `composer install`, `npm run build`, migrations, caches Laravel
+
+**Ne jamais commiter le fichier `.env`** — il contient des secrets et est dans le `.gitignore`.
+
+---
+
+## Variables d'environnement
+
+Copier `.env.example` en `.env` et renseigner les valeurs. Le fichier `.env.example` est configuré pour le développement local en SQLite.
+
+Pour la production, les variables sensibles (`APP_KEY`, `DB_PASSWORD`, etc.) sont à définir directement sur le serveur dans le fichier `.env` — jamais dans Git.
