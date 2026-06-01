@@ -8,7 +8,7 @@ use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 
-class LabelCompanyController extends Controller
+class api_LabelCompanyController extends Controller
 {
     /**
      * Retourne les entreprises labellisées avec filtres et pagination.

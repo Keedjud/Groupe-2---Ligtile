@@ -7,7 +7,7 @@ use App\Models\Trophee;
 use App\Models\Collection;
 use Illuminate\Http\JsonResponse;
 
-class ApiTropheeController extends Controller
+class api_TropheeController extends Controller
 {
     public function index(): JsonResponse
     {
