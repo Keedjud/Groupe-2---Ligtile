@@ -6,11 +6,11 @@
 
 ## L'équipe
 
-| Développeur | Rôle dans la suite |
-|-------------|-------------------|
-| **Loïc** | Merger le dashboard UI → maquettes → revenir connecter le dashboard au vrai back + page Prévention cobrandée |
-| **Elia** | Page Accueil du site cobrandé + accessibilité |
-| **Inoé** | Back-end, cobrand App.vue + Quiz + Redirect, reviews, coordination |
+| Développeur | Rôle dans la suite                                                                                           |
+| ----------- | ------------------------------------------------------------------------------------------------------------ |
+| **Loïc**    | Merger le dashboard UI → maquettes → revenir connecter le dashboard au vrai back + page Prévention cobrandée |
+| **Elia**    | Page Accueil du site cobrandé + accessibilité                                                                |
+| **Inoé**    | Back-end, cobrand App.vue + Quiz + Redirect, reviews, coordination                                           |
 
 **Règle d'or :** Avant d'ouvrir une PR, faire `git merge develop` sur sa branche et résoudre ses propres conflits. Un reviewer ne résout jamais les conflits d'une autre personne.
 
@@ -19,25 +19,31 @@
 ## Actions immédiates — premier jour
 
 ### Loïc — à faire ce matin
+
 ```bash
 git checkout feature/dashboard
 git merge develop   # récupère les fondations (migrations, routes, namespace)
 # conflits peu probables — branches orthogonales
 git push
 ```
+
 Ouvrir la PR `feature/dashboard` → `develop`. Une fois mergée : passer sur les maquettes.
 
 ### Elia — à faire ce matin
+
 Créer la branche d'accessibilité (indépendante, peut démarrer immédiatement) :
+
 ```bash
 git checkout develop
 git checkout -b fix/accessibilite-v2
 git cherry-pick 63f3b65   # récupère "Add alts to images" de l'ancienne branche
 git push -u origin fix/accessibilite-v2
 ```
+
 Voir Phase 9 pour le détail des tâches.
 
 ### Inoé — à faire ce matin
+
 Merger `chore/foundations` → `develop`, puis démarrer la Phase 3.
 
 ---
@@ -45,6 +51,7 @@ Merger `chore/foundations` → `develop`, puis démarrer la Phase 3.
 ## Ce qui reste à faire
 
 ### Backend
+
 - [x] Migration `collections` : suppression `nb_registered`, ajout `capacity`, `logo_url` nullable
 - [x] Migrations `quiz_events`, `page_events`, `contact_requests`, `pme_contacts`
 - [x] Modèles `QuizEvent`, `PageEvent`, `ContactRequest`, `PmeContact`
@@ -57,6 +64,7 @@ Merger `chore/foundations` → `develop`, puis démarrer la Phase 3.
 - [ ] Enregistrement en base des deux formulaires de contact (envoient uniquement un email pour l'instant)
 
 ### Frontend cobrand
+
 - [ ] `cobrand/App.vue` — routage hash + chargement données collecte (Inoé)
 - [ ] `cobrand/views/Accueil.vue` (Elia)
 - [ ] `cobrand/views/Prevention.vue` — scrollytelling (Loïc)
@@ -65,6 +73,7 @@ Merger `chore/foundations` → `develop`, puis démarrer la Phase 3.
 - [ ] `cobrand/composables/useQuizStore.js` (Inoé)
 
 ### Frontend dashboard
+
 - [x] UI complète dans `feature/dashboard` (Loïc) — Login, Collectes, CollecteDetail, CollecteForm, Metriques
 - [ ] Ajouter `onedoc_url` et `capacity` dans `CollecteForm.vue` + mock (Loïc, avant PR)
 - [ ] Merger `feature/dashboard` dans `develop`
@@ -73,16 +82,18 @@ Merger `chore/foundations` → `develop`, puis démarrer la Phase 3.
 - [ ] Connecter `Metriques.vue` à `GET /api/v1/metrics`
 
 ### Accessibilité
+
 - [x] Mentions vie privée ajoutées sur les deux formulaires de contact
 - [ ] Alts sur toutes les images (via `git cherry-pick 63f3b65` dans `fix/accessibilite-v2`)
 - [ ] Labels sur tous les champs de formulaire (`Home.vue`, `Information.vue`)
 - [ ] Focus trap sur la modale des critères (`Trophees.vue`)
 
 ### Dette technique
+
 - [x] Namespace `API/` → `Api/` (compat Linux/prod)
 - [x] Suppression `resources/js/app.js` (artefact inutilisé)
 - [ ] Refactoriser `ApiTropheeController` : N+1 queries + calculer `participant_count` depuis `quiz_events` (à faire après Phase 4)
-- [ ] Remplacer `fetch()` natif dans `Home.vue` et `Information.vue` par `useFetchApi`
+- [x] Remplacer `fetch()` natif dans `Home.vue` et `Information.vue` par `useFetchApi`
 
 ---
 
@@ -93,6 +104,7 @@ Merger `chore/foundations` → `develop`, puis démarrer la Phase 3.
 Branche `chore/foundations` — à merger dans `develop` ce matin.
 
 Ce qui a été fait :
+
 - Namespace `API/` → `Api/` (compat Linux)
 - Suppression `resources/js/app.js`
 - Migration `collections` : `nb_registered` supprimé, `capacity` ajouté, `logo_url` nullable
@@ -109,22 +121,25 @@ Ce qui a été fait :
 
 **À faire ce matin.** Deux champs manquent dans `CollecteForm.vue` avant que la PR puisse être ouverte :
 
-| Champ | Type | Description |
-|-------|------|-------------|
-| `onedoc_url` | `string`, requis | URL de la plateforme Onedoc pour l'inscription des employés — le CTS la saisit à la création de la collecte |
-| `capacity` | `number`, optionnel | Nombre de créneaux disponibles — utilisé pour le taux de remplissage dans les métriques |
+| Champ        | Type                | Description                                                                                                 |
+| ------------ | ------------------- | ----------------------------------------------------------------------------------------------------------- |
+| `onedoc_url` | `string`, requis    | URL de la plateforme Onedoc pour l'inscription des employés — le CTS la saisit à la création de la collecte |
+| `capacity`   | `number`, optionnel | Nombre de créneaux disponibles — utilisé pour le taux de remplissage dans les métriques                     |
 
 Ces deux champs sont dans le schéma DB (`collections`) et doivent être présents dans le formulaire et dans les données mock de `useCollectes.js`.
 
 **Ensuite :**
+
 ```bash
 git checkout feature/dashboard
 git merge develop   # récupère les fondations (migrations, routes, namespace)
 git push
 ```
+
 Ouvrir la PR. Une fois mergée : passer sur les maquettes.
 
 **Ce que la Phase 1 change dans son code :**
+
 - `nb_registered` n'existe plus en DB → son mock utilise `nb_inscrits` (nom différent, pas de conflit)
 - Routes API réorganisées → sans impact sur son code frontend
 
@@ -137,14 +152,14 @@ Ouvrir la PR. Une fois mergée : passer sur les maquettes.
 **Prérequis :** Phase 1 mergée.
 **Branche :** `feature/backend-dashboard`
 
-| Tâche | Fichier cible |
-|-------|--------------|
-| Auth login/logout Sanctum | `app/Http/Controllers/Api/v1/AuthController.php`, `routes/api/dashboard.php` |
-| CRUD collectes | `app/Http/Controllers/Api/v1/CollectionController.php` |
-| Upload logo (storage + lien public) | Intégré dans `CollectionController` |
-| Endpoint cobrand public : `GET /api/v1/cobrand/{token}` | `app/Http/Controllers/Api/v1/CobrandController.php`, `routes/api/cobrand.php` |
-| `GET /api/v1/metrics` (auth) | `app/Http/Controllers/Api/v1/MetricsController.php`, `routes/api/dashboard.php` |
-| Enregistrement en base des deux formulaires de contact | `ApiContactController.php`, `ApiPmeContactController.php` |
+| Tâche                                                   | Fichier cible                                                                   |
+| ------------------------------------------------------- | ------------------------------------------------------------------------------- |
+| Auth login/logout Sanctum                               | `app/Http/Controllers/Api/v1/AuthController.php`, `routes/api/dashboard.php`    |
+| CRUD collectes                                          | `app/Http/Controllers/Api/v1/CollectionController.php`                          |
+| Upload logo (storage + lien public)                     | Intégré dans `CollectionController`                                             |
+| Endpoint cobrand public : `GET /api/v1/cobrand/{token}` | `app/Http/Controllers/Api/v1/CobrandController.php`, `routes/api/cobrand.php`   |
+| `GET /api/v1/metrics` (auth)                            | `app/Http/Controllers/Api/v1/MetricsController.php`, `routes/api/dashboard.php` |
+| Enregistrement en base des deux formulaires de contact  | `ApiContactController.php`, `ApiPmeContactController.php`                       |
 
 ---
 
@@ -152,8 +167,8 @@ Ouvrir la PR. Une fois mergée : passer sur les maquettes.
 
 **Branche :** `feature/backend-tracking`
 
-| Tâche | Fichier cible |
-|-------|--------------|
+| Tâche                                         | Fichier cible                                       |
+| --------------------------------------------- | --------------------------------------------------- |
 | `POST /api/v1/quiz/event` (public, sans auth) | `QuizEventController.php`, `routes/api/cobrand.php` |
 | `POST /api/v1/page/event` (public, sans auth) | `PageEventController.php`, `routes/api/cobrand.php` |
 
@@ -167,6 +182,7 @@ Ouvrir la PR. Une fois mergée : passer sur les maquettes.
 Fichiers : `resources/js/cobrand/App.vue`, `resources/js/cobrand/app.js`
 
 Ce que ça fait :
+
 - Charge les données de la collecte depuis l'API
 - Applique les couleurs de co-branding via variables CSS dynamiques
 - Gère le routage hash entre les 4 vues
@@ -208,6 +224,7 @@ Ce que ça fait :
 **Branche :** `feature/cobrand-quiz`
 
 Fichiers :
+
 - `resources/js/cobrand/composables/useQuizStore.js`
 - `resources/js/cobrand/views/Quiz.vue`
 - `resources/js/cobrand/views/Redirect.vue` (peut partir de `feature/cobrand-quiz`)
@@ -220,6 +237,7 @@ Fichiers :
 **Branche :** `feature/dashboard-api`
 
 Fichiers à modifier (uniquement dans `resources/js/dashboard/`) :
+
 - `composables/useSessionAuth.js` → remplacer mock par appels Sanctum réels
 - `composables/useCollectes.js` → remplacer `donneesMock` par `GET /api/v1/collections`
 - `views/CollecteForm.vue` → brancher `POST`/`PUT /api/v1/collections`
@@ -240,6 +258,7 @@ git cherry-pick 63f3b65   # récupère "Add alts to images"
 ```
 
 Tâches :
+
 - Vérifier et compléter les `alt` sur toutes les images du site public
 - Ajouter des `label` (ou `aria-label`) sur tous les champs des formulaires (`Home.vue`, `Information.vue`)
 - Focus trap sur la modale des critères dans `Trophees.vue`
@@ -266,12 +285,12 @@ Phase 9 (accessibilité, Elia) : indépendante, démarre ce matin
 
 ## Fichiers partagés — zones à risque de conflit
 
-| Fichier | Qui y touche | Règle |
-|---------|-------------|-------|
-| `routes/api/cobrand.php` | Inoé (Phases 3, 4) | Séquentiel — Inoé uniquement |
-| `routes/api/dashboard.php` | Inoé (Phase 3) | Séquentiel — Inoé uniquement |
-| `resources/js/cobrand/App.vue` | Inoé (Phase 5) | Inoé uniquement |
-| `resources/js/cobrand/composables/useQuizStore.js` | Inoé (Phase 7) | Inoé uniquement |
+| Fichier                                            | Qui y touche       | Règle                        |
+| -------------------------------------------------- | ------------------ | ---------------------------- |
+| `routes/api/cobrand.php`                           | Inoé (Phases 3, 4) | Séquentiel — Inoé uniquement |
+| `routes/api/dashboard.php`                         | Inoé (Phase 3)     | Séquentiel — Inoé uniquement |
+| `resources/js/cobrand/App.vue`                     | Inoé (Phase 5)     | Inoé uniquement              |
+| `resources/js/cobrand/composables/useQuizStore.js` | Inoé (Phase 7)     | Inoé uniquement              |
 
 ---
 
