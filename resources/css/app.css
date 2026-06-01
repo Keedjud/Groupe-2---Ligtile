@@ -13,7 +13,6 @@ html {
     themes: light --default, dark --prefersdark;
 }
 
-@plugin "@tailwindcss/typography";
 @theme {
   --font-sans: "DM Sans", sans-serif;
 
