@@ -204,17 +204,70 @@ resources/js/
 | `fix/*` | Corrections de bugs | — |
 | `chore/*` | Tâches techniques (CI, config, dépendances) | — |
 
-**Workflow :**
+### Workflow standard
+
 1. Créer sa branche depuis `develop` : `git checkout -b feature/ma-feature develop`
 2. Développer et commiter
-3. Ouvrir une PR vers `develop` — 1 review requise
-4. Merger dans `develop` → build check automatique
-5. Quand `develop` est stable → PR vers `main` → déploiement automatique
+3. **Avant d'ouvrir la PR : synchroniser sa branche avec `develop`**
+4. Ouvrir une PR vers `develop` — 1 review requise
+5. Merger dans `develop` → build check automatique
+6. Quand `develop` est stable → PR vers `main` → déploiement automatique
 
-**Règles obligatoires :**
+### Règle critique — synchroniser avant d'ouvrir une PR
+
+**Avant toute demande de review, la branche doit être à jour avec `develop` :**
+
+```bash
+git checkout ma-feature
+git merge develop      # ou git rebase develop selon la préférence
+# résoudre ses propres conflits
+git push
+```
+
+C'est au développeur de résoudre ses conflits, pas au reviewer. Un reviewer qui découvre des conflits au moment du merge perd du temps sur du code qu'il n'a pas écrit.
+
+### Branches empilées — quand deux tâches touchent les mêmes fichiers
+
+Si une PR est en attente de review et que la prochaine tâche touche les mêmes fichiers, **ne pas brancher depuis `develop`** — brancher depuis la PR en cours :
+
+```bash
+# PR1 ouverte (feature-a), en attente de review
+git checkout feature-a
+git checkout -b feature-b    # part de feature-a, pas de develop
+```
+
+Sur GitHub, ouvrir la PR de `feature-b` en ciblant `feature-a` comme branche de base (sélecteur "base" en haut de la PR).
+
+```
+develop
+  └── feature-a   ← PR1, en review
+        └── feature-b   ← PR2, construite sur PR1
+```
+
+**Quand PR1 est mergée dans `develop` :**
+
+```bash
+git checkout feature-b
+git rebase develop                 # ou git merge develop
+git push --force-with-lease        # --force-with-lease plutôt que --force
+# changer la base de la PR sur GitHub : feature-a → develop
+```
+
+> `--force-with-lease` est plus sûr que `--force` : il refuse d'écraser si quelqu'un d'autre a pushé entre-temps.
+
+Si des modifications sont demandées sur PR1 après l'ouverture de PR2, propager les changements dans PR2 :
+
+```bash
+git checkout feature-b
+git rebase feature-a    # ou git merge feature-a
+```
+
+### Règles obligatoires
+
 - Ne jamais commiter `.env`
 - Ne jamais pusher directement sur `main` ou `develop`
 - Supprimer les branches après merge
+- Une PR = une chose précise — séparer backend et frontend si les deux sont conséquents
 
 ---
 
