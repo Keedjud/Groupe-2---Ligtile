@@ -9,7 +9,6 @@ const { isOpen: showCriteria, toggle: toggleCriteria } = useDisclosure()
 const localLogos = {
   'coop': '/images/Coop_(Switzerland)-Logo.wine-1486175068 1.png',
   'nestlé': '/images/Nestle-Logo-3126327959 1.png',
-  'nestle': '/images/Nestle-Logo-3126327959 1.png',
   'ubs': '/images/ubs-1024-758683775 1.png',
 }
 

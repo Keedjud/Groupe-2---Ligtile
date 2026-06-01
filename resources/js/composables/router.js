@@ -6,7 +6,16 @@ export function useHashRoute(routes) {
 
   function syncRouteFromUrl() {
     const hash = window.location.hash;
-    currentRoute.value = routes.find(route => route.hash === hash) ?? defaultRoute;
+    const matched = routes.find(route => route.hash === hash);
+    if (matched) {
+      currentRoute.value = matched;
+      // Les routes ayant une cible de scroll (ex. #/prendre-rdv) gèrent
+      // elles-mêmes leur défilement dans la vue concernée ; on ne remet
+      // donc pas la page en haut.
+      if (!matched.scrollTo) window.scrollTo(0, 0);
+    } else {
+      currentRoute.value = defaultRoute;
+    }
   }
 
   function navigateTo(hash) {
