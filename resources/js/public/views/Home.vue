@@ -203,9 +203,9 @@ function updateCardsIndex() {
   <!-- Parlons de votre future collecte -->
   <section id="prendre-rdv" class="py-10">
     <div class="max-w-[1512px] mx-auto px-4 lg:px-[60px]">
-      <div class="rounded-3xl bg-violet-100 p-3 lg:p-14">
+      <div class="rounded-3xl bg-violet-100 p-3 lg:p-14 overflow-hidden">
         <div class="grid lg:grid-cols-2 gap-10 items-center">
-          <div class="flex flex-col items-center text-center lg:block lg:text-left">
+          <div class="flex flex-col items-center text-center lg:block lg:text-left min-w-0">
             <img :src="'/images/Goutte_mascotte.png'" class="h-32 w-auto mb-6 lg:hidden" alt="Mascotte goutte" />
             <h2 class="text-h1 font-semibold text-violet-950">
               Parlons de votre <span class="text-violet-500">future collecte</span>
@@ -219,13 +219,13 @@ function updateCardsIndex() {
             </div>
           </div>
 
-          <div>
+          <div class="min-w-0">
             <form @submit.prevent="submit" class="bg-form-bg rounded-xl p-3 ring-1 ring-violet-900/30">
               <h3 class="text-h3 font-bold text-violet-900 text-center mb-4">Prendre <br class="lg:hidden" />rendez-vous</h3>
 
               <div class="grid grid-cols-2 gap-3 mb-3">
-                <input v-model="form.company_name" type="text" placeholder="Nom de l'entreprise" class="w-full min-w-0 h-[50px] lg:h-[43px] rounded-[40px] lg:rounded-lg bg-white px-5 lg:px-3 text-small text-texte-primary-dark shadow-[0_0_4px_rgba(0,0,0,0.25)] placeholder:text-texte-primary-dark/70" />
-                <select v-model="form.company_size" class="w-full min-w-0 h-[50px] lg:h-[43px] rounded-[40px] lg:rounded-lg bg-white pl-5 pr-8 lg:pl-3 lg:pr-8 text-small text-texte-primary-dark shadow-[0_0_4px_rgba(0,0,0,0.25)] appearance-none bg-no-repeat bg-[right_0.75rem_center] bg-[length:0.75rem] bg-[url('data:image/svg+xml;utf8,<svg%20xmlns=%22http://www.w3.org/2000/svg%22%20viewBox=%220%200%2020%2020%22%20fill=%22%23361136%22><path%20fill-rule=%22evenodd%22%20d=%22M5.23%207.21a.75.75%200%20011.06.02L10%2011.06l3.71-3.83a.75.75%200%20111.08%201.04l-4.25%204.39a.75.75%200%2001-1.08%200L5.21%208.27a.75.75%200%2001.02-1.06z%22%20clip-rule=%22evenodd%22/></svg>')]">
+                <input v-model="form.company_name" type="text" placeholder="Nom de l'entreprise" class="w-full min-w-0 h-[50px] lg:h-[43px] rounded-lg bg-white px-3 text-small text-texte-primary-dark shadow-[0_0_4px_rgba(0,0,0,0.25)] placeholder:text-texte-primary-dark/70" />
+                <select v-model="form.company_size" class="w-full min-w-0 h-[50px] lg:h-[43px] rounded-lg bg-white pl-3 pr-8 text-small text-texte-primary-dark shadow-[0_0_4px_rgba(0,0,0,0.25)] appearance-none bg-no-repeat bg-[right_0.75rem_center] bg-[length:0.75rem] bg-[url('data:image/svg+xml;utf8,<svg%20xmlns=%22http://www.w3.org/2000/svg%22%20viewBox=%220%200%2020%2020%22%20fill=%22%23361136%22><path%20fill-rule=%22evenodd%22%20d=%22M5.23%207.21a.75.75%200%20011.06.02L10%2011.06l3.71-3.83a.75.75%200%20111.08%201.04l-4.25%204.39a.75.75%200%2001-1.08%200L5.21%208.27a.75.75%200%2001.02-1.06z%22%20clip-rule=%22evenodd%22/></svg>')]">
                   <option value="" disabled>Taille entreprise</option>
                   <option value="1-10">1-10</option>
                   <option value="11-50">11-50</option>
@@ -235,16 +235,16 @@ function updateCardsIndex() {
                 </select>
               </div>
 
-              <input v-model="form.street" type="text" placeholder="Adresse" class="w-full h-[50px] lg:h-[43px] rounded-[40px] lg:rounded-lg bg-white px-5 lg:px-3 text-small text-texte-primary-dark shadow-[0_0_4px_rgba(0,0,0,0.25)] placeholder:text-texte-primary-dark/70 mb-3" />
+              <input v-model="form.street" type="text" placeholder="Adresse" class="w-full min-w-0 h-[50px] lg:h-[43px] rounded-lg bg-white px-3 text-small text-texte-primary-dark shadow-[0_0_4px_rgba(0,0,0,0.25)] placeholder:text-texte-primary-dark/70 mb-3" />
 
               <div class="flex gap-3 mb-3">
-                <input v-model="form.postal_code" type="text" placeholder="NPA" class="w-24 h-[50px] lg:h-[43px] rounded-[40px] lg:rounded-lg bg-white px-5 lg:px-3 text-small text-texte-primary-dark shadow-[0_0_4px_rgba(0,0,0,0.25)] placeholder:text-texte-primary-dark/70" />
-                <input v-model="form.city" type="text" placeholder="Ville" class="flex-grow h-[50px] lg:h-[43px] rounded-[40px] lg:rounded-lg bg-white px-5 lg:px-3 text-small text-texte-primary-dark shadow-[0_0_4px_rgba(0,0,0,0.25)] placeholder:text-texte-primary-dark/70" />
+                <input v-model="form.postal_code" type="text" placeholder="NPA" class="w-24 min-w-0 h-[50px] lg:h-[43px] rounded-lg bg-white px-3 text-small text-texte-primary-dark shadow-[0_0_4px_rgba(0,0,0,0.25)] placeholder:text-texte-primary-dark/70" />
+                <input v-model="form.city" type="text" placeholder="Ville" class="flex-grow min-w-0 h-[50px] lg:h-[43px] rounded-lg bg-white px-3 text-small text-texte-primary-dark shadow-[0_0_4px_rgba(0,0,0,0.25)] placeholder:text-texte-primary-dark/70" />
               </div>
 
-              <input v-model="form.email" type="email" placeholder="Adresse e-mail" class="w-full h-[50px] lg:h-[43px] rounded-[40px] lg:rounded-lg bg-white px-5 lg:px-3 text-small text-texte-primary-dark shadow-[0_0_4px_rgba(0,0,0,0.25)] placeholder:text-texte-primary-dark/70 mb-3" />
+              <input v-model="form.email" type="email" placeholder="Adresse e-mail" class="w-full min-w-0 h-[50px] lg:h-[43px] rounded-lg bg-white px-3 text-small text-texte-primary-dark shadow-[0_0_4px_rgba(0,0,0,0.25)] placeholder:text-texte-primary-dark/70 mb-3" />
 
-              <input v-model="form.phone" type="tel" placeholder="Téléphone" class="w-full h-[50px] lg:h-[43px] rounded-[40px] lg:rounded-lg bg-white px-5 lg:px-3 text-small text-texte-primary-dark shadow-[0_0_4px_rgba(0,0,0,0.25)] placeholder:text-texte-primary-dark/70 mb-4" />
+              <input v-model="form.phone" type="tel" placeholder="Téléphone" class="w-full min-w-0 h-[50px] lg:h-[43px] rounded-lg bg-white px-3 text-small text-texte-primary-dark shadow-[0_0_4px_rgba(0,0,0,0.25)] placeholder:text-texte-primary-dark/70 mb-4" />
 
               <button type="submit" class="w-full rounded-full lg:rounded-2xl bg-button-primary py-4 text-regular text-white shadow">
                 Envoyer
