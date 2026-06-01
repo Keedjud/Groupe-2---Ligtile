@@ -26,7 +26,7 @@ function enterSite() {
         <div class="flex flex-col items-center gap-5">
           <img
             :src="'/images/logo-hug.png'"
-            alt="HUG — Hôpitaux Universitaires de Genève"
+            alt="Logo des HUG"
             class="h-24 w-auto object-contain"
           />
           <h2 class="font-sans text-h5 sm:text-h2">
@@ -45,7 +45,7 @@ function enterSite() {
         <div class="flex flex-col items-center gap-5">
           <img
             :src="'/images/hello.png'"
-            alt=""
+            alt="Mascotte goutte de sang qui dit bonjour"
             class="h-24 w-auto object-contain"
           />
           <h2 class="font-sans text-h5 sm:text-h2">

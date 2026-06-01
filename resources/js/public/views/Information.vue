@@ -74,8 +74,13 @@ function handleSubmit() {
         />
         <!-- Image desktop -->
         <img
+<<<<<<< HEAD
           :src="'/images/hello.png'"
           alt="Pourquoi donner son sang ?"
+=======
+          :src="'/images/hi.png'"
+          alt="Mascotte goutte de sang qui dit bonjour"
+>>>>>>> 63f3b65 (Add alts to images)
           class="hidden md:block w-[180px] lg:w-[202px] h-auto object-contain shrink-0"
         />
         <div class="flex flex-1 flex-col gap-6">
@@ -148,7 +153,7 @@ function handleSubmit() {
 
         <img
           :src="'/images/composition_petites_gouttes.png'"
-          alt="Collecte de sang"
+          alt="Petites gouttes de sang qui se rendent vers un bâtiment et un médecin les accueille"
           class="w-full lg:w-[700px] h-auto object-contain shrink-0"
         />
       </div>
@@ -210,7 +215,7 @@ function handleSubmit() {
 
         <img
           :src="'/images/fournis.png'"
-          alt="Ce que le CTS fourni"
+          alt="Pile de documents"
           class="w-full lg:max-w-[500px] lg:max-h-[380px] h-auto rounded-[100px] object-contain"
         />
       </div>

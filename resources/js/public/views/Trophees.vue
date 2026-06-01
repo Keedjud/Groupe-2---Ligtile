@@ -16,7 +16,7 @@ const { isOpen: showCriteria, toggle: toggleCriteria } = useDisclosure()
         <!-- Image de trophy_top visible uniquement sur mobile au sommet -->
         <img
           :src="'/images/trophy_top.png'"
-          alt="Trophée de la Générosité"
+          alt="Trophée de la première place"
           class="md:hidden w-[176px] h-auto object-contain"
         />
 
@@ -46,8 +46,13 @@ const { isOpen: showCriteria, toggle: toggleCriteria } = useDisclosure()
         <div class="flex flex-col items-center justify-center gap-10 lg:w-[480px] w-full lg:flex-shrink-0">
           <img
             :src="'/images/trophy_top.png'"
+<<<<<<< HEAD
             alt="Trophée de la Générosité"
             class="hidden md:block w-[250px] h-auto object-contain"
+=======
+            alt="Trophée de la première place"
+            class="hidden md:block w-[178px] h-auto object-contain"
+>>>>>>> 63f3b65 (Add alts to images)
           />
           <div class="flex h-[45px] w-[250px] cursor-pointer items-center justify-center gap-2 rounded-[40px] bg-texte-primary-light px-3 py-2 shadow-[0_0_4px_rgba(0,0,0,0.25)] transition-shadow hover:shadow-md">
             <span class="font-sans text-regular text-texte-secondary">Découvrir le trophée →</span>
@@ -92,7 +97,117 @@ const { isOpen: showCriteria, toggle: toggleCriteria } = useDisclosure()
 
       <!-- Podium -->
       <div v-else class="flex w-full max-w-[1000px] flex-col items-center">
+<<<<<<< HEAD
         <PodiumDisplay :companies="podium.companies" />
+=======
+        <!-- Desktop Podium Wrapper (hidden on mobile, visible on md+) -->
+        <div class="hidden md:block podium-wrapper relative w-full">
+
+          <!-- Trophée 2ème place (argent) — au-dessus de la marche gauche -->
+          <img :src="'/images/2.png'" alt="Deuxième place" class="podium-trophy podium-trophy--2nd" />
+
+          <!-- Trophée 1ère place (or) — au-dessus de la marche centre -->
+          <img :src="'/images/1.png'" alt="Première place" class="podium-trophy podium-trophy--1st" />
+
+          <!-- Trophée 3ème place (bronze) — au-dessus de la marche droite -->
+          <img :src="'/images/3.png'" alt="Troisième place" class="podium-trophy podium-trophy--3rd" />
+
+          <!-- SVG leaderboard (les marches du podium) -->
+          <img
+            :src="'/images/leaderboard.svg'"
+            alt="Estrade des vainqueurs"
+            class="w-full h-auto block relative z-[1] -scale-x-100"
+          />
+
+          <!-- Logo 2ème place — sur la marche gauche -->
+          <div class="podium-logo podium-logo--2nd">
+            <img
+              v-if="logoForRank(podium.companies, 2)"
+              :src="logoForRank(podium.companies, 2)"
+              :alt="companyForRank(podium.companies, 2)?.name"
+              class="podium-logo__img"
+              @error="onLogoError($event, podium.companies, 2)"
+            />
+          </div>
+
+          <!-- Logo 1ère place — sur la marche centre -->
+          <div class="podium-logo podium-logo--1st">
+            <img
+              v-if="logoForRank(podium.companies, 1)"
+              :src="logoForRank(podium.companies, 1)"
+              :alt="companyForRank(podium.companies, 1)?.name"
+              class="podium-logo__img podium-logo__img--1st"
+              @error="onLogoError($event, podium.companies, 1)"
+            />
+          </div>
+
+          <!-- Logo 3ème place — sur la marche droite -->
+          <div class="podium-logo podium-logo--3rd">
+            <img
+              v-if="logoForRank(podium.companies, 3)"
+              :src="logoForRank(podium.companies, 3)"
+              :alt="companyForRank(podium.companies, 3)?.name"
+              class="podium-logo__img"
+              @error="onLogoError($event, podium.companies, 3)"
+            />
+          </div>
+
+        </div>
+
+        <!-- Mobile Podium Wrapper (visible on mobile, hidden on md+) -->
+        <div class="md:hidden podium-wrapper--mobile relative w-full">
+
+          <!-- Trophée 2ème place (argent) — au-dessus de la marche gauche -->
+          <img :src="'/images/2.png'" alt="Deuxième place" class="podium-trophy--mobile podium-trophy--mobile-2nd" />
+
+          <!-- Trophée 1ère place (or) — au-dessus de la marche centre -->
+          <img :src="'/images/1.png'" alt="Première place" class="podium-trophy--mobile podium-trophy--mobile-1st" />
+
+          <!-- Trophée 3ème place (bronze) — au-dessus de la marche droite -->
+          <img :src="'/images/3.png'" alt="Troisième place" class="podium-trophy--mobile podium-trophy--mobile-3rd" />
+
+          <!-- SVG leaderboard (les marches du podium) -->
+          <img
+            :src="'/images/leaderboard_mobile.svg'"
+            alt="Estrade des vainqueurs"
+            class="w-full h-auto block relative z-[1] -scale-x-100"
+          />
+
+          <!-- Logo 2ème place — sur la marche gauche -->
+          <div class="podium-logo--mobile podium-logo--mobile-2nd">
+            <img
+              v-if="logoForRank(podium.companies, 2)"
+              :src="logoForRank(podium.companies, 2)"
+              :alt="companyForRank(podium.companies, 2)?.name"
+              class="podium-logo__img--mobile"
+              @error="onLogoError($event, podium.companies, 2)"
+            />
+          </div>
+
+          <!-- Logo 1ère place — sur la marche centre -->
+          <div class="podium-logo--mobile podium-logo--mobile-1st">
+            <img
+              v-if="logoForRank(podium.companies, 1)"
+              :src="logoForRank(podium.companies, 1)"
+              :alt="companyForRank(podium.companies, 1)?.name"
+              class="podium-logo__img--mobile"
+              @error="onLogoError($event, podium.companies, 1)"
+            />
+          </div>
+
+          <!-- Logo 3ème place — sur la marche droite -->
+          <div class="podium-logo--mobile podium-logo--mobile-3rd">
+            <img
+              v-if="logoForRank(podium.companies, 3)"
+              :src="logoForRank(podium.companies, 3)"
+              :alt="companyForRank(podium.companies, 3)?.name"
+              class="podium-logo__img--mobile"
+              @error="onLogoError($event, podium.companies, 3)"
+            />
+          </div>
+
+        </div>
+>>>>>>> 63f3b65 (Add alts to images)
 
         <!-- Critères d'attribution — aligné avec le bord gauche du SVG -->
         <button
@@ -134,7 +249,7 @@ const { isOpen: showCriteria, toggle: toggleCriteria } = useDisclosure()
             </h3>
             <img
               :src="'/images/infos.png'"
-              alt="Personnage info"
+              alt="Mascotte qui se pose des questions"
               class="hidden md:block absolute right-[126px] top-[24px] w-[117px] h-[174px] object-contain"
             />
           </div>

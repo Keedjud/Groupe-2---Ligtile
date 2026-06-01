@@ -90,7 +90,7 @@ function updateCardsIndex() {
               <a href="#/informations" class="flex items-center justify-between rounded-2xl bg-form-bg p-3 lg:bg-transparent lg:p-0 lg:rounded-none">
                 <span class="flex items-center gap-3 lg:gap-4">
                   <span class="grid h-[51px] w-[51px] place-items-center rounded-full bg-violet-200 shrink-0">
-                    <img :src="'/images/check.png'" alt="" class="h-6 w-6" />
+                    <img :src="'/images/check.png'" alt="Icône de validation" class="h-6 w-6" />
                   </span>
                   <span class="text-regular text-texte-primary-dark">Simple à mettre en place</span>
                 </span>
@@ -101,7 +101,7 @@ function updateCardsIndex() {
               <a href="#/informations" class="flex items-center justify-between rounded-2xl bg-form-bg p-3 lg:bg-transparent lg:p-0 lg:rounded-none">
                 <span class="flex items-center gap-3 lg:gap-4">
                   <span class="grid h-[51px] w-[51px] place-items-center rounded-full bg-violet-200 shrink-0">
-                    <img :src="'/images/verified_user.png'" alt="" class="h-6 w-6" />
+                    <img :src="'/images/verified_user.png'" alt="Icône utilisateur vérifié" class="h-6 w-6" />
                   </span>
                   <span class="text-regular text-texte-primary-dark">Adapté à votre structure</span>
                 </span>
@@ -112,7 +112,7 @@ function updateCardsIndex() {
               <a href="#/informations" class="flex items-center justify-between rounded-2xl bg-form-bg p-3 lg:bg-transparent lg:p-0 lg:rounded-none">
                 <span class="flex items-center gap-3 lg:gap-4">
                   <span class="grid h-[51px] w-[51px] place-items-center rounded-full bg-violet-200 shrink-0">
-                    <img :src="'/images/favorite.png'" alt="" class="h-6 w-6" />
+                    <img :src="'/images/favorite.png'" alt="Icône favori" class="h-6 w-6" />
                   </span>
                   <span class="text-regular text-texte-primary-dark">Aucune expertise médicale requise</span>
                 </span>
@@ -127,7 +127,7 @@ function updateCardsIndex() {
         </div>
         <div>
           <div class="rounded-3xl bg-gradient-to-r from-violet-100 to-vert-300 overflow-hidden h-[208px] lg:h-[523px] relative">
-            <img :src="'/images/composition.png'" class="absolute inset-0 h-full w-full object-cover" alt="Composition" />
+            <img :src="'/images/composition.png'" class="absolute inset-0 h-full w-full object-cover" alt="Bâtiment d'entreprise avec un médecin de l'HUG et un employé" />
           </div>
         </div>
       </div>
@@ -148,22 +148,22 @@ function updateCardsIndex() {
                lg:mx-0 lg:px-0 lg:grid lg:grid-cols-4 lg:gap-6 lg:overflow-visible"
       >
         <div class="snap-center shrink-0 w-[calc(100vw-2rem)] lg:w-auto flex flex-col">
-          <img :src="'/images/medoc1.png'" class="h-32 w-auto mx-auto" alt="" />
+          <img :src="'/images/medoc1.png'" class="h-32 w-auto mx-auto" alt="Icône de médicament" />
           <h3 class="text-h3 font-bold text-violet-900 text-center mt-4">Répondre à un besoin réel</h3>
           <p class="text-regular text-violet-900 text-center mt-4">Les produits sanguins sont nécessaires chaque jour pour soigner de nombreux patients. Chaque collecte compte.</p>
         </div>
         <div class="snap-center shrink-0 w-[calc(100vw-2rem)] lg:w-auto flex flex-col">
-          <img :src="'/images/Medoc2.png'" class="h-32 w-auto mx-auto" alt="" />
+          <img :src="'/images/Medoc2.png'" class="h-32 w-auto mx-auto" alt="Icône de médicament" />
           <h3 class="text-h3 font-bold text-violet-900 text-center mt-4">Faciliter l'engagement des collaborateurs</h3>
           <p class="text-regular text-violet-900 text-center mt-4">Organiser une collecte directement sur le lieu de travail réduit les contraintes et encourage la participation.</p>
         </div>
         <div class="snap-center shrink-0 w-[calc(100vw-2rem)] lg:w-auto flex flex-col">
-          <img :src="'/images/medoc1.png'" class="h-32 w-auto mx-auto" alt="" />
+          <img :src="'/images/medoc1.png'" class="h-32 w-auto mx-auto" alt="Icône de médicament" />
           <h3 class="text-h3 font-bold text-violet-900 text-center mt-4">Créer une dynamique collective</h3>
           <p class="text-regular text-violet-900 text-center mt-4">Une collecte peut devenir un moment fédérateur autour d'une action commune et porteuse de sens.</p>
         </div>
         <div class="snap-center shrink-0 w-[calc(100vw-2rem)] lg:w-auto flex flex-col">
-          <img :src="'/images/Medoc2.png'" class="h-32 w-auto mx-auto" alt="" />
+          <img :src="'/images/Medoc2.png'" class="h-32 w-auto mx-auto" alt="Icône de médicament" />
           <h3 class="text-h3 font-bold text-violet-900 text-center mt-4">Valoriser l'engagement de l'entreprise</h3>
           <p class="text-regular text-violet-900 text-center mt-4">Accueillir une collecte permet d'inscrire votre démarche sociétale dans une action visible, concrète et positive.</p>
         </div>
@@ -183,14 +183,14 @@ function updateCardsIndex() {
 
       <div class="grid lg:grid-cols-2 gap-10 items-center mt-12">
         <div>
-          <img :src="'/images/nombreforce.png'" class="w-full max-w-[503px] mx-auto" alt="Le nombre fait la force" />
+          <img :src="'/images/nombreforce.png'" class="w-full max-w-[503px] mx-auto" alt="Des gouttes de sang portant un cœur pour signifier la force du nombre" />
         </div>
         <div>
           <ul class="space-y-0 flex flex-col items-center lg:items-stretch">
             <li class="flex flex-col items-center text-center gap-4 lg:flex-row lg:items-stretch lg:text-left lg:gap-4 max-w-[369px] lg:max-w-none">
               <div class="flex flex-col items-center shrink-0">
                 <span class="grid h-[101px] w-[101px] lg:h-[61px] lg:w-[61px] place-items-center rounded-full bg-violet-200 ring-1 ring-white shrink-0">
-                  <img :src="'/images/chat.png'" alt="" class="h-12 w-12 lg:h-7 lg:w-7" />
+                  <img :src="'/images/chat.png'" alt="Icône de discussion" class="h-12 w-12 lg:h-7 lg:w-7" />
                 </span>
                 <span class="hidden lg:block lg:w-[3px] lg:flex-1 lg:bg-violet-300 lg:rounded-full lg:my-2"></span>
               </div>
@@ -203,7 +203,7 @@ function updateCardsIndex() {
             <li class="flex flex-col items-center text-center gap-4 lg:flex-row lg:items-stretch lg:text-left lg:gap-4 max-w-[369px] lg:max-w-none">
               <div class="flex flex-col items-center shrink-0">
                 <span class="grid h-[101px] w-[101px] lg:h-[61px] lg:w-[61px] place-items-center rounded-full bg-violet-200 ring-1 ring-white shrink-0">
-                  <img :src="'/images/calendar_check.png'" alt="" class="h-12 w-12 lg:h-7 lg:w-7" />
+                  <img :src="'/images/calendar_check.png'" alt="Icône de calendrier" class="h-12 w-12 lg:h-7 lg:w-7" />
                 </span>
                 <span class="hidden lg:block lg:w-[3px] lg:flex-1 lg:bg-violet-300 lg:rounded-full lg:my-2"></span>
               </div>
@@ -216,7 +216,7 @@ function updateCardsIndex() {
             <li class="flex flex-col items-center text-center gap-4 lg:flex-row lg:items-stretch lg:text-left lg:gap-4 max-w-[369px] lg:max-w-none">
               <div class="flex flex-col items-center shrink-0">
                 <span class="grid h-[101px] w-[101px] lg:h-[61px] lg:w-[61px] place-items-center rounded-full bg-violet-200 ring-1 ring-white shrink-0">
-                  <img :src="'/images/campaign.png'" alt="" class="h-12 w-12 lg:h-7 lg:w-7" />
+                  <img :src="'/images/campaign.png'" alt="Icône de campagne" class="h-12 w-12 lg:h-7 lg:w-7" />
                 </span>
                 <span class="hidden lg:block lg:w-[3px] lg:flex-1 lg:bg-violet-300 lg:rounded-full lg:my-2"></span>
               </div>
@@ -229,7 +229,7 @@ function updateCardsIndex() {
             <li class="flex flex-col items-center text-center gap-4 lg:flex-row lg:items-stretch lg:text-left lg:gap-4 max-w-[369px] lg:max-w-none">
               <div class="flex flex-col items-center shrink-0">
                 <span class="grid h-[101px] w-[101px] lg:h-[61px] lg:w-[61px] place-items-center rounded-full bg-violet-200 ring-1 ring-white shrink-0">
-                  <img :src="'/images/checklist.png'" alt="" class="h-12 w-12 lg:h-7 lg:w-7" />
+                  <img :src="'/images/checklist.png'" alt="Icône de checklist" class="h-12 w-12 lg:h-7 lg:w-7" />
                 </span>
               </div>
               <div>
@@ -250,12 +250,12 @@ function updateCardsIndex() {
       <div class="rounded-3xl bg-violet-100 p-3 lg:p-14 overflow-hidden">
         <div class="grid lg:grid-cols-2 gap-10 items-center">
           <div class="flex flex-col items-center text-center lg:block lg:text-left min-w-0">
-            <img :src="'/images/Goutte_mascotte.png'" class="h-32 w-auto mb-6 lg:hidden" alt="Mascotte goutte" />
+            <img :src="'/images/Goutte_mascotte.png'" class="h-32 w-auto mb-6 lg:hidden" alt="Mascotte en forme de goutte de sang" />
             <h2 class="text-h1 font-semibold text-violet-950">
               Parlons de votre <span class="text-violet-500">future collecte</span>
             </h2>
             <div class="mt-8 flex flex-col items-center gap-6 lg:flex-row lg:items-center">
-              <img :src="'/images/Goutte_mascotte.png'" class="hidden lg:block h-48 w-auto" alt="Mascotte goutte" />
+              <img :src="'/images/Goutte_mascotte.png'" class="hidden lg:block h-48 w-auto" alt="Mascotte en forme de goutte de sang" />
               <div>
                 <h3 class="text-h3 font-bold text-violet-950">Quelques informations suffisent pour démarrer</h3>
                 <p class="text-h5 text-violet-950 mt-3">Le CTS vous recontacte ensuite pour organiser une collecte adaptée pour votre entreprise.</p>
@@ -320,11 +320,19 @@ function updateCardsIndex() {
           <p class="text-regular text-violet-900 mt-6 flex-1">Découvrez les entreprises reconnues pour leur engagement autour du don du sang</p>
           <a href="#/trophee" class="mt-6 inline-flex items-center justify-center rounded-full px-8 py-2 text-small underline underline-offset-2 w-full lg:w-56 bg-white text-violet-900 lg:bg-button-primary lg:text-beige-50 lg:ring-2 lg:ring-violet-50">En savoir plus</a>
         </div>
+<<<<<<< HEAD
         <div class="snap-center shrink-0 w-[calc(100vw-2rem)] lg:w-auto bg-violet-50 rounded-3xl p-10 flex flex-col items-center text-center">
           <img :src="'/images/infos.png'" class="h-52 w-auto" alt="Informations" />
           <h3 class="text-h3 font-bold text-violet-900 mt-6 min-h-[5rem]">Comment se déroule une collecte ?</h3>
           <p class="text-regular text-violet-900 mt-6 flex-1">Organisation, logistique, communication, déroulement du jour J : retrouvez les informations pratiques pour accueillir une collecte en entreprise</p>
           <a href="#/informations" class="mt-6 inline-flex items-center justify-center rounded-full px-8 py-2 text-small underline underline-offset-2 w-full lg:w-56 bg-white text-violet-900 lg:bg-button-primary lg:text-beige-50 lg:ring-2 lg:ring-violet-50">En savoir plus</a>
+=======
+        <div class="snap-center shrink-0 w-[calc(100vw-2rem)] lg:w-auto bg-violet-50 rounded-3xl p-10 flex flex-col items-center text-center gap-6">
+          <img :src="'/images/infos.png'" class="h-52 w-auto" alt="Mascotte qui se pose des questions" />
+          <h3 class="text-h3 font-bold text-violet-900">Comment se déroule une collecte ?</h3>
+          <p class="text-regular text-violet-900">Organisation, logistique, communication, déroulement du jour J : retrouvez les informations pratiques pour accueillir une collecte en entreprise</p>
+          <a href="#/informations" class="inline-flex items-center justify-center rounded-full px-8 py-2 text-small underline underline-offset-2 w-full lg:w-56 bg-white text-violet-900 lg:bg-button-primary lg:text-beige-50 lg:ring-2 lg:ring-violet-50">En savoir plus</a>
+>>>>>>> 63f3b65 (Add alts to images)
         </div>
         <div class="snap-center shrink-0 w-[calc(100vw-2rem)] lg:w-auto bg-violet-50 rounded-3xl p-10 flex flex-col items-center text-center">
           <img :src="'/images/label.png'" class="h-52 w-auto" alt="Label CTS" />
