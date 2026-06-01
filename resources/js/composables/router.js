@@ -12,7 +12,13 @@ export function useHashRoute(routes) {
 
   function syncRouteFromUrl() {
     const routeHash = normalizeHash(window.location.hash);
-    currentRoute.value = routes.find(route => route.hash === routeHash) ?? defaultRoute;
+    const matched = routes.find(route => route.hash === routeHash);
+    if (matched) {
+      currentRoute.value = matched;
+      if (!matched.scrollTo) window.scrollTo(0, 0);
+    } else {
+      currentRoute.value = defaultRoute;
+    }
   }
 
   function navigateTo(hash) {

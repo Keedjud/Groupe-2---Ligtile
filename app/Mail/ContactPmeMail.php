@@ -32,8 +32,8 @@ class ContactPmeMail extends Mailable
     public function envelope(): Envelope
     {
         return new Envelope(
-            subject: 'New Contact Request from ' . ($this->validated['name'] ?? 'User'),
-            from: $this->validated['email'] ?? null,
+            subject: 'Contact PME : ' . ($this->validated['company_name'] ?? 'Entreprise inconnue'),
+            replyTo: $this->validated['email'] ?? null,
         );
     }
 
@@ -43,7 +43,7 @@ class ContactPmeMail extends Mailable
     public function content(): Content
     {
         return new Content(
-            view: 'emails.contact',
+            view: 'emails.contactPme',
             with: [
                 'email' => $this->validated['email'] ?? '',
                 'company_name' => $this->validated['company_name'] ?? '',

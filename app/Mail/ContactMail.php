@@ -32,8 +32,8 @@ class ContactMail extends Mailable
     public function envelope(): Envelope
     {
         return new Envelope(
-            subject: 'New Contact Request from ' . ($this->validated['name'] ?? 'User'),
-            from: $this->validated['email'] ?? null,
+            subject: 'Demande de collecte : ' . ($this->validated['company_name'] ?? 'Entreprise inconnue'),
+            replyTo: $this->validated['email'] ?? null,
         );
     }
 
@@ -47,7 +47,7 @@ class ContactMail extends Mailable
             with: [
 
                 'email' => $this->validated['email'] ?? '',
-                'phone' => $this->validated['phone_number'] ?? '',
+                'phone' => $this->validated['phone'] ?? '',
                 'company_name' => $this->validated['company_name'] ?? '',
                 'employees_count' => $this->validated['employees_count'] ?? '',
                 'street' => $this->validated['street'] ?? '',

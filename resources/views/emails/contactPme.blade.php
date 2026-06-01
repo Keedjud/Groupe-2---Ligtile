@@ -1,41 +1,34 @@
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
-
 <!DOCTYPE html>
-<html class="dark">
+<html lang="fr">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <style>
-        @import 'tailwindcss';
-    </style>
 </head>
-<body class="font-sans bg-light-palette-white text-light-primary dark:bg-dark-palette-black dark:text-dark-primary">
-    <div class="max-w-2xl mx-auto p-6">
-        <div class="bg-violet-600 rounded-t-lg p-6">
-            <h2 class="text-h2 font-bold text-light-palette-white">New Contact Message</h2>
+<body style="margin:0;padding:0;font-family:sans-serif;background:#f5f5f5;color:#1a1a2e;">
+    <div style="max-width:600px;margin:0 auto;padding:24px;">
+        <div style="background:#7c3aed;border-radius:8px 8px 0 0;padding:24px;">
+            <h2 style="margin:0;color:#ffffff;font-size:20px;font-weight:700;">Contact PME</h2>
         </div>
 
-        <div class="bg-light-palette-white dark:bg-gray-900 border border-gray-300 dark:border-gray-700 p-6">
-            <div class="mb-6">
-                <span class="block text-text-h5 font-bold text-light-primary dark:text-dark-primary mb-2">Entreprise :</span>
-                <p class="text-text-regular text-light-secondary dark:text-dark-secondary">{{ $company_name }}</p>
+        <div style="background:#ffffff;border:1px solid #e5e7eb;padding:24px;">
+            <div style="margin-bottom:20px;">
+                <span style="display:block;font-weight:700;margin-bottom:6px;">Entreprise :</span>
+                <p style="margin:0;color:#4b5563;">{{ $company_name }}</p>
             </div>
 
-            <div class="mb-6">
-                <span class="block text-text-h5 font-bold text-light-primary dark:text-dark-primary mb-2">Email :</span>
-                <p class="text-text-regular text-light-secondary dark:text-dark-secondary">{{ $email }}</p>
+            <div style="margin-bottom:20px;">
+                <span style="display:block;font-weight:700;margin-bottom:6px;">Email :</span>
+                <p style="margin:0;color:#4b5563;">{{ $email }}</p>
             </div>
 
-            <div class="mb-6">
-                <span class="block text-text-h5 font-bold text-light-primary dark:text-dark-primary mb-2">Email :</span>
-                <p class="text-text-regular text-light-secondary dark:text-dark-secondary">{{ $message }}</p>
+            <div style="margin-bottom:20px;">
+                <span style="display:block;font-weight:700;margin-bottom:6px;">Message :</span>
+                <p style="margin:0;color:#4b5563;white-space:pre-line;">{{ $message }}</p>
             </div>
+        </div>
 
-
-        <div class="bg-violet-100 dark:bg-gray-800 rounded-b-lg p-4 text-center">
-            <p class="text-text-small text-light-tertiary dark:text-dark-tertiary">Ceci est un message automatique envoyé depuis la page de prises de rendez-vous des collectes.</p>
+        <div style="background:#ede9fe;border-radius:0 0 8px 8px;padding:16px;text-align:center;">
+            <p style="margin:0;font-size:12px;color:#6b7280;">Message automatique envoyé depuis la page d'informations pour les PME.</p>
         </div>
     </div>
 </body>

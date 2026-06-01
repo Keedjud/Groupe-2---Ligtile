@@ -1,5 +1,5 @@
 <script setup>
-import { reactive, ref } from 'vue'
+import { reactive, ref, onMounted, onUnmounted } from 'vue'
 
 const form = reactive({
   company_name: '', employees_count: '',
@@ -13,7 +13,7 @@ const submitting = ref(false)
 
 
 function submit() {
-  if (form.employees_count < 1000) {
+  if (!form.employees_count || Number(form.employees_count) < 1000) {
     showPmeMessage.value = true
     return
   }
@@ -45,9 +45,26 @@ function submit() {
     })
 }
 
+// Défilement vers le formulaire quand on arrive via "Prendre RDV" (#/prendre-rdv).
+function scrollToForm() {
+  const el = document.getElementById('prendre-rdv-form')
+  if (!el) return
+  const isDesktop = window.innerWidth >= 1024
+  el.scrollIntoView({ behavior: 'smooth', block: isDesktop ? 'center' : 'start' })
+}
 
+function handleHashChange() {
+  if (window.location.hash === '#/prendre-rdv') scrollToForm()
+}
 
+onMounted(() => {
+  handleHashChange()
+  window.addEventListener('hashchange', handleHashChange)
+})
 
+onUnmounted(() => {
+  window.removeEventListener('hashchange', handleHashChange)
+})
 
 const pourquoiScroll = ref(null)
 const pourquoiIndex = ref(0)
@@ -69,7 +86,7 @@ function updateCardsIndex() {
 <template>
   <!-- Hero -->
   <section class="py-10">
-    <div class="max-w-[1512px] mx-auto px-4 lg:px-[60px]">
+    <div class="max-w-[1632px] mx-auto px-4 lg:px-[60px]">
       <div class="flex flex-col-reverse gap-8 lg:grid lg:grid-cols-2 lg:gap-10 lg:items-center">
         <div>
           <h1 class="text-h1 font-semibold text-texte-primary-dark leading-tight max-w-[260px] lg:max-w-none">
@@ -130,7 +147,7 @@ function updateCardsIndex() {
 
   <!-- Pourquoi accueillir une collecte -->
   <section class="bg-violet-100 py-10">
-    <div class="max-w-[1512px] mx-auto px-4 lg:px-[60px]">
+    <div class="max-w-[1632px] mx-auto px-4 lg:px-[60px]">
       <h2 class="text-h1 font-semibold text-center text-violet-900">Pourquoi accueillir une collecte ?</h2>
       <p class="text-h4 text-violet-900 text-center mt-2">Un geste utile, directement sur votre lieu de travail.</p>
       <div class="mx-auto mt-2 h-[3px] w-48 rounded-full bg-vert-300"></div>
@@ -171,7 +188,7 @@ function updateCardsIndex() {
 
   <!-- Organisation pensee pour les entreprises -->
   <section class="py-10">
-    <div class="max-w-[1512px] mx-auto px-4 lg:px-[60px]">
+    <div class="max-w-[1632px] mx-auto px-4 lg:px-[60px]">
       <h2 class="text-h1 font-semibold text-center text-violet-900">Une organisation pensée pour les entreprises</h2>
       <div class="mx-auto mt-2 h-[3px] w-48 rounded-full bg-vert-300"></div>
 
@@ -240,10 +257,10 @@ function updateCardsIndex() {
 
   <!-- Parlons de votre future collecte -->
   <section id="prendre-rdv" class="py-10">
-    <div class="max-w-[1512px] mx-auto px-4 lg:px-[60px]">
-      <div class="rounded-3xl bg-violet-100 p-3 lg:p-14">
+    <div class="max-w-[1632px] mx-auto px-4 lg:px-[60px]">
+      <div class="rounded-3xl bg-violet-100 p-3 lg:p-14 overflow-hidden">
         <div class="grid lg:grid-cols-2 gap-10 items-center">
-          <div class="flex flex-col items-center text-center lg:block lg:text-left">
+          <div class="flex flex-col items-center text-center lg:block lg:text-left min-w-0">
             <img :src="'/images/Goutte_mascotte.png'" class="h-32 w-auto mb-6 lg:hidden" alt="Mascotte goutte" />
             <h2 class="text-h1 font-semibold text-violet-950">
               Parlons de votre <span class="text-violet-500">future collecte</span>
@@ -257,36 +274,36 @@ function updateCardsIndex() {
             </div>
           </div>
 
-          <div>
+          <div id="prendre-rdv-form" class="min-w-0 scroll-mt-24 lg:scroll-mt-28">
             <form @submit.prevent="submit" class="bg-form-bg rounded-xl p-3 ring-1 ring-violet-900/30">
               <h3 class="text-h3 font-bold text-violet-900 text-center mb-4">Prendre <br class="lg:hidden" />rendez-vous</h3>
 
               <div class="grid grid-cols-2 gap-3 mb-3">
-                <input required v-model="form.company_name" type="text" placeholder="Nom de l'entreprise" class="w-full min-w-0 h-[50px] lg:h-[43px] rounded-[40px] lg:rounded-lg bg-white px-5 lg:px-3 text-small text-texte-primary-dark shadow-[0_0_4px_rgba(0,0,0,0.25)] placeholder:text-texte-primary-dark/70" />
-                <input required v-model="form.employees_count" type="number" placeholder="Nombre d'employées" class="w-full min-w-0 h-[50px] lg:h-[43px] rounded-[40px] lg:rounded-lg bg-white pl-5 pr-8 lg:pl-3 lg:pr-8 text-small text-texte-primary-dark shadow-[0_0_4px_rgba(0,0,0,0.25)] appearance-none bg-no-repeat bg-[right_0.75rem_center] bg-[length:0.75rem] bg-[url('data:image/svg+xml;utf8,<svg%20xmlns=%22http://www.w3.org/2000/svg%22%20viewBox=%220%200%2020%2020%22%20fill=%22%23361136%22><path%20fill-rule=%22evenodd%22%20d=%22M5.23%207.21a.75.75%200%20011.06.02L10%2011.06l3.71-3.83a.75.75%200%20111.08%201.04l-4.25%204.39a.75.75%200%2001-1.08%200L5.21%208.27a.75.75%200%2001.02-1.06z%22%20clip-rule=%22evenodd%22/></svg>')]">
+                <input required v-model="form.company_name" type="text" placeholder="Nom de l'entreprise" class="w-full min-w-0 h-[50px] lg:h-[43px] rounded-lg bg-white px-3 text-small text-texte-primary-dark shadow-[0_0_4px_rgba(0,0,0,0.25)] placeholder:text-texte-primary-dark/70" />
+                <input required v-model="form.employees_count" type="number" placeholder="Nombre d'employés" class="w-full min-w-0 h-[50px] lg:h-[43px] rounded-lg bg-white px-3 text-small text-texte-primary-dark shadow-[0_0_4px_rgba(0,0,0,0.25)] placeholder:text-texte-primary-dark/70" />
               </div>
 
-              <input required v-model="form.street" type="text" placeholder="Adresse" class="w-full h-[50px] lg:h-[43px] rounded-[40px] lg:rounded-lg bg-white px-5 lg:px-3 text-small text-texte-primary-dark shadow-[0_0_4px_rgba(0,0,0,0.25)] placeholder:text-texte-primary-dark/70 mb-3" />
+              <input required v-model="form.street" type="text" placeholder="Adresse" class="w-full min-w-0 h-[50px] lg:h-[43px] rounded-lg bg-white px-3 text-small text-texte-primary-dark shadow-[0_0_4px_rgba(0,0,0,0.25)] placeholder:text-texte-primary-dark/70 mb-3" />
 
               <div class="flex gap-3 mb-3">
-                <input required v-model="form.postal_code" type="text" placeholder="NPA" class="w-24 h-[50px] lg:h-[43px] rounded-[40px] lg:rounded-lg bg-white px-5 lg:px-3 text-small text-texte-primary-dark shadow-[0_0_4px_rgba(0,0,0,0.25)] placeholder:text-texte-primary-dark/70" />
-                <input required v-model="form.city" type="text" placeholder="Ville" class="flex-grow h-[50px] lg:h-[43px] rounded-[40px] lg:rounded-lg bg-white px-5 lg:px-3 text-small text-texte-primary-dark shadow-[0_0_4px_rgba(0,0,0,0.25)] placeholder:text-texte-primary-dark/70" />
+                <input required v-model="form.postal_code" type="text" placeholder="NPA" class="w-24 min-w-0 h-[50px] lg:h-[43px] rounded-lg bg-white px-3 text-small text-texte-primary-dark shadow-[0_0_4px_rgba(0,0,0,0.25)] placeholder:text-texte-primary-dark/70" />
+                <input required v-model="form.city" type="text" placeholder="Ville" class="flex-grow min-w-0 h-[50px] lg:h-[43px] rounded-lg bg-white px-3 text-small text-texte-primary-dark shadow-[0_0_4px_rgba(0,0,0,0.25)] placeholder:text-texte-primary-dark/70" />
               </div>
 
-              <input required v-model="form.email" type="email" placeholder="Adresse e-mail" class="w-full h-[50px] lg:h-[43px] rounded-[40px] lg:rounded-lg bg-white px-5 lg:px-3 text-small text-texte-primary-dark shadow-[0_0_4px_rgba(0,0,0,0.25)] placeholder:text-texte-primary-dark/70 mb-3" />
+              <input required v-model="form.email" type="email" placeholder="Adresse e-mail" class="w-full min-w-0 h-[50px] lg:h-[43px] rounded-lg bg-white px-3 text-small text-texte-primary-dark shadow-[0_0_4px_rgba(0,0,0,0.25)] placeholder:text-texte-primary-dark/70 mb-3" />
 
-              <input v-model="form.phone" type="tel" placeholder="Téléphone" class="w-full h-[50px] lg:h-[43px] rounded-[40px] lg:rounded-lg bg-white px-5 lg:px-3 text-small text-texte-primary-dark shadow-[0_0_4px_rgba(0,0,0,0.25)] placeholder:text-texte-primary-dark/70 mb-4" />
+              <input v-model="form.phone" type="tel" placeholder="Téléphone" class="w-full min-w-0 h-[50px] lg:h-[43px] rounded-lg bg-white px-3 text-small text-texte-primary-dark shadow-[0_0_4px_rgba(0,0,0,0.25)] placeholder:text-texte-primary-dark/70 mb-4" />
+
               <div v-if="showPmeMessage" class="mb-4 rounded-lg bg-white p-4 text-small text-texte-primary-dark ring-1 ring-violet-900/30">
-  Seul les entreprises de plus de 1000 employés peuvent accueillir une collecte de sang. Si vous êtes une PME vous pouvez vous rendre
-  <a href="#/informations#pme" class="underline text-violet-900">sur la page information</a> pour découvrir comment soutenir le don du sang autrement et faire la différence malgré votre taille !
-</div>
-<div v-if="status.type === 'success'" class="mb-4 rounded-lg bg-green-50 p-4 text-small text-green-800 ring-1 ring-green-300">
-  {{ status.message }}
-</div>
-
-<div v-if="status.type === 'error'" class="mb-4 rounded-lg bg-red-50 p-4 text-small text-red-800 ring-1 ring-red-300">
-  {{ status.message }}
-</div>
+                Seul les entreprises de plus de 1000 employés peuvent accueillir une collecte de sang. Si vous êtes une PME vous pouvez vous rendre
+                <a href="#/informations#pme" class="underline text-violet-900">sur la page information</a> pour découvrir comment soutenir le don du sang autrement et faire la différence malgré votre taille !
+              </div>
+              <div v-if="status.type === 'success'" class="mb-4 rounded-lg bg-green-50 p-4 text-small text-green-800 ring-1 ring-green-300">
+                {{ status.message }}
+              </div>
+              <div v-if="status.type === 'error'" class="mb-4 rounded-lg bg-red-50 p-4 text-small text-red-800 ring-1 ring-red-300">
+                {{ status.message }}
+              </div>
 
               <button type="submit" class="w-full rounded-full lg:rounded-2xl bg-button-primary py-4 text-regular text-white shadow">
                 Envoyer
@@ -300,30 +317,30 @@ function updateCardsIndex() {
 
   <!-- Three info cards -->
   <section class="py-10 pb-20">
-    <div class="max-w-[1512px] mx-auto px-4 lg:px-[60px]">
+    <div class="max-w-[1632px] mx-auto px-4 lg:px-[60px]">
       <div
         ref="cardsScroll"
         @scroll.passive="updateCardsIndex"
         class="-mx-4 flex overflow-x-auto snap-x snap-mandatory gap-4 px-4
                lg:mx-0 lg:px-0 lg:grid lg:grid-cols-3 lg:gap-6 lg:overflow-visible"
       >
-        <div class="snap-center shrink-0 w-[calc(100vw-2rem)] lg:w-auto bg-violet-50 rounded-3xl p-10 flex flex-col items-center text-center gap-6">
+        <div class="snap-center shrink-0 w-[calc(100vw-2rem)] lg:w-auto bg-violet-50 rounded-3xl p-10 flex flex-col items-center text-center">
           <img :src="'/images/trophey.png'" class="h-52 w-auto" alt="Trophée" />
-          <h3 class="text-h3 font-bold text-violet-900">Trophée de la générosité</h3>
-          <p class="text-regular text-violet-900">Découvrez les entreprises reconnues pour leur engagement autour du don du sang</p>
-          <a href="#/trophee" class="inline-flex items-center justify-center rounded-full px-8 py-2 text-small underline underline-offset-2 w-full lg:w-56 bg-white text-violet-900 lg:bg-button-primary lg:text-beige-50 lg:ring-2 lg:ring-violet-50">En savoir plus</a>
+          <h3 class="text-h3 font-bold text-violet-900 mt-6 min-h-[5rem]">Trophée de la générosité</h3>
+          <p class="text-regular text-violet-900 mt-6 flex-1">Découvrez les entreprises reconnues pour leur engagement autour du don du sang</p>
+          <a href="#/trophee" class="mt-6 inline-flex items-center justify-center rounded-full px-8 py-2 text-small underline underline-offset-2 w-full lg:w-56 bg-white text-violet-900 lg:bg-button-primary lg:text-beige-50 lg:ring-2 lg:ring-violet-50">En savoir plus</a>
         </div>
-        <div class="snap-center shrink-0 w-[calc(100vw-2rem)] lg:w-auto bg-violet-50 rounded-3xl p-10 flex flex-col items-center text-center gap-6">
+        <div class="snap-center shrink-0 w-[calc(100vw-2rem)] lg:w-auto bg-violet-50 rounded-3xl p-10 flex flex-col items-center text-center">
           <img :src="'/images/infos.png'" class="h-52 w-auto" alt="Informations" />
-          <h3 class="text-h3 font-bold text-violet-900">Comment se déroule une collecte ?</h3>
-          <p class="text-regular text-violet-900">Organisation, logistique, communication, déroulement du jour J : retrouvez les informations pratiques pour accueillir une collecte en entreprise</p>
-          <a href="#/informations" class="inline-flex items-center justify-center rounded-full px-8 py-2 text-small underline underline-offset-2 w-full lg:w-56 bg-white text-violet-900 lg:bg-button-primary lg:text-beige-50 lg:ring-2 lg:ring-violet-50">En savoir plus</a>
+          <h3 class="text-h3 font-bold text-violet-900 mt-6 min-h-[5rem]">Comment se déroule une collecte ?</h3>
+          <p class="text-regular text-violet-900 mt-6 flex-1">Organisation, logistique, communication, déroulement du jour J : retrouvez les informations pratiques pour accueillir une collecte en entreprise</p>
+          <a href="#/informations" class="mt-6 inline-flex items-center justify-center rounded-full px-8 py-2 text-small underline underline-offset-2 w-full lg:w-56 bg-white text-violet-900 lg:bg-button-primary lg:text-beige-50 lg:ring-2 lg:ring-violet-50">En savoir plus</a>
         </div>
-        <div class="snap-center shrink-0 w-[calc(100vw-2rem)] lg:w-auto bg-violet-50 rounded-3xl p-10 flex flex-col items-center text-center gap-6">
+        <div class="snap-center shrink-0 w-[calc(100vw-2rem)] lg:w-auto bg-violet-50 rounded-3xl p-10 flex flex-col items-center text-center">
           <img :src="'/images/label.png'" class="h-52 w-auto" alt="Label CTS" />
-          <h3 class="text-h3 font-bold text-violet-900">Label CTS</h3>
-          <p class="text-regular text-violet-900">Mettre en lumière les entreprises engagées dans la promotion du don du sang</p>
-          <a href="#/label" class="inline-flex items-center justify-center rounded-full px-8 py-2 text-small underline underline-offset-2 w-full lg:w-56 bg-white text-violet-900 lg:bg-button-primary lg:text-beige-50 lg:ring-2 lg:ring-violet-50">En savoir plus</a>
+          <h3 class="text-h3 font-bold text-violet-900 mt-6 min-h-[5rem]">Label CTS</h3>
+          <p class="text-regular text-violet-900 mt-6 flex-1">Mettre en lumière les entreprises engagées dans la promotion du don du sang</p>
+          <a href="#/label" class="mt-6 inline-flex items-center justify-center rounded-full px-8 py-2 text-small underline underline-offset-2 w-full lg:w-56 bg-white text-violet-900 lg:bg-button-primary lg:text-beige-50 lg:ring-2 lg:ring-violet-50">En savoir plus</a>
         </div>
       </div>
       <div class="flex justify-center gap-2 mt-6 lg:hidden">

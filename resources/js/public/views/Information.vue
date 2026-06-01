@@ -89,7 +89,7 @@ function handleSubmit() {
         />
         <!-- Image desktop -->
         <img
-          :src="'/images/hi.png'"
+          :src="'/images/hello.png'"
           alt="Pourquoi donner son sang ?"
           class="hidden md:block w-[180px] lg:w-[202px] h-auto object-contain shrink-0"
         />
