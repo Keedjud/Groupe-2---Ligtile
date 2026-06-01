@@ -8,8 +8,8 @@ const form = reactive({
 })
 
 const showPmeMessage = ref(false)
-const submitSuccess = ref(false)
-const submitError = ref(false)
+const status = ref({ type: '', message: '' })
+const submitting = ref(false)
 
 
 function submit() {
@@ -18,23 +18,30 @@ function submit() {
     return
   }
 
+  status.value = { type: '', message: '' }
+  submitting.value = true
+
   fetch('/api/v1/contact', {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify(form),
   })
-    .then(response => {
+    .then(async response => {
+      submitting.value = false
       if (response.ok) {
-        submitSuccess.value = true
-        submitError.value = false
+        status.value = { type: 'success', message: 'Votre demande a bien été envoyée. Le CTS vous recontactera prochainement.' }
       } else {
+        const data = await response.json().catch(() => null)
+        status.value = { type: 'error', message: data?.message || 'Une erreur est survenue. Veuillez réessayer.' }
         throw new Error('Network response was not ok')
       }
     })
     .catch(error => {
       console.error('There was a problem with the fetch operation:', error)
-      submitSuccess.value = false
-      submitError.value = true
+      submitting.value = false
+      if (!status.value.message) {
+        status.value = { type: 'error', message: 'Une erreur réseau est survenue. Veuillez réessayer.' }
+      }
     })
 }
 
@@ -273,12 +280,12 @@ function updateCardsIndex() {
   Seul les entreprises de plus de 1000 employés peuvent accueillir une collecte de sang. Si vous êtes une PME vous pouvez vous rendre
   <a href="#/informations#pme" class="underline text-violet-900">sur la page information</a> pour découvrir comment soutenir le don du sang autrement et faire la différence malgré votre taille !
 </div>
-<div v-if="submitSuccess" class="mb-4 rounded-lg bg-green-50 p-4 text-small text-green-800 ring-1 ring-green-300">
-  Votre demande a bien été envoyée. Le CTS vous recontactera prochainement.
+<div v-if="status.type === 'success'" class="mb-4 rounded-lg bg-green-50 p-4 text-small text-green-800 ring-1 ring-green-300">
+  {{ status.message }}
 </div>
 
-<div v-if="submitError" class="mb-4 rounded-lg bg-red-50 p-4 text-small text-red-800 ring-1 ring-red-300">
-  Une erreur est survenue. Veuillez réessayer ou nous contacter directement.
+<div v-if="status.type === 'error'" class="mb-4 rounded-lg bg-red-50 p-4 text-small text-red-800 ring-1 ring-red-300">
+  {{ status.message }}
 </div>
 
               <button type="submit" class="w-full rounded-full lg:rounded-2xl bg-button-primary py-4 text-regular text-white shadow">

@@ -18,5 +18,5 @@ Route::prefix('v1')->group(function () {
     Route::get('/label-years', [ApiLabelCompanyController::class, 'years']);
     Route::get('/trophees', [ApiTropheeController::class, 'index']);
     Route::post('/contact', [ApiContactController::class, 'contact']);
-    Route::post('/pme-contact', [ApiPmeContactController::class, 'pme-contact']);
+    Route::post('/pme-contact', [ApiPmeContactController::class, 'contactPme']);
 });

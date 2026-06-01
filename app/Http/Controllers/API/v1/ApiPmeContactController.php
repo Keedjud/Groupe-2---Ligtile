@@ -4,12 +4,12 @@ namespace App\Http\Controllers\Api\v1;
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Mail;
-use App\Mail\ContactMail;
+use App\Mail\ContactPmeMail;
 use App\Http\Controllers\Controller;
 
 class ApiPmeContactController extends Controller
 {
-    public function contact(Request $request)
+    public function contactPme(Request $request)
     {
         $validated = $request->validate([
             'email' => 'required|email|max:100',
@@ -18,7 +18,7 @@ class ApiPmeContactController extends Controller
         ]);
 
         try {
-            Mail::to('contact@hug-collecte.ch')->send(new ContactMail($validated));
+            Mail::to('contact@hug-collecte.ch')->send(new ContactPmeMail($validated));
 
             return response()->json([
                 'success' => true,
