@@ -2,7 +2,7 @@
 import { ref, onBeforeUnmount, onMounted } from 'vue'
 
 const form = ref({
-  company: '',
+  company_name: '',
   email: '',
   message: '',
 })
@@ -43,7 +43,25 @@ function handleSubmit() {
   submitting.value = true
   submitted.value = true
   submitting.value = false
-  // TODO: backend — ajouter try/catch avec formError.value = ...
+
+  fetch('/api/v1/contact', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify(form),
+  })
+    .then(response => {
+      if (response.ok) {
+        submitted.value = true
+        submitting.value = false
+      } else {
+        throw new Error('Network response was not ok')
+      }
+    })
+    .catch(error => {
+      console.error('There was a problem with the fetch operation:', error)
+      submitted.value = false
+      submitting.value = true
+    })
 }
 </script>
 
@@ -234,7 +252,7 @@ function handleSubmit() {
               {{ formError }}
             </p>
             <input
-              v-model="form.company"
+              v-model="form.company_name"
               type="text"
               placeholder="Nom de l'entreprise"
               class="h-[43px] w-full max-w-[450px] rounded-lg bg-white px-4 font-sans text-small text-black shadow-[0_0_4px_rgba(0,0,0,0.25)] outline-none placeholder:text-[#B8B8B8]"
@@ -251,6 +269,13 @@ function handleSubmit() {
               rows="4"
               class="h-[148px] w-full max-w-[450px] resize-none rounded-lg bg-white px-4 py-3 font-sans text-small text-black shadow-[0_0_4px_rgba(0,0,0,0.25)] outline-none placeholder:text-[#B8B8B8]"
             ></textarea>
+            <div v-if="submitted" class="mb-4 rounded-lg bg-green-50 p-4 text-small text-green-800 ring-1 ring-green-300">
+  Votre demande a bien été envoyée. Le CTS vous recontactera prochainement.
+</div>
+
+<div v-if="submitting" class="mb-4 rounded-lg bg-red-50 p-4 text-small text-red-800 ring-1 ring-red-300">
+  Une erreur est survenue. Veuillez réessayer ou nous contacter directement.
+</div>
             <button
               @click="handleSubmit"
               :disabled="submitting"

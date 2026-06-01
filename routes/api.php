@@ -5,6 +5,7 @@ use App\Http\Controllers\Api\v1\ApiLabelCompanyController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Api\v1\ApiContactController;
+use App\Http\Controllers\Api\v1\ApiPmeContactController;
 
 
 Route::get('/user', function (Request $request) {
@@ -17,4 +18,5 @@ Route::prefix('v1')->group(function () {
     Route::get('/label-years', [ApiLabelCompanyController::class, 'years']);
     Route::get('/trophees', [ApiTropheeController::class, 'index']);
     Route::post('/contact', [ApiContactController::class, 'contact']);
+    Route::post('/pme-contact', [ApiPmeContactController::class, 'pme-contact']);
 });
