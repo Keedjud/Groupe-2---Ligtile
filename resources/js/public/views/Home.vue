@@ -305,6 +305,7 @@ function updateCardsIndex() {
                 {{ status.message }}
               </div>
 
+              <p class="text-xs text-gray-500">Vos données sont transmises au CTS et utilisées uniquement dans le cadre de l'organisation de votre collecte de sang.</p>
               <button type="submit" class="w-full rounded-full lg:rounded-2xl bg-button-primary py-4 text-regular text-white shadow">
                 Envoyer
               </button>

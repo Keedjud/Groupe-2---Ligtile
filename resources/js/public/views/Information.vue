@@ -280,6 +280,7 @@ function handleSubmit() {
             <div v-if="status.type === 'error'" class="mb-4 rounded-lg bg-red-50 p-4 text-small text-red-800 ring-1 ring-red-300">
               {{ status.message }}
             </div>
+            <p class="text-xs text-gray-500">Vos données sont transmises au CTS et utilisées uniquement pour répondre à votre demande.</p>
             <button
               @click="handleSubmit"
               :disabled="submitting"
