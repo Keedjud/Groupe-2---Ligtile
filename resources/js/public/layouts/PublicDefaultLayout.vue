@@ -11,8 +11,10 @@ defineProps({
 
 <template>
   <div class="flex min-h-screen flex-col bg-beige-50 font-sans text-light-primary antialiased">
-    <FictifBanner />
-    <SiteHeader :current="current" />
+    <div class="sticky top-0 z-30">
+      <FictifBanner />
+      <SiteHeader :current="current" />
+    </div>
 
     <main class="flex-1">
       <slot />
