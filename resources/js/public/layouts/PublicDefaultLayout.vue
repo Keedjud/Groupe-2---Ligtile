@@ -11,7 +11,7 @@ defineProps({
 
 <template>
   <div class="flex min-h-screen flex-col bg-beige-50 font-sans text-light-primary antialiased">
-    <FictifBanner url="/a-propos" />
+    <FictifBanner />
     <SiteHeader :current="current" />
 
     <main class="flex-1">
