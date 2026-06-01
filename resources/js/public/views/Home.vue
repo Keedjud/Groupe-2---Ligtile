@@ -2,14 +2,45 @@
 import { reactive, ref } from 'vue'
 
 const form = reactive({
-  company_name: '', company_size: '',
+  company_name: '', employees_count: '',
   street: '', postal_code: '', city: '',
   email: '', phone: '',
 })
 
+const showPmeMessage = ref(false)
+const submitSuccess = ref(false)
+const submitError = ref(false)
+
+
 function submit() {
-  // TODO: brancher l'envoi du formulaire au backend
+  if (form.employees_count < 1000) {
+    showPmeMessage.value = true
+    return
+  }
+
+  fetch('/api/v1/contact', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify(form),
+  })
+    .then(response => {
+      if (response.ok) {
+        submitSuccess.value = true
+        submitError.value = false
+      } else {
+        throw new Error('Network response was not ok')
+      }
+    })
+    .catch(error => {
+      console.error('There was a problem with the fetch operation:', error)
+      submitSuccess.value = false
+      submitError.value = true
+    })
 }
+
+
+
+
 
 const pourquoiScroll = ref(null)
 const pourquoiIndex = ref(0)
@@ -224,27 +255,31 @@ function updateCardsIndex() {
               <h3 class="text-h3 font-bold text-violet-900 text-center mb-4">Prendre <br class="lg:hidden" />rendez-vous</h3>
 
               <div class="grid grid-cols-2 gap-3 mb-3">
-                <input v-model="form.company_name" type="text" placeholder="Nom de l'entreprise" class="w-full min-w-0 h-[50px] lg:h-[43px] rounded-[40px] lg:rounded-lg bg-white px-5 lg:px-3 text-small text-texte-primary-dark shadow-[0_0_4px_rgba(0,0,0,0.25)] placeholder:text-texte-primary-dark/70" />
-                <select v-model="form.company_size" class="w-full min-w-0 h-[50px] lg:h-[43px] rounded-[40px] lg:rounded-lg bg-white pl-5 pr-8 lg:pl-3 lg:pr-8 text-small text-texte-primary-dark shadow-[0_0_4px_rgba(0,0,0,0.25)] appearance-none bg-no-repeat bg-[right_0.75rem_center] bg-[length:0.75rem] bg-[url('data:image/svg+xml;utf8,<svg%20xmlns=%22http://www.w3.org/2000/svg%22%20viewBox=%220%200%2020%2020%22%20fill=%22%23361136%22><path%20fill-rule=%22evenodd%22%20d=%22M5.23%207.21a.75.75%200%20011.06.02L10%2011.06l3.71-3.83a.75.75%200%20111.08%201.04l-4.25%204.39a.75.75%200%2001-1.08%200L5.21%208.27a.75.75%200%2001.02-1.06z%22%20clip-rule=%22evenodd%22/></svg>')]">
-                  <option value="" disabled>Taille entreprise</option>
-                  <option value="1-10">1-10</option>
-                  <option value="11-50">11-50</option>
-                  <option value="51-200">51-200</option>
-                  <option value="201-500">201-500</option>
-                  <option value="500+">500+</option>
-                </select>
+                <input required v-model="form.company_name" type="text" placeholder="Nom de l'entreprise" class="w-full min-w-0 h-[50px] lg:h-[43px] rounded-[40px] lg:rounded-lg bg-white px-5 lg:px-3 text-small text-texte-primary-dark shadow-[0_0_4px_rgba(0,0,0,0.25)] placeholder:text-texte-primary-dark/70" />
+                <input required v-model="form.employees_count" type="number" placeholder="Nombre d'employées" class="w-full min-w-0 h-[50px] lg:h-[43px] rounded-[40px] lg:rounded-lg bg-white pl-5 pr-8 lg:pl-3 lg:pr-8 text-small text-texte-primary-dark shadow-[0_0_4px_rgba(0,0,0,0.25)] appearance-none bg-no-repeat bg-[right_0.75rem_center] bg-[length:0.75rem] bg-[url('data:image/svg+xml;utf8,<svg%20xmlns=%22http://www.w3.org/2000/svg%22%20viewBox=%220%200%2020%2020%22%20fill=%22%23361136%22><path%20fill-rule=%22evenodd%22%20d=%22M5.23%207.21a.75.75%200%20011.06.02L10%2011.06l3.71-3.83a.75.75%200%20111.08%201.04l-4.25%204.39a.75.75%200%2001-1.08%200L5.21%208.27a.75.75%200%2001.02-1.06z%22%20clip-rule=%22evenodd%22/></svg>')]">
               </div>
 
-              <input v-model="form.street" type="text" placeholder="Adresse" class="w-full h-[50px] lg:h-[43px] rounded-[40px] lg:rounded-lg bg-white px-5 lg:px-3 text-small text-texte-primary-dark shadow-[0_0_4px_rgba(0,0,0,0.25)] placeholder:text-texte-primary-dark/70 mb-3" />
+              <input required v-model="form.street" type="text" placeholder="Adresse" class="w-full h-[50px] lg:h-[43px] rounded-[40px] lg:rounded-lg bg-white px-5 lg:px-3 text-small text-texte-primary-dark shadow-[0_0_4px_rgba(0,0,0,0.25)] placeholder:text-texte-primary-dark/70 mb-3" />
 
               <div class="flex gap-3 mb-3">
-                <input v-model="form.postal_code" type="text" placeholder="NPA" class="w-24 h-[50px] lg:h-[43px] rounded-[40px] lg:rounded-lg bg-white px-5 lg:px-3 text-small text-texte-primary-dark shadow-[0_0_4px_rgba(0,0,0,0.25)] placeholder:text-texte-primary-dark/70" />
-                <input v-model="form.city" type="text" placeholder="Ville" class="flex-grow h-[50px] lg:h-[43px] rounded-[40px] lg:rounded-lg bg-white px-5 lg:px-3 text-small text-texte-primary-dark shadow-[0_0_4px_rgba(0,0,0,0.25)] placeholder:text-texte-primary-dark/70" />
+                <input required v-model="form.postal_code" type="text" placeholder="NPA" class="w-24 h-[50px] lg:h-[43px] rounded-[40px] lg:rounded-lg bg-white px-5 lg:px-3 text-small text-texte-primary-dark shadow-[0_0_4px_rgba(0,0,0,0.25)] placeholder:text-texte-primary-dark/70" />
+                <input required v-model="form.city" type="text" placeholder="Ville" class="flex-grow h-[50px] lg:h-[43px] rounded-[40px] lg:rounded-lg bg-white px-5 lg:px-3 text-small text-texte-primary-dark shadow-[0_0_4px_rgba(0,0,0,0.25)] placeholder:text-texte-primary-dark/70" />
               </div>
 
-              <input v-model="form.email" type="email" placeholder="Adresse e-mail" class="w-full h-[50px] lg:h-[43px] rounded-[40px] lg:rounded-lg bg-white px-5 lg:px-3 text-small text-texte-primary-dark shadow-[0_0_4px_rgba(0,0,0,0.25)] placeholder:text-texte-primary-dark/70 mb-3" />
+              <input required v-model="form.email" type="email" placeholder="Adresse e-mail" class="w-full h-[50px] lg:h-[43px] rounded-[40px] lg:rounded-lg bg-white px-5 lg:px-3 text-small text-texte-primary-dark shadow-[0_0_4px_rgba(0,0,0,0.25)] placeholder:text-texte-primary-dark/70 mb-3" />
 
               <input v-model="form.phone" type="tel" placeholder="Téléphone" class="w-full h-[50px] lg:h-[43px] rounded-[40px] lg:rounded-lg bg-white px-5 lg:px-3 text-small text-texte-primary-dark shadow-[0_0_4px_rgba(0,0,0,0.25)] placeholder:text-texte-primary-dark/70 mb-4" />
+              <div v-if="showPmeMessage" class="mb-4 rounded-lg bg-white p-4 text-small text-texte-primary-dark ring-1 ring-violet-900/30">
+  Seul les entreprises de plus de 1000 employés peuvent accueillir une collecte de sang. Si vous êtes une PME vous pouvez vous rendre
+  <a href="#/informations#pme" class="underline text-violet-900">sur la page information</a> pour découvrir comment soutenir le don du sang autrement et faire la différence malgré votre taille !
+</div>
+<div v-if="submitSuccess" class="mb-4 rounded-lg bg-green-50 p-4 text-small text-green-800 ring-1 ring-green-300">
+  Votre demande a bien été envoyée. Le CTS vous recontactera prochainement.
+</div>
+
+<div v-if="submitError" class="mb-4 rounded-lg bg-red-50 p-4 text-small text-red-800 ring-1 ring-red-300">
+  Une erreur est survenue. Veuillez réessayer ou nous contacter directement.
+</div>
 
               <button type="submit" class="w-full rounded-full lg:rounded-2xl bg-button-primary py-4 text-regular text-white shadow">
                 Envoyer

@@ -1,5 +1,5 @@
 <script setup>
-import { ref } from 'vue'
+import { ref, onBeforeUnmount, onMounted } from 'vue'
 
 const form = ref({
   company: '',
@@ -9,6 +9,28 @@ const form = ref({
 const submitted = ref(false)
 const submitting = ref(false)
 const formError = ref(null)
+
+function scrollToHashFragment() {
+  const hash = window.location.hash;
+  const fragment = hash.includes('#/informations#') ? hash.split('#/informations#')[1] : null;
+  if (!fragment) {
+    return;
+  }
+
+  const target = document.getElementById(fragment);
+  if (target) {
+    target.scrollIntoView({ behavior: 'smooth' });
+  }
+}
+
+onMounted(() => {
+  scrollToHashFragment();
+  window.addEventListener('hashchange', scrollToHashFragment);
+});
+
+onBeforeUnmount(() => {
+  window.removeEventListener('hashchange', scrollToHashFragment);
+});
 
 function handleSubmit() {
   formError.value = null
@@ -181,7 +203,7 @@ function handleSubmit() {
     </section>
 
     <!-- ===== Section 5 : Moins de 1 000 collaborateurs + Formulaire ===== -->
-    <section class="bg-violet-100 px-4 py-12 lg:px-[60px] lg:py-[57px] mt-16 lg:mt-24">
+    <section id="pme" class="bg-violet-100 px-4 py-12 lg:px-[60px] lg:py-[57px] mt-16 lg:mt-24">
       <div class="mx-auto flex max-w-[1512px] flex-col items-center gap-8 lg:flex-row lg:gap-28">
         <!-- Colonne gauche : texte -->
         <div class="flex flex-col gap-6 lg:max-w-[636px]">

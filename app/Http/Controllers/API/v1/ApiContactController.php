@@ -1,22 +1,24 @@
 <?php
 
-namespace App\Http\Controllers\API;
+namespace App\Http\Controllers\Api\v1;
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Mail;
 use App\Mail\ContactMail;
 use App\Http\Controllers\Controller;
 
-class api_ContactController extends Controller
+class ApiContactController extends Controller
 {
     public function contact(Request $request)
     {
         $validated = $request->validate([
-            'name' => 'required|string|min:3|max:100',
-            'phone_number' => 'nullable|string|regex:/^[+0-9\s]{7,20}$/|max:20',
+            'phone' => 'nullable|string|regex:/^[+0-9\s]{7,20}$/|max:20',
             'email' => 'required|email|max:100',
-            'company_name' => 'required|string|max:255',
+            'company_name' => 'required|string|min:3|max:255',
             'employees_count' => 'required|integer|min:1000',
+            'street' => 'required|string|max:255|min:2',
+            'postal_code' => 'required|string|min:1|max:255',
+            'city' => 'required|string|min:3|max:255',
         ]);
 
         try {

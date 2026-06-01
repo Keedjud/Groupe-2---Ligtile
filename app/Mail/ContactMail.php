@@ -45,11 +45,14 @@ class ContactMail extends Mailable
         return new Content(
             view: 'emails.contact',
             with: [
-                'name' => $this->validated['name'] ?? '',
+
                 'email' => $this->validated['email'] ?? '',
-                'phone_number' => $this->validated['phone_number'] ?? 'Not provided',
+                'phone' => $this->validated['phone_number'] ?? '',
                 'company_name' => $this->validated['company_name'] ?? '',
                 'employees_count' => $this->validated['employees_count'] ?? '',
+                'street' => $this->validated['street'] ?? '',
+                'postal_code' => $this->validated['postal_code'] ?? '' ,
+                'city' => $this->validated['city'] ?? '',
             ],
         );
     }

@@ -19,33 +19,33 @@
 
         <div class="bg-light-palette-white dark:bg-gray-900 border border-gray-300 dark:border-gray-700 p-6">
             <div class="mb-6">
-                <span class="block text-text-h5 font-bold text-light-primary dark:text-dark-primary mb-2">Name:</span>
-                <p class="text-text-regular text-light-secondary dark:text-dark-secondary">{{ $name }}</p>
-            </div>
-
-            <div class="mb-6">
-                <span class="block text-text-h5 font-bold text-light-primary dark:text-dark-primary mb-2">Email:</span>
-                <p class="text-text-regular text-light-secondary dark:text-dark-secondary">{{ $email }}</p>
-            </div>
-
-            <div class="mb-6">
-                <span class="block text-text-h5 font-bold text-light-primary dark:text-dark-primary mb-2">Phone Number:</span>
-                <p class="text-text-regular text-light-secondary dark:text-dark-secondary">{{ $phone_number }}</p>
-            </div>
-
-            <div class="mb-6">
-                <span class="block text-text-h5 font-bold text-light-primary dark:text-dark-primary mb-2">Company Name:</span>
+                <span class="block text-text-h5 font-bold text-light-primary dark:text-dark-primary mb-2">Entreprise :</span>
                 <p class="text-text-regular text-light-secondary dark:text-dark-secondary">{{ $company_name }}</p>
             </div>
 
             <div class="mb-6">
-                <span class="block text-text-h5 font-bold text-light-primary dark:text-dark-primary mb-2">Employees Count:</span>
+                <span class="block text-text-h5 font-bold text-light-primary dark:text-dark-primary mb-2">Nombre d'employés :</span>
                 <p class="text-text-regular text-light-secondary dark:text-dark-secondary">{{ $employees_count }}</p>
+            </div>
+
+            <div class="mb-6">
+                <span class="block text-text-h5 font-bold text-light-primary dark:text-dark-primary mb-2">Adresse :</span>
+                <p class="text-text-regular text-light-secondary dark:text-dark-secondary">{{ $street }}, {{ $postal_code }} {{ $city }}</p>
+            </div>
+
+            <div class="mb-6">
+                <span class="block text-text-h5 font-bold text-light-primary dark:text-dark-primary mb-2">Email :</span>
+                <p class="text-text-regular text-light-secondary dark:text-dark-secondary">{{ $email }}</p>
+            </div>
+
+            <div class="mb-6">
+                <span class="block text-text-h5 font-bold text-light-primary dark:text-dark-primary mb-2">Téléphone :</span>
+                <p class="text-text-regular text-light-secondary dark:text-dark-secondary">{{ $phone }}</p>
             </div>
         </div>
 
         <div class="bg-violet-100 dark:bg-gray-800 rounded-b-lg p-4 text-center">
-            <p class="text-text-small text-light-tertiary dark:text-dark-tertiary">This is an automated message from your contact form.</p>
+            <p class="text-text-small text-light-tertiary dark:text-dark-tertiary">Ceci est un message automatique envoyé depuis la page de prises de rendez-vous des collectes.</p>
         </div>
     </div>
 </body>

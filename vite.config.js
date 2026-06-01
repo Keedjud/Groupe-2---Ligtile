@@ -30,6 +30,9 @@ export default defineConfig({
         vue(),
     ],
     server: {
+        proxy: {
+            '/api': 'http://localhost:8000',
+        },
         watch: {
             ignored: ['**/storage/framework/views/**'],
         },
