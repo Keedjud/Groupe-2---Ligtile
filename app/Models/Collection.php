@@ -8,7 +8,7 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 #[Fillable([
     'company_id', 'user_id', 'address_id',
-    'start_date', 'end_date', 'nb_registered',
+    'start_date', 'end_date', 'capacity',
     'primary_color', 'secondary_color',
     'logo_url', 'onedoc_url', 'public_token',
 ])]

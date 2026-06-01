@@ -1,5 +1,6 @@
 <script setup>
 import { reactive, ref, onMounted, onUnmounted } from 'vue'
+import { useFetchApi } from '@/composables/api/useFetchApi'
 
 const form = reactive({
   company_name: '', employees_count: '',
@@ -11,6 +12,7 @@ const showPmeMessage = ref(false)
 const status = ref({ type: '', message: '' })
 const submitting = ref(false)
 
+const { fetchApi } = useFetchApi('/api/v1')
 
 function submit() {
   if (!form.employees_count || Number(form.employees_count) < 1000) {
@@ -21,27 +23,14 @@ function submit() {
   status.value = { type: '', message: '' }
   submitting.value = true
 
-  fetch('/api/v1/contact', {
-    method: 'POST',
-    headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify(form),
-  })
-    .then(async response => {
+  fetchApi({ url: '/contact', data: form })
+    .then(() => {
       submitting.value = false
-      if (response.ok) {
-        status.value = { type: 'success', message: 'Votre demande a bien été envoyée. Le CTS vous recontactera prochainement.' }
-      } else {
-        const data = await response.json().catch(() => null)
-        status.value = { type: 'error', message: data?.message || 'Une erreur est survenue. Veuillez réessayer.' }
-        throw new Error('Network response was not ok')
-      }
+      status.value = { type: 'success', message: 'Votre demande a bien été envoyée. Le CTS vous recontactera prochainement.' }
     })
-    .catch(error => {
-      console.error('There was a problem with the fetch operation:', error)
+    .catch(err => {
       submitting.value = false
-      if (!status.value.message) {
-        status.value = { type: 'error', message: 'Une erreur réseau est survenue. Veuillez réessayer.' }
-      }
+      status.value = { type: 'error', message: err.data?.message || 'Une erreur est survenue. Veuillez réessayer.' }
     })
 }
 
@@ -305,6 +294,7 @@ function updateCardsIndex() {
                 {{ status.message }}
               </div>
 
+              <p class="text-xs text-gray-500">Vos données sont transmises au CTS et utilisées uniquement dans le cadre de l'organisation de votre collecte de sang.</p>
               <button type="submit" class="w-full rounded-full lg:rounded-2xl bg-button-primary py-4 text-regular text-white shadow">
                 Envoyer
               </button>

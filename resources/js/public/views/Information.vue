@@ -1,5 +1,6 @@
 <script setup>
 import { ref, onBeforeUnmount, onMounted } from 'vue'
+import { useFetchApi } from '@/composables/api/useFetchApi'
 
 const form = ref({
   company_name: '',
@@ -9,6 +10,8 @@ const form = ref({
 const submitted = ref(false)
 const submitting = ref(false)
 const status = ref({ type: '', message: '' })
+
+const { fetchApi } = useFetchApi('/api/v1')
 
 function scrollToHashFragment() {
   const hash = window.location.hash;
@@ -43,35 +46,17 @@ function handleSubmit() {
   submitting.value = true
   submitted.value = false
 
-  fetch('/api/v1/pme-contact', {
-    method: 'POST',
-    headers: {
-      'Content-Type': 'application/json',
-      'Accept': 'application/json',
-    },
-    body: JSON.stringify(form.value),
-  })
-    .then(async response => {
+  fetchApi({ url: '/pme-contact', data: form.value })
+    .then(() => {
       submitting.value = false
-      if (response.ok) {
-        submitted.value = true
-        form.value.company_name = ''
-        form.value.email = ''
-        form.value.message = ''
-        return
-      }
-
-      const data = await response.json().catch(() => null)
-      status.value = { type: 'error', message: data?.message || 'Une erreur est survenue lors de l’envoi.' }
-      throw new Error('Network response was not ok')
+      submitted.value = true
+      form.value.company_name = ''
+      form.value.email = ''
+      form.value.message = ''
     })
-    .catch(error => {
-      console.error('There was a problem with the fetch operation:', error)
-      submitted.value = false
+    .catch(err => {
       submitting.value = false
-      if (!status.value.message) {
-        status.value = { type: 'error', message: 'Une erreur réseau est survenue. Veuillez réessayer.' }
-      }
+      status.value = { type: 'error', message: err.data?.message || 'Une erreur est survenue lors de l\'envoi.' }
     })
 }
 </script>
@@ -280,6 +265,7 @@ function handleSubmit() {
             <div v-if="status.type === 'error'" class="mb-4 rounded-lg bg-red-50 p-4 text-small text-red-800 ring-1 ring-red-300">
               {{ status.message }}
             </div>
+            <p class="text-xs text-gray-500">Vos données sont transmises au CTS et utilisées uniquement pour répondre à votre demande.</p>
             <button
               @click="handleSubmit"
               :disabled="submitting"
