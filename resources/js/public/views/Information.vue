@@ -1,27 +1,78 @@
 <script setup>
-import { ref } from 'vue'
+import { ref, onBeforeUnmount, onMounted } from 'vue'
 
 const form = ref({
-  company: '',
+  company_name: '',
   email: '',
   message: '',
 })
 const submitted = ref(false)
 const submitting = ref(false)
-const formError = ref(null)
+const status = ref({ type: '', message: '' })
+
+function scrollToHashFragment() {
+  const hash = window.location.hash;
+  const fragment = hash.includes('#/informations#') ? hash.split('#/informations#')[1] : null;
+  if (!fragment) {
+    return;
+  }
+
+  const target = document.getElementById(fragment);
+  if (target) {
+    target.scrollIntoView({ behavior: 'smooth' });
+  }
+}
+
+onMounted(() => {
+  scrollToHashFragment();
+  window.addEventListener('hashchange', scrollToHashFragment);
+});
+
+onBeforeUnmount(() => {
+  window.removeEventListener('hashchange', scrollToHashFragment);
+});
 
 function handleSubmit() {
-  formError.value = null
+  status.value = { type: '', message: '' }
 
-  if (!form.value.company || !form.value.email || !form.value.message) {
-    formError.value = 'Veuillez remplir tous les champs.'
+  if (!form.value.company_name || !form.value.email || !form.value.message) {
+    status.value = { type: 'error', message: 'Veuillez remplir tous les champs.' }
     return
   }
 
   submitting.value = true
-  submitted.value = true
-  submitting.value = false
-  // TODO: backend — ajouter try/catch avec formError.value = ...
+  submitted.value = false
+
+  fetch('/api/v1/pme-contact', {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+      'Accept': 'application/json',
+    },
+    body: JSON.stringify(form.value),
+  })
+    .then(async response => {
+      submitting.value = false
+      if (response.ok) {
+        submitted.value = true
+        form.value.company_name = ''
+        form.value.email = ''
+        form.value.message = ''
+        return
+      }
+
+      const data = await response.json().catch(() => null)
+      status.value = { type: 'error', message: data?.message || 'Une erreur est survenue lors de l’envoi.' }
+      throw new Error('Network response was not ok')
+    })
+    .catch(error => {
+      console.error('There was a problem with the fetch operation:', error)
+      submitted.value = false
+      submitting.value = false
+      if (!status.value.message) {
+        status.value = { type: 'error', message: 'Une erreur réseau est survenue. Veuillez réessayer.' }
+      }
+    })
 }
 </script>
 
@@ -181,7 +232,7 @@ function handleSubmit() {
     </section>
 
     <!-- ===== Section 5 : Moins de 1 000 collaborateurs + Formulaire ===== -->
-    <section class="bg-violet-100 px-4 py-12 lg:px-[60px] lg:py-[57px] mt-16 lg:mt-24">
+    <section id="pme" class="bg-violet-100 px-4 py-12 lg:px-[60px] lg:py-[57px] mt-16 lg:mt-24">
       <div class="mx-auto flex max-w-[1512px] flex-col items-center gap-8 lg:flex-row lg:gap-28">
         <!-- Colonne gauche : texte -->
         <div class="flex flex-col gap-6 lg:max-w-[636px]">
@@ -208,27 +259,27 @@ function handleSubmit() {
 
           <!-- Formulaire ou confirmation -->
           <template v-if="!submitted">
-            <p v-if="formError" class="w-full max-w-[450px] rounded-lg bg-rouge-100 px-4 py-2 text-center font-sans text-small text-rouge-600">
-              {{ formError }}
-            </p>
-            <input
-              v-model="form.company"
+            <input required
+              v-model="form.company_name"
               type="text"
               placeholder="Nom de l'entreprise"
               class="h-[43px] w-full max-w-[450px] rounded-lg bg-white px-4 font-sans text-small text-black shadow-[0_0_4px_rgba(0,0,0,0.25)] outline-none placeholder:text-[#B8B8B8]"
             />
-            <input
+            <input required
               v-model="form.email"
               type="email"
               placeholder="Adresse Mail"
               class="h-[43px] w-full max-w-[450px] rounded-lg bg-white px-4 font-sans text-small text-black shadow-[0_0_4px_rgba(0,0,0,0.25)] outline-none placeholder:text-[#B8B8B8]"
             />
-            <textarea
+            <textarea required
               v-model="form.message"
               placeholder="Message"
               rows="4"
               class="h-[148px] w-full max-w-[450px] resize-none rounded-lg bg-white px-4 py-3 font-sans text-small text-black shadow-[0_0_4px_rgba(0,0,0,0.25)] outline-none placeholder:text-[#B8B8B8]"
             ></textarea>
+            <div v-if="status.type === 'error'" class="mb-4 rounded-lg bg-red-50 p-4 text-small text-red-800 ring-1 ring-red-300">
+              {{ status.message }}
+            </div>
             <button
               @click="handleSubmit"
               :disabled="submitting"

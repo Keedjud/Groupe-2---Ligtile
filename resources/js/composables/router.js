@@ -1,17 +1,20 @@
 import { computed, onBeforeUnmount, onMounted, shallowRef } from 'vue';
 
+function normalizeHash(hash) {
+  const rawHash = hash.startsWith('#') ? hash.slice(1) : hash;
+  const routePart = rawHash.split('#', 2)[0];
+  return routePart ? `#${routePart}` : '#';
+}
+
 export function useHashRoute(routes) {
   const defaultRoute = routes[0];
   const currentRoute = shallowRef(defaultRoute);
 
   function syncRouteFromUrl() {
-    const hash = window.location.hash;
-    const matched = routes.find(route => route.hash === hash);
+    const routeHash = normalizeHash(window.location.hash);
+    const matched = routes.find(route => route.hash === routeHash);
     if (matched) {
       currentRoute.value = matched;
-      // Les routes ayant une cible de scroll (ex. #/prendre-rdv) gèrent
-      // elles-mêmes leur défilement dans la vue concernée ; on ne remet
-      // donc pas la page en haut.
       if (!matched.scrollTo) window.scrollTo(0, 0);
     } else {
       currentRoute.value = defaultRoute;
