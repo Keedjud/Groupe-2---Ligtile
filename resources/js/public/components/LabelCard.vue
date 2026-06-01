@@ -120,12 +120,5 @@ function formatDate(dateString) {
             </div>
         </div>
 
-        <!-- Bouton Voir la collecte (desktop only) -->
-        <a
-            :href="'#/prendre-rdv'"
-            class="hidden h-11 w-[166px] items-center justify-center rounded-[40px] bg-white font-sans text-regular text-violet-900 underline shadow-[0_0_4px_rgba(0,0,0,0.25)] transition-colors hover:bg-violet-50 lg:inline-flex"
-        >
-            Voir la collecte
-        </a>
     </div>
 </template>
