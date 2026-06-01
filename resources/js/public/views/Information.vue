@@ -36,27 +36,27 @@ onBeforeUnmount(() => {
 });
 
 function handleSubmit() {
-  status.value = { type: ‘’, message: ‘’ }
+  status.value = { type: '', message: '' }
 
   if (!form.value.company_name || !form.value.email || !form.value.message) {
-    status.value = { type: ‘error’, message: ‘Veuillez remplir tous les champs.’ }
+    status.value = { type: 'error', message: 'Veuillez remplir tous les champs.' }
     return
   }
 
   submitting.value = true
   submitted.value = false
 
-  fetchApi({ url: ‘/pme-contact’, data: form.value })
+  fetchApi({ url: '/pme-contact', data: form.value })
     .then(() => {
       submitting.value = false
       submitted.value = true
-      form.value.company_name = ‘’
-      form.value.email = ‘’
-      form.value.message = ‘’
+      form.value.company_name = ''
+      form.value.email = ''
+      form.value.message = ''
     })
     .catch(err => {
       submitting.value = false
-      status.value = { type: ‘error’, message: err.data?.message || ‘Une erreur est survenue lors de l\’envoi.’ }
+      status.value = { type: 'error', message: err.data?.message || 'Une erreur est survenue lors de l\'envoi.' }
     })
 }
 </script>
