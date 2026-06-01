@@ -12,7 +12,7 @@ const { isOpen, toggle, close } = useDisclosure()
 </script>
 
 <template>
-  <header class="sticky top-0 z-30 w-full bg-beige-50 shadow-[0_4px_4px_rgba(0,0,0,0.10)]">
+  <header class="w-full bg-beige-50 shadow-[0_4px_4px_rgba(0,0,0,0.10)]">
     <div class="flex h-[55px] w-full items-center justify-between px-4 py-1.5 lg:px-[60px]">
 
       <a href="/" class="shrink-0">
