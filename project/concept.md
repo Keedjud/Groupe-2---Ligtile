@@ -164,6 +164,18 @@ Il n'y a pas d'intégration avec l'API Onedoc. Un clic sur le lien Onedoc depuis
 
 ---
 
+### Choix d'une solution de tracking custom
+
+Le tracking est implémenté directement dans la base de données Laravel plutôt que via un outil tiers (Google Analytics, Matomo, etc.). Ce choix repose sur trois raisons :
+
+1. **KPIs métier spécifiques** — les métriques du projet (taux d'élimination P1, question d'abandon P2, skip individuel vs global) ne correspondent à aucun concept standard d'un outil analytics générique. Un outil tiers aurait nécessité des custom events identiques, mais les données auraient atterri dans un système externe, rendant leur exploitation dans le dashboard CTS plus complexe (appels API, auth supplémentaire, conversion de format).
+
+2. **Données dans la même base** — puisque le dashboard CTS est construit sur Laravel avec accès direct à la base, les KPIs se calculent en une requête Eloquent. Aucune dépendance externe, aucune latence supplémentaire.
+
+3. **Données sur notre serveur** — Google Analytics transfère les données vers des serveurs américains, ce qui pose des questions légales pour un projet lié à une institution médicale suisse (même fictive). Matomo auto-hébergé résoudrait ce point mais ajouterait une infrastructure supplémentaire (serveur dédié, base séparée) disproportionnée pour la taille du projet.
+
+---
+
 ### Identifiant de session anonyme
 
 Pour relier les événements d'un même parcours sans identifier les employés, un UUID est généré côté client au premier chargement du site cobrandé et stocké en `sessionStorage`. Cet identifiant est :
@@ -420,6 +432,24 @@ $bounced = PageEvent::where('event_type', 'prevention_exited')
     ->count();
 // taux = $bounced / $entered
 ```
+
+---
+
+## Vie privée et conformité nLPD/RGPD
+
+### Tracking comportemental — pas de cookie, pas de consentement requis
+
+Le système de tracking n'utilise pas de cookies. L'UUID de session est stocké dans `sessionStorage` (pas `localStorage`, pas un cookie) : il est éphémère par construction, détruit à la fermeture de l'onglet, et jamais envoyé automatiquement au serveur. Les lois sur les cookies (ePrivacy Directive, nLPD suisse) visent spécifiquement les cookies et trackers persistants — `sessionStorage` n'entre pas dans ce périmètre.
+
+Les données de tracking collectées (`quiz_events`, `page_events`) sont anonymes : aucune IP, aucun nom, aucun email n'est enregistré, et l'UUID ne peut pas être relié à une identité. Ces données ne constituent probablement pas des "données personnelles" au sens de la nLPD. **Aucune bannière cookie n'est nécessaire.**
+
+### Formulaires de contact — données personnelles
+
+Les formulaires de contact (`contact_requests`, `pme_contacts`) collectent des données personnelles (nom d'entreprise, email, téléphone). Ces données sont transmises au CTS pour le suivi des demandes de collecte. Chaque formulaire doit comporter une mention courte précisant :
+
+> *Vos données sont transmises au CTS et utilisées uniquement dans le cadre de l'organisation de votre collecte de sang.*
+
+Aucune politique de confidentialité complète n'est requise pour un projet étudiant, mais cette mention doit être visible avant la soumission du formulaire.
 
 ---
 
