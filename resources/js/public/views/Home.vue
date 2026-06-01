@@ -1,5 +1,5 @@
 <script setup>
-import { reactive, ref } from 'vue'
+import { reactive, ref, onMounted, onUnmounted } from 'vue'
 
 const form = reactive({
   company_name: '', company_size: '',
@@ -10,6 +10,27 @@ const form = reactive({
 function submit() {
   // TODO: brancher l'envoi du formulaire au backend
 }
+
+// Défilement vers le formulaire quand on arrive via "Prendre RDV" (#/prendre-rdv).
+function scrollToForm() {
+  const el = document.getElementById('prendre-rdv-form')
+  if (!el) return
+  const isDesktop = window.innerWidth >= 1024
+  el.scrollIntoView({ behavior: 'smooth', block: isDesktop ? 'center' : 'start' })
+}
+
+function handleHashChange() {
+  if (window.location.hash === '#/prendre-rdv') scrollToForm()
+}
+
+onMounted(() => {
+  handleHashChange()
+  window.addEventListener('hashchange', handleHashChange)
+})
+
+onUnmounted(() => {
+  window.removeEventListener('hashchange', handleHashChange)
+})
 
 const pourquoiScroll = ref(null)
 const pourquoiIndex = ref(0)
@@ -31,7 +52,7 @@ function updateCardsIndex() {
 <template>
   <!-- Hero -->
   <section class="py-10">
-    <div class="max-w-[1512px] mx-auto px-4 lg:px-[60px]">
+    <div class="max-w-[1632px] mx-auto px-4 lg:px-[60px]">
       <div class="flex flex-col-reverse gap-8 lg:grid lg:grid-cols-2 lg:gap-10 lg:items-center">
         <div>
           <h1 class="text-h1 font-semibold text-texte-primary-dark leading-tight max-w-[260px] lg:max-w-none">
@@ -92,7 +113,7 @@ function updateCardsIndex() {
 
   <!-- Pourquoi accueillir une collecte -->
   <section class="bg-violet-100 py-10">
-    <div class="max-w-[1512px] mx-auto px-4 lg:px-[60px]">
+    <div class="max-w-[1632px] mx-auto px-4 lg:px-[60px]">
       <h2 class="text-h1 font-semibold text-center text-violet-900">Pourquoi accueillir une collecte ?</h2>
       <p class="text-h4 text-violet-900 text-center mt-2">Un geste utile, directement sur votre lieu de travail.</p>
       <div class="mx-auto mt-2 h-[3px] w-48 rounded-full bg-vert-300"></div>
@@ -133,7 +154,7 @@ function updateCardsIndex() {
 
   <!-- Organisation pensee pour les entreprises -->
   <section class="py-10">
-    <div class="max-w-[1512px] mx-auto px-4 lg:px-[60px]">
+    <div class="max-w-[1632px] mx-auto px-4 lg:px-[60px]">
       <h2 class="text-h1 font-semibold text-center text-violet-900">Une organisation pensée pour les entreprises</h2>
       <div class="mx-auto mt-2 h-[3px] w-48 rounded-full bg-vert-300"></div>
 
@@ -202,7 +223,7 @@ function updateCardsIndex() {
 
   <!-- Parlons de votre future collecte -->
   <section id="prendre-rdv" class="py-10">
-    <div class="max-w-[1512px] mx-auto px-4 lg:px-[60px]">
+    <div class="max-w-[1632px] mx-auto px-4 lg:px-[60px]">
       <div class="rounded-3xl bg-violet-100 p-3 lg:p-14 overflow-hidden">
         <div class="grid lg:grid-cols-2 gap-10 items-center">
           <div class="flex flex-col items-center text-center lg:block lg:text-left min-w-0">
@@ -219,7 +240,7 @@ function updateCardsIndex() {
             </div>
           </div>
 
-          <div class="min-w-0">
+          <div id="prendre-rdv-form" class="min-w-0 scroll-mt-24 lg:scroll-mt-28">
             <form @submit.prevent="submit" class="bg-form-bg rounded-xl p-3 ring-1 ring-violet-900/30">
               <h3 class="text-h3 font-bold text-violet-900 text-center mb-4">Prendre <br class="lg:hidden" />rendez-vous</h3>
 
@@ -258,30 +279,30 @@ function updateCardsIndex() {
 
   <!-- Three info cards -->
   <section class="py-10 pb-20">
-    <div class="max-w-[1512px] mx-auto px-4 lg:px-[60px]">
+    <div class="max-w-[1632px] mx-auto px-4 lg:px-[60px]">
       <div
         ref="cardsScroll"
         @scroll.passive="updateCardsIndex"
         class="-mx-4 flex overflow-x-auto snap-x snap-mandatory gap-4 px-4
                lg:mx-0 lg:px-0 lg:grid lg:grid-cols-3 lg:gap-6 lg:overflow-visible"
       >
-        <div class="snap-center shrink-0 w-[calc(100vw-2rem)] lg:w-auto bg-violet-50 rounded-3xl p-10 flex flex-col items-center text-center gap-6">
+        <div class="snap-center shrink-0 w-[calc(100vw-2rem)] lg:w-auto bg-violet-50 rounded-3xl p-10 flex flex-col items-center text-center">
           <img :src="'/images/trophey.png'" class="h-52 w-auto" alt="Trophée" />
-          <h3 class="text-h3 font-bold text-violet-900">Trophée de la générosité</h3>
-          <p class="text-regular text-violet-900">Découvrez les entreprises reconnues pour leur engagement autour du don du sang</p>
-          <a href="#/trophee" class="inline-flex items-center justify-center rounded-full px-8 py-2 text-small underline underline-offset-2 w-full lg:w-56 bg-white text-violet-900 lg:bg-button-primary lg:text-beige-50 lg:ring-2 lg:ring-violet-50">En savoir plus</a>
+          <h3 class="text-h3 font-bold text-violet-900 mt-6 min-h-[5rem]">Trophée de la générosité</h3>
+          <p class="text-regular text-violet-900 mt-6 flex-1">Découvrez les entreprises reconnues pour leur engagement autour du don du sang</p>
+          <a href="#/trophee" class="mt-6 inline-flex items-center justify-center rounded-full px-8 py-2 text-small underline underline-offset-2 w-full lg:w-56 bg-white text-violet-900 lg:bg-button-primary lg:text-beige-50 lg:ring-2 lg:ring-violet-50">En savoir plus</a>
         </div>
-        <div class="snap-center shrink-0 w-[calc(100vw-2rem)] lg:w-auto bg-violet-50 rounded-3xl p-10 flex flex-col items-center text-center gap-6">
+        <div class="snap-center shrink-0 w-[calc(100vw-2rem)] lg:w-auto bg-violet-50 rounded-3xl p-10 flex flex-col items-center text-center">
           <img :src="'/images/infos.png'" class="h-52 w-auto" alt="Informations" />
-          <h3 class="text-h3 font-bold text-violet-900">Comment se déroule une collecte ?</h3>
-          <p class="text-regular text-violet-900">Organisation, logistique, communication, déroulement du jour J : retrouvez les informations pratiques pour accueillir une collecte en entreprise</p>
-          <a href="#/informations" class="inline-flex items-center justify-center rounded-full px-8 py-2 text-small underline underline-offset-2 w-full lg:w-56 bg-white text-violet-900 lg:bg-button-primary lg:text-beige-50 lg:ring-2 lg:ring-violet-50">En savoir plus</a>
+          <h3 class="text-h3 font-bold text-violet-900 mt-6 min-h-[5rem]">Comment se déroule une collecte ?</h3>
+          <p class="text-regular text-violet-900 mt-6 flex-1">Organisation, logistique, communication, déroulement du jour J : retrouvez les informations pratiques pour accueillir une collecte en entreprise</p>
+          <a href="#/informations" class="mt-6 inline-flex items-center justify-center rounded-full px-8 py-2 text-small underline underline-offset-2 w-full lg:w-56 bg-white text-violet-900 lg:bg-button-primary lg:text-beige-50 lg:ring-2 lg:ring-violet-50">En savoir plus</a>
         </div>
-        <div class="snap-center shrink-0 w-[calc(100vw-2rem)] lg:w-auto bg-violet-50 rounded-3xl p-10 flex flex-col items-center text-center gap-6">
+        <div class="snap-center shrink-0 w-[calc(100vw-2rem)] lg:w-auto bg-violet-50 rounded-3xl p-10 flex flex-col items-center text-center">
           <img :src="'/images/label.png'" class="h-52 w-auto" alt="Label CTS" />
-          <h3 class="text-h3 font-bold text-violet-900">Label CTS</h3>
-          <p class="text-regular text-violet-900">Mettre en lumière les entreprises engagées dans la promotion du don du sang</p>
-          <a href="#/label" class="inline-flex items-center justify-center rounded-full px-8 py-2 text-small underline underline-offset-2 w-full lg:w-56 bg-white text-violet-900 lg:bg-button-primary lg:text-beige-50 lg:ring-2 lg:ring-violet-50">En savoir plus</a>
+          <h3 class="text-h3 font-bold text-violet-900 mt-6 min-h-[5rem]">Label CTS</h3>
+          <p class="text-regular text-violet-900 mt-6 flex-1">Mettre en lumière les entreprises engagées dans la promotion du don du sang</p>
+          <a href="#/label" class="mt-6 inline-flex items-center justify-center rounded-full px-8 py-2 text-small underline underline-offset-2 w-full lg:w-56 bg-white text-violet-900 lg:bg-button-primary lg:text-beige-50 lg:ring-2 lg:ring-violet-50">En savoir plus</a>
         </div>
       </div>
       <div class="flex justify-center gap-2 mt-6 lg:hidden">
