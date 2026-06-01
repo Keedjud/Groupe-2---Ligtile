@@ -7,7 +7,7 @@ use Illuminate\Support\Facades\Mail;
 use App\Mail\ContactMail;
 use App\Http\Controllers\Controller;
 
-class ContactController extends Controller
+class api_ContactController extends Controller
 {
     public function contact(Request $request)
     {
