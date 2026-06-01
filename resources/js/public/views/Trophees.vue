@@ -44,8 +44,8 @@ function onLogoError(e, companies, rank) {
 <template>
   <div>
     <!-- ===== Section A : Hero ===== -->
-    <section class="bg-violet-100 px-4 py-12 lg:px-[60px] lg:py-[60px]">
-      <div class="mx-auto flex max-w-[1512px] flex-col items-center gap-8 lg:flex-row lg:gap-16">
+    <section class="bg-violet-100 px-4 py-12 lg:px-[60px] lg:py-0 lg:min-h-[calc(100dvh-110px)] lg:flex lg:items-center">
+      <div class="mx-auto flex max-w-[1512px] w-full flex-col items-center gap-8 lg:flex-row lg:gap-16">
         <!-- Image de trophy_top visible uniquement sur mobile au sommet -->
         <img
           :src="'/images/trophy_top.png'"
@@ -54,7 +54,7 @@ function onLogoError(e, companies, rank) {
         />
 
         <!-- Colonne gauche : Texte -->
-        <div class="flex flex-1 flex-col gap-6 lg:max-w-[800px]">
+        <div class="flex flex-1 flex-col gap-10 lg:max-w-[800px]">
           <h1 class="font-sans text-h1 font-semibold text-black">
             Rejoignez les entreprises qui font la différence.
           </h1>
@@ -76,13 +76,13 @@ function onLogoError(e, companies, rank) {
         </div>
 
         <!-- Colonne droite : Image + bouton -->
-        <div class="flex flex-col items-center lg:items-end justify-center gap-10 lg:w-[480px] w-full lg:flex-shrink-0">
+        <div class="flex flex-col items-center justify-center gap-10 lg:w-[480px] w-full lg:flex-shrink-0">
           <img
             :src="'/images/trophy_top.png'"
             alt="Trophée de la Générosité"
-            class="hidden md:block w-[178px] h-auto object-contain"
+            class="hidden md:block w-[250px] h-auto object-contain"
           />
-          <div class="flex h-[45px] w-[198px] cursor-pointer items-center justify-center gap-2 rounded-[40px] bg-texte-primary-light px-3 py-2 shadow-[0_0_4px_rgba(0,0,0,0.25)] transition-shadow hover:shadow-md">
+          <div class="flex h-[45px] w-[250px] cursor-pointer items-center justify-center gap-2 rounded-[40px] bg-texte-primary-light px-3 py-2 shadow-[0_0_4px_rgba(0,0,0,0.25)] transition-shadow hover:shadow-md">
             <span class="font-sans text-regular text-texte-secondary">Découvrir le trophée →</span>
           </div>
         </div>
