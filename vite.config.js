@@ -17,7 +17,6 @@ export default defineConfig({
                 'resources/js/public/app.js',
                 'resources/js/dashboard/app.js',
                 'resources/js/cobrand/app.js',
-                'resources/js/apropos/app.js',
             ],
             refresh: true,
             fonts: [
