@@ -145,7 +145,7 @@ function onLogoError(e, companies, rank) {
           />
 
           <!-- Logo 3ème place — sur la marche gauche -->
-          <div class="podium-logo" style="left: 17.5%; bottom: 21%;">
+          <div class="podium-logo" style="left: 17.5%; bottom: 23.8%;">
             <img
               v-if="logoForRank(podium.companies, 3)"
               :src="logoForRank(podium.companies, 3)"
@@ -167,7 +167,7 @@ function onLogoError(e, companies, rank) {
           </div>
 
           <!-- Logo 2ème place — sur la marche droite -->
-          <div class="podium-logo" style="left: 79.6%; bottom: 28.8%;">
+          <div class="podium-logo" style="left: 79.6%; bottom: 30.8%;">
             <img
               v-if="logoForRank(podium.companies, 2)"
               :src="logoForRank(podium.companies, 2)"
@@ -538,8 +538,8 @@ function onLogoError(e, companies, rank) {
 .podium-logo__img {
   width: auto;
   height: auto;
-  max-height: 103px;
-  max-width: 200px;
+  max-height: 42px;
+  max-width: 85px;
   object-fit: contain;
 }
 
