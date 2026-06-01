@@ -90,9 +90,9 @@ function onLogoError(e, companies, rank) {
     </section>
 
     <!-- ===== Section B : Podium ===== -->
-    <section class="flex flex-col items-center gap-8 px-4 py-12 lg:py-[60px]">
+    <section class="flex flex-col items-center gap-8 px-4 py-12 lg:pt-[140px] lg:pb-[60px]">
       <!-- Titres -->
-      <div class="mb-8 flex flex-col items-center lg:mb-12">
+      <div class="mb-8 flex flex-col items-center lg:mb-24">
         <h2 class="text-center font-sans text-h1 font-semibold text-violet-900">
           Le Trophée de la Générosité
         </h2>
@@ -128,14 +128,14 @@ function onLogoError(e, companies, rank) {
         <!-- Desktop Podium Wrapper (hidden on mobile, visible on md+) -->
         <div class="hidden md:block podium-wrapper relative w-full">
 
-          <!-- Trophée 2ème place (argent) — au-dessus de la marche gauche -->
-          <img :src="'/images/2.png'" alt="2ème place" class="podium-trophy podium-trophy--2nd" />
+          <!-- Trophée 3ème place (bronze) — au-dessus de la marche gauche -->
+          <img :src="'/images/3.png'" alt="3ème place" class="podium-trophy podium-trophy--2nd" />
 
           <!-- Trophée 1ère place (or) — au-dessus de la marche centre -->
           <img :src="'/images/1.png'" alt="1ère place" class="podium-trophy podium-trophy--1st" />
 
-          <!-- Trophée 3ème place (bronze) — au-dessus de la marche droite -->
-          <img :src="'/images/3.png'" alt="3ème place" class="podium-trophy podium-trophy--3rd" />
+          <!-- Trophée 2ème place (argent) — au-dessus de la marche droite -->
+          <img :src="'/images/2.png'" alt="2ème place" class="podium-trophy podium-trophy--3rd" />
 
           <!-- SVG leaderboard (les marches du podium) -->
           <img
@@ -144,19 +144,19 @@ function onLogoError(e, companies, rank) {
             class="w-full h-auto block relative z-[1] -scale-x-100"
           />
 
-          <!-- Logo 2ème place — sur la marche gauche -->
-          <div class="podium-logo podium-logo--2nd">
+          <!-- Logo 3ème place — sur la marche gauche -->
+          <div class="podium-logo" style="left: 17.5%; bottom: 21%;">
             <img
-              v-if="logoForRank(podium.companies, 2)"
-              :src="logoForRank(podium.companies, 2)"
-              :alt="companyForRank(podium.companies, 2)?.name"
+              v-if="logoForRank(podium.companies, 3)"
+              :src="logoForRank(podium.companies, 3)"
+              :alt="companyForRank(podium.companies, 3)?.name"
               class="podium-logo__img"
-              @error="onLogoError($event, podium.companies, 2)"
+              @error="onLogoError($event, podium.companies, 3)"
             />
           </div>
 
           <!-- Logo 1ère place — sur la marche centre -->
-          <div class="podium-logo podium-logo--1st">
+          <div class="podium-logo" style="left: 48.5%; bottom: 37%;">
             <img
               v-if="logoForRank(podium.companies, 1)"
               :src="logoForRank(podium.companies, 1)"
@@ -166,14 +166,14 @@ function onLogoError(e, companies, rank) {
             />
           </div>
 
-          <!-- Logo 3ème place — sur la marche droite -->
-          <div class="podium-logo podium-logo--3rd">
+          <!-- Logo 2ème place — sur la marche droite -->
+          <div class="podium-logo" style="left: 79.6%; bottom: 28.8%;">
             <img
-              v-if="logoForRank(podium.companies, 3)"
-              :src="logoForRank(podium.companies, 3)"
-              :alt="companyForRank(podium.companies, 3)?.name"
+              v-if="logoForRank(podium.companies, 2)"
+              :src="logoForRank(podium.companies, 2)"
+              :alt="companyForRank(podium.companies, 2)?.name"
               class="podium-logo__img"
-              @error="onLogoError($event, podium.companies, 3)"
+              @error="onLogoError($event, podium.companies, 2)"
             />
           </div>
 
@@ -506,23 +506,23 @@ function onLogoError(e, companies, rank) {
   transform: translateX(-50%);
 }
 
-/* 2ème place (argent) — marche gauche */
+/* 3ème place (bronze) — marche gauche */
 .podium-trophy--2nd {
   left: 19%;
-  bottom: 28%;
+  bottom: 19%;
 }
 
 /* 1ère place (or) — marche centre */
 .podium-trophy--1st {
   left: 50%;
-  bottom: 35%;
+  bottom: 33%;
   width: 17%;
 }
 
-/* 3ème place (bronze) — marche droite */
+/* 2ème place (argent) — marche droite */
 .podium-trophy--3rd {
   left: 81%;
-  bottom: 24%;
+  bottom: 25.9%;
 }
 
 /* --- Logos d'entreprises (centrés sur les faces des marches) --- */
@@ -541,24 +541,6 @@ function onLogoError(e, companies, rank) {
   max-height: 103px;
   max-width: 200px;
   object-fit: contain;
-}
-
-/* 2ème place — centré dans la face de la marche gauche */
-.podium-logo--2nd {
-  left: 19%;
-  bottom: 12%;
-}
-
-/* 1ère place — centré dans la face de la marche centre */
-.podium-logo--1st {
-  left: 50%;
-  bottom: 12%;
-}
-
-/* 3ème place — centré dans la face de la marche droite */
-.podium-logo--3rd {
-  left: 81%;
-  bottom: 10%;
 }
 
 /* --- Mobile Podium Styles --- */
