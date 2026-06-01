@@ -1,5 +1,6 @@
 <script setup>
 import { ref, onBeforeUnmount, onMounted } from 'vue'
+import { useFetchApi } from '@/composables/api/useFetchApi'
 
 const form = ref({
   company_name: '',
@@ -9,6 +10,8 @@ const form = ref({
 const submitted = ref(false)
 const submitting = ref(false)
 const status = ref({ type: '', message: '' })
+
+const { fetchApi } = useFetchApi('/api/v1')
 
 function scrollToHashFragment() {
   const hash = window.location.hash;
@@ -33,45 +36,27 @@ onBeforeUnmount(() => {
 });
 
 function handleSubmit() {
-  status.value = { type: '', message: '' }
+  status.value = { type: ‘’, message: ‘’ }
 
   if (!form.value.company_name || !form.value.email || !form.value.message) {
-    status.value = { type: 'error', message: 'Veuillez remplir tous les champs.' }
+    status.value = { type: ‘error’, message: ‘Veuillez remplir tous les champs.’ }
     return
   }
 
   submitting.value = true
   submitted.value = false
 
-  fetch('/api/v1/pme-contact', {
-    method: 'POST',
-    headers: {
-      'Content-Type': 'application/json',
-      'Accept': 'application/json',
-    },
-    body: JSON.stringify(form.value),
-  })
-    .then(async response => {
+  fetchApi({ url: ‘/pme-contact’, data: form.value })
+    .then(() => {
       submitting.value = false
-      if (response.ok) {
-        submitted.value = true
-        form.value.company_name = ''
-        form.value.email = ''
-        form.value.message = ''
-        return
-      }
-
-      const data = await response.json().catch(() => null)
-      status.value = { type: 'error', message: data?.message || 'Une erreur est survenue lors de l’envoi.' }
-      throw new Error('Network response was not ok')
+      submitted.value = true
+      form.value.company_name = ‘’
+      form.value.email = ‘’
+      form.value.message = ‘’
     })
-    .catch(error => {
-      console.error('There was a problem with the fetch operation:', error)
-      submitted.value = false
+    .catch(err => {
       submitting.value = false
-      if (!status.value.message) {
-        status.value = { type: 'error', message: 'Une erreur réseau est survenue. Veuillez réessayer.' }
-      }
+      status.value = { type: ‘error’, message: err.data?.message || ‘Une erreur est survenue lors de l\’envoi.’ }
     })
 }
 </script>

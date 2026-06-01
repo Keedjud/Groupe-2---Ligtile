@@ -65,11 +65,11 @@ Merger `chore/foundations` → `develop`, puis démarrer la Phase 3.
 - [ ] `cobrand/composables/useQuizStore.js` (Inoé)
 
 ### Frontend dashboard
-- [x] UI complète dans `feature/dashboard` (Loïc)
+- [x] UI complète dans `feature/dashboard` (Loïc) — Login, Collectes, CollecteDetail, CollecteForm, Metriques
+- [ ] Ajouter `onedoc_url` et `capacity` dans `CollecteForm.vue` + mock (Loïc, avant PR)
 - [ ] Merger `feature/dashboard` dans `develop`
 - [ ] Remplacer auth mock par vraie auth Sanctum
 - [ ] Remplacer données mock par appels API réels
-- [ ] Ajouter le champ `capacity` dans `CollecteForm.vue`
 - [ ] Connecter `Metriques.vue` à `GET /api/v1/metrics`
 
 ### Accessibilité
@@ -107,11 +107,25 @@ Ce qui a été fait :
 
 ### Phase 2 — Dashboard UI (Loïc)
 
-**À faire ce matin.** Merger `feature/dashboard` dans `develop` après sync.
+**À faire ce matin.** Deux champs manquent dans `CollecteForm.vue` avant que la PR puisse être ouverte :
+
+| Champ | Type | Description |
+|-------|------|-------------|
+| `onedoc_url` | `string`, requis | URL de la plateforme Onedoc pour l'inscription des employés — le CTS la saisit à la création de la collecte |
+| `capacity` | `number`, optionnel | Nombre de créneaux disponibles — utilisé pour le taux de remplissage dans les métriques |
+
+Ces deux champs sont dans le schéma DB (`collections`) et doivent être présents dans le formulaire et dans les données mock de `useCollectes.js`.
+
+**Ensuite :**
+```bash
+git checkout feature/dashboard
+git merge develop   # récupère les fondations (migrations, routes, namespace)
+git push
+```
+Ouvrir la PR. Une fois mergée : passer sur les maquettes.
 
 **Ce que la Phase 1 change dans son code :**
 - `nb_registered` n'existe plus en DB → son mock utilise `nb_inscrits` (nom différent, pas de conflit)
-- `capacity` ajouté en DB → à ajouter dans `CollecteForm.vue` lors de la Phase 8
 - Routes API réorganisées → sans impact sur son code frontend
 
 **Après merge :** Loïc passe sur les maquettes.
@@ -208,7 +222,7 @@ Fichiers :
 Fichiers à modifier (uniquement dans `resources/js/dashboard/`) :
 - `composables/useSessionAuth.js` → remplacer mock par appels Sanctum réels
 - `composables/useCollectes.js` → remplacer `donneesMock` par `GET /api/v1/collections`
-- `views/CollecteForm.vue` → brancher `POST`/`PUT /api/v1/collections` + **ajouter le champ `capacity`**
+- `views/CollecteForm.vue` → brancher `POST`/`PUT /api/v1/collections`
 - `views/Metriques.vue` → brancher `GET /api/v1/metrics`
 
 > `nb_inscrits` dans le mock correspond au `COUNT DISTINCT session_id WHERE event_type = 'onedoc_clicked'` calculé côté back — ce n'est plus un champ DB.
