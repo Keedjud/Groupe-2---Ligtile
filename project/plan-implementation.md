@@ -178,6 +178,7 @@ Ajouter `onedoc_url` et `capacity` dans `CollecteForm.vue`, merger dans `develop
 
 **Phase 7A — `cobrand/App.vue`** — `feature/cobrand-app`
 - Charge les données depuis l'API, applique le co-branding, gère le routage hash
+- Vérifier la fenêtre de disponibilité : le site est accessible entre la date de création de la collecte et 3 jours après `end_date` — afficher un message d'indisponibilité sinon
 
 **Phase 7B — `cobrand/views/Accueil.vue`** — `feature/cobrand-accueil`
 
@@ -186,6 +187,7 @@ Ajouter `onedoc_url` et `capacity` dans `CollecteForm.vue`, merger dans `develop
 - Émet `prevention_entered` / `prevention_exited` via `$emit` vers App.vue — ne pas appeler l'API directement
 
 **Phase 7D — Quiz + Redirect (Inoé)** — `feature/cobrand-quiz`
+- `cobrand/constants/quizQuestions.js` — slugs stables des questions (P1 + P2). **Règle critique : ne jamais modifier un slug en production sans migrer les données `quiz_events` correspondantes.**
 - `useQuizStore.js`, `Quiz.vue`, `Redirect.vue`
 
 ---
