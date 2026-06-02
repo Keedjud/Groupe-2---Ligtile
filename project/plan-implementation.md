@@ -77,7 +77,7 @@ Voir "Bug Trophées" ci-dessous.
 - [x] Migrations `quiz_events`, `page_events`, `contact_requests`, `pme_contacts`
 - [x] Modèles `QuizEvent`, `PageEvent`, `ContactRequest`, `PmeContact`
 - [x] Réorganisation routes API en 3 fichiers (`public.php`, `dashboard.php`, `cobrand.php`)
-- [ ] **[URGENT]** Fix `ApiTropheeController` : supprimer référence à `nb_registered`, corriger N+1
+- [x] **[URGENT]** Fix `ApiTropheeController` : supprimer référence à `nb_registered`, corriger N+1
 - [ ] Auth Sanctum : `POST /api/v1/auth/login`, `POST /api/v1/auth/logout`
 - [ ] CRUD collections : `GET`, `POST`, `PUT /api/v1/collections`
 - [ ] Endpoint cobrand public : `GET /api/v1/cobrand/{token}`
@@ -113,7 +113,7 @@ Voir "Bug Trophées" ci-dessous.
 - [x] Namespace `API/` → `Api/` (compat Linux/prod)
 - [x] Suppression `resources/js/app.js` (artefact inutilisé)
 - [x] Remplacer `fetch()` natif dans `Home.vue` et `Information.vue` par `useFetchApi`
-- [ ] Refactoriser `ApiTropheeController` : N+1 queries + calculer `participant_count` depuis `quiz_events` (partie du fix urgent)
+- [x] Refactoriser `ApiTropheeController` : N+1 queries corrigé (`participant_count` depuis `quiz_events` en Phase 6)
 
 ---
 

@@ -27,52 +27,45 @@ class ApiTropheeController extends Controller
         $allYears = [];
 
         foreach ($years as $year) {
-            // Récupère tous les trophées de l'année avec leurs companies et le pivot rank
             $trophees = Trophee::where('year', $year)
                 ->with(['companies' => function ($query) {
                     $query->orderBy('rank');
                 }])
                 ->get();
 
-            // Collecte toutes les companies avec leur rank pour cette année
-            $companies = [];
             $companyIds = [];
-
             foreach ($trophees as $trophee) {
                 foreach ($trophee->companies as $company) {
                     $companyIds[] = $company->id;
+                }
+            }
 
-                    // Calcule le nombre de participants pour cette company
-                    // en sommant les nb_registered de ses collections dans l'année du trophée
-                    $participantCount = Collection::where('company_id', $company->id)
-                        ->whereYear('start_date', $year)
-                        ->sum('nb_registered');
+            // Charge tous les logos en une seule requête pour éviter le N+1
+            $logos = Collection::whereIn('company_id', array_unique($companyIds))
+                ->whereNotNull('logo_url')
+                ->orderByDesc('start_date')
+                ->get()
+                ->groupBy('company_id')
+                ->map(fn($cols) => $cols->first()->logo_url);
 
-                    // Récupère le logo depuis la collection la plus récente de cette company
-                    $latestCollection = Collection::where('company_id', $company->id)
-                        ->whereNotNull('logo_url')
-                        ->latest('start_date')
-                        ->first();
-
+            $companies = [];
+            foreach ($trophees as $trophee) {
+                foreach ($trophee->companies as $company) {
                     $companies[] = [
                         'rank' => $company->pivot->rank,
                         'name' => $company->name,
-                        'logo_url' => $latestCollection?->logo_url,
-                        'participant_count' => (int) $participantCount,
+                        'logo_url' => $logos[$company->id] ?? null,
+                        'participant_count' => 0, // provisoire — remplacé par quiz_events en Phase 6
                     ];
                 }
             }
 
-            // Trie par rank
             usort($companies, fn($a, $b) => $a['rank'] <=> $b['rank']);
-
-            // Nombre total distinct de companies participantes cette année
-            $participantCount = count(array_unique($companyIds));
 
             $allYears[] = [
                 'year' => (int) $year,
                 'companies' => $companies,
-                'participant_count' => $participantCount,
+                'participant_count' => count(array_unique($companyIds)),
             ];
         }
 
