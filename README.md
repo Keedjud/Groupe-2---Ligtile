@@ -162,7 +162,6 @@ routes/
 └── web.php                  ← 3 routes Blade (public, dashboard, cobrand)
 ```
 
-> **Note :** La structure `routes/api/` n'est pas encore en place — c'est prévu dans la phase de fondations (voir plan d'implémentation).
 
 ---
 

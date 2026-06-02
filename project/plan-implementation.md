@@ -1,6 +1,6 @@
 # Plan d'implémentation — Fin de projet
 
-> Mis à jour le 2 juin 2026. Ce document définit qui fait quoi, dans quel ordre, pour finir le projet sans se marcher dessus.
+> Mis à jour le 2 juin 2026 (après Phase 5B). Ce document définit qui fait quoi, dans quel ordre, pour finir le projet sans se marcher dessus.
 
 ---
 
@@ -23,6 +23,7 @@
 | 🔴 Urgent | Page Trophées cassée — `ApiTropheeController` utilise `nb_registered` supprimé de la DB | Inoé |
 | 🟡 Normal | Navigation : lien actif non mis en évidence (aucune page n'est surlignée dans le header) | Elia |
 | 🟡 Normal | Footer : lien "Accessibilité" affiché à gauche avec les icônes sociales au lieu de la droite avec les liens légaux | Elia |
+| 🟡 Normal | Email PME cassé — `contactPme.blade.php` passe un objet `Illuminate\Mail\Message` là où une string est attendue (`htmlspecialchars` crash) | Elia |
 
 ---
 
@@ -32,7 +33,7 @@
 |-------------|---------|
 | **Loïc** | Backend dashboard + connexion API — déjà commencé en local (`feature/dashboard` ou branche dédiée) |
 | **Elia** | Fix et finitions site public (`fix/public-site`) |
-| **Inoé** | Démarre la partie cobrand — commencer par l'endpoint back `GET /api/v1/cobrand/{token}` avant d'attaquer le frontend |
+| **Inoé** | Phase 5B terminée — démarre Phase 7 (cobrand frontend, branche `feature/cobrand-app`) |
 
 ---
 
@@ -48,7 +49,7 @@
 - [ ] CRUD collections : `GET`, `POST`, `PUT /api/v1/collections` **(Loïc)**
 - [ ] Upload logo (storage + lien public) **(Loïc)**
 - [ ] Métriques : `GET /api/v1/metrics` **(Loïc)**
-- [ ] Endpoint cobrand public : `GET /api/v1/cobrand/{token}` **(Inoé)**
+- [x] Endpoint cobrand public : `GET /api/v1/cobrand/{token}` **(Inoé)**
 - [ ] Tracking : `POST /api/v1/quiz/event`, `POST /api/v1/page/event` **(Inoé)**
 - [x] Comptage anonyme des demandes de contact : `contact_stats` — juste un horodatage par soumission, aucune donnée personnelle **(Inoé)**
 
@@ -58,6 +59,7 @@
 - [ ] Labels sur tous les champs de formulaire — `Home.vue`, `Information.vue` (Elia)
 - [ ] Alts sur toutes les images (via `git cherry-pick 63f3b65`) (Elia)
 - [ ] Focus trap sur la modale des critères dans `Trophees.vue` (Elia)
+- [ ] Fix email PME : corriger `resources/views/emails/contactPme.blade.php` — crash `htmlspecialchars` dû à un objet `Message` passé comme string (Elia)
 - [x] Mentions vie privée sur les deux formulaires de contact
 
 ### Frontend cobrand
@@ -146,19 +148,15 @@ Ajouter `onedoc_url` et `capacity` dans `CollecteForm.vue`, merger dans `develop
 | Upload logo (storage + lien public) | Intégré dans `CollectionController` |
 | `GET /api/v1/metrics` (auth) | `app/Http/Controllers/Api/v1/MetricsController.php`, `routes/api/dashboard.php` |
 
-> L'endpoint cobrand `GET /api/v1/cobrand/{token}` et l'enregistrement des formulaires de contact sont traités par Inoé dans la Phase 5B.
+> L'endpoint cobrand `GET /api/v1/cobrand/{token}` a été traité par Inoé dans la Phase 5B (terminée).
 
 ---
 
-### Phase 5B — Backend cobrand + contact_stats (Inoé, en parallèle de Phase 5)
+### ✅ Phase 5B — Backend cobrand + contact_stats (Inoé) — TERMINÉE
 
-| Tâche | Branche | Fichier cible |
-|-------|---------|--------------|
-| Endpoint cobrand public : `GET /api/v1/cobrand/{token}` | `feature/backend-cobrand` | `app/Http/Controllers/Api/v1/ApiCobrandController.php`, `routes/api/cobrand.php` |
-| Comptage anonyme des demandes de contact (`contact_stats`) | `feature/contact-stats` | `ContactStat.php`, migration, `ApiContactController.php`, `ApiPmeContactController.php` |
+`ApiCobrandController` créé : `GET /api/v1/cobrand/{token}` retourne les données de collecte (couleurs, dates, logo, lien Onedoc, entreprise, adresse) ou 404 si le token est inconnu.
 
-> Prérequis de la Phase 7 : l'endpoint cobrand doit être opérationnel avant de démarrer `cobrand/App.vue`.
-> Le comptage `contact_stats` enregistre uniquement un horodatage par soumission — aucune donnée personnelle stockée.
+`ContactStat` créé : comptage anonyme des demandes de contact — un horodatage par soumission, aucune donnée personnelle stockée.
 
 ---
 
@@ -175,12 +173,13 @@ Ajouter `onedoc_url` et `capacity` dans `CollecteForm.vue`, merger dans `develop
 
 ---
 
-### Phase 7 — Cobrand (Inoé, démarre maintenant)
+### Phase 7 — Cobrand (Inoé)
 
 **Prérequis :** Phase 5B terminée (`GET /api/v1/cobrand/{token}` opérationnel).
 
 **Phase 7A — `cobrand/App.vue`** — `feature/cobrand-app`
 - Charge les données depuis l'API, applique le co-branding, gère le routage hash
+- Vérifier la fenêtre de disponibilité : le site est accessible entre la date de création de la collecte et 3 jours après `end_date` — afficher un message d'indisponibilité sinon
 
 **Phase 7B — `cobrand/views/Accueil.vue`** — `feature/cobrand-accueil`
 
@@ -189,6 +188,7 @@ Ajouter `onedoc_url` et `capacity` dans `CollecteForm.vue`, merger dans `develop
 - Émet `prevention_entered` / `prevention_exited` via `$emit` vers App.vue — ne pas appeler l'API directement
 
 **Phase 7D — Quiz + Redirect (Inoé)** — `feature/cobrand-quiz`
+- `cobrand/constants/quizQuestions.js` — slugs stables des questions (P1 + P2). **Règle critique : ne jamais modifier un slug en production sans migrer les données `quiz_events` correspondantes.**
 - `useQuizStore.js`, `Quiz.vue`, `Redirect.vue`
 
 ---
@@ -216,9 +216,9 @@ Phase 1 ✅ (fondations)
   ├── Phase 4 (dashboard UI, Loïc)               ← en cours en local
   │     └── Phase 5 (backend dashboard, Loïc)
   │           └── Phase 8 (dashboard API, Loïc)
-  └── Phase 5B (backend cobrand, Inoé)           ← démarre maintenant
-        ├── Phase 6 (tracking, Inoé)
-        └── Phase 7A→D (cobrand frontend, Inoé)
+  └── Phase 5B ✅ (backend cobrand, Inoé)
+        ├── Phase 6 (tracking, Inoé)              ← après Phase 7D
+        └── Phase 7A→D (cobrand frontend, Inoé)  ← démarre maintenant
 ```
 
 ---
