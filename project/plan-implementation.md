@@ -1,6 +1,6 @@
 # Plan d'implémentation — Fin de projet
 
-> Mis à jour le 2 juin 2026. Ce document définit qui fait quoi, dans quel ordre, pour finir le projet sans se marcher dessus.
+> Mis à jour le 2 juin 2026 (après Phase 5B). Ce document définit qui fait quoi, dans quel ordre, pour finir le projet sans se marcher dessus.
 
 ---
 
@@ -33,7 +33,7 @@
 |-------------|---------|
 | **Loïc** | Backend dashboard + connexion API — déjà commencé en local (`feature/dashboard` ou branche dédiée) |
 | **Elia** | Fix et finitions site public (`fix/public-site`) |
-| **Inoé** | Démarre la partie cobrand — commencer par l'endpoint back `GET /api/v1/cobrand/{token}` avant d'attaquer le frontend |
+| **Inoé** | Phase 5B terminée — démarre Phase 7 (cobrand frontend, branche `feature/cobrand-app`) |
 
 ---
 
@@ -49,9 +49,8 @@
 - [ ] CRUD collections : `GET`, `POST`, `PUT /api/v1/collections` **(Loïc)**
 - [ ] Upload logo (storage + lien public) **(Loïc)**
 - [ ] Métriques : `GET /api/v1/metrics` **(Loïc)**
-- [ ] Endpoint cobrand public : `GET /api/v1/cobrand/{token}` **(Inoé)**
+- [x] Endpoint cobrand public : `GET /api/v1/cobrand/{token}` **(Inoé)**
 - [ ] Tracking : `POST /api/v1/quiz/event`, `POST /api/v1/page/event` **(Inoé)**
-- [ ] Enregistrement en base des deux formulaires de contact (envoient uniquement un email pour l'instant) **(Inoé)**
 
 ### Frontend site public
 - [ ] Fix nav : lien actif non mis en évidence (Elia)
@@ -148,20 +147,15 @@ Ajouter `onedoc_url` et `capacity` dans `CollecteForm.vue`, merger dans `develop
 | Upload logo (storage + lien public) | Intégré dans `CollectionController` |
 | `GET /api/v1/metrics` (auth) | `app/Http/Controllers/Api/v1/MetricsController.php`, `routes/api/dashboard.php` |
 
-> L'endpoint cobrand `GET /api/v1/cobrand/{token}` et l'enregistrement des formulaires de contact sont traités par Inoé dans la Phase 5B.
+> L'endpoint cobrand `GET /api/v1/cobrand/{token}` a été traité par Inoé dans la Phase 5B (terminée).
 
 ---
 
-### Phase 5B — Backend cobrand + contacts (Inoé, en parallèle de Phase 5)
+### ✅ Phase 5B — Backend cobrand (Inoé) — TERMINÉE
 
-**Branche :** `feature/backend-cobrand`
+**Branche :** `feature/backend-cobrand` (mergée)
 
-| Tâche | Fichier cible |
-|-------|--------------|
-| Endpoint cobrand public : `GET /api/v1/cobrand/{token}` | `app/Http/Controllers/Api/v1/CobrandController.php`, `routes/api/cobrand.php` |
-| Enregistrement en base des deux formulaires de contact | `ApiContactController.php`, `ApiPmeContactController.php` |
-
-> Prérequis de la Phase 7 : l'endpoint cobrand doit être opérationnel avant de démarrer `cobrand/App.vue`.
+`ApiCobrandController` créé : `GET /api/v1/cobrand/{token}` retourne les données de collecte (couleurs, dates, logo, lien Onedoc, entreprise, adresse) ou 404 si le token est inconnu.
 
 ---
 
@@ -178,7 +172,7 @@ Ajouter `onedoc_url` et `capacity` dans `CollecteForm.vue`, merger dans `develop
 
 ---
 
-### Phase 7 — Cobrand (Inoé, démarre maintenant)
+### Phase 7 — Cobrand (Inoé)
 
 **Prérequis :** Phase 5B terminée (`GET /api/v1/cobrand/{token}` opérationnel).
 
@@ -219,9 +213,9 @@ Phase 1 ✅ (fondations)
   ├── Phase 4 (dashboard UI, Loïc)               ← en cours en local
   │     └── Phase 5 (backend dashboard, Loïc)
   │           └── Phase 8 (dashboard API, Loïc)
-  └── Phase 5B (backend cobrand, Inoé)           ← démarre maintenant
-        ├── Phase 6 (tracking, Inoé)
-        └── Phase 7A→D (cobrand frontend, Inoé)
+  └── Phase 5B ✅ (backend cobrand, Inoé)
+        ├── Phase 6 (tracking, Inoé)              ← après Phase 7D
+        └── Phase 7A→D (cobrand frontend, Inoé)  ← démarre maintenant
 ```
 
 ---
