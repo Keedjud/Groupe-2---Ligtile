@@ -23,6 +23,7 @@
 | 🔴 Urgent | Page Trophées cassée — `ApiTropheeController` utilise `nb_registered` supprimé de la DB | Inoé |
 | 🟡 Normal | Navigation : lien actif non mis en évidence (aucune page n'est surlignée dans le header) | Elia |
 | 🟡 Normal | Footer : lien "Accessibilité" affiché à gauche avec les icônes sociales au lieu de la droite avec les liens légaux | Elia |
+| 🟡 Normal | Email PME cassé — `contactPme.blade.php` passe un objet `Illuminate\Mail\Message` là où une string est attendue (`htmlspecialchars` crash) | Elia |
 
 ---
 
@@ -58,6 +59,7 @@
 - [ ] Labels sur tous les champs de formulaire — `Home.vue`, `Information.vue` (Elia)
 - [ ] Alts sur toutes les images (via `git cherry-pick 63f3b65`) (Elia)
 - [ ] Focus trap sur la modale des critères dans `Trophees.vue` (Elia)
+- [ ] Fix email PME : corriger `resources/views/emails/contactPme.blade.php` — crash `htmlspecialchars` dû à un objet `Message` passé comme string (Elia)
 - [x] Mentions vie privée sur les deux formulaires de contact
 
 ### Frontend cobrand
