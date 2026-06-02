@@ -1,6 +1,6 @@
 <!-- CollecteCard -->
 <script setup>
-const props = defineProps({
+defineProps({
   collecte:  { type: Object, required: true },
   allerVers: { type: Function, required: true },
 })

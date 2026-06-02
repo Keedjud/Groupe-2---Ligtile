@@ -67,7 +67,7 @@ const libelleBtn = computed(() =>
 // Validation
 const regexEmail = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
 const regexNpa = /^\d{4}$/
-const regexTel = /^[+\d][\d\s()/.\-]{5,}$/      // chiffres + symboles téléphoniques, min 6 caractères
+const regexTel = /^[+\d][\d\s()/.-]{5,}$/      // chiffres + symboles téléphoniques, min 6 caractères
 const regexNumero = /^\d+[a-zA-Z]?$/             // ex. 12 ou 12b
 
 function valider() {

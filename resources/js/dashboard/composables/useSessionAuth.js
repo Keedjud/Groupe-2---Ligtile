@@ -38,7 +38,8 @@ export function useSessionAuth() {
   async function deconnecter() {
     try {
       await fetchApi({ url: '/session/disconnect', method: 'POST' })
-    } catch (e) {
+    } catch (err) {
+      console.error('Logout error:', err)
     }
     utilisateur.value = null
   }
@@ -47,7 +48,8 @@ export function useSessionAuth() {
     try {
       const response = await fetchApi({ url: '/session/current-user', method: 'GET' })
       utilisateur.value = response
-    } catch (e) {
+    } catch (err) {
+      console.error('Session error:', err)
       utilisateur.value = null
     }
   }

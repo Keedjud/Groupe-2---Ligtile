@@ -1,4 +1,4 @@
-<!-- Metriques -->
+﻿<!-- Metriques -->
 <script setup>
 import { ref, computed, onMounted, watch } from 'vue'
 import DashboardLayout from '../layouts/DashboardLayout.vue'
@@ -29,7 +29,7 @@ const entreprisesDisponibles = computed(() => {
 
 const contexteNom = ref(null)
 const titrePage = computed(() =>
-  contexteNom.value ? `Analytics — ${contexteNom.value}` : 'Analytics — toutes les entreprises'
+  contexteNom.value ? `Analytics - ${contexteNom.value}` : 'Analytics - toutes les entreprises'
 )
 
 const totalCollectes = ref(0)

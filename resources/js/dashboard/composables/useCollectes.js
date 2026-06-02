@@ -71,7 +71,8 @@ export function useCollectes() {
     try {
       const reponse = await fetchApi({ url: '/manage-collections' })
       listeCollectes.value = reponse.map(adapterDeApi)
-    } catch (e) {
+    } catch (err) {
+      console.error(err)
       erreur.value = "Impossible de charger les collectes."
     } finally {
       chargement.value = false
@@ -91,9 +92,10 @@ export function useCollectes() {
       const nouvelle = adapterDeApi(reponse)
       listeCollectes.value.unshift(nouvelle)
       return nouvelle
-    } catch (e) {
+    } catch (err) {
+      console.error(err)
       erreur.value = "Erreur lors de la création."
-      throw e
+      throw err
     } finally {
       chargement.value = false
     }
@@ -114,9 +116,10 @@ export function useCollectes() {
         listeCollectes.value[index] = adapterDeApi(reponse)
       }
       return listeCollectes.value[index]
-    } catch (e) {
+    } catch (err) {
+      console.error(err)
       erreur.value = "Erreur lors de la mise à jour."
-      throw e
+      throw err
     } finally {
       chargement.value = false
     }
@@ -131,9 +134,10 @@ export function useCollectes() {
         method: 'DELETE'
       })
       listeCollectes.value = listeCollectes.value.filter(c => c.id !== Number(id))
-    } catch (e) {
+    } catch (err) {
+      console.error(err)
       erreur.value = "Erreur lors de la suppression."
-      throw e
+      throw err
     } finally {
       chargement.value = false
     }

@@ -41,14 +41,7 @@ async function soumettre() {
 
         <!-- En-tête carte -->
         <div class="mb-6 flex flex-col items-center gap-1">
-          <!-- Logo texte Trophée + point rouge -->
-          <div class="flex items-center gap-1">
-            <span class="font-sans text-h2 font-bold text-violet-900">Trophée</span>
-            <span class="h-2 w-2 rounded-full bg-rouge-500" />
-          </div>
-          <span class="font-sans text-small font-semibold tracking-widest text-texte-secondary uppercase">
-            Label CTS
-          </span>
+          <img :src="'/images/logo-hug.png'" alt="HUG" class="mb-4 h-auto w-full max-w-[155px]" />
         </div>
 
         <h1 class="mb-1 text-center font-sans text-h1 font-bold text-violet-900">Connexion</h1>

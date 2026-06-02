@@ -1,6 +1,6 @@
 <!-- Sélecteur de couleur stylé (input[type=color] habillé) -->
 <script setup>
-const props = defineProps({
+defineProps({
   label:     { type: String, required: true },
   modelValue:{ type: String, default: '#681764' },
 })

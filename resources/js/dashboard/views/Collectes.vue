@@ -5,7 +5,7 @@ import DashboardLayout from '../layouts/DashboardLayout.vue'
 import CollecteCard    from '../components/CollecteCard.vue'
 import { useCollectes } from '../composables/useCollectes.js'
 
-const props = defineProps({
+defineProps({
   allerVers: { type: Function, required: true },
 })
 
