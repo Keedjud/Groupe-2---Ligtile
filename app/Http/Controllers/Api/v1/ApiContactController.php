@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Mail;
 use App\Mail\ContactMail;
 use App\Http\Controllers\Controller;
+use App\Models\ContactRequest;
 
 class ApiContactController extends Controller
 {
@@ -22,6 +23,7 @@ class ApiContactController extends Controller
         ]);
 
         try {
+            ContactRequest::create($validated);
             Mail::to('contact@hug-collecte.ch')->send(new ContactMail($validated));
 
             return response()->json([

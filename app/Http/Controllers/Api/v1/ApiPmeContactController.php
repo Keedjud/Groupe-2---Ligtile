@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Mail;
 use App\Mail\ContactPmeMail;
 use App\Http\Controllers\Controller;
+use App\Models\PmeContact;
 
 class ApiPmeContactController extends Controller
 {
@@ -18,6 +19,7 @@ class ApiPmeContactController extends Controller
         ]);
 
         try {
+            PmeContact::create($validated);
             Mail::to('contact@hug-collecte.ch')->send(new ContactPmeMail($validated));
 
             return response()->json([
