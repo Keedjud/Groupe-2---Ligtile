@@ -12,6 +12,20 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
 
 class Company extends Model
 {
+    protected $appends = ['size_label'];
+
+    /**
+     * Catégorie de taille d'entreprise basée sur le nombre d'employés.
+     */
+    public function getSizeLabelAttribute(): string
+    {
+        return match (true) {
+            $this->nb_employee >= 250 => 'Grande entreprise',
+            $this->nb_employee >= 50  => 'Moyenne entreprise',
+            $this->nb_employee >= 10  => 'Petite entreprise',
+            default                   => 'Très petite entreprise',
+        };
+    }
 
     public function address(): BelongsTo //clé étrangère dans ma table
     {

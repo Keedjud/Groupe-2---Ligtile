@@ -1,20 +1,19 @@
 <script setup>
 const socials = [
-  { label: 'Facebook',  icon: '/images/facebook.png',  href: '#' },
-  { label: 'Instagram', icon: '/images/instagram.png', href: '#' },
-  { label: 'X',         icon: '/images/x.png',         href: '#' },
-  { label: 'LinkedIn',  icon: '/images/linkedln.png',  href: '#' },
+  { label: 'Facebook',  icon: '/images/facebook.png',  href: 'https://www.facebook.com/hopitaux.universitaires.geneve' },
+  { label: 'Instagram', icon: '/images/instagram.png', href: 'https://www.instagram.com/hug_ge/' },
+  { label: 'X',         icon: '/images/x.png',         href: 'https://x.com/hug_ge?lang=fr' },
+  { label: 'LinkedIn',  icon: '/images/linkedln.png',  href: 'https://ch.linkedin.com/company/hopitaux-universitaires-de-geneve?trk=ppro_cprof' },
 ]
 const legal = [
-  { label: 'Charte éthique', href: '#' },
-  { label: 'Politique de confidentialité', href: '#' },
-  { label: 'Protection des données', href: '#' },
+  { label: 'Charte éthique', href: 'https://www.hug.ch/conditions_generales' },
+  { label: 'Confidentialité', href: 'https://www.hug.ch/politique-protection-donnees-personnelles' },
 ]
 </script>
 
 <template>
   <footer class="w-full bg-beige-50">
-    <div class="mx-auto flex max-w-[1512px] flex-col items-start gap-3 p-3 text-left
+    <div class="flex w-full flex-col items-start gap-3 px-4 py-3 text-left
                 lg:flex-row lg:items-center lg:justify-between lg:gap-4 lg:px-[60px]">
 
       <div class="flex flex-col items-start gap-[22px] lg:flex-row lg:items-center lg:gap-3.5">
@@ -24,7 +23,7 @@ const legal = [
             <img :src="s.icon" :alt="s.label" class="h-[30px] w-[30px]" />
           </a>
         </div>
-        <a href="#" class="py-2.5 font-sans text-small text-violet-950 hover:text-violet-500 lg:py-0">
+        <a href="https://www.hug.ch/bienvenue-aux-personnes-avec-deficit-ou-handicap" class="py-2.5 font-sans text-small text-violet-950 hover:text-violet-500 lg:py-0">
           Accessibilité
         </a>
       </div>

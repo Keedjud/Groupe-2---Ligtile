@@ -46,5 +46,7 @@
     "Verify Email Address": "Vérifier l'adresse e-mail",
     "Verify your email address": "Vérifiez votre adresse e-mail",
     "Whoops!": "Oups !",
-    "You are receiving this email because we received a password reset request for your account.": "Vous recevez cet e-mail car nous avons reçu une demande de réinitialisation de mot de passe pour votre compte."
+    "You are receiving this email because we received a password reset request for your account.": "Vous recevez cet e-mail car nous avons reçu une demande de réinitialisation de mot de passe pour votre compte.",
+    "Your message has been sent successfully.": "Votre message a bien été envoyé.",
+    "Failed to send message. Please try again later.": "Impossible d'envoyer le message. Veuillez réessayer plus tard."
 }
