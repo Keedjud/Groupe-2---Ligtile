@@ -17,32 +17,29 @@ export function setDefaultBaseUrl(url) {
   defaultBaseUrl = url
 }
 
-/**
- * Composable pour les appels API.
- *
- * @param {string} [baseUrl=null] - URL de base (utilise defaultBaseUrl si null)
- * @param {object} [additionalHeaders={}] - Headers supplémentaires
- */
 export function useFetchApi(baseUrl = null, additionalHeaders = {}) {
   if (baseUrl === null) baseUrl = defaultBaseUrl
   if (baseUrl[baseUrl.length - 1] === '/') baseUrl = baseUrl.slice(0, -1)
 
   const baseHeaders = { ...defaultHeaders, ...additionalHeaders }
 
-  /**
-   * Appelle l'API et retourne une promesse.
-   */
   function fetchApi({
     url,
     data = null,
     method = null,
     headers = {},
     timeout = 5000,
+    baseUrl: requestBaseUrl = null,
   }) {
     if (url == null || typeof url !== 'string') throw new Error('The URL must be a string.')
 
+    let effectiveBaseUrl = requestBaseUrl !== null ? requestBaseUrl : baseUrl
+    if (effectiveBaseUrl.length && effectiveBaseUrl[effectiveBaseUrl.length - 1] === '/') {
+      effectiveBaseUrl = effectiveBaseUrl.slice(0, -1)
+    }
+
     url = url[0] === '/' ? url : '/' + url
-    const fullUrl = baseUrl + url
+    const fullUrl = effectiveBaseUrl + url
     const allHeaders = { ...baseHeaders, ...headers }
     method = method != null ? method.toUpperCase() : data != null ? 'POST' : 'GET'
 
@@ -55,6 +52,7 @@ export function useFetchApi(baseUrl = null, additionalHeaders = {}) {
         headers: allHeaders,
         body: data != null ? JSON.stringify(data) : null,
         signal: controller.signal,
+        credentials: 'include',
       })
         .then(response => {
           clearTimeout(timer)
@@ -70,20 +68,29 @@ export function useFetchApi(baseUrl = null, additionalHeaders = {}) {
               }
             })
             .catch(() => {
+              // Corps vide / non-JSON
               return responseClone.text()
-                .then(() => {
-                  reject({
-                    status: response.status,
-                    statusText: 'Error parsing response body as JSON',
-                    data: null,
-                  })
+                .then(text => {
+                  if (response.ok) {
+                    resolve(text || null)
+                  } else {
+                    reject({
+                      status: response.status,
+                      statusText: response.statusText || 'Error parsing response body as JSON',
+                      data: text || null,
+                    })
+                  }
                 })
                 .catch(() => {
-                  reject({
-                    status: response.status,
-                    statusText: 'Error parsing response body',
-                    data: null,
-                  })
+                  if (response.ok) {
+                    resolve(null)
+                  } else {
+                    reject({
+                      status: response.status,
+                      statusText: 'Error parsing response body',
+                      data: null,
+                    })
+                  }
                 })
             })
         })
@@ -98,9 +105,6 @@ export function useFetchApi(baseUrl = null, additionalHeaders = {}) {
     })
   }
 
-  /**
-   * Appelle l'API et stocke le résultat dans des refs réactives.
-   */
   function fetchApiToRef({ immediate = true, ...options }) {
     const data = ref(null)
     const error = shallowRef(null)
