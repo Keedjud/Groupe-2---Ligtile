@@ -4,7 +4,7 @@ import SiteHeader   from '../components/SiteHeader.vue'
 import SiteFooter   from '../components/SiteFooter.vue'
 import FictifNotice from '../components/FictifNotice.vue'
 
-defineProps({
+const props = defineProps({
   current: { type: String, default: null },
 })
 </script>
