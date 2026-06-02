@@ -3,8 +3,10 @@
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Api\v1\ApiCobrandController;
 
-Route::get('/cobrand/{token}', [ApiCobrandController::class, 'show']);
+Route::prefix('v1')->group(function () {
+    Route::get('/cobrand/{token}', [ApiCobrandController::class, 'show']);
 
-// À venir (Phase 6)
-// POST /api/v1/quiz/event
-// POST /api/v1/page/event
+    // À venir (Phase 6)
+    // Route::post('/quiz/event', ...)
+    // Route::post('/page/event', ...)
+});
