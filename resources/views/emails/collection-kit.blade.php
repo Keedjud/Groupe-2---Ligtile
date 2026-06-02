@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="fr">
 <head>
     <meta charset="UTF-8">
@@ -17,7 +17,7 @@
                 <br>
             @endif
             <h1 style="margin:0;color:#ffffff;font-size:22px;">Votre kit de communication</h1>
-            <p style="margin:6px 0 0;color:#ffffff;font-size:14px;opacity:.9;">Collecte de sang — {{ $entreprise }}</p>
+            <p style="margin:6px 0 0;color:#ffffff;font-size:14px;opacity:.9;">Collecte de sang - {{ $entreprise }}</p>
         </div>
 
         <div style="background-color:#ffffff;border:1px solid #e6e0e8;border-top:none;border-radius:0 0 16px 16px;padding:28px 24px;">
@@ -33,10 +33,10 @@
                 <table role="presentation" style="width:100%;border-collapse:collapse;margin:20px 0;background-color:#f4f0f5;border-radius:8px;">
                     <tr>
                         <td style="padding:12px 16px;font-size:14px;">
-                            <strong style="color:{{ $couleurPrimaire }};">Date de début :</strong> {{ $dateDebut ?: '—' }}
+                            <strong style="color:{{ $couleurPrimaire }};">Date de début :</strong> {{ $dateDebut ?: '-' }}
                         </td>
                         <td style="padding:12px 16px;font-size:14px;">
-                            <strong style="color:{{ $couleurPrimaire }};">Date de fin :</strong> {{ $dateFin ?: '—' }}
+                            <strong style="color:{{ $couleurPrimaire }};">Date de fin :</strong> {{ $dateFin ?: '-' }}
                         </td>
                     </tr>
                 </table>

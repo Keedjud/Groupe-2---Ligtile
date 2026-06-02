@@ -1,4 +1,4 @@
-<?php
+﻿<?php
 
 namespace App\Mail;
 
@@ -26,7 +26,7 @@ class CollectionKitMail extends Mailable
     public function envelope(): Envelope
     {
         return new Envelope(
-            subject: 'Votre kit de communication — collecte ' . ($this->collecte->company?->name ?? ''),
+            subject: 'Votre kit de communication - collecte ' . ($this->collecte->company?->name ?? ''),
         );
     }
 
