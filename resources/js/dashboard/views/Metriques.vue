@@ -1,4 +1,4 @@
-﻿<!-- Metriques -->
+<!-- Metriques -->
 <script setup>
 import { ref, computed, onMounted, watch } from 'vue'
 import DashboardLayout from '../layouts/DashboardLayout.vue'

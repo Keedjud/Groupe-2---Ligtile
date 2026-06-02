@@ -1,4 +1,4 @@
-﻿<!-- DateField - sélecteur JJ/MM/AAAA -->
+<!-- DateField - sélecteur JJ/MM/AAAA -->
 <script setup>
 import { ref, computed, watch } from 'vue'
 
