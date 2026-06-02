@@ -40,8 +40,8 @@
 
 ### Backend
 - [x] Migration `collections` : suppression `nb_registered`, ajout `capacity`, `logo_url` nullable
-- [x] Migrations `quiz_events`, `page_events`, `contact_requests`, `pme_contacts`
-- [x] Modèles `QuizEvent`, `PageEvent`, `ContactRequest`, `PmeContact`
+- [x] Migrations `quiz_events`, `page_events`, `contact_requests`, `pme_contacts`, `contact_stats`
+- [x] Modèles `QuizEvent`, `PageEvent`, `ContactRequest`, `PmeContact`, `ContactStat`
 - [x] Réorganisation routes API en 3 fichiers (`public.php`, `dashboard.php`, `cobrand.php`)
 - [x] **[URGENT]** Fix `ApiTropheeController` : supprimer référence à `nb_registered`, corriger N+1
 - [ ] Auth Sanctum : `POST /api/v1/auth/login`, `POST /api/v1/auth/logout` **(Loïc)**
@@ -50,7 +50,7 @@
 - [ ] Métriques : `GET /api/v1/metrics` **(Loïc)**
 - [ ] Endpoint cobrand public : `GET /api/v1/cobrand/{token}` **(Inoé)**
 - [ ] Tracking : `POST /api/v1/quiz/event`, `POST /api/v1/page/event` **(Inoé)**
-- [ ] Enregistrement en base des deux formulaires de contact (envoient uniquement un email pour l'instant) **(Inoé)**
+- [x] Comptage anonyme des demandes de contact : `contact_stats` — juste un horodatage par soumission, aucune donnée personnelle **(Inoé)**
 
 ### Frontend site public
 - [ ] Fix nav : lien actif non mis en évidence (Elia)
@@ -150,16 +150,15 @@ Ajouter `onedoc_url` et `capacity` dans `CollecteForm.vue`, merger dans `develop
 
 ---
 
-### Phase 5B — Backend cobrand + contacts (Inoé, en parallèle de Phase 5)
+### Phase 5B — Backend cobrand + contact_stats (Inoé, en parallèle de Phase 5)
 
-**Branche :** `feature/backend-cobrand`
-
-| Tâche | Fichier cible |
-|-------|--------------|
-| Endpoint cobrand public : `GET /api/v1/cobrand/{token}` | `app/Http/Controllers/Api/v1/CobrandController.php`, `routes/api/cobrand.php` |
-| Enregistrement en base des deux formulaires de contact | `ApiContactController.php`, `ApiPmeContactController.php` |
+| Tâche | Branche | Fichier cible |
+|-------|---------|--------------|
+| Endpoint cobrand public : `GET /api/v1/cobrand/{token}` | `feature/backend-cobrand` | `app/Http/Controllers/Api/v1/ApiCobrandController.php`, `routes/api/cobrand.php` |
+| Comptage anonyme des demandes de contact (`contact_stats`) | `feature/contact-stats` | `ContactStat.php`, migration, `ApiContactController.php`, `ApiPmeContactController.php` |
 
 > Prérequis de la Phase 7 : l'endpoint cobrand doit être opérationnel avant de démarrer `cobrand/App.vue`.
+> Le comptage `contact_stats` enregistre uniquement un horodatage par soumission — aucune donnée personnelle stockée.
 
 ---
 
