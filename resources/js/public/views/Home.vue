@@ -14,12 +14,21 @@ const submitting = ref(false)
 
 const { fetchApi } = useFetchApi('/api/v1')
 
-function submit() {
+function submit(event) {
+  const formEl = event.target
+
+  if (!formEl.checkValidity()) {
+    return
+  }
+
+  event.preventDefault()
+
   if (!form.employees_count || Number(form.employees_count) < 1000) {
     showPmeMessage.value = true
     return
   }
 
+  showPmeMessage.value = false
   status.value = { type: '', message: '' }
   submitting.value = true
 
@@ -264,12 +273,12 @@ function updateCardsIndex() {
           </div>
 
           <div id="prendre-rdv-form" class="min-w-0 scroll-mt-24 lg:scroll-mt-28">
-            <form @submit.prevent="submit" class="bg-form-bg rounded-xl p-3 ring-1 ring-violet-900/30">
+            <form @submit="submit" class="bg-form-bg rounded-xl p-3 ring-1 ring-violet-900/30">
               <h3 class="text-h3 font-bold text-violet-900 text-center mb-4">Prendre <br class="lg:hidden" />rendez-vous</h3>
 
               <div class="grid grid-cols-2 gap-3 mb-3">
                 <input required v-model="form.company_name" type="text" placeholder="Nom de l'entreprise" class="w-full min-w-0 h-[50px] lg:h-[43px] rounded-lg bg-white px-3 text-small text-texte-primary-dark shadow-[0_0_4px_rgba(0,0,0,0.25)] placeholder:text-texte-primary-dark/70" />
-                <input required v-model="form.employees_count" type="number" placeholder="Nombre d'employés" class="w-full min-w-0 h-[50px] lg:h-[43px] rounded-lg bg-white px-3 text-small text-texte-primary-dark shadow-[0_0_4px_rgba(0,0,0,0.25)] placeholder:text-texte-primary-dark/70" />
+                <input required min="1" v-model="form.employees_count" type="number" placeholder="Nombre d'employés" class="w-full min-w-0 h-[50px] lg:h-[43px] rounded-lg bg-white px-3 text-small text-texte-primary-dark shadow-[0_0_4px_rgba(0,0,0,0.25)] placeholder:text-texte-primary-dark/70" />
               </div>
 
               <input required v-model="form.street" type="text" placeholder="Adresse" class="w-full min-w-0 h-[50px] lg:h-[43px] rounded-lg bg-white px-3 text-small text-texte-primary-dark shadow-[0_0_4px_rgba(0,0,0,0.25)] placeholder:text-texte-primary-dark/70 mb-3" />
@@ -283,21 +292,21 @@ function updateCardsIndex() {
 
               <input v-model="form.phone" type="tel" placeholder="Téléphone" class="w-full min-w-0 h-[50px] lg:h-[43px] rounded-lg bg-white px-3 text-small text-texte-primary-dark shadow-[0_0_4px_rgba(0,0,0,0.25)] placeholder:text-texte-primary-dark/70 mb-4" />
 
-              <div v-if="showPmeMessage" class="mb-4 rounded-lg bg-white p-4 text-small text-texte-primary-dark ring-1 ring-violet-900/30">
-                Seul les entreprises de plus de 1000 employés peuvent accueillir une collecte de sang. Si vous êtes une PME vous pouvez vous rendre
-                <a href="#/informations#pme" class="underline text-violet-900">sur la page information</a> pour découvrir comment soutenir le don du sang autrement et faire la différence malgré votre taille !
-              </div>
-              <div v-if="status.type === 'success'" class="mb-4 rounded-lg bg-green-50 p-4 text-small text-green-800 ring-1 ring-green-300">
-                {{ status.message }}
-              </div>
-              <div v-if="status.type === 'error'" class="mb-4 rounded-lg bg-red-50 p-4 text-small text-red-800 ring-1 ring-red-300">
-                {{ status.message }}
-              </div>
-
               <p class="text-xs text-gray-500">Vos données sont transmises au CTS et utilisées uniquement dans le cadre de l'organisation de votre collecte de sang.</p>
               <button type="submit" class="w-full rounded-full lg:rounded-2xl bg-button-primary py-4 text-regular text-white shadow">
                 Envoyer
               </button>
+
+              <div v-if="showPmeMessage" class="mt-4 rounded-lg bg-white p-4 text-small text-texte-primary-dark ring-1 ring-violet-900/30">
+                Seul les entreprises de plus de 1000 employés peuvent accueillir une collecte de sang. Si vous êtes une PME vous pouvez vous rendre
+                <a href="#/informations#pme" class="underline text-violet-900">sur la page information</a> pour découvrir comment soutenir le don du sang autrement et faire la différence malgré votre taille !
+              </div>
+              <div v-if="status.type === 'success'" class="mt-4 rounded-lg bg-green-50 p-4 text-small text-green-800 ring-1 ring-green-300">
+                {{ status.message }}
+              </div>
+              <div v-if="status.type === 'error'" class="mt-4 rounded-lg bg-red-50 p-4 text-small text-red-800 ring-1 ring-red-300">
+                {{ status.message }}
+              </div>
             </form>
           </div>
         </div>
