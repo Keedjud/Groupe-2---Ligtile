@@ -41,8 +41,8 @@
 
 ### Backend
 - [x] Migration `collections` : suppression `nb_registered`, ajout `capacity`, `logo_url` nullable
-- [x] Migrations `quiz_events`, `page_events`, `contact_requests`, `pme_contacts`
-- [x] Modèles `QuizEvent`, `PageEvent`, `ContactRequest`, `PmeContact`
+- [x] Migrations `quiz_events`, `page_events`, `contact_requests`, `pme_contacts`, `contact_stats`
+- [x] Modèles `QuizEvent`, `PageEvent`, `ContactRequest`, `PmeContact`, `ContactStat`
 - [x] Réorganisation routes API en 3 fichiers (`public.php`, `dashboard.php`, `cobrand.php`)
 - [x] **[URGENT]** Fix `ApiTropheeController` : supprimer référence à `nb_registered`, corriger N+1
 - [ ] Auth Sanctum : `POST /api/v1/auth/login`, `POST /api/v1/auth/logout` **(Loïc)**
@@ -51,6 +51,7 @@
 - [ ] Métriques : `GET /api/v1/metrics` **(Loïc)**
 - [x] Endpoint cobrand public : `GET /api/v1/cobrand/{token}` **(Inoé)**
 - [ ] Tracking : `POST /api/v1/quiz/event`, `POST /api/v1/page/event` **(Inoé)**
+- [x] Comptage anonyme des demandes de contact : `contact_stats` — juste un horodatage par soumission, aucune donnée personnelle **(Inoé)**
 
 ### Frontend site public
 - [ ] Fix nav : lien actif non mis en évidence (Elia)
@@ -151,11 +152,11 @@ Ajouter `onedoc_url` et `capacity` dans `CollecteForm.vue`, merger dans `develop
 
 ---
 
-### ✅ Phase 5B — Backend cobrand (Inoé) — TERMINÉE
-
-**Branche :** `feature/backend-cobrand` (mergée)
+### ✅ Phase 5B — Backend cobrand + contact_stats (Inoé) — TERMINÉE
 
 `ApiCobrandController` créé : `GET /api/v1/cobrand/{token}` retourne les données de collecte (couleurs, dates, logo, lien Onedoc, entreprise, adresse) ou 404 si le token est inconnu.
+
+`ContactStat` créé : comptage anonyme des demandes de contact — un horodatage par soumission, aucune donnée personnelle stockée.
 
 ---
 
