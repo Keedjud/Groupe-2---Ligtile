@@ -1,8 +1,12 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\Api\v1\ApiCobrandController;
 
-// Routes cobrand — publiques (Phases 3 et 4)
-// GET  /api/v1/cobrand/{token}
-// POST /api/v1/quiz/event
-// POST /api/v1/page/event
+Route::prefix('v1')->group(function () {
+    Route::get('/cobrand/{token}', [ApiCobrandController::class, 'show']);
+
+    // À venir (Phase 6)
+    // Route::post('/quiz/event', ...)
+    // Route::post('/page/event', ...)
+});
