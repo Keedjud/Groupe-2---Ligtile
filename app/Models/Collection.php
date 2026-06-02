@@ -5,6 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Attributes\Fillable;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 
 #[Fillable([
     'company_id', 'user_id', 'address_id',
@@ -27,5 +28,15 @@ class Collection extends Model
     public function address(): BelongsTo
     {
         return $this->belongsTo(Address::class);
+    }
+
+    public function quizEvents(): HasMany
+    {
+        return $this->hasMany(QuizEvent::class);
+    }
+
+    public function pageEvents(): HasMany
+    {
+        return $this->hasMany(PageEvent::class);
     }
 }
