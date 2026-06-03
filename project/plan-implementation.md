@@ -72,7 +72,7 @@
 - [x] Fix nav : lien actif non mis en évidence (Elia)
 - [x] Fix footer : lien "Accessibilité" à déplacer à droite (Elia)
 - [ ] Labels sur tous les champs de formulaire — `Home.vue`, `Information.vue` (Elia)
-- [ ] Alts sur toutes les images (via `git cherry-pick 63f3b65`) (Elia)
+- [x] Alts sur toutes les images (via `git cherry-pick 63f3b65`) (Elia)
 - [ ] Focus trap sur la modale des critères dans `Trophees.vue` (Elia)
 - [ ] Fix email PME : corriger `resources/views/emails/contactPme.blade.php` — crash `htmlspecialchars` dû à un objet `Message` passé comme string (Elia)
 - [x] Mentions vie privée sur les deux formulaires de contact
