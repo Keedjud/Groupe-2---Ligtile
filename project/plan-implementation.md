@@ -23,7 +23,7 @@
 | ✅ Résolu | `CollecteForm.vue` : champs `onedoc_url`, `capacity` et `kit_url` ajoutés | `fix/dashboard-post-audit` |
 | ✅ Résolu | `ManageCollectionController` : validation `onedoc_url`, `capacity`, `kit_url` + `store()` / `update()` corrigés | `fix/dashboard-post-audit` |
 | ✅ Résolu | `useCollectes.js` : `onedoc_url`, `capacity`, `kit_url` dans les deux adapters | `fix/dashboard-post-audit` |
-| 🔴 Urgent | `App.vue` dashboard : redirection cassée au refresh (async/sync mismatch) | Inoé |
+| ✅ Résolu | `App.vue` dashboard : redirection cassée au refresh — `await chargerUtilisateur()` + garde `verifAuthEnCours` | `fix/dashboard-post-audit` |
 | 🟡 Normal | `DashboardMetricsController` : `collectes_recurrentes` filtre `> 2` au lieu de `>= 2` — **corrigé dans ce commit** | ✅ |
 | 🟡 Normal | `Metriques.vue` : sélecteur période → remplacer par sélecteur multi-année | Inoé |
 | 🟡 Normal | `Metriques.vue` + `DashboardMetricsController` : skip affiché avec `%` mais retourné en nombre brut | Inoé |
@@ -81,7 +81,7 @@
 ### Frontend dashboard — fixes post-audit **(Inoé, Phase 4B)**
 - [x] `CollecteForm.vue` : champs `capacity` (obligatoire), `onedoc_url` (obligatoire), `kit_url` (obligatoire, lien KDrive) ajoutés
 - [x] `useCollectes.js` : `onedoc_url`, `capacity`, `kit_url` dans `adapterDeApi` et `adapterVersApi`
-- [ ] `App.vue` : corriger la redirection au refresh — attendre la résolution de `chargerUtilisateur()` avant de vérifier `estConnecte`
+- [x] `App.vue` : corriger la redirection au refresh — `await chargerUtilisateur()` + garde `verifAuthEnCours` (évite le flash Login)
 - [ ] `Metriques.vue` : remplacer le sélecteur de période par un multi-select d'années ; passer `years[]` à l'API
 - [ ] `Metriques.vue` : corriger l'affichage du skip (ne plus ajouter `%` si c'est un nombre brut, ou afficher le vrai taux calculé)
 - [ ] `CollecteDetail.vue` : ajouter aperçu des couleurs de co-branding (primaire + secondaire) **(Inoé)**
