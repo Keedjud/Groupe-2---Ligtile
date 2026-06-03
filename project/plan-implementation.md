@@ -54,7 +54,7 @@
 - [x] Comptage anonyme des demandes de contact : `contact_stats` — juste un horodatage par soumission, aucune donnée personnelle **(Inoé)**
 
 ### Frontend site public
-- [ ] Fix nav : lien actif non mis en évidence (Elia)
+- [x] Fix nav : lien actif non mis en évidence (Elia)
 - [ ] Fix footer : lien "Accessibilité" à déplacer à droite (Elia)
 - [ ] Labels sur tous les champs de formulaire — `Home.vue`, `Information.vue` (Elia)
 - [ ] Alts sur toutes les images (via `git cherry-pick 63f3b65`) (Elia)
