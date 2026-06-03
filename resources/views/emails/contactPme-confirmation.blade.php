@@ -22,10 +22,7 @@
                 Bonjour,
             </p>
             <p style="font-size:15px;line-height:1.6;">
-                Merci pour votre message. Même avec une équipe de moins de 1 000 collaborateurs,
-                la participation reste tout à fait possible : rendez-vous en groupe dans un centre de
-                transfusion sanguine ou lors d'une collecte proche de chez vous. Nous revenons vers
-                vous rapidement pour organiser votre venue.
+                Merci pour votre message, dans le cas d'une équipe contenant moins de 1 000 collaborateur.ice.s, il est toujours possible d'organiser une visite de groupe dans nos locaux. Nous reviendrons rapidement vers vous pour organiser votre visite.
             </p>
             <p style="font-size:15px;line-height:1.6;margin-bottom:0;">
                 À bientôt,<br>
