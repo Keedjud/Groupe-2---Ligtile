@@ -86,7 +86,7 @@
 - [x] `DashboardMetricsController` : filtre `years[]` sur collections (PHP) et `ContactStat` (whereYear) ; `engagementEntreprises` reçoit `$annees`
 - [x] `Metriques.vue` + `DashboardMetricsController` : skip retourné en `%` réel (`skip / (répondues + sautées) × 100`)
 - [ ] `CollecteDetail.vue` : ajouter aperçu des couleurs de co-branding (primaire + secondaire) **(Inoé)**
-- [ ] `QuestionFlow.vue` : supprimer les `setTimeout` artificiels, fusionner étapes 3+4 en une seule **(Inoé)**
+- [x] `QuestionFlow.vue` : `setTimeout` supprimés, `genererKit()` supprimé, flux réduit à 3 étapes (vérif → lien → mail)
 - [x] `ManageCollectionController` : alias `withCount` renommé `nb_inscrits`
 - [x] `CollectionKitMail` : passe `kit_url` (`lienKitComm`) au template email
 - [x] `collection-kit.blade.php` : bouton "Télécharger le kit" conditionnel si `lienKitComm` renseigné ; suppression de l'attachement `public/kit/`
