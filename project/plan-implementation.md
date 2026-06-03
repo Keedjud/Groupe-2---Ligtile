@@ -92,7 +92,7 @@ UI complète. `onedoc_url` et `capacity` manquants dans le formulaire → corrig
 
 ---
 
-### ✅ Phase 4B — Fix post-audit dashboard (Inoé) — MERGÉE dans develop
+### ✅ Phase 4B — Fix post-audit dashboard (Inoé) — TERMINÉE
 
 **Branche :** `fix/dashboard-post-audit` (mergée le 3 juin 2026)
 
