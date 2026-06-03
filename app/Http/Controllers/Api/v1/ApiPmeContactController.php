@@ -5,7 +5,9 @@ namespace App\Http\Controllers\Api\v1;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Mail;
 use App\Mail\ContactPmeMail;
+use App\Mail\ContactPmeConfirmationMail;
 use App\Http\Controllers\Controller;
+use App\Models\ContactStat;
 
 class ApiPmeContactController extends Controller
 {
@@ -18,7 +20,9 @@ class ApiPmeContactController extends Controller
         ]);
 
         try {
+            ContactStat::create([]);
             Mail::to('contact@hug-collecte.ch')->send(new ContactPmeMail($validated));
+            Mail::to($validated['email'])->send(new ContactPmeConfirmationMail($validated));
 
             return response()->json([
                 'success' => true,

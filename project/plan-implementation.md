@@ -1,99 +1,103 @@
 # Plan d'implémentation — Fin de projet
 
-> Mis à jour le 2 juin 2026. Ce document définit qui fait quoi, dans quel ordre, pour finir le projet sans se marcher dessus.
+> Mis à jour le 2 juin 2026 (décisions post-audit dashboard). Ce document définit qui fait quoi, dans quel ordre, pour finir le projet sans se marcher dessus.
 
 ---
 
 ## L'équipe
 
-| Développeur | Rôle dans la suite                                                                                           |
-| ----------- | ------------------------------------------------------------------------------------------------------------ |
-| **Loïc**    | Merger le dashboard UI → maquettes → revenir connecter le dashboard au vrai back + page Prévention cobrandée |
-| **Elia**    | Page Accueil du site cobrandé + accessibilité                                                                |
-| **Inoé**    | Back-end, cobrand App.vue + Quiz + Redirect, reviews, coordination                                           |
+| Développeur | Rôle dans la suite |
+|-------------|-------------------|
+| **Loïc** | Maquettes — en pause sur le code. Reprend sur `cobrand/views/Prevention.vue` (Phase 7C) quand disponible. |
+| **Elia** | Fix et finitions du site public uniquement — ne touche pas au dashboard pour éviter les conflits |
+| **Inoé** | Tous les fixes dashboard (Phase 4B), cobrand complet (Phases 6 + 7), coordination |
 
 **Règle d'or :** Avant d'ouvrir une PR, faire `git merge develop` sur sa branche et résoudre ses propres conflits. Un reviewer ne résout jamais les conflits d'une autre personne.
 
 ---
 
-## Actions immédiates — premier jour
+## Bugs identifiés en production
 
-### Loïc — à faire ce matin
+| Priorité | Bug | Responsable |
+|----------|-----|-------------|
+| 🔴 Urgent | `CollecteForm.vue` : champs `onedoc_url` et `capacity` manquants | Inoé |
+| 🔴 Urgent | `ManageCollectionController` : `onedoc_url` hardcodé à `null`, `capacity` absent de la validation | Inoé |
+| 🔴 Urgent | `useCollectes.js` : `adapterVersApi` ne transmet ni `onedoc_url` ni `capacity` | Inoé |
+| 🔴 Urgent | `App.vue` dashboard : redirection cassée au refresh (async/sync mismatch) | Inoé |
+| 🟡 Normal | `DashboardMetricsController` : `collectes_recurrentes` filtre `> 2` au lieu de `>= 2` — **corrigé dans ce commit** | ✅ |
+| 🟡 Normal | `Metriques.vue` : sélecteur période → remplacer par sélecteur multi-année | Inoé |
+| 🟡 Normal | `Metriques.vue` + `DashboardMetricsController` : skip affiché avec `%` mais retourné en nombre brut | Inoé |
+| 🟡 Normal | `ManageCollectionController` : alias `nb_registered` → renommer en `nb_inscrits` — **corrigé dans ce commit** | ✅ |
+| 🟡 Normal | `CollecteForm.vue` : aperçu co-branding en temps réel + warning contraste WCAG | ⏳ En attente des maquettes |
+| 🟡 Normal | `QuestionFlow.vue` : `setTimeout` fictifs + étapes 3+4 à fusionner | Inoé |
+| 🟡 Normal | Page Trophées : `ApiTropheeController` utilise `participant_count = 0` provisoire | Inoé (Phase 6) |
+| 🟡 Normal | Navigation : lien actif non mis en évidence dans le header | Elia |
+| 🟡 Normal | Footer : lien "Accessibilité" mal positionné | Elia |
+| 🟡 Normal | Email PME cassé — crash `htmlspecialchars` | Elia |
 
-```bash
-git checkout feature/dashboard
-git merge develop   # récupère les fondations (migrations, routes, namespace)
-# conflits peu probables — branches orthogonales
-git push
-```
+---
 
-Ouvrir la PR `feature/dashboard` → `develop`. Une fois mergée : passer sur les maquettes.
+## Décisions actées post-audit (2 juin 2026)
 
-### Elia — à faire ce matin
-
-Créer la branche d'accessibilité (indépendante, peut démarrer immédiatement) :
-
-```bash
-git checkout develop
-git checkout -b fix/accessibilite-v2
-git cherry-pick 63f3b65   # récupère "Add alts to images" de l'ancienne branche
-git push -u origin fix/accessibilite-v2
-```
-
-Voir Phase 9 pour le détail des tâches.
-
-### Inoé — à faire ce matin
-
-Merger `chore/foundations` → `develop`, puis démarrer la Phase 3.
+| Sujet | Décision |
+|-------|----------|
+| `onedoc_url` | Champ manuel : le CTS crée sa collecte sur Onedoc, copie l'URL et la colle dans le formulaire. Champ obligatoire. |
+| `capacity` | Champ optionnel (integer nullable). Collectes sans capacity exclues du taux de remplissage. |
+| Filtre métriques | Sélection d'année(s) uniquement — multi-select. Remplace le sélecteur mois/trimestre/année. S'applique à tous les groupes A–E. |
+| Kit de communication | ⏳ À définir lors d'une prochaine discussion (workflow, contenu, lien avec Onedoc URL) |
+| Slugs par question (métriques) | À aligner lors de la Phase 7D une fois `quizQuestions.js` défini |
+| Nommage endpoints | Endpoints réels (`/session/connect`, `/manage-collections`, `/analytics-stats`) — plan mis à jour, code cohérent |
 
 ---
 
 ## Ce qui reste à faire
 
 ### Backend
-
 - [x] Migration `collections` : suppression `nb_registered`, ajout `capacity`, `logo_url` nullable
-- [x] Migrations `quiz_events`, `page_events`, `contact_requests`, `pme_contacts`
-- [x] Modèles `QuizEvent`, `PageEvent`, `ContactRequest`, `PmeContact`
+- [x] Migrations `quiz_events`, `page_events`, `contact_requests`, `pme_contacts`, `contact_stats`
+- [x] Modèles `QuizEvent`, `PageEvent`, `ContactRequest`, `PmeContact`, `ContactStat`
 - [x] Réorganisation routes API en 3 fichiers (`public.php`, `dashboard.php`, `cobrand.php`)
-- [ ] Auth Sanctum : `POST /api/v1/auth/login`, `POST /api/v1/auth/logout`
-- [ ] CRUD collections : `GET`, `POST`, `PUT /api/v1/collections`
-- [ ] Endpoint cobrand public : `GET /api/v1/cobrand/{token}`
-- [ ] Tracking : `POST /api/v1/quiz/event`, `POST /api/v1/page/event`
-- [ ] Métriques : `GET /api/v1/metrics`
-- [ ] Enregistrement en base des deux formulaires de contact (envoient uniquement un email pour l'instant)
+- [x] Auth Sanctum : `POST /api/v1/session/connect`, `POST /api/v1/session/disconnect`
+- [x] CRUD collectes : `GET/POST/PUT/DELETE /api/v1/manage-collections`
+- [x] Upload logo (data URL base64, stocké en `longText`)
+- [x] Métriques : `GET /api/v1/analytics-stats`
+- [x] Endpoint cobrand public : `GET /api/v1/cobrand/{token}`
+- [x] Comptage anonyme demandes contact : `contact_stats`
+- [x] **Fix `ManageCollectionController`** : `onedoc_url` (required), `capacity` (required, integer ≥ 1), `kit_url` (nullable) ajoutés à la validation, `store()` et `update()`
+- [ ] **Fix `DashboardMetricsController`** : ajouter filtre `years[]` sur tous les groupes A–E **(Inoé)**
+- [ ] **Fix `DashboardMetricsController`** : calculer le taux de skip en `%` dans `performanceParQuestion()` **(Inoé)**
+- [ ] Tracking : `POST /api/v1/quiz/event`, `POST /api/v1/page/event` **(Inoé, Phase 6)**
 
-### Frontend cobrand
+### Frontend site public
+- [ ] Fix nav : lien actif non mis en évidence **(Elia)**
+- [ ] Fix footer : lien "Accessibilité" à déplacer à droite **(Elia)**
+- [ ] Labels sur tous les champs de formulaire — `Home.vue`, `Information.vue` **(Elia)**
+- [ ] Alts sur toutes les images (via `git cherry-pick 63f3b65`) **(Elia)**
+- [ ] Focus trap sur la modale des critères dans `Trophees.vue` **(Elia)**
+- [ ] Fix email PME : corriger `resources/views/emails/contactPme.blade.php` **(Elia)**
+- [x] Mentions vie privée sur les deux formulaires de contact
 
-- [ ] `cobrand/App.vue` — routage hash + chargement données collecte (Inoé)
-- [ ] `cobrand/views/Accueil.vue` (Elia)
-- [ ] `cobrand/views/Prevention.vue` — scrollytelling (Loïc)
-- [ ] `cobrand/views/Quiz.vue` — P1 + P2 + tracking (Inoé)
-- [ ] `cobrand/views/Redirect.vue` — page Onedoc + tracking (Inoé)
-- [ ] `cobrand/composables/useQuizStore.js` (Inoé)
+### Frontend dashboard — fixes post-audit **(Inoé, Phase 4B)**
+- [x] `CollecteForm.vue` : champs `capacity` (obligatoire), `onedoc_url` (obligatoire), `kit_url` (optionnel, lien KDrive) ajoutés
+- [x] `useCollectes.js` : `onedoc_url`, `capacity`, `kit_url` dans `adapterDeApi` et `adapterVersApi`
+- [ ] `App.vue` : corriger la redirection au refresh — attendre la résolution de `chargerUtilisateur()` avant de vérifier `estConnecte`
+- [ ] `Metriques.vue` : remplacer le sélecteur de période par un multi-select d'années ; passer `years[]` à l'API
+- [ ] `Metriques.vue` : corriger l'affichage du skip (ne plus ajouter `%` si c'est un nombre brut, ou afficher le vrai taux calculé)
+- [ ] `CollecteDetail.vue` : ajouter aperçu des couleurs de co-branding (primaire + secondaire) **(Inoé)**
+- [ ] `QuestionFlow.vue` : supprimer les `setTimeout` artificiels, fusionner étapes 3+4 en une seule **(Inoé)**
+- [x] `ManageCollectionController` : alias `withCount` renommé `nb_inscrits`
+- [x] `CollectionKitMail` : passe `kit_url` (`lienKitComm`) au template email
+- [x] `collection-kit.blade.php` : bouton "Télécharger le kit" conditionnel si `lienKitComm` renseigné ; suppression de l'attachement `public/kit/`
+- [x] Migration `add_kit_url_to_collections` : champ `kit_url` nullable ajouté
 
-### Frontend dashboard
-
-- [x] UI complète dans `feature/dashboard` (Loïc) — Login, Collectes, CollecteDetail, CollecteForm, Metriques
-- [ ] Ajouter `onedoc_url` et `capacity` dans `CollecteForm.vue` + mock (Loïc, avant PR)
-- [ ] Merger `feature/dashboard` dans `develop`
-- [ ] Remplacer auth mock par vraie auth Sanctum
-- [ ] Remplacer données mock par appels API réels
-- [ ] Connecter `Metriques.vue` à `GET /api/v1/metrics`
-
-### Accessibilité
-
-- [x] Mentions vie privée ajoutées sur les deux formulaires de contact
-- [ ] Alts sur toutes les images (via `git cherry-pick 63f3b65` dans `fix/accessibilite-v2`)
-- [ ] Labels sur tous les champs de formulaire (`Home.vue`, `Information.vue`)
-- [ ] Focus trap sur la modale des critères (`Trophees.vue`)
-
-### Dette technique
-
-- [x] Namespace `API/` → `Api/` (compat Linux/prod)
-- [x] Suppression `resources/js/app.js` (artefact inutilisé)
-- [ ] Refactoriser `ApiTropheeController` : N+1 queries + calculer `participant_count` depuis `quiz_events` (à faire après Phase 4)
-- [x] Remplacer `fetch()` natif dans `Home.vue` et `Information.vue` par `useFetchApi`
+### Frontend cobrand **(Inoé)**
+- [ ] `cobrand/App.vue` — routage hash + chargement données collecte
+- [ ] `cobrand/views/Accueil.vue`
+- [ ] `cobrand/views/Prevention.vue` — scrollytelling **(Loïc quand disponible)**
+- [ ] `cobrand/views/Quiz.vue` — P1 + P2 + tracking
+- [ ] `cobrand/views/Redirect.vue` — page Onedoc + tracking
+- [ ] `cobrand/composables/useQuizStore.js`
+- [ ] `cobrand/constants/quizQuestions.js` — slugs stables P1 + P2 *(Phase 7D — slugs à aligner ensuite dans `DashboardMetricsController`)*
 
 ---
 
@@ -101,167 +105,102 @@ Merger `chore/foundations` → `develop`, puis démarrer la Phase 3.
 
 ### ✅ Phase 1 — Fondations (Inoé) — TERMINÉE
 
-Branche `chore/foundations` — à merger dans `develop` ce matin.
-
-Ce qui a été fait :
-
-- Namespace `API/` → `Api/` (compat Linux)
-- Suppression `resources/js/app.js`
-- Migration `collections` : `nb_registered` supprimé, `capacity` ajouté, `logo_url` nullable
-- Migrations : `quiz_events`, `page_events`, `contact_requests`, `pme_contacts`
-- Modèles : `QuizEvent`, `PageEvent`, `ContactRequest`, `PmeContact`
-- Routes API réorganisées en `routes/api/{public,dashboard,cobrand}.php`
-- Seeder nettoyé
-- Mentions vie privée sur les formulaires de contact
-- Documentation tracking (concept.md) mise à jour
+Namespace, migrations, modèles, routes réorganisées, seeder, vie privée.
 
 ---
 
-### Phase 2 — Dashboard UI (Loïc)
+### Phase 2 — Fix et finitions site public **(Elia)**
 
-**À faire ce matin.** Deux champs manquent dans `CollecteForm.vue` avant que la PR puisse être ouverte :
+**Branche :** `fix/public-site`
 
-| Champ        | Type                | Description                                                                                                 |
-| ------------ | ------------------- | ----------------------------------------------------------------------------------------------------------- |
-| `onedoc_url` | `string`, requis    | URL de la plateforme Onedoc pour l'inscription des employés — le CTS la saisit à la création de la collecte |
-| `capacity`   | `number`, optionnel | Nombre de créneaux disponibles — utilisé pour le taux de remplissage dans les métriques                     |
-
-Ces deux champs sont dans le schéma DB (`collections`) et doivent être présents dans le formulaire et dans les données mock de `useCollectes.js`.
-
-**Ensuite :**
-
-```bash
-git checkout feature/dashboard
-git merge develop   # récupère les fondations (migrations, routes, namespace)
-git push
-```
-
-Ouvrir la PR. Une fois mergée : passer sur les maquettes.
-
-**Ce que la Phase 1 change dans son code :**
-
-- `nb_registered` n'existe plus en DB → son mock utilise `nb_inscrits` (nom différent, pas de conflit)
-- Routes API réorganisées → sans impact sur son code frontend
-
-**Après merge :** Loïc passe sur les maquettes.
+| Tâche | Fichier(s) |
+|-------|-----------|
+| Fix navigation active | `SiteHeader.vue`, `useNavigation.js` |
+| Fix footer | `SiteFooter.vue` |
+| Alts images — `git cherry-pick 63f3b65` | vues du site public |
+| Labels sur champs de formulaire | `Home.vue`, `Information.vue` |
+| Focus trap modale | `Trophees.vue` |
+| Fix email PME | `resources/views/emails/contactPme.blade.php` |
 
 ---
 
-### Phase 3 — Backend dashboard + auth Sanctum (Inoé, ~2–3 jours)
+### ✅ Phase 3 — Fix urgent Trophées (Inoé) — TERMINÉE
 
-**Prérequis :** Phase 1 mergée.
-**Branche :** `feature/backend-dashboard`
-
-| Tâche                                                   | Fichier cible                                                                   |
-| ------------------------------------------------------- | ------------------------------------------------------------------------------- |
-| Auth login/logout Sanctum                               | `app/Http/Controllers/Api/v1/AuthController.php`, `routes/api/dashboard.php`    |
-| CRUD collectes                                          | `app/Http/Controllers/Api/v1/CollectionController.php`                          |
-| Upload logo (storage + lien public)                     | Intégré dans `CollectionController`                                             |
-| Endpoint cobrand public : `GET /api/v1/cobrand/{token}` | `app/Http/Controllers/Api/v1/CobrandController.php`, `routes/api/cobrand.php`   |
-| `GET /api/v1/metrics` (auth)                            | `app/Http/Controllers/Api/v1/MetricsController.php`, `routes/api/dashboard.php` |
-| Enregistrement en base des deux formulaires de contact  | `ApiContactController.php`, `ApiPmeContactController.php`                       |
+`ApiTropheeController` corrigé. `participant_count` reste provisoirement à `0` en attendant Phase 6.
 
 ---
 
-### Phase 4 — Backend tracking (Inoé, ~1 jour, après Phase 3)
+### ✅ Phase 4 — Dashboard UI (Loïc) — MERGÉE
 
+UI complète. `onedoc_url` et `capacity` manquants dans le formulaire → corrigés en Phase 4B.
+
+---
+
+### Phase 4B — Fix post-audit dashboard **(Inoé) ← PRIORITÉ IMMÉDIATE**
+
+**Branche :** `fix/dashboard-post-audit`
+
+| Tâche | Fichier(s) cible(s) |
+|-------|---------------------|
+| Ajouter `onedoc_url` (requis, string) dans formulaire + validation + adapters | `CollecteForm.vue`, `ManageCollectionController.php`, `useCollectes.js` |
+| Ajouter `capacity` (optionnel, integer) dans formulaire + validation + adapters | `CollecteForm.vue`, `ManageCollectionController.php`, `useCollectes.js` |
+| Corriger la redirection async au refresh | `App.vue` |
+| Remplacer sélecteur période par multi-select années | `Metriques.vue` |
+| Ajouter filtre `years[]` sur tous les groupes A–E | `DashboardMetricsController.php` |
+| Corriger affichage skip (taux % réel) | `DashboardMetricsController.php`, `Metriques.vue` |
+| Aperçu co-branding + warning contraste WCAG dans le formulaire | `CollecteForm.vue`, nouveau `useColorContrast.js` — **⏳ contenu aperçu en attente des maquettes** |
+| Ajouter aperçu couleurs primaire + secondaire | `CollecteDetail.vue` |
+| Simplifier flow `QuestionFlow.vue` : supprimer `setTimeout` fictifs, fusionner étapes 3+4 | `QuestionFlow.vue` |
+
+---
+
+### ✅ Phase 5 — Backend dashboard + auth Sanctum (Loïc) — TERMINÉE
+
+Endpoints réels (nommage différent du plan initial) :
+- `POST /api/v1/session/connect` — login
+- `POST /api/v1/session/disconnect` — logout
+- `GET /api/v1/session/current-user` — utilisateur courant
+- `GET/POST/PUT/DELETE /api/v1/manage-collections` — CRUD
+- `POST /api/v1/manage-collections/{id}/kit/send` — envoi kit *(à confirmer lors de la discussion kit comm)*
+- `GET /api/v1/analytics-stats` — métriques
+
+---
+
+### ✅ Phase 5B — Backend cobrand + contact_stats (Inoé) — TERMINÉE
+
+`GET /api/v1/cobrand/{token}` opérationnel. `ContactStat` créé.
+
+---
+
+### Phase 6 — Backend tracking **(Inoé, ~1 jour)**
+
+**Prérequis :** Phase 5B ✅  
 **Branche :** `feature/backend-tracking`
 
-| Tâche                                         | Fichier cible                                       |
-| --------------------------------------------- | --------------------------------------------------- |
+| Tâche | Fichier cible |
+|-------|--------------|
 | `POST /api/v1/quiz/event` (public, sans auth) | `QuizEventController.php`, `routes/api/cobrand.php` |
 | `POST /api/v1/page/event` (public, sans auth) | `PageEventController.php`, `routes/api/cobrand.php` |
+| Remplacer `participant_count = 0` dans `ApiTropheeController` par calcul réel | `ApiTropheeController.php` |
 
 ---
 
-### Phase 5 — Cobrand : squelette App.vue (Inoé, après Phase 3)
+### Phase 7 — Cobrand **(Inoé)**
 
-**Prérequis :** `GET /api/v1/cobrand/{token}` opérationnel.
-**Branche :** `feature/cobrand-app`
+**Prérequis :** Phase 5B ✅
 
-Fichiers : `resources/js/cobrand/App.vue`, `resources/js/cobrand/app.js`
+**7A — `cobrand/App.vue`** (`feature/cobrand-app`) — routage hash, co-branding, fenêtre de disponibilité
 
-Ce que ça fait :
+**7B — `cobrand/views/Accueil.vue`** (`feature/cobrand-accueil`)
 
-- Charge les données de la collecte depuis l'API
-- Applique les couleurs de co-branding via variables CSS dynamiques
-- Gère le routage hash entre les 4 vues
+**7C — `cobrand/views/Prevention.vue`** (`feature/cobrand-prevention`) — **(Loïc quand disponible, en parallèle de 7D)**
+- Émet `prevention_entered` / `prevention_exited` via `$emit` → ne pas appeler l'API directement
 
-> Branche intentionnellement courte — mergée rapidement pour débloquer Elia et Loïc.
-
----
-
-### Phase 6 — Cobrand : Accueil (Elia) + Prévention (Loïc) — en parallèle après Phase 5
-
-**Prérequis :** Phase 5 mergée dans `develop`.
-
-**Règle de travail : une branche par vue, un seul fichier par branche, sync develop obligatoire avant PR.**
-
----
-
-**Tâche 6A — `cobrand/views/Accueil.vue` (Elia)**
-**Branche :** `feature/cobrand-accueil`
-
-- Fichier autorisé : `resources/js/cobrand/views/Accueil.vue` uniquement
-- Affiche les infos de la collecte (dates, lieu, co-branding) transmises par App.vue via props
-- Affiche le compteur d'inscrits
-- Bouton "Commencer" → navigation vers Prévention
-
----
-
-**Tâche 6B — `cobrand/views/Prevention.vue` (Loïc)**
-**Branche :** `feature/cobrand-prevention`
-
-- Fichier autorisé : `resources/js/cobrand/views/Prevention.vue` uniquement
-- Contenu scrollytelling de prévention
-- Émet `prevention_entered` / `prevention_exited` via un `$emit` vers App.vue — **ne pas appeler l'API de tracking directement depuis cette vue, coordonner avec Inoé**
-- Bouton "Continuer" → navigation vers Quiz
-
----
-
-### Phase 7 — Cobrand : Quiz + Redirect (Inoé, après Phases 4 et 5)
-
-**Branche :** `feature/cobrand-quiz`
-
-Fichiers :
-
-- `resources/js/cobrand/composables/useQuizStore.js`
-- `resources/js/cobrand/views/Quiz.vue`
-- `resources/js/cobrand/views/Redirect.vue` (peut partir de `feature/cobrand-quiz`)
-
----
-
-### Phase 8 — Dashboard : connexion au back réel (Loïc, après Phase 3)
-
-**Prérequis :** Phase 3 terminée.
-**Branche :** `feature/dashboard-api`
-
-Fichiers à modifier (uniquement dans `resources/js/dashboard/`) :
-
-- `composables/useSessionAuth.js` → remplacer mock par appels Sanctum réels
-- `composables/useCollectes.js` → remplacer `donneesMock` par `GET /api/v1/collections`
-- `views/CollecteForm.vue` → brancher `POST`/`PUT /api/v1/collections`
-- `views/Metriques.vue` → brancher `GET /api/v1/metrics`
-
-> `nb_inscrits` dans le mock correspond au `COUNT DISTINCT session_id WHERE event_type = 'onedoc_clicked'` calculé côté back — ce n'est plus un champ DB.
-
----
-
-### Phase 9 — Accessibilité (Elia, en parallèle de tout)
-
-**Branche :** `fix/accessibilite-v2` (ne pas réutiliser l'ancienne `fix/accessibilite`)
-
-```bash
-git checkout develop
-git checkout -b fix/accessibilite-v2
-git cherry-pick 63f3b65   # récupère "Add alts to images"
-```
-
-Tâches :
-
-- Vérifier et compléter les `alt` sur toutes les images du site public
-- Ajouter des `label` (ou `aria-label`) sur tous les champs des formulaires (`Home.vue`, `Information.vue`)
-- Focus trap sur la modale des critères dans `Trophees.vue`
+**7D — Quiz + Redirect** (`feature/cobrand-quiz`) — **(Inoé)**
+- `cobrand/constants/quizQuestions.js` — slugs stables P1 + P2
+- `useQuizStore.js`, `Quiz.vue`, `Redirect.vue`
+- **Règle critique : ne jamais modifier un slug en prod sans `UPDATE quiz_events SET question_slug = 'nouveau' WHERE question_slug = 'ancien'`**
+- **Après 7D :** aligner les slugs hardcodés dans `DashboardMetricsController::performanceParQuestion()` avec ceux définis ici
 
 ---
 
@@ -269,36 +208,41 @@ Tâches :
 
 ```
 Phase 1 ✅ (fondations)
-  ├── Phase 2 (dashboard UI, Loïc)  ← ce matin
-  └── Phase 3 (backend dashboard, Inoé)
-        ├── Phase 4 (tracking, Inoé)
-        │     └── Phase 7 (cobrand quiz/redirect, Inoé)
-        ├── Phase 5 (cobrand App.vue, Inoé)
-        │     ├── Phase 6A (cobrand accueil, Elia)
-        │     └── Phase 6B (cobrand prévention, Loïc)
-        └── Phase 8 (dashboard API, Loïc)
-
-Phase 9 (accessibilité, Elia) : indépendante, démarre ce matin
+  ├── Phase 2 (public site fixes, Elia)             ← en cours
+  ├── Phase 3 ✅ (fix trophées, Inoé)
+  ├── Phase 4 ✅ (dashboard UI, Loïc — mergée)
+  │     └── Phase 4B (fix post-audit, Inoé)         ← PRIORITÉ IMMÉDIATE
+  └── Phase 5 ✅ (backend dashboard, Loïc)
+        └── Phase 5B ✅ (backend cobrand, Inoé)
+              ├── Phase 6 (tracking, Inoé)           ← en cours
+              └── Phase 7A→D (cobrand, Inoé)         ← en cours
+                    └── aligner slugs dans DashboardMetricsController (après 7D)
 ```
 
 ---
 
 ## Fichiers partagés — zones à risque de conflit
 
-| Fichier                                            | Qui y touche       | Règle                        |
-| -------------------------------------------------- | ------------------ | ---------------------------- |
-| `routes/api/cobrand.php`                           | Inoé (Phases 3, 4) | Séquentiel — Inoé uniquement |
-| `routes/api/dashboard.php`                         | Inoé (Phase 3)     | Séquentiel — Inoé uniquement |
-| `resources/js/cobrand/App.vue`                     | Inoé (Phase 5)     | Inoé uniquement              |
-| `resources/js/cobrand/composables/useQuizStore.js` | Inoé (Phase 7)     | Inoé uniquement              |
+| Fichier | Qui y touche | Règle |
+|---------|-------------|-------|
+| `routes/api/cobrand.php` | Inoé (Phase 5B ✅, 6) | Inoé uniquement |
+| `routes/api/dashboard.php` | Inoé (Phase 4B) | Inoé uniquement |
+| `resources/js/cobrand/App.vue` | Inoé (Phase 7A) | Inoé uniquement |
+| `app/Http/Controllers/Api/v1/ManageCollectionController.php` | Inoé (Phase 4B) | Inoé uniquement |
+| `app/Http/Controllers/Api/v1/DashboardMetricsController.php` | Inoé (Phase 4B + post-7D) | Inoé uniquement |
+| `app/Http/Controllers/Api/v1/ApiTropheeController.php` | Inoé (Phase 3 ✅, puis 6) | Inoé uniquement |
 
 ---
 
-## Checklist avant merge dans `main`
+## Checklist avant merge final dans `main`
 
-- [ ] Phases 1–8 terminées et mergées dans `develop`
-- [ ] Phase 9 (accessibilité) terminée
+- [ ] Phase 4B terminée et mergée
+- [ ] Phase 2 (fixes public) terminée
+- [ ] Phase 6 (tracking backend) terminée
+- [ ] Phase 7A–D (cobrand complet) terminée
+- [ ] Slugs `DashboardMetricsController` alignés avec `quizQuestions.js`
+- [ ] Discussion kit de communication conclue et implémentation terminée
 - [ ] Variables d'environnement production configurées sur Infomaniak
 - [ ] Test bout en bout : parcours employé cobrandé complet (Accueil → Prévention → Quiz → Onedoc)
-- [ ] Test bout en bout : CTS crée une collecte dans le dashboard
+- [ ] Test bout en bout : CTS crée une collecte (avec `onedoc_url` et `capacity`)
 - [ ] Review finale du dashboard métriques avec données de test

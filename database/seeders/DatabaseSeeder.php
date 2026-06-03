@@ -48,7 +48,7 @@ class DatabaseSeeder extends Seeder
         $sig      = Company::create(['name' => 'SIG',              'address_id' => $addressSig->id,      'email' => 'contact@sig-ge.ch',    'phone_number' => '+41 22 420 80 00', 'nb_employee' => 45]);
 
         // ===== COLLECTIONS =====
-        // Logo local pour UBS, Coop, Nestlé — null pour les autres (placeholder)
+        // Logo local pour UBS, Coop, Nestlé
 
         // UBS (2021, 2023, 2024, 2025 terminées + 2026 en cours)
         Collection::create(['company_id' => $ubs->id, 'user_id' => $adminUser->id, 'address_id' => $addressUbs->id, 'start_date' => '2021-02-01', 'end_date' => '2021-02-28', 'primary_color' => '#EB001B', 'secondary_color' => '#c44444', 'logo_url' => '/images/ubs-1024-758683775 1.png',                      'onedoc_url' => 'https://onedoc.hug.ch/collections/ubs-2021',   'public_token' => Str::random(32)]);
@@ -76,24 +76,24 @@ class DatabaseSeeder extends Seeder
         Collection::create(['company_id' => $rolex->id, 'user_id' => $adminUser->id, 'address_id' => $addressRolex->id, 'start_date' => '2023-07-01', 'end_date' => '2023-07-31', 'primary_color' => '#000000', 'secondary_color' => '#c44444', 'logo_url' => null,                                       'onedoc_url' => 'https://onedoc.hug.ch/collections/rolex-2023',  'public_token' => Str::random(32)]);
         Collection::create(['company_id' => $rolex->id, 'user_id' => $adminUser->id, 'address_id' => $addressRolex->id, 'start_date' => '2025-08-01', 'end_date' => '2025-08-31', 'primary_color' => '#000000', 'secondary_color' => '#c44444', 'logo_url' => null,                                       'onedoc_url' => 'https://onedoc.hug.ch/collections/rolex-2025',  'public_token' => Str::random(32)]);
 
-        // Migros (2025, 2026 — pas de logo local → placeholder)
+        // Migros (2025, 2026)
         Collection::create(['company_id' => $migros->id, 'user_id' => $adminUser->id, 'address_id' => $addressMigros->id, 'start_date' => '2025-09-01', 'end_date' => '2025-09-30', 'primary_color' => '#FF6600', 'secondary_color' => '#c44444', 'logo_url' => null,                                       'onedoc_url' => 'https://onedoc.hug.ch/collections/migros-2025', 'public_token' => Str::random(32)]);
         Collection::create(['company_id' => $migros->id, 'user_id' => $adminUser->id, 'address_id' => $addressMigros->id, 'start_date' => '2026-04-01', 'end_date' => '2026-05-15', 'primary_color' => '#FF6600', 'secondary_color' => '#c44444', 'logo_url' => null,                                       'onedoc_url' => 'https://onedoc.hug.ch/collections/migros-2026', 'public_token' => Str::random(32)]);
 
-        // Swisscom (2024, 2026 en cours — pas de logo local → placeholder)
+        // Swisscom (2024, 2026 en cours)
         Collection::create(['company_id' => $swisscom->id, 'user_id' => $adminUser->id, 'address_id' => $addressSwisscom->id, 'start_date' => '2024-10-01', 'end_date' => '2024-10-31', 'primary_color' => '#0066CC', 'secondary_color' => '#c44444', 'logo_url' => null,                                    'onedoc_url' => 'https://onedoc.hug.ch/collections/swisscom-2024','public_token' => Str::random(32)]);
         Collection::create(['company_id' => $swisscom->id, 'user_id' => $adminUser->id, 'address_id' => $addressSwisscom->id, 'start_date' => '2026-05-01', 'end_date' => '2026-06-30', 'primary_color' => '#0066CC', 'secondary_color' => '#c44444', 'logo_url' => null,                                    'onedoc_url' => 'https://onedoc.hug.ch/collections/swisscom-2026','public_token' => Str::random(32)]);
 
-        // La Poste (2025 — pas de logo local → placeholder)
+        // La Poste (2025)
         Collection::create(['company_id' => $laPoste->id, 'user_id' => $adminUser->id, 'address_id' => $addressLaPoste->id, 'start_date' => '2025-01-15', 'end_date' => '2025-02-15', 'primary_color' => '#FFCC00', 'secondary_color' => '#c44444', 'logo_url' => null,                                     'onedoc_url' => 'https://onedoc.hug.ch/collections/poste-2025',  'public_token' => Str::random(32)]);
 
-        // Swatch (2026 — pas de logo local → placeholder)
+        // Swatch (2026)
         Collection::create(['company_id' => $swatch->id, 'user_id' => $adminUser->id, 'address_id' => $addressSwatch->id, 'start_date' => '2026-03-01', 'end_date' => '2026-03-31', 'primary_color' => '#FF0000', 'secondary_color' => '#c44444', 'logo_url' => null,                                     'onedoc_url' => 'https://onedoc.hug.ch/collections/swatch-2026', 'public_token' => Str::random(32)]);
 
-        // Hôpital de La Tour (2024 — pas de logo local → placeholder)
+        // Hôpital de La Tour (2024)
         Collection::create(['company_id' => $laTour->id, 'user_id' => $adminUser->id, 'address_id' => $addressLaTour->id, 'start_date' => '2024-04-01', 'end_date' => '2024-04-30', 'primary_color' => '#0099CC', 'secondary_color' => '#c44444', 'logo_url' => null,                                   'onedoc_url' => 'https://onedoc.hug.ch/collections/latour-2024', 'public_token' => Str::random(32)]);
 
-        // SIG (2026 — pas de logo local → placeholder)
+        // SIG (2026)
         Collection::create(['company_id' => $sig->id, 'user_id' => $adminUser->id, 'address_id' => $addressSig->id, 'start_date' => '2026-02-01', 'end_date' => '2026-02-28', 'primary_color' => '#339966', 'secondary_color' => '#c44444', 'logo_url' => null,                                        'onedoc_url' => 'https://onedoc.hug.ch/collections/sig-2026',    'public_token' => Str::random(32)]);
 
         // ===== LABELS =====
@@ -147,5 +147,11 @@ class DatabaseSeeder extends Seeder
         $tropheeOr2026     = Trophee::create(['name' => 'Trophée Or 2026',     'year' => 2026]); $nestle->trophees()->attach($tropheeOr2026->id,      ['rank' => 1]);
         $tropheeArgent2026 = Trophee::create(['name' => 'Trophée Argent 2026', 'year' => 2026]); $ubs->trophees()->attach($tropheeArgent2026->id,     ['rank' => 2]);
         $tropheeBronze2026 = Trophee::create(['name' => 'Trophée Bronze 2026', 'year' => 2026]); $coop->trophees()->attach($tropheeBronze2026->id,    ['rank' => 3]);
+
+        // ===== ÉVÉNEMENTS DE TRACKING (KPI analytics) =====
+        $this->call([
+            QuizEventSeeder::class,
+            PageEventSeeder::class,
+        ]);
     }
 }

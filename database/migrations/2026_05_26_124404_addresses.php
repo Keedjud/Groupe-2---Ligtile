@@ -13,10 +13,11 @@ return new class extends Migration
     {
         Schema::create('addresses', function (Blueprint $table) {
             $table->id();
-            $table->integer('postal_code');
+            // NPA et n° de rue en chaînes
+            $table->string('postal_code', 10);
             $table->string('city', 100);
             $table->string('street', 100);
-            $table->integer('number');
+            $table->string('number', 10);
             $table->timestamps();
         });
     }
