@@ -34,7 +34,7 @@ export function useCollectes() {
       couleur_secondaire: c.secondary_color,
       logo_url: c.logo_url,
       jeton_public: c.public_token,
-      nb_inscrits: c.nb_registered || 0,
+      nb_inscrits: c.nb_inscrits || 0,
     }
   }
 

@@ -91,7 +91,7 @@ class DashboardMetricsController extends Controller
 
         return [
             'taux_remplissage_moyen' => $tauxRemplissage->isEmpty() ? 0 : (int) round($tauxRemplissage->average()),
-            'collectes_recurrentes'  => $collections->groupBy('company_id')->filter(fn ($g) => $g->count() > 2)->count(),
+            'collectes_recurrentes'  => $collections->groupBy('company_id')->filter(fn ($g) => $g->count() >= 2)->count(),
             'demandes_contact'       => ContactRequest::count(),
             'top_entreprises'        => $topEntreprises,
         ];

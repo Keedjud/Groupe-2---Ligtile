@@ -43,7 +43,7 @@ class ManageCollectionController extends Controller
     /** Comptage inscrits (onedoc_clicked). */
     private function comptageInscrits(): array
     {
-        return ['quizEvents as nb_registered' => fn ($q) => $q->where('event_type', 'onedoc_clicked')];
+        return ['quizEvents as nb_inscrits' => fn ($q) => $q->where('event_type', 'onedoc_clicked')];
     }
 
     public function index()
