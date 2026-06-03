@@ -13,7 +13,7 @@
         @endphp
         <div style="background-color:{{ $couleurPrimaire }};border-radius:16px 16px 0 0;padding:28px 24px;text-align:center;">
             @if ($logoSrc)
-                <img src="{{ $logoSrc }}" alt="{{ $entreprise }}" style="max-height:56px;max-width:200px;margin-bottom:12px;display:inline-block;">
+                <img src="{{ $logoSrc }}" alt="logo {{ $entreprise }}" style="max-height:56px;max-width:200px;margin-bottom:12px;display:inline-block;">
                 <br>
             @endif
             <h1 style="margin:0;color:#ffffff;font-size:22px;">Votre kit de communication</h1>

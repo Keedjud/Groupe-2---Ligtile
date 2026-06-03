@@ -43,7 +43,7 @@ function gererFichier(event) {
       <img
         v-if="apercuUrl"
         :src="apercuUrl"
-        alt="logo"
+        alt="logo entreprise"
         class="h-full w-full object-contain p-1"
       />
       <!-- Icône upload sinon -->

@@ -11,37 +11,22 @@ const form = reactive({
 const showPmeMessage = ref(false)
 const status = ref({ type: '', message: '' })
 const submitting = ref(false)
-const submitted = ref(false)
 
 const { fetchApi } = useFetchApi('/api/v1')
 
-function submit(event) {
-  const formEl = event.target
-
-  if (!formEl.checkValidity()) {
-    return
-  }
-
-  event.preventDefault()
-
+function submit() {
   if (!form.employees_count || Number(form.employees_count) < 1000) {
     showPmeMessage.value = true
     return
   }
 
-  showPmeMessage.value = false
   status.value = { type: '', message: '' }
   submitting.value = true
 
   fetchApi({ url: '/contact', data: form })
     .then(() => {
       submitting.value = false
-      submitted.value = true
-      Object.assign(form, {
-        company_name: '', employees_count: '',
-        street: '', postal_code: '', city: '',
-        email: '', phone: '',
-      })
+      status.value = { type: 'success', message: 'Votre demande a bien été envoyée. Le CTS vous recontactera prochainement.' }
     })
     .catch(err => {
       submitting.value = false
@@ -106,6 +91,7 @@ function updateCardsIndex() {
                 <span class="flex items-center gap-3 lg:gap-4">
                   <span class="grid h-[51px] w-[51px] place-items-center rounded-full bg-violet-200 shrink-0">
                     <img :src="'/images/check.png'" alt="" class="h-6 w-6" />
+                    <!--Image purement décorative, pas besoin d'alt, bonne pratique-->
                   </span>
                   <span class="text-regular text-texte-primary-dark">Simple à mettre en place</span>
                 </span>
@@ -117,6 +103,7 @@ function updateCardsIndex() {
                 <span class="flex items-center gap-3 lg:gap-4">
                   <span class="grid h-[51px] w-[51px] place-items-center rounded-full bg-violet-200 shrink-0">
                     <img :src="'/images/verified_user.png'" alt="" class="h-6 w-6" />
+                    <!--Image purement décorative, pas besoin d'alt, bonne pratique-->
                   </span>
                   <span class="text-regular text-texte-primary-dark">Adapté à votre structure</span>
                 </span>
@@ -128,6 +115,7 @@ function updateCardsIndex() {
                 <span class="flex items-center gap-3 lg:gap-4">
                   <span class="grid h-[51px] w-[51px] place-items-center rounded-full bg-violet-200 shrink-0">
                     <img :src="'/images/favorite.png'" alt="" class="h-6 w-6" />
+                    <!--Image purement décorative, pas besoin d'alt, bonne pratique-->
                   </span>
                   <span class="text-regular text-texte-primary-dark">Aucune expertise médicale requise</span>
                 </span>
@@ -142,7 +130,8 @@ function updateCardsIndex() {
         </div>
         <div>
           <div class="rounded-3xl bg-gradient-to-r from-violet-100 to-vert-300 overflow-hidden h-[208px] lg:h-[523px] relative">
-            <img :src="'/images/composition.png'" class="absolute inset-0 h-full w-full object-cover" alt="Composition" />
+            <img :src="'/images/composition.png'" class="" />
+            <!--Image purement décorative, pas besoin d'alt, bonne pratique-->
           </div>
         </div>
       </div>
@@ -163,22 +152,22 @@ function updateCardsIndex() {
                lg:mx-0 lg:px-0 lg:grid lg:grid-cols-4 lg:gap-6 lg:overflow-visible"
       >
         <div class="snap-center shrink-0 w-[calc(100vw-2rem)] lg:w-auto flex flex-col">
-          <img :src="'/images/medoc1.png'" class="h-32 w-auto mx-auto" alt="" />
+          <img :src="'/images/pillule.png'" class="h-32 w-auto mx-auto" alt="Icône de médicament" />
           <h3 class="text-h3 font-bold text-violet-900 text-center mt-4">Répondre à un besoin réel</h3>
           <p class="text-regular text-violet-900 text-center mt-4">Les produits sanguins sont nécessaires chaque jour pour soigner de nombreux patients. Chaque collecte compte.</p>
         </div>
         <div class="snap-center shrink-0 w-[calc(100vw-2rem)] lg:w-auto flex flex-col">
-          <img :src="'/images/Medoc2.png'" class="h-32 w-auto mx-auto" alt="" />
+          <img :src="'/images/pillule2.png'" class="h-32 w-auto mx-auto" alt="Icône de médicament" />
           <h3 class="text-h3 font-bold text-violet-900 text-center mt-4">Faciliter l'engagement des collaborateurs</h3>
           <p class="text-regular text-violet-900 text-center mt-4">Organiser une collecte directement sur le lieu de travail réduit les contraintes et encourage la participation.</p>
         </div>
         <div class="snap-center shrink-0 w-[calc(100vw-2rem)] lg:w-auto flex flex-col">
-          <img :src="'/images/medoc1.png'" class="h-32 w-auto mx-auto" alt="" />
+          <img :src="'/images/pillule.png'" class="h-32 w-auto mx-auto" alt="Icône de médicament" />
           <h3 class="text-h3 font-bold text-violet-900 text-center mt-4">Créer une dynamique collective</h3>
           <p class="text-regular text-violet-900 text-center mt-4">Une collecte peut devenir un moment fédérateur autour d'une action commune et porteuse de sens.</p>
         </div>
         <div class="snap-center shrink-0 w-[calc(100vw-2rem)] lg:w-auto flex flex-col">
-          <img :src="'/images/Medoc2.png'" class="h-32 w-auto mx-auto" alt="" />
+          <img :src="'/images/pillule2.png'" class="h-32 w-auto mx-auto" alt="Icône de médicament" />
           <h3 class="text-h3 font-bold text-violet-900 text-center mt-4">Valoriser l'engagement de l'entreprise</h3>
           <p class="text-regular text-violet-900 text-center mt-4">Accueillir une collecte permet d'inscrire votre démarche sociétale dans une action visible, concrète et positive.</p>
         </div>
@@ -198,14 +187,14 @@ function updateCardsIndex() {
 
       <div class="grid lg:grid-cols-2 gap-10 items-center mt-12">
         <div>
-          <img :src="'/images/nombreforce.png'" class="w-full max-w-[503px] mx-auto" alt="Le nombre fait la force" />
+          <img :src="'/images/nombreforce.png'" class="w-full max-w-[503px] mx-auto" alt="Des gouttes de sang portent un cœur pour signifier la force du nombre" />
         </div>
         <div>
           <ul class="space-y-0 flex flex-col items-center lg:items-stretch">
             <li class="flex flex-col items-center text-center gap-4 lg:flex-row lg:items-stretch lg:text-left lg:gap-4 max-w-[369px] lg:max-w-none">
               <div class="flex flex-col items-center shrink-0">
                 <span class="grid h-[101px] w-[101px] lg:h-[61px] lg:w-[61px] place-items-center rounded-full bg-violet-200 ring-1 ring-white shrink-0">
-                  <img :src="'/images/chat.png'" alt="" class="h-12 w-12 lg:h-7 lg:w-7" />
+                  <img :src="'/images/chat.png'" alt="Icône de discussion" class="h-12 w-12 lg:h-7 lg:w-7" />
                 </span>
                 <span class="hidden lg:block lg:w-[3px] lg:flex-1 lg:bg-violet-300 lg:rounded-full lg:my-2"></span>
               </div>
@@ -218,7 +207,7 @@ function updateCardsIndex() {
             <li class="flex flex-col items-center text-center gap-4 lg:flex-row lg:items-stretch lg:text-left lg:gap-4 max-w-[369px] lg:max-w-none">
               <div class="flex flex-col items-center shrink-0">
                 <span class="grid h-[101px] w-[101px] lg:h-[61px] lg:w-[61px] place-items-center rounded-full bg-violet-200 ring-1 ring-white shrink-0">
-                  <img :src="'/images/calendar_check.png'" alt="" class="h-12 w-12 lg:h-7 lg:w-7" />
+                  <img :src="'/images/calendar_check.png'" alt="Icône de calendrier" class="h-12 w-12 lg:h-7 lg:w-7" />
                 </span>
                 <span class="hidden lg:block lg:w-[3px] lg:flex-1 lg:bg-violet-300 lg:rounded-full lg:my-2"></span>
               </div>
@@ -231,7 +220,7 @@ function updateCardsIndex() {
             <li class="flex flex-col items-center text-center gap-4 lg:flex-row lg:items-stretch lg:text-left lg:gap-4 max-w-[369px] lg:max-w-none">
               <div class="flex flex-col items-center shrink-0">
                 <span class="grid h-[101px] w-[101px] lg:h-[61px] lg:w-[61px] place-items-center rounded-full bg-violet-200 ring-1 ring-white shrink-0">
-                  <img :src="'/images/campaign.png'" alt="" class="h-12 w-12 lg:h-7 lg:w-7" />
+                  <img :src="'/images/campaign.png'" alt="Icône d'haut-parleur" class="h-12 w-12 lg:h-7 lg:w-7" />
                 </span>
                 <span class="hidden lg:block lg:w-[3px] lg:flex-1 lg:bg-violet-300 lg:rounded-full lg:my-2"></span>
               </div>
@@ -244,7 +233,7 @@ function updateCardsIndex() {
             <li class="flex flex-col items-center text-center gap-4 lg:flex-row lg:items-stretch lg:text-left lg:gap-4 max-w-[369px] lg:max-w-none">
               <div class="flex flex-col items-center shrink-0">
                 <span class="grid h-[101px] w-[101px] lg:h-[61px] lg:w-[61px] place-items-center rounded-full bg-violet-200 ring-1 ring-white shrink-0">
-                  <img :src="'/images/checklist.png'" alt="" class="h-12 w-12 lg:h-7 lg:w-7" />
+                  <img :src="'/images/checklist.png'" alt="Icône de checklist" class="h-12 w-12 lg:h-7 lg:w-7" />
                 </span>
               </div>
               <div>
@@ -265,12 +254,12 @@ function updateCardsIndex() {
       <div class="rounded-3xl bg-violet-100 p-3 lg:p-14 overflow-hidden">
         <div class="grid lg:grid-cols-2 gap-10 items-center">
           <div class="flex flex-col items-center text-center lg:block lg:text-left min-w-0">
-            <img :src="'/images/Goutte_mascotte.png'" class="h-32 w-auto mb-6 lg:hidden" alt="Mascotte goutte" />
+            <img :src="'/images/Goutte_mascotte.png'" class="h-32 w-auto mb-6 lg:hidden" alt="Mascotte goutte de sang qui salue" />
             <h2 class="text-h1 font-semibold text-violet-950">
               Parlons de votre <span class="text-violet-500">future collecte</span>
             </h2>
             <div class="mt-8 flex flex-col items-center gap-6 lg:flex-row lg:items-center">
-              <img :src="'/images/Goutte_mascotte.png'" class="hidden lg:block h-48 w-auto" alt="Mascotte goutte" />
+              <img :src="'/images/Goutte_mascotte.png'" class="hidden lg:block h-48 w-auto" alt="Mascotte goutte de sang qui salue" />
               <div>
                 <h3 class="text-h3 font-bold text-violet-950">Quelques informations suffisent pour démarrer</h3>
                 <p class="text-h5 text-violet-950 mt-3">Le CTS vous recontacte ensuite pour organiser une collecte adaptée pour votre entreprise.</p>
@@ -279,10 +268,9 @@ function updateCardsIndex() {
           </div>
 
           <div id="prendre-rdv-form" class="min-w-0 scroll-mt-24 lg:scroll-mt-28">
-            <form @submit="submit" class="bg-form-bg rounded-xl p-3 ring-1 ring-violet-900/30">
+            <form @submit.prevent="submit" class="bg-form-bg rounded-xl p-3 ring-1 ring-violet-900/30">
               <h3 class="text-h3 font-bold text-violet-900 text-center mb-4">Prendre <br class="lg:hidden" />rendez-vous</h3>
 
-              <template v-if="!submitted">
               <div class="grid grid-cols-2 gap-3 mb-3">
 <<<<<<< HEAD
                 <div class="flex flex-col gap-1">
@@ -295,8 +283,12 @@ function updateCardsIndex() {
                 </div>
 =======
                 <input required v-model="form.company_name" type="text" placeholder="Nom de l'entreprise" class="w-full min-w-0 h-[50px] lg:h-[43px] rounded-lg bg-white px-3 text-small text-texte-primary-dark shadow-[0_0_4px_rgba(0,0,0,0.25)] placeholder:text-texte-primary-dark/70" />
+<<<<<<< HEAD
                 <input required min="1" v-model="form.employees_count" type="number" placeholder="Nombre d'employés" class="w-full min-w-0 h-[50px] lg:h-[43px] rounded-lg bg-white px-3 text-small text-texte-primary-dark shadow-[0_0_4px_rgba(0,0,0,0.25)] placeholder:text-texte-primary-dark/70" />
 >>>>>>> develop
+=======
+                <input required v-model="form.employees_count" type="number" placeholder="Nombre d'employés" class="w-full min-w-0 h-[50px] lg:h-[43px] rounded-lg bg-white px-3 text-small text-texte-primary-dark shadow-[0_0_4px_rgba(0,0,0,0.25)] placeholder:text-texte-primary-dark/70" />
+>>>>>>> 9f15ecf2f24718621bc8f3784febe762e17efd59
               </div>
 
               <div class="flex flex-col gap-1 mb-3">
@@ -325,38 +317,21 @@ function updateCardsIndex() {
                 <input v-model="form.phone" type="tel" placeholder="+41 22 000 00 00" class="w-full min-w-0 h-[50px] lg:h-[43px] rounded-lg bg-white px-3 text-small text-texte-primary-dark shadow-[0_0_4px_rgba(0,0,0,0.25)] placeholder:text-texte-primary-dark/70" />
               </div>
 
-              <div v-if="status.type === 'error'" class="mb-4 flex items-start gap-3 rounded-xl border border-rouge-500 bg-rouge-500/10 p-4 text-left">
-                <svg xmlns="http://www.w3.org/2000/svg" class="mt-0.5 h-5 w-5 shrink-0 text-rouge-600" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
-                  <circle cx="12" cy="12" r="10" /><line x1="12" y1="8" x2="12" y2="13" /><line x1="12" y1="16" x2="12.01" y2="16" />
-                </svg>
-                <p class="font-sans text-small text-rouge-600">{{ status.message }}</p>
-              </div>
-
-              <p class="mb-4 text-xs text-gray-500">Vos données sont transmises au CTS et utilisées uniquement dans le cadre de l'organisation de votre collecte de sang.</p>
-              <button type="submit" :disabled="submitting" class="w-full rounded-full lg:rounded-2xl bg-button-primary py-4 text-regular text-white shadow transition-colors hover:bg-violet-800 disabled:opacity-60">
-                {{ submitting ? 'Envoi...' : 'Envoyer' }}
-              </button>
-
-              <div v-if="showPmeMessage" class="mt-4 rounded-lg bg-white p-4 text-small text-texte-primary-dark ring-1 ring-violet-900/30">
+              <div v-if="showPmeMessage" class="mb-4 rounded-lg bg-white p-4 text-small text-texte-primary-dark ring-1 ring-violet-900/30">
                 Seul les entreprises de plus de 1000 employés peuvent accueillir une collecte de sang. Si vous êtes une PME vous pouvez vous rendre
                 <a href="#/informations#pme" class="underline text-violet-900">sur la page information</a> pour découvrir comment soutenir le don du sang autrement et faire la différence malgré votre taille !
               </div>
-              </template>
-
-              <!-- Confirmation -->
-              <div v-else class="flex flex-col items-center gap-4 py-8 text-center">
-                <div class="h-12 w-12 rounded-full bg-vert-200 flex items-center justify-center">
-                  <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-vert-600" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
-                    <path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7" />
-                  </svg>
-                </div>
-                <p class="font-sans text-h5 font-semibold text-violet-900">
-                  Merci ! Votre demande a bien été envoyée.
-                </p>
-                <p class="font-sans text-small text-texte-primary-dark">
-                  Le CTS vous recontactera dans les plus brefs délais.
-                </p>
+              <div v-if="status.type === 'success'" class="mb-4 rounded-lg bg-green-50 p-4 text-small text-green-800 ring-1 ring-green-300">
+                {{ status.message }}
               </div>
+              <div v-if="status.type === 'error'" class="mb-4 rounded-lg bg-red-50 p-4 text-small text-red-800 ring-1 ring-red-300">
+                {{ status.message }}
+              </div>
+
+              <p class="text-xs text-gray-500">Vos données sont transmises au CTS et utilisées uniquement dans le cadre de l'organisation de votre collecte de sang.</p>
+              <button type="submit" class="w-full rounded-full lg:rounded-2xl bg-button-primary py-4 text-regular text-white shadow">
+                Envoyer
+              </button>
             </form>
           </div>
         </div>
@@ -379,11 +354,11 @@ function updateCardsIndex() {
           <p class="text-regular text-violet-900 mt-6 flex-1">Découvrez les entreprises reconnues pour leur engagement autour du don du sang</p>
           <a href="#/trophee" class="mt-6 inline-flex items-center justify-center rounded-full px-8 py-2 text-small underline underline-offset-2 w-full lg:w-56 bg-white text-violet-900 lg:bg-button-primary lg:text-beige-50 lg:ring-2 lg:ring-violet-50">En savoir plus</a>
         </div>
-        <div class="snap-center shrink-0 w-[calc(100vw-2rem)] lg:w-auto bg-violet-50 rounded-3xl p-10 flex flex-col items-center text-center">
-          <img :src="'/images/infos.png'" class="h-52 w-auto" alt="Informations" />
-          <h3 class="text-h3 font-bold text-violet-900 mt-6 min-h-[5rem]">Comment se déroule une collecte ?</h3>
-          <p class="text-regular text-violet-900 mt-6 flex-1">Organisation, logistique, communication, déroulement du jour J : retrouvez les informations pratiques pour accueillir une collecte en entreprise</p>
-          <a href="#/informations" class="mt-6 inline-flex items-center justify-center rounded-full px-8 py-2 text-small underline underline-offset-2 w-full lg:w-56 bg-white text-violet-900 lg:bg-button-primary lg:text-beige-50 lg:ring-2 lg:ring-violet-50">En savoir plus</a>
+        <div class="snap-center shrink-0 w-[calc(100vw-2rem)] lg:w-auto bg-violet-50 rounded-3xl p-10 flex flex-col items-center text-center gap-6">
+          <img :src="'/images/infos.png'" class="h-52 w-auto" alt="Mascotte goutte de sang qui se pose des questions" />
+          <h3 class="text-h3 font-bold text-violet-900">Comment se déroule une collecte ?</h3>
+          <p class="text-regular text-violet-900">Organisation, logistique, communication, déroulement du jour J : retrouvez les informations pratiques pour accueillir une collecte en entreprise</p>
+          <a href="#/informations" class="inline-flex items-center justify-center rounded-full px-8 py-2 text-small underline underline-offset-2 w-full lg:w-56 bg-white text-violet-900 lg:bg-button-primary lg:text-beige-50 lg:ring-2 lg:ring-violet-50">En savoir plus</a>
         </div>
         <div class="snap-center shrink-0 w-[calc(100vw-2rem)] lg:w-auto bg-violet-50 rounded-3xl p-10 flex flex-col items-center text-center">
           <img :src="'/images/label.png'" class="h-52 w-auto" alt="Label CTS" />

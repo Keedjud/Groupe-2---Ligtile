@@ -11,7 +11,7 @@
 <body style="margin:0;padding:0;background-color:#f4f0f5;font-family:'DM Sans',Arial,Helvetica,sans-serif;color:#361136;">
     <div style="max-width:600px;margin:0 auto;padding:24px;">
         <div style="background-color:#f7e8fb;border-radius:16px 16px 0 0;padding:28px 24px;text-align:center;">
-            <img src="{{ $message->embed(public_path('images/logo-hug.png')) }}" alt="HUG" style="max-height:56px;max-width:200px;margin-bottom:12px;display:inline-block;">
+            <img src="{{ $message->embed(public_path('images/logo-hug.png')) }}" alt="logo HUG" style="max-height:56px;max-width:200px;margin-bottom:12px;display:inline-block;">
             <br>
             <h1 style="margin:0;color:#361136;font-size:22px;">Demande bien reçue</h1>
             <p style="margin:6px 0 0;color:#681764;font-size:14px;">Collecte de sang</p>
