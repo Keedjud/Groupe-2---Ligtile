@@ -244,6 +244,7 @@ function handleSubmit() {
 
           <!-- Formulaire ou confirmation -->
           <template v-if="!submitted">
+<<<<<<< HEAD
             <div class="w-full max-w-[450px]">
               <label class="font-sans text-small font-medium text-violet-800">Nom de l'entreprise</label>
               <input
@@ -280,6 +281,33 @@ function handleSubmit() {
               {{ status.message }}
             </div>
             <p class="text-xs text-gray-500 w-full max-w-[450px]">Vos données sont transmises au CTS et utilisées uniquement pour répondre à votre demande.</p>
+=======
+            <input required
+              v-model="form.company_name"
+              type="text"
+              placeholder="Nom de l'entreprise"
+              class="h-[43px] w-full max-w-[450px] rounded-lg bg-white px-4 font-sans text-small text-black shadow-[0_0_4px_rgba(0,0,0,0.25)] outline-none placeholder:text-[#B8B8B8]"
+            />
+            <input required
+              v-model="form.email"
+              type="email"
+              placeholder="Adresse Mail"
+              class="h-[43px] w-full max-w-[450px] rounded-lg bg-white px-4 font-sans text-small text-black shadow-[0_0_4px_rgba(0,0,0,0.25)] outline-none placeholder:text-[#B8B8B8]"
+            />
+            <textarea required
+              v-model="form.message"
+              placeholder="Message"
+              rows="4"
+              class="h-[148px] w-full max-w-[450px] resize-none rounded-lg bg-white px-4 py-3 font-sans text-small text-black shadow-[0_0_4px_rgba(0,0,0,0.25)] outline-none placeholder:text-[#B8B8B8]"
+            ></textarea>
+            <div v-if="status.type === 'error'" class="mb-4 flex w-full max-w-[450px] items-start gap-3 rounded-xl border border-rouge-500 bg-rouge-500/10 p-4 text-left">
+              <svg xmlns="http://www.w3.org/2000/svg" class="mt-0.5 h-5 w-5 shrink-0 text-rouge-600" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                <circle cx="12" cy="12" r="10" /><line x1="12" y1="8" x2="12" y2="13" /><line x1="12" y1="16" x2="12.01" y2="16" />
+              </svg>
+              <p class="font-sans text-small text-rouge-600">{{ status.message }}</p>
+            </div>
+            <p class="mb-4 text-xs text-gray-500">Vos données sont transmises au CTS et utilisées uniquement pour répondre à votre demande.</p>
+>>>>>>> develop
             <button
               @click="handleSubmit"
               :disabled="submitting"

@@ -11,7 +11,7 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
     'company_id', 'user_id', 'address_id',
     'start_date', 'end_date', 'capacity',
     'primary_color', 'secondary_color',
-    'logo_url', 'onedoc_url', 'public_token',
+    'logo_url', 'onedoc_url', 'kit_url', 'public_token',
 ])]
 class Collection extends Model
 {
