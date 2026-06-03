@@ -63,7 +63,7 @@ export function useCollectes() {
       secondary_color: donnees.couleur_secondaire,
       logo_url: donnees.logo_url,
       onedoc_url: donnees.onedoc_url,
-      kit_url: donnees.kit_url || null,
+      kit_url: donnees.kit_url,
     }
   }
 

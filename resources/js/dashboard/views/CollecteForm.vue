@@ -89,6 +89,7 @@ function valider() {
   if (!logoUrl.value)                                               e.logo       = 'Logo requis.'
   if (!champCapacity.value || Number(champCapacity.value) < 1)      e.capacity   = 'Capacité requise (nombre de créneaux ≥ 1).'
   if (!champOnedocUrl.value.trim())                                 e.onedocUrl  = 'Lien Onedoc requis.'
+  if (!champKitUrl.value.trim())                                    e.kitUrl     = 'Lien KDrive du kit de communication requis.'
 
   if (!champDateDebut.value) e.dateDebut = 'Date de début requise.'
   if (!champDateFin.value)   e.dateFin   = 'Date de fin requise.'
@@ -277,13 +278,11 @@ async function soumettre() {
 
         <!-- Lien KDrive kit de communication -->
         <div class="flex flex-col gap-1">
-          <label class="font-sans text-small font-semibold text-violet-950">
-            Lien KDrive du kit de communication
-            <span class="font-normal text-violet-400">(optionnel)</span>
-          </label>
-          <p class="font-sans text-small text-violet-500">Lien vers le dossier KDrive contenant les fichiers co-brandés de la collecte.</p>
+          <label class="font-sans text-small font-semibold text-violet-950">Lien KDrive du kit de communication</label>
+          <p class="font-sans text-small text-violet-500">Lien vers le dossier KDrive contenant les fichiers co-brandés de la collecte (affiches, flyers, visuels RS).</p>
           <input v-model="champKitUrl" type="url" placeholder="https://kdrive.infomaniak.com/..."
-            class="w-full rounded-lg bg-white px-3 py-2.5 font-sans text-small text-violet-950 shadow-[0_0_4px_rgba(0,0,0,0.25)] outline-none focus:ring-2 focus:ring-violet-400" />
+            class="w-full rounded-lg bg-white px-3 py-2.5 font-sans text-small text-violet-950 shadow-[0_0_4px_rgba(0,0,0,0.25)] outline-none focus:ring-2 focus:ring-violet-400"
+            :class="{ 'ring-rouge-500 ring-1': champsInvalides.kitUrl }" />
         </div>
 
         <!-- Bouton de soumission -->

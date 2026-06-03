@@ -20,9 +20,9 @@
 
 | Priorité | Bug | Responsable |
 |----------|-----|-------------|
-| 🔴 Urgent | `CollecteForm.vue` : champs `onedoc_url` et `capacity` manquants | Inoé |
-| 🔴 Urgent | `ManageCollectionController` : `onedoc_url` hardcodé à `null`, `capacity` absent de la validation | Inoé |
-| 🔴 Urgent | `useCollectes.js` : `adapterVersApi` ne transmet ni `onedoc_url` ni `capacity` | Inoé |
+| ✅ Résolu | `CollecteForm.vue` : champs `onedoc_url`, `capacity` et `kit_url` ajoutés | `fix/dashboard-post-audit` |
+| ✅ Résolu | `ManageCollectionController` : validation `onedoc_url`, `capacity`, `kit_url` + `store()` / `update()` corrigés | `fix/dashboard-post-audit` |
+| ✅ Résolu | `useCollectes.js` : `onedoc_url`, `capacity`, `kit_url` dans les deux adapters | `fix/dashboard-post-audit` |
 | 🔴 Urgent | `App.vue` dashboard : redirection cassée au refresh (async/sync mismatch) | Inoé |
 | 🟡 Normal | `DashboardMetricsController` : `collectes_recurrentes` filtre `> 2` au lieu de `>= 2` — **corrigé dans ce commit** | ✅ |
 | 🟡 Normal | `Metriques.vue` : sélecteur période → remplacer par sélecteur multi-année | Inoé |
@@ -41,10 +41,10 @@
 
 | Sujet | Décision |
 |-------|----------|
-| `onedoc_url` | Champ manuel : le CTS crée sa collecte sur Onedoc, copie l'URL et la colle dans le formulaire. Champ obligatoire. |
-| `capacity` | Champ optionnel (integer nullable). Collectes sans capacity exclues du taux de remplissage. |
+| `onedoc_url` | Champ manuel obligatoire : le CTS crée sa collecte sur Onedoc, copie l'URL et la colle dans le formulaire. Pas d'intégration API Onedoc. |
+| `capacity` | Champ obligatoire (integer ≥ 1). Collectes sans capacity ne peuvent pas être créées. Utilisé pour le taux de remplissage. |
+| Kit de communication | Lien KDrive obligatoire : le CTS prépare les fichiers co-brandés dans un dossier KDrive (1 dossier/entreprise, 1 sous-dossier/collecte) et colle le lien dans le champ `kit_url` du formulaire. Champ requis — l'email de kit ne peut pas être envoyé sans ce lien. |
 | Filtre métriques | Sélection d'année(s) uniquement — multi-select. Remplace le sélecteur mois/trimestre/année. S'applique à tous les groupes A–E. |
-| Kit de communication | ⏳ À définir lors d'une prochaine discussion (workflow, contenu, lien avec Onedoc URL) |
 | Slugs par question (métriques) | À aligner lors de la Phase 7D une fois `quizQuestions.js` défini |
 | Nommage endpoints | Endpoints réels (`/session/connect`, `/manage-collections`, `/analytics-stats`) — plan mis à jour, code cohérent |
 
@@ -53,7 +53,7 @@
 ## Ce qui reste à faire
 
 ### Backend
-- [x] Migration `collections` : suppression `nb_registered`, ajout `capacity`, `logo_url` nullable
+- [x] Migration `collections` : suppression `nb_registered`, ajout `capacity` (NOT NULL), `onedoc_url` (NOT NULL), `kit_url` (NOT NULL), `logo_url` en `longText` NOT NULL — migration consolidée en un seul fichier, migrations d'altération intermédiaires supprimées
 - [x] Migrations `quiz_events`, `page_events`, `contact_requests`, `pme_contacts`, `contact_stats`
 - [x] Modèles `QuizEvent`, `PageEvent`, `ContactRequest`, `PmeContact`, `ContactStat`
 - [x] Réorganisation routes API en 3 fichiers (`public.php`, `dashboard.php`, `cobrand.php`)
@@ -63,7 +63,7 @@
 - [x] Métriques : `GET /api/v1/analytics-stats`
 - [x] Endpoint cobrand public : `GET /api/v1/cobrand/{token}`
 - [x] Comptage anonyme demandes contact : `contact_stats`
-- [x] **Fix `ManageCollectionController`** : `onedoc_url` (required), `capacity` (required, integer ≥ 1), `kit_url` (nullable) ajoutés à la validation, `store()` et `update()`
+- [x] **Fix `ManageCollectionController`** : `onedoc_url` (required), `capacity` (required, integer ≥ 1), `kit_url` (required) ajoutés à la validation, `store()` et `update()`
 - [ ] **Fix `DashboardMetricsController`** : ajouter filtre `years[]` sur tous les groupes A–E **(Inoé)**
 - [ ] **Fix `DashboardMetricsController`** : calculer le taux de skip en `%` dans `performanceParQuestion()` **(Inoé)**
 - [ ] Tracking : `POST /api/v1/quiz/event`, `POST /api/v1/page/event` **(Inoé, Phase 6)**
@@ -78,7 +78,7 @@
 - [x] Mentions vie privée sur les deux formulaires de contact
 
 ### Frontend dashboard — fixes post-audit **(Inoé, Phase 4B)**
-- [x] `CollecteForm.vue` : champs `capacity` (obligatoire), `onedoc_url` (obligatoire), `kit_url` (optionnel, lien KDrive) ajoutés
+- [x] `CollecteForm.vue` : champs `capacity` (obligatoire), `onedoc_url` (obligatoire), `kit_url` (obligatoire, lien KDrive) ajoutés
 - [x] `useCollectes.js` : `onedoc_url`, `capacity`, `kit_url` dans `adapterDeApi` et `adapterVersApi`
 - [ ] `App.vue` : corriger la redirection au refresh — attendre la résolution de `chargerUtilisateur()` avant de vérifier `estConnecte`
 - [ ] `Metriques.vue` : remplacer le sélecteur de période par un multi-select d'années ; passer `years[]` à l'API
@@ -88,7 +88,7 @@
 - [x] `ManageCollectionController` : alias `withCount` renommé `nb_inscrits`
 - [x] `CollectionKitMail` : passe `kit_url` (`lienKitComm`) au template email
 - [x] `collection-kit.blade.php` : bouton "Télécharger le kit" conditionnel si `lienKitComm` renseigné ; suppression de l'attachement `public/kit/`
-- [x] Migration `add_kit_url_to_collections` : champ `kit_url` nullable ajouté
+- [x] `kit_url` (NOT NULL) intégré directement dans la migration d'origine `2026_05_26_131534_collections.php` — pas de migration séparée
 
 ### Frontend cobrand **(Inoé)**
 - [ ] `cobrand/App.vue` — routage hash + chargement données collecte
@@ -142,8 +142,10 @@ UI complète. `onedoc_url` et `capacity` manquants dans le formulaire → corrig
 
 | Tâche | Fichier(s) cible(s) |
 |-------|---------------------|
-| Ajouter `onedoc_url` (requis, string) dans formulaire + validation + adapters | `CollecteForm.vue`, `ManageCollectionController.php`, `useCollectes.js` |
-| Ajouter `capacity` (optionnel, integer) dans formulaire + validation + adapters | `CollecteForm.vue`, `ManageCollectionController.php`, `useCollectes.js` |
+| ✅ Ajouter `onedoc_url` (requis), `capacity` (requis, ≥ 1), `kit_url` (requis) dans formulaire + validation + adapters | `CollecteForm.vue`, `ManageCollectionController.php`, `useCollectes.js` |
+| ✅ Email kit : bouton KDrive (`lienKitComm`) ; suppression attachements `public/kit/` | `CollectionKitMail.php`, `collection-kit.blade.php` |
+| ✅ Migration consolidée : `kit_url`, `capacity`, `logo_url` (longText), `onedoc_url` tous NOT NULL dans `2026_05_26_131534_collections.php` ; migrations d'altération supprimées | `2026_05_26_131534_collections.php` |
+| ✅ Seeder mis à jour : `capacity` et `kit_url` sur toutes les collectes, `logo_url` null remplacé par `/images/logo-hug.png` | `DatabaseSeeder.php` |
 | Corriger la redirection async au refresh | `App.vue` |
 | Remplacer sélecteur période par multi-select années | `Metriques.vue` |
 | Ajouter filtre `years[]` sur tous les groupes A–E | `DashboardMetricsController.php` |
@@ -161,7 +163,7 @@ Endpoints réels (nommage différent du plan initial) :
 - `POST /api/v1/session/disconnect` — logout
 - `GET /api/v1/session/current-user` — utilisateur courant
 - `GET/POST/PUT/DELETE /api/v1/manage-collections` — CRUD
-- `POST /api/v1/manage-collections/{id}/kit/send` — envoi kit *(à confirmer lors de la discussion kit comm)*
+- `POST /api/v1/manage-collections/{id}/kit/send` — envoi kit co-brandé par email (lien KDrive en pièce centrale)
 - `GET /api/v1/analytics-stats` — métriques
 
 ---

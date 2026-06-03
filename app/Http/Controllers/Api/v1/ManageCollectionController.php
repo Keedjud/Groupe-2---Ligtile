@@ -40,8 +40,8 @@ class ManageCollectionController extends Controller
             'logo_url' => ['required', 'string', 'max:5000000'],
             // Lien Onedoc : créé manuellement par le CTS sur la plateforme Onedoc.
             'onedoc_url' => ['required', 'url', 'max:2048'],
-            // Lien KDrive du dossier kit de communication (optionnel, peut être ajouté après).
-            'kit_url' => ['nullable', 'url', 'max:2048'],
+            // Lien KDrive du dossier kit de communication — obligatoire, nécessaire pour l'envoi de l'email de kit.
+            'kit_url' => ['required', 'url', 'max:2048'],
         ];
     }
 
@@ -92,7 +92,7 @@ class ManageCollectionController extends Controller
                 'secondary_color' => $valide['secondary_color'],
                 'logo_url' => $valide['logo_url'],
                 'onedoc_url' => $valide['onedoc_url'],
-                'kit_url' => $valide['kit_url'] ?? null,
+                'kit_url' => $valide['kit_url'],
                 'public_token' => Str::random(32),
             ]);
         });
@@ -126,7 +126,7 @@ class ManageCollectionController extends Controller
                 'end_date' => $valide['end_date'],
                 'capacity' => $valide['capacity'],
                 'onedoc_url' => $valide['onedoc_url'],
-                'kit_url' => $valide['kit_url'] ?? null,
+                'kit_url' => $valide['kit_url'],
                 'primary_color' => $valide['primary_color'],
                 'secondary_color' => $valide['secondary_color'],
             ];
