@@ -21,7 +21,6 @@
 | Priorité | Bug | Responsable |
 |----------|-----|-------------|
 | 🟡 Normal | `CollecteForm.vue` + `CollecteDetail.vue` : aperçu co-branding en temps réel + warning contraste WCAG | Inoé (Phase 4C — en attente maquettes) |
-| ✅ Résolu | `ApiTropheeController` : `participant_count = 0` provisoire | Inoé (Phase 6) |
 | 🟡 Normal | Navigation : lien actif non mis en évidence dans le header | Elia |
 | 🟡 Normal | Footer : lien "Accessibilité" mal positionné | Elia |
 | 🟡 Normal | Email confirmation PME : crash `$message->embed()` dans `contactPme-confirmation.blade.php` | Elia |
@@ -31,8 +30,6 @@
 ## Ce qui reste à faire
 
 ### Backend
-
-- [x] Tracking : `POST /api/v1/quiz/event`, `POST /api/v1/page/event` **(Inoé, Phase 6 ✅)**
 
 ### Frontend site public **(Elia)**
 
@@ -236,21 +233,3 @@ Phase 8 (cleanup, chore/cleanup)                    ← indépendant, quand disp
 | `app/Http/Controllers/Api/v1/ManageCollectionController.php` | Inoé (Phase 4B) | Inoé uniquement |
 | `app/Http/Controllers/Api/v1/DashboardMetricsController.php` | Inoé (Phase 4B + post-7D) | Inoé uniquement |
 | `app/Http/Controllers/Api/v1/ApiTropheeController.php` | Inoé (Phase 3 ✅, puis 6) | Inoé uniquement |
-
----
-
-## Checklist avant merge final dans `main`
-
-- [x] Phase 4B terminée et mergée dans develop
-- [ ] Phase 4C (aperçu co-branding) — en attente des maquettes
-- [ ] Phase 2 (fixes public) terminée (reste : nav active, footer, alts, labels form, focus trap, email PME confirmation)
-- [x] Phase 6 (tracking backend) terminée
-- [ ] Phase 7A–D (cobrand complet) terminée
-- [ ] Slugs `DashboardMetricsController` alignés avec `quizQuestions.js`
-- [ ] Phase 8A : fichiers Blade morts supprimés (`welcome.blade.php`, `default-layout.blade.php`)
-- [ ] Phase 8B : décision prise sur `ContactRequest` / `PmeContact` (supprimer ou persister) et implémentée
-- [ ] Variables d'environnement production configurées sur Infomaniak (dont `KDRIVE_URL` si nécessaire)
-- [ ] Test bout en bout : parcours employé cobrandé complet (Accueil → Prévention → Quiz → Onedoc)
-- [ ] Test bout en bout : CTS crée une collecte (avec `onedoc_url`, `capacity`, `kit_url`)
-- [ ] Review finale du dashboard métriques avec données de test
-- [ ] `demandes_contact` dans les métriques affiche bien un nombre > 0 après soumission d'un formulaire de contact
