@@ -28,7 +28,8 @@
 | 🟡 Normal | `Metriques.vue` : sélecteur période → remplacer par sélecteur multi-année | Inoé |
 | 🟡 Normal | `Metriques.vue` + `DashboardMetricsController` : skip affiché avec `%` mais retourné en nombre brut | Inoé |
 | 🟡 Normal | `ManageCollectionController` : alias `nb_registered` → renommer en `nb_inscrits` — **corrigé dans ce commit** | ✅ |
-| 🟡 Normal | Kit de communication + flow `QuestionFlow.vue` : à rediscuter | ⏳ Discussion en attente |
+| 🟡 Normal | `CollecteForm.vue` : aperçu co-branding en temps réel + warning contraste WCAG | ⏳ En attente des maquettes |
+| 🟡 Normal | `QuestionFlow.vue` : `setTimeout` fictifs + étapes 3+4 à fusionner | Inoé |
 | 🟡 Normal | Page Trophées : `ApiTropheeController` utilise `participant_count = 0` provisoire | Inoé (Phase 6) |
 | 🟡 Normal | Navigation : lien actif non mis en évidence dans le header | Elia |
 | 🟡 Normal | Footer : lien "Accessibilité" mal positionné | Elia |
@@ -147,8 +148,9 @@ UI complète. `onedoc_url` et `capacity` manquants dans le formulaire → corrig
 | Remplacer sélecteur période par multi-select années | `Metriques.vue` |
 | Ajouter filtre `years[]` sur tous les groupes A–E | `DashboardMetricsController.php` |
 | Corriger affichage skip (taux % réel) | `DashboardMetricsController.php`, `Metriques.vue` |
-| Ajouter aperçu couleurs de co-branding | `CollecteDetail.vue` |
-| Kit comm + flow `QuestionFlow.vue` | ⏳ *après discussion* |
+| Aperçu co-branding + warning contraste WCAG dans le formulaire | `CollecteForm.vue`, nouveau `useColorContrast.js` — **⏳ contenu aperçu en attente des maquettes** |
+| Ajouter aperçu couleurs primaire + secondaire | `CollecteDetail.vue` |
+| Simplifier flow `QuestionFlow.vue` : supprimer `setTimeout` fictifs, fusionner étapes 3+4 | `QuestionFlow.vue` |
 
 ---
 

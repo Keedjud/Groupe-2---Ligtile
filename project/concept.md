@@ -55,6 +55,19 @@ Page à part entière pour la création et la modification d'une collecte. Le m�
 - Lien KDrive du kit de communication — lien vers le dossier KDrive (Infomaniak) de la collecte, contenant les fichiers co-brandés préparés manuellement par le CTS (affiches, flyers, visuels RS, etc.). Le CTS organise son KDrive avec un dossier par entreprise et un sous-dossier par collecte. Ce lien est inclus dans l'email de kit envoyé à l'entreprise partenaire. Champ optionnel : peut être ajouté après la création de la collecte si le kit n'est pas encore prêt.
 - Couleurs de co-branding (color picker) et upload du logo
 
+**Aperçu co-branding et contraste des couleurs :**
+
+La saisie des couleurs est accompagnée d'un **aperçu en temps réel** reprenant plusieurs éléments visuels du site cobrandé (contenu exact défini par les maquettes). Cet aperçu permet au CTS de se rendre compte immédiatement du rendu avant de valider.
+
+En parallèle, un **calcul de lisibilité WCAG** (ratio de contraste) est effectué côté client sur chaque couleur saisie. Si le contraste est insuffisant (ratio < 4.5:1 pour le texte normal, seuil WCAG AA), un avertissement non bloquant est affiché sous le color picker concerné.
+
+La correction des couleurs reste entièrement à la discrétion du CTS — aucun blocage technique n'est imposé sur le formulaire ni sur le site cobrandé. La responsabilité de choisir des couleurs lisibles incombe au CTS.
+
+**Implémentation prévue :**
+- Composant `ColorPreview.vue` (ou section intégrée dans `CollecteForm.vue`) : aperçu réactif aux deux `v-model` couleur + logo
+- Fonction utilitaire `getContrastRatio(hex)` dans `resources/js/composables/useColorContrast.js` — partageable entre `CollecteForm.vue` et tout futur composant en ayant besoin
+- Contenu exact de l'aperçu : **en attente de validation des maquettes**
+
 **Responsabilité des dates :**
 La saisie correcte des dates est entièrement sous la responsabilité du CTS. Aucune contrainte d'intégrité n'est imposée côté base de données sur les dates (cohérence, chevauchement, etc.) — le CTS dispose déjà de ses propres processus internes pour valider ces informations lors de la prise de décision.
 
