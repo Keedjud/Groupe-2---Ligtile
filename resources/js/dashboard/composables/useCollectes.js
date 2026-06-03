@@ -33,6 +33,9 @@ export function useCollectes() {
       couleur_principale: c.primary_color,
       couleur_secondaire: c.secondary_color,
       logo_url: c.logo_url,
+      onedoc_url: c.onedoc_url || '',
+      kit_url: c.kit_url || '',
+      capacity: c.capacity ?? null,
       jeton_public: c.public_token,
       nb_inscrits: c.nb_inscrits || 0,
     }
@@ -55,9 +58,12 @@ export function useCollectes() {
       },
       start_date: donnees.date_debut,
       end_date: donnees.date_fin,
+      capacity: donnees.capacity,
       primary_color: donnees.couleur_principale,
       secondary_color: donnees.couleur_secondaire,
-      logo_url: donnees.logo_url
+      logo_url: donnees.logo_url,
+      onedoc_url: donnees.onedoc_url,
+      kit_url: donnees.kit_url || null,
     }
   }
 

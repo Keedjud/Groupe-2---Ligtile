@@ -29,6 +29,9 @@ const couleurSecondaire = ref('#C44444')
 const logoUrl          = ref(null)
 const champDateDebut   = ref('')
 const champDateFin     = ref('')
+const champCapacity    = ref('')
+const champOnedocUrl   = ref('')
+const champKitUrl      = ref('')
 
 const champsInvalides = ref({})
 const erreurServeur = ref('')
@@ -53,6 +56,9 @@ onMounted(() => {
       logoUrl.value           = collecte.logo_url
       champDateDebut.value    = (collecte.date_debut || '').slice(0, 10)
       champDateFin.value      = (collecte.date_fin || '').slice(0, 10)
+      champCapacity.value     = collecte.capacity ?? ''
+      champOnedocUrl.value    = collecte.onedoc_url || ''
+      champKitUrl.value       = collecte.kit_url || ''
     }
   }
 })
@@ -81,6 +87,8 @@ function valider() {
   if (!regexEmail.test(champEmail.value.trim()))                    e.email      = 'Adresse e-mail invalide.'
   if (!regexTel.test(champTelephone.value.trim()))                  e.telephone  = 'Téléphone invalide (chiffres uniquement).'
   if (!logoUrl.value)                                               e.logo       = 'Logo requis.'
+  if (!champCapacity.value || Number(champCapacity.value) < 1)      e.capacity   = 'Capacité requise (nombre de créneaux ≥ 1).'
+  if (!champOnedocUrl.value.trim())                                 e.onedocUrl  = 'Lien Onedoc requis.'
 
   if (!champDateDebut.value) e.dateDebut = 'Date de début requise.'
   if (!champDateFin.value)   e.dateFin   = 'Date de fin requise.'
@@ -112,9 +120,12 @@ async function soumettre() {
     },
     date_debut:         champDateDebut.value,
     date_fin:           champDateFin.value,
+    capacity:           Number(champCapacity.value),
     couleur_principale: couleurPrincipale.value,
     couleur_secondaire: couleurSecondaire.value,
     logo_url:           logoUrl.value,
+    onedoc_url:         champOnedocUrl.value.trim(),
+    kit_url:            champKitUrl.value.trim() || null,
   }
 
   try {
@@ -242,6 +253,37 @@ async function soumettre() {
             </label>
             <DateField v-model="champDateFin" :hasError="!!champsInvalides.dateFin" />
           </div>
+        </div>
+
+        <!-- Séparateur collecte -->
+        <hr class="border-violet-100" />
+
+        <!-- Capacité -->
+        <div class="flex flex-col gap-1 sm:w-48">
+          <label class="font-sans text-small font-semibold text-violet-950">Capacité (créneaux disponibles)</label>
+          <input v-model="champCapacity" type="number" min="1" placeholder="ex. 50"
+            class="w-full rounded-lg bg-white px-3 py-2.5 font-sans text-small text-violet-950 shadow-[0_0_4px_rgba(0,0,0,0.25)] outline-none focus:ring-2 focus:ring-violet-400"
+            :class="{ 'ring-rouge-500 ring-1': champsInvalides.capacity }" />
+        </div>
+
+        <!-- Lien Onedoc -->
+        <div class="flex flex-col gap-1">
+          <label class="font-sans text-small font-semibold text-violet-950">Lien Onedoc</label>
+          <p class="font-sans text-small text-violet-500">Créez la collecte sur Onedoc, puis copiez son URL ici.</p>
+          <input v-model="champOnedocUrl" type="url" placeholder="https://onedoc.ch/..."
+            class="w-full rounded-lg bg-white px-3 py-2.5 font-sans text-small text-violet-950 shadow-[0_0_4px_rgba(0,0,0,0.25)] outline-none focus:ring-2 focus:ring-violet-400"
+            :class="{ 'ring-rouge-500 ring-1': champsInvalides.onedocUrl }" />
+        </div>
+
+        <!-- Lien KDrive kit de communication -->
+        <div class="flex flex-col gap-1">
+          <label class="font-sans text-small font-semibold text-violet-950">
+            Lien KDrive du kit de communication
+            <span class="font-normal text-violet-400">(optionnel)</span>
+          </label>
+          <p class="font-sans text-small text-violet-500">Lien vers le dossier KDrive contenant les fichiers co-brandés de la collecte.</p>
+          <input v-model="champKitUrl" type="url" placeholder="https://kdrive.infomaniak.com/..."
+            class="w-full rounded-lg bg-white px-3 py-2.5 font-sans text-small text-violet-950 shadow-[0_0_4px_rgba(0,0,0,0.25)] outline-none focus:ring-2 focus:ring-violet-400" />
         </div>
 
         <!-- Bouton de soumission -->

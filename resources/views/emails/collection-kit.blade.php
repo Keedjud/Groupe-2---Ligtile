@@ -25,9 +25,10 @@
                 Bonjour,
             </p>
             <p style="font-size:15px;line-height:1.6;">
-                Voici le kit de communication pour votre collecte de sang organisée avec le Centre de
-                Transfusion Sanguine. Vous trouverez en pièces jointes les supports à diffuser
-                (affiche, visuels) ainsi que le document d'accompagnement.
+                Voici les informations pour votre collecte de sang organisée avec le Centre de
+                Transfusion Sanguine. Vous trouverez ci-dessous le lien vers votre site dédié ainsi
+                que, si disponible, votre kit de communication co-brandé à diffuser auprès de vos
+                collaboratrices et collaborateurs.
             </p>
             @if ($dateDebut || $dateFin)
                 <table role="presentation" style="width:100%;border-collapse:collapse;margin:20px 0;background-color:#f4f0f5;border-radius:8px;">
@@ -57,6 +58,22 @@
             <p style="font-size:13px;line-height:1.6;color:#6b6b6b;word-break:break-all;">
                 Ou copiez ce lien : <a href="{{ $lienCoBrande }}" style="color:{{ $couleurPrimaire }};">{{ $lienCoBrande }}</a>
             </p>
+
+            @if ($lienKitComm)
+                <hr style="border:none;border-top:1px solid #eee;margin:24px 0;">
+                <p style="font-size:15px;line-height:1.6;">
+                    Votre <strong>kit de communication co-brandé</strong> (affiches, visuels, etc.) est disponible sur KDrive :
+                </p>
+                <div style="text-align:center;margin:20px 0;">
+                    <a href="{{ $lienKitComm }}"
+                       style="display:inline-block;background-color:{{ $couleurPrimaire }};color:#ffffff;text-decoration:none;font-size:15px;font-weight:bold;padding:14px 28px;border-radius:40px;">
+                        Télécharger le kit de communication
+                    </a>
+                </div>
+                <p style="font-size:13px;line-height:1.6;color:#6b6b6b;word-break:break-all;">
+                    Ou copiez ce lien : <a href="{{ $lienKitComm }}" style="color:{{ $couleurPrimaire }};">{{ $lienKitComm }}</a>
+                </p>
+            @endif
 
             <hr style="border:none;border-top:1px solid #eee;margin:24px 0;">
             <p style="font-size:12px;color:#9a9a9a;line-height:1.5;margin-bottom:0;">
