@@ -131,9 +131,7 @@ class ManageCollectionController extends Controller
                 'secondary_color' => $valide['secondary_color'],
             ];
 
-            if (array_key_exists('logo_url', $valide)) {
-                $donnees['logo_url'] = $valide['logo_url'];
-            }
+            $donnees['logo_url'] = $valide['logo_url'];
 
             $collecte->update($donnees);
         });

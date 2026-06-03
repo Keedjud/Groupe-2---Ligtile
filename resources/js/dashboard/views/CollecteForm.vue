@@ -126,7 +126,7 @@ async function soumettre() {
     couleur_secondaire: couleurSecondaire.value,
     logo_url:           logoUrl.value,
     onedoc_url:         champOnedocUrl.value.trim(),
-    kit_url:            champKitUrl.value.trim() || null,
+    kit_url:            champKitUrl.value.trim(),
   }
 
   try {

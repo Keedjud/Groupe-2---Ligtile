@@ -5,7 +5,7 @@ namespace App\Http\Controllers\Api\v1;
 use App\Http\Controllers\Controller;
 use App\Models\Collection;
 use App\Models\Company;
-use App\Models\ContactRequest;
+use App\Models\ContactStat;
 use App\Models\PageEvent;
 use App\Models\QuizEvent;
 use Illuminate\Http\Request;
@@ -92,7 +92,7 @@ class DashboardMetricsController extends Controller
         return [
             'taux_remplissage_moyen' => $tauxRemplissage->isEmpty() ? 0 : (int) round($tauxRemplissage->average()),
             'collectes_recurrentes'  => $collections->groupBy('company_id')->filter(fn ($g) => $g->count() >= 2)->count(),
-            'demandes_contact'       => ContactRequest::count(),
+            'demandes_contact'       => ContactStat::count(),
             'top_entreprises'        => $topEntreprises,
         ];
     }

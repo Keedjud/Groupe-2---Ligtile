@@ -238,7 +238,7 @@ const barres = computed(() =>
         </div>
         <div class="flex flex-col items-start gap-1 rounded-[20px] bg-white p-5 shadow-[0_0_8px_rgba(104,23,100,0.10)]">
           <span class="font-sans text-h1 font-bold text-violet-900">{{ collectesRecurrentes }}</span>
-          <span class="font-sans text-small text-violet-700">Entreprises récurrentes (&gt;2 collectes)</span>
+          <span class="font-sans text-small text-violet-700">Entreprises récurrentes (≥&nbsp;2 collectes)</span>
         </div>
         <div class="flex flex-col items-start gap-1 rounded-[20px] bg-white p-5 shadow-[0_0_8px_rgba(104,23,100,0.10)]">
           <span class="font-sans text-h1 font-bold text-violet-900">{{ nbDemandesContact }}</span>
