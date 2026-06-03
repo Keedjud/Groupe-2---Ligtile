@@ -1,6 +1,6 @@
 # Plan d'implémentation — Fin de projet
 
-> Mis à jour le 2 juin 2026. Ce document définit qui fait quoi, dans quel ordre, pour finir le projet sans se marcher dessus.
+> Mis à jour le 2 juin 2026 (après Phase 5B). Ce document définit qui fait quoi, dans quel ordre, pour finir le projet sans se marcher dessus.
 
 ---
 
@@ -8,9 +8,9 @@
 
 | Développeur | Rôle dans la suite |
 |-------------|-------------------|
-| **Loïc** | Merger le dashboard UI → maquettes → revenir connecter le dashboard au vrai back + page Prévention cobrandée |
-| **Elia** | Bugs et finitions du site public, accessibilité, test des formulaires en prod |
-| **Inoé** | Back-end, cobrand complet (App.vue + Accueil + Quiz + Redirect), reviews, coordination |
+| **Loïc** | Dashboard complet : UI, backend (auth Sanctum, CRUD collectes, métriques) et connexion au vrai back — déjà commencé en local |
+| **Elia** | Fix et finitions du site public |
+| **Inoé** | Cobrand complet (endpoint back + App.vue + Accueil + Quiz + Redirect + tracking), reviews, coordination |
 
 **Règle d'or :** Avant d'ouvrir une PR, faire `git merge develop` sur sa branche et résoudre ses propres conflits. Un reviewer ne résout jamais les conflits d'une autre personne.
 
@@ -23,50 +23,17 @@
 | 🔴 Urgent | Page Trophées cassée — `ApiTropheeController` utilise `nb_registered` supprimé de la DB | Inoé |
 | 🟡 Normal | Navigation : lien actif non mis en évidence (aucune page n'est surlignée dans le header) | Elia |
 | 🟡 Normal | Footer : lien "Accessibilité" affiché à gauche avec les icônes sociales au lieu de la droite avec les liens légaux | Elia |
+| 🟡 Normal | Email PME cassé — `contactPme.blade.php` passe un objet `Illuminate\Mail\Message` là où une string est attendue (`htmlspecialchars` crash) | Elia |
 
 ---
 
-## Actions immédiates — premier jour
+## État actuel (2 juin 2026)
 
-### Loïc — à faire ce matin
-
-Deux champs manquent dans `CollecteForm.vue` avant d'ouvrir la PR :
-
-| Champ | Type | Description |
-|-------|------|-------------|
-| `onedoc_url` | `string`, requis | URL Onedoc pour l'inscription des employés |
-| `capacity` | `number`, optionnel | Nombre de créneaux — utilisé pour le taux de remplissage |
-
-```bash
-git checkout feature/dashboard
-git merge develop
-git push
-```
-
-Ouvrir la PR `feature/dashboard` → `develop`. Une fois mergée : passer sur les maquettes.
-
-### Elia — à faire ce matin
-
-Créer la branche de corrections du site public :
-
-```bash
-git checkout develop
-git checkout -b fix/public-site
-git push -u origin fix/public-site
-```
-
-Voir Phase 2 pour le détail des tâches.
-
-### Inoé — à faire en priorité
-
-Fix urgent de la page Trophées (prod cassée) :
-
-```bash
-git checkout develop
-git checkout -b fix/trophees-nb-registered
-```
-
-Voir "Bug Trophées" ci-dessous.
+| Développeur | En cours |
+|-------------|---------|
+| **Loïc** | Backend dashboard + connexion API — déjà commencé en local (`feature/dashboard` ou branche dédiée) |
+| **Elia** | Fix et finitions site public (`fix/public-site`) |
+| **Inoé** | Phase 5B terminée — démarre Phase 7 (cobrand frontend, branche `feature/cobrand-app`) |
 
 ---
 
@@ -74,16 +41,17 @@ Voir "Bug Trophées" ci-dessous.
 
 ### Backend
 - [x] Migration `collections` : suppression `nb_registered`, ajout `capacity`, `logo_url` nullable
-- [x] Migrations `quiz_events`, `page_events`, `contact_requests`, `pme_contacts`
-- [x] Modèles `QuizEvent`, `PageEvent`, `ContactRequest`, `PmeContact`
+- [x] Migrations `quiz_events`, `page_events`, `contact_requests`, `pme_contacts`, `contact_stats`
+- [x] Modèles `QuizEvent`, `PageEvent`, `ContactRequest`, `PmeContact`, `ContactStat`
 - [x] Réorganisation routes API en 3 fichiers (`public.php`, `dashboard.php`, `cobrand.php`)
-- [ ] **[URGENT]** Fix `ApiTropheeController` : supprimer référence à `nb_registered`, corriger N+1
-- [ ] Auth Sanctum : `POST /api/v1/auth/login`, `POST /api/v1/auth/logout`
-- [ ] CRUD collections : `GET`, `POST`, `PUT /api/v1/collections`
-- [ ] Endpoint cobrand public : `GET /api/v1/cobrand/{token}`
-- [ ] Tracking : `POST /api/v1/quiz/event`, `POST /api/v1/page/event`
-- [ ] Métriques : `GET /api/v1/metrics`
-- [ ] Enregistrement en base des deux formulaires de contact (envoient uniquement un email pour l'instant)
+- [x] **[URGENT]** Fix `ApiTropheeController` : supprimer référence à `nb_registered`, corriger N+1
+- [ ] Auth Sanctum : `POST /api/v1/auth/login`, `POST /api/v1/auth/logout` **(Loïc)**
+- [ ] CRUD collections : `GET`, `POST`, `PUT /api/v1/collections` **(Loïc)**
+- [ ] Upload logo (storage + lien public) **(Loïc)**
+- [ ] Métriques : `GET /api/v1/metrics` **(Loïc)**
+- [x] Endpoint cobrand public : `GET /api/v1/cobrand/{token}` **(Inoé)**
+- [ ] Tracking : `POST /api/v1/quiz/event`, `POST /api/v1/page/event` **(Inoé)**
+- [x] Comptage anonyme des demandes de contact : `contact_stats` — juste un horodatage par soumission, aucune donnée personnelle **(Inoé)**
 
 ### Frontend site public
 - [ ] Fix nav : lien actif non mis en évidence (Elia)
@@ -91,6 +59,7 @@ Voir "Bug Trophées" ci-dessous.
 - [ ] Labels sur tous les champs de formulaire — `Home.vue`, `Information.vue` (Elia)
 - [ ] Alts sur toutes les images (via `git cherry-pick 63f3b65`) (Elia)
 - [ ] Focus trap sur la modale des critères dans `Trophees.vue` (Elia)
+- [ ] Fix email PME : corriger `resources/views/emails/contactPme.blade.php` — crash `htmlspecialchars` dû à un objet `Message` passé comme string (Elia)
 - [x] Mentions vie privée sur les deux formulaires de contact
 
 ### Frontend cobrand
@@ -101,9 +70,9 @@ Voir "Bug Trophées" ci-dessous.
 - [ ] `cobrand/views/Redirect.vue` — page Onedoc + tracking (Inoé)
 - [ ] `cobrand/composables/useQuizStore.js` (Inoé)
 
-### Frontend dashboard
-- [x] UI complète dans `feature/dashboard` (Loïc) — Login, Collectes, CollecteDetail, CollecteForm, Metriques
-- [ ] Ajouter `onedoc_url` et `capacity` dans `CollecteForm.vue` + mock (Loïc, avant PR)
+### Frontend dashboard (Loïc)
+- [x] UI complète dans `feature/dashboard` — Login, Collectes, CollecteDetail, CollecteForm, Metriques
+- [ ] Ajouter `onedoc_url` et `capacity` dans `CollecteForm.vue` + mock (avant PR)
 - [ ] Merger `feature/dashboard` dans `develop`
 - [ ] Remplacer auth mock par vraie auth Sanctum
 - [ ] Remplacer données mock par appels API réels
@@ -113,7 +82,7 @@ Voir "Bug Trophées" ci-dessous.
 - [x] Namespace `API/` → `Api/` (compat Linux/prod)
 - [x] Suppression `resources/js/app.js` (artefact inutilisé)
 - [x] Remplacer `fetch()` natif dans `Home.vue` et `Information.vue` par `useFetchApi`
-- [ ] Refactoriser `ApiTropheeController` : N+1 queries + calculer `participant_count` depuis `quiz_events` (partie du fix urgent)
+- [x] Refactoriser `ApiTropheeController` : N+1 queries corrigé (`participant_count` depuis `quiz_events` en Phase 6)
 
 ---
 
@@ -151,37 +120,23 @@ Voir "Bug Trophées" ci-dessous.
 
 ---
 
-### Phase 3 — Fix urgent Trophées + refactor (Inoé)
+### ✅ Phase 3 — Fix urgent Trophées + refactor (Inoé) — TERMINÉE
 
-**Branche :** `fix/trophees-nb-registered`
+**Branche :** `fix/trophees-nb-registered` (mergée)
 
-La page Trophées est cassée en production car `ApiTropheeController` utilise `Collection::sum('nb_registered')` — colonne supprimée dans les fondations.
-
-Fix immédiat : remplacer `participant_count` par `0` (valeur provisoire) en attendant que le tracking soit en place. Corriger également le N+1.
-
-```php
-// Remplacer :
-$participantCount = Collection::where('company_id', $company->id)
-    ->whereYear('start_date', $year)
-    ->sum('nb_registered');
-
-// Par (provisoire — sera remplacé par quiz_events en Phase 5) :
-$participantCount = 0;
-```
-
-Le N+1 (2 requêtes SQL par entreprise dans une boucle) sera aussi corrigé dans cette branche.
+`ApiTropheeController` corrigé : référence à `nb_registered` supprimée, N+1 éliminé, `participant_count` provisoirement à `0` en attendant le tracking (Phase 6).
 
 ---
 
 ### Phase 4 — Dashboard UI (Loïc)
 
-**À faire ce matin.** Voir "Actions immédiates".
+**Branche :** `feature/dashboard` — déjà commencée en local.
 
-**Après merge :** Loïc passe sur les maquettes.
+Ajouter `onedoc_url` et `capacity` dans `CollecteForm.vue`, merger dans `develop`, puis enchaîner directement sur la Phase 5.
 
 ---
 
-### Phase 5 — Backend dashboard + auth Sanctum (Inoé, ~2–3 jours)
+### Phase 5 — Backend dashboard + auth Sanctum (Loïc, ~2–3 jours)
 
 **Prérequis :** Phase 1 mergée.
 **Branche :** `feature/backend-dashboard`
@@ -191,9 +146,17 @@ Le N+1 (2 requêtes SQL par entreprise dans une boucle) sera aussi corrigé dans
 | Auth login/logout Sanctum | `app/Http/Controllers/Api/v1/AuthController.php`, `routes/api/dashboard.php` |
 | CRUD collectes | `app/Http/Controllers/Api/v1/CollectionController.php` |
 | Upload logo (storage + lien public) | Intégré dans `CollectionController` |
-| Endpoint cobrand public : `GET /api/v1/cobrand/{token}` | `app/Http/Controllers/Api/v1/CobrandController.php`, `routes/api/cobrand.php` |
 | `GET /api/v1/metrics` (auth) | `app/Http/Controllers/Api/v1/MetricsController.php`, `routes/api/dashboard.php` |
-| Enregistrement en base des deux formulaires de contact | `ApiContactController.php`, `ApiPmeContactController.php` |
+
+> L'endpoint cobrand `GET /api/v1/cobrand/{token}` a été traité par Inoé dans la Phase 5B (terminée).
+
+---
+
+### ✅ Phase 5B — Backend cobrand + contact_stats (Inoé) — TERMINÉE
+
+`ApiCobrandController` créé : `GET /api/v1/cobrand/{token}` retourne les données de collecte (couleurs, dates, logo, lien Onedoc, entreprise, adresse) ou 404 si le token est inconnu.
+
+`ContactStat` créé : comptage anonyme des demandes de contact — un horodatage par soumission, aucune donnée personnelle stockée.
 
 ---
 
@@ -210,12 +173,13 @@ Le N+1 (2 requêtes SQL par entreprise dans une boucle) sera aussi corrigé dans
 
 ---
 
-### Phase 7 — Cobrand (Inoé, après Phase 5)
+### Phase 7 — Cobrand (Inoé)
 
-**Prérequis :** `GET /api/v1/cobrand/{token}` opérationnel.
+**Prérequis :** Phase 5B terminée (`GET /api/v1/cobrand/{token}` opérationnel).
 
 **Phase 7A — `cobrand/App.vue`** — `feature/cobrand-app`
 - Charge les données depuis l'API, applique le co-branding, gère le routage hash
+- Vérifier la fenêtre de disponibilité : le site est accessible entre la date de création de la collecte et 3 jours après `end_date` — afficher un message d'indisponibilité sinon
 
 **Phase 7B — `cobrand/views/Accueil.vue`** — `feature/cobrand-accueil`
 
@@ -224,11 +188,12 @@ Le N+1 (2 requêtes SQL par entreprise dans une boucle) sera aussi corrigé dans
 - Émet `prevention_entered` / `prevention_exited` via `$emit` vers App.vue — ne pas appeler l'API directement
 
 **Phase 7D — Quiz + Redirect (Inoé)** — `feature/cobrand-quiz`
+- `cobrand/constants/quizQuestions.js` — slugs stables des questions (P1 + P2). **Règle critique : ne jamais modifier un slug en production sans migrer les données `quiz_events` correspondantes.**
 - `useQuizStore.js`, `Quiz.vue`, `Redirect.vue`
 
 ---
 
-### Phase 8 — Dashboard : connexion au back réel (Loïc, après Phase 5)
+### Phase 8 — Dashboard : connexion au back réel (Loïc, après Phases 4 + 5)
 
 **Prérequis :** Phase 5 terminée.
 **Branche :** `feature/dashboard-api`
@@ -246,13 +211,14 @@ Le N+1 (2 requêtes SQL par entreprise dans une boucle) sera aussi corrigé dans
 
 ```
 Phase 1 ✅ (fondations)
-  ├── Phase 2 (public site fixes, Elia)  ← démarre maintenant
-  ├── Phase 3 (fix trophées urgent, Inoé) ← démarre maintenant
-  ├── Phase 4 (dashboard UI, Loïc) ← ce matin
-  └── Phase 5 (backend dashboard, Inoé)
-        ├── Phase 6 (tracking, Inoé)
-        ├── Phase 7A→D (cobrand, Inoé + Loïc)
-        └── Phase 8 (dashboard API, Loïc)
+  ├── Phase 2 (public site fixes, Elia)          ← en cours
+  ├── Phase 3 ✅ (fix trophées, Inoé)
+  ├── Phase 4 (dashboard UI, Loïc)               ← en cours en local
+  │     └── Phase 5 (backend dashboard, Loïc)
+  │           └── Phase 8 (dashboard API, Loïc)
+  └── Phase 5B ✅ (backend cobrand, Inoé)
+        ├── Phase 6 (tracking, Inoé)              ← après Phase 7D
+        └── Phase 7A→D (cobrand frontend, Inoé)  ← démarre maintenant
 ```
 
 ---
@@ -261,10 +227,10 @@ Phase 1 ✅ (fondations)
 
 | Fichier | Qui y touche | Règle |
 |---------|-------------|-------|
-| `routes/api/cobrand.php` | Inoé (Phases 5, 6) | Séquentiel — Inoé uniquement |
-| `routes/api/dashboard.php` | Inoé (Phase 5) | Séquentiel — Inoé uniquement |
+| `routes/api/cobrand.php` | Inoé (Phases 5B, 6) | Séquentiel — Inoé uniquement |
+| `routes/api/dashboard.php` | Loïc (Phase 5) | Loïc uniquement |
 | `resources/js/cobrand/App.vue` | Inoé (Phase 7A) | Inoé uniquement |
-| `app/Http/Controllers/Api/v1/ApiTropheeController.php` | Inoé (Phase 3, puis 6) | Phase 3 en premier |
+| `app/Http/Controllers/Api/v1/ApiTropheeController.php` | Inoé (Phase 3 ✅, puis 6) | Phase 3 déjà mergée |
 
 ---
 
