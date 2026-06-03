@@ -33,7 +33,7 @@
 | 🟡 Normal | Page Trophées : `ApiTropheeController` utilise `participant_count = 0` provisoire | Inoé (Phase 6) |
 | 🟡 Normal | Navigation : lien actif non mis en évidence dans le header | Elia |
 | 🟡 Normal | Footer : lien "Accessibilité" mal positionné | Elia |
-| 🟡 Normal | Email PME cassé — crash `htmlspecialchars` | Elia |
+| 🟡 Normal | Email confirmation PME : crash `$message->embed()` dans `contactPme-confirmation.blade.php` — `$message` non injecté par Laravel 11+ dans les Mailables API `Content::view` | Elia |
 
 ---
 
@@ -74,7 +74,8 @@
 - [ ] Labels sur tous les champs de formulaire — `Home.vue`, `Information.vue` **(Elia)**
 - [ ] Alts sur toutes les images (via `git cherry-pick 63f3b65`) **(Elia)**
 - [ ] Focus trap sur la modale des critères dans `Trophees.vue` **(Elia)**
-- [ ] Fix email PME : corriger `resources/views/emails/contactPme.blade.php` **(Elia)**
+- [ ] Fix email confirmation PME : remplacer `$message->embed(public_path('images/logo-hug.png'))` par une URL publique (`/images/logo-hug.png`) dans `resources/views/emails/contactPme-confirmation.blade.php` — `contactPme.blade.php` (notification CTS) est OK **(Elia)**
+- [ ] `contactPme-confirmation.blade.php` : utiliser `{{ $entreprise }}` pour personnaliser le "Bonjour," (variable passée mais non affichée) **(Elia)**
 - [x] Mentions vie privée sur les deux formulaires de contact
 
 ### Frontend dashboard — fixes post-audit **(Inoé, Phase 4B)**
@@ -89,6 +90,10 @@
 - [x] `CollectionKitMail` : passe `kit_url` (`lienKitComm`) au template email
 - [x] `collection-kit.blade.php` : bouton "Télécharger le kit" conditionnel si `lienKitComm` renseigné ; suppression de l'attachement `public/kit/`
 - [x] `kit_url` (NOT NULL) intégré directement dans la migration d'origine `2026_05_26_131534_collections.php` — pas de migration séparée
+- [x] `DashboardMetricsController` : `demandes_contact` corrigé — `ContactRequest::count()` → `ContactStat::count()` (ContactRequest n'est jamais peuplé)
+- [x] `Metriques.vue` : label "Entreprises récurrentes (≥ 2 collectes)" — corrigé (était ">2")
+- [x] `ManageCollectionController::update()` : branche morte `array_key_exists('logo_url')` supprimée
+- [x] `CollecteForm.vue` : `|| null` mort supprimé sur `kit_url`
 
 ### Frontend cobrand **(Inoé)**
 - [ ] `cobrand/App.vue` — routage hash + chargement données collecte
@@ -203,6 +208,39 @@ Endpoints réels (nommage différent du plan initial) :
 - `useQuizStore.js`, `Quiz.vue`, `Redirect.vue`
 - **Règle critique : ne jamais modifier un slug en prod sans `UPDATE quiz_events SET question_slug = 'nouveau' WHERE question_slug = 'ancien'`**
 - **Après 7D :** aligner les slugs hardcodés dans `DashboardMetricsController::performanceParQuestion()` avec ceux définis ici
+- **Après 7D :** renommer `participant_count` en `employees_count` (niveau entreprise) dans `ApiTropheeController` pour cohérence avec le calcul réel depuis `quiz_events`
+
+---
+
+### Phase 8 — Nettoyage code mort (`chore/cleanup`) **(Inoé ou n'importe)**
+
+**Prérequis :** toutes les phases fonctionnelles terminées (peut être fait en parallèle dès maintenant pour les items non-risqués)
+
+**8A — Fichiers Blade inutilisés**
+
+| Tâche | Fichier(s) |
+|-------|-----------|
+| Supprimer la page Laravel par défaut (aucune route ne la sert, référence `app.js` inexistant) | `resources/views/welcome.blade.php` |
+| Supprimer le layout Blade inutilisé (aucune des 3 views ne l'utilise, référence `app.js` inexistant) | `resources/views/components/default-layout.blade.php` |
+
+**8B — Modèles et tables jamais peuplés**
+
+`ContactRequest` et `PmeContact` sont créés mais jamais écrits : les deux contrôleurs de contact envoient uniquement par email et incrémentent `ContactStat`. Décision à prendre entre :
+- **Option A (recommandée)** : supprimer les modèles + migrations + tables (les données transitent par email, `ContactStat` suffit pour le comptage)
+- **Option B** : ajouter `ContactRequest::create($validated)` / `PmeContact::create($validated)` dans les contrôleurs pour avoir un historique persisté en base
+
+Dans les deux cas, supprimer la colonne `contact_name` de la migration `contact_requests` — elle n'est ni validée ni utilisée.
+
+| Tâche (Option A) | Fichier(s) |
+|-----------------|-----------|
+| Supprimer le modèle `ContactRequest` | `app/Models/ContactRequest.php` |
+| Supprimer le modèle `PmeContact` | `app/Models/PmeContact.php` |
+| Ajouter migration `drop_contact_requests_and_pme_contacts_tables` | nouveau fichier |
+| Retirer les migrations d'origine du dépôt | `2026_06_01_224000_*`, `2026_06_01_224500_*` |
+
+**8C — Nommage `ApiTropheeController`** *(à faire après Phase 7D)*
+
+Au niveau année, `participant_count` retourne le nombre d'**entreprises uniques** — le nom est trompeur. À renommer en `companies_count` une fois que le calcul réel des participants (employees) sera en place à partir des `quiz_events`.
 
 ---
 
@@ -213,12 +251,14 @@ Phase 1 ✅ (fondations)
   ├── Phase 2 (public site fixes, Elia)             ← en cours
   ├── Phase 3 ✅ (fix trophées, Inoé)
   ├── Phase 4 ✅ (dashboard UI, Loïc — mergée)
-  │     └── Phase 4B (fix post-audit, Inoé)         ← PRIORITÉ IMMÉDIATE
+  │     └── Phase 4B (fix post-audit, Inoé)         ← partiellement mergée dans develop
   └── Phase 5 ✅ (backend dashboard, Loïc)
         └── Phase 5B ✅ (backend cobrand, Inoé)
-              ├── Phase 6 (tracking, Inoé)           ← en cours
-              └── Phase 7A→D (cobrand, Inoé)         ← en cours
+              ├── Phase 6 (tracking, Inoé)           ← à venir
+              └── Phase 7A→D (cobrand, Inoé)         ← à venir
                     └── aligner slugs dans DashboardMetricsController (après 7D)
+                    └── renommer participant_count dans ApiTropheeController (après 7D)
+Phase 8 (cleanup, chore/cleanup)                    ← indépendant, quand disponible
 ```
 
 ---
@@ -238,13 +278,15 @@ Phase 1 ✅ (fondations)
 
 ## Checklist avant merge final dans `main`
 
-- [ ] Phase 4B terminée et mergée
-- [ ] Phase 2 (fixes public) terminée
+- [ ] Phase 4B terminée et mergée (reste : App.vue async, Metriques years[], skip %, CollecteDetail couleurs, QuestionFlow setTimeout)
+- [ ] Phase 2 (fixes public) terminée (reste : nav active, footer, alts, labels form, focus trap, email PME confirmation)
 - [ ] Phase 6 (tracking backend) terminée
 - [ ] Phase 7A–D (cobrand complet) terminée
 - [ ] Slugs `DashboardMetricsController` alignés avec `quizQuestions.js`
-- [ ] Discussion kit de communication conclue et implémentation terminée
-- [ ] Variables d'environnement production configurées sur Infomaniak
+- [ ] Phase 8A : fichiers Blade morts supprimés (`welcome.blade.php`, `default-layout.blade.php`)
+- [ ] Phase 8B : décision prise sur `ContactRequest` / `PmeContact` (supprimer ou persister) et implémentée
+- [ ] Variables d'environnement production configurées sur Infomaniak (dont `KDRIVE_URL` si nécessaire)
 - [ ] Test bout en bout : parcours employé cobrandé complet (Accueil → Prévention → Quiz → Onedoc)
-- [ ] Test bout en bout : CTS crée une collecte (avec `onedoc_url` et `capacity`)
+- [ ] Test bout en bout : CTS crée une collecte (avec `onedoc_url`, `capacity`, `kit_url`)
 - [ ] Review finale du dashboard métriques avec données de test
+- [ ] `demandes_contact` dans les métriques affiche bien un nombre > 0 après soumission d'un formulaire de contact
