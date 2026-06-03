@@ -164,12 +164,12 @@ async function soumettre() {
         <!-- Ligne : Nom entreprise + Nb employés -->
         <div class="flex flex-col gap-4 sm:flex-row sm:items-start">
           <div class="flex flex-1 flex-col gap-1">
-            <label class="font-sans text-small font-semibold text-violet-950">Nom de l'entreprise</label>
+            <label class="font-sans text-small font-medium text-violet-800">Nom de l'entreprise</label>
             <input v-model="champNom" type="text" placeholder="Nom de l'entreprise"
               class="w-full rounded-lg bg-white px-3 py-2.5 font-sans text-small text-violet-800 shadow-[0_0_4px_rgba(0,0,0,0.25)] outline-none focus:ring-2 focus:ring-violet-400" :class="{ 'ring-rouge-500 ring-1': champsInvalides.nom }" />
           </div>
           <div class="flex flex-col gap-1 sm:w-40">
-            <label class="font-sans text-small font-semibold text-violet-950">Nb d'employé·es</label>
+            <label class="font-sans text-small font-medium text-violet-800">Nb d'employé·es</label>
             <input v-model="champNbEmployes" type="number" min="1" placeholder="ex. 1200"
               class="w-full rounded-lg bg-white px-3 py-2.5 font-sans text-small text-violet-800 shadow-[0_0_4px_rgba(0,0,0,0.25)] outline-none focus:ring-2 focus:ring-violet-400" :class="{ 'ring-rouge-500 ring-1': champsInvalides.nbEmployes }" />
           </div>
@@ -177,7 +177,7 @@ async function soumettre() {
 
         <!-- Adresse -->
         <div class="flex flex-col gap-1">
-          <label class="font-sans text-small font-semibold text-violet-800">Adresse (rue + n°)</label>
+          <label class="font-sans text-small font-medium text-violet-800">Adresse (rue + n°)</label>
           <div class="flex gap-2">
             <input v-model="champRue" type="text" placeholder="Rue"
               class="flex-1 rounded-lg bg-white px-3 py-2.5 font-sans text-small text-violet-950 shadow-[0_0_4px_rgba(0,0,0,0.25)] outline-none focus:ring-2 focus:ring-violet-400" :class="{ 'ring-rouge-500 ring-1': champsInvalides.rue }" />
@@ -189,12 +189,12 @@ async function soumettre() {
         <!-- NPA + Ville -->
         <div class="flex items-start gap-3">
           <div class="flex flex-col gap-1 w-28">
-            <label class="font-sans text-small font-semibold text-violet-950">NPA</label>
+            <label class="font-sans text-small font-medium text-violet-800">NPA</label>
             <input v-model="champNpa" type="text" inputmode="numeric" maxlength="4" placeholder="1200"
               class="w-full rounded-lg bg-white px-3 py-2.5 font-sans text-small text-violet-950 shadow-[0_0_4px_rgba(0,0,0,0.25)] outline-none focus:ring-2 focus:ring-violet-400" :class="{ 'ring-rouge-500 ring-1': champsInvalides.npa }" />
           </div>
           <div class="flex flex-1 flex-col gap-1">
-            <label class="font-sans text-small font-semibold text-violet-950">Ville</label>
+            <label class="font-sans text-small font-medium text-violet-800">Ville</label>
             <input v-model="champVille" type="text" placeholder="Genève"
               class="w-full rounded-lg bg-white px-3 py-2.5 font-sans text-small text-violet-950 shadow-[0_0_4px_rgba(0,0,0,0.25)] outline-none focus:ring-2 focus:ring-violet-400" :class="{ 'ring-rouge-500 ring-1': champsInvalides.ville }" />
           </div>
@@ -202,20 +202,20 @@ async function soumettre() {
 
         <!-- Email -->
         <div class="flex flex-col gap-1">
-          <label class="font-sans text-small font-semibold text-violet-950">Adresse e-mail</label>
+          <label class="font-sans text-small font-medium text-violet-800">Adresse e-mail</label>
           <input v-model="champEmail" type="email" placeholder="contact@entreprise.ch"
             class="w-full rounded-lg bg-white px-3 py-2.5 font-sans text-small text-violet-950 shadow-[0_0_4px_rgba(0,0,0,0.25)] outline-none focus:ring-2 focus:ring-violet-400" :class="{ 'ring-rouge-500 ring-1': champsInvalides.email }" />
         </div>
 
         <!-- Téléphone -->
         <div class="flex flex-col gap-1">
-          <label class="font-sans text-small font-semibold text-violet-950">Téléphone</label>
+          <label class="font-sans text-small font-medium text-violet-800">Téléphone</label>
           <input v-model="champTelephone" type="tel" placeholder="+41 22 000 00 00"
             class="w-full rounded-lg bg-white px-3 py-2.5 font-sans text-small text-violet-950 shadow-[0_0_4px_rgba(0,0,0,0.25)] outline-none focus:ring-2 focus:ring-violet-400" :class="{ 'ring-rouge-500 ring-1': champsInvalides.telephone }" />
         </div>
 
         <!-- Couleurs + Logo -->
-        <div class="flex flex-wrap items-end gap-6">
+        <div class="flex flex-wrap items-start gap-6">
           <ColorField label="Couleur principale" v-model="couleurPrincipale" />
           <ColorField label="Couleur secondaire" v-model="couleurSecondaire" />
           <LogoUpload v-model="logoUrl" />
@@ -224,7 +224,7 @@ async function soumettre() {
         <!-- Dates -->
         <div class="flex flex-col gap-4 sm:flex-row sm:items-start">
           <div class="flex flex-1 flex-col gap-1">
-            <label class="flex items-center gap-2 font-sans text-small font-semibold text-violet-950">
+            <label class="flex items-center gap-2 font-sans text-small font-medium text-violet-800">
               <!-- Icône calendrier vert -->
               <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-vert-400" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                 <rect x="3" y="4" width="18" height="18" rx="2" ry="2" /><line x1="16" y1="2" x2="16" y2="6" /><line x1="8" y1="2" x2="8" y2="6" /><line x1="3" y1="10" x2="21" y2="10" />
@@ -234,7 +234,7 @@ async function soumettre() {
             <DateField v-model="champDateDebut" :hasError="!!champsInvalides.dateDebut" />
           </div>
           <div class="flex flex-1 flex-col gap-1">
-            <label class="flex items-center gap-2 font-sans text-small font-semibold text-violet-950">
+            <label class="flex items-center gap-2 font-sans text-small font-medium text-violet-800">
               <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-vert-400" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                 <rect x="3" y="4" width="18" height="18" rx="2" ry="2" /><line x1="16" y1="2" x2="16" y2="6" /><line x1="8" y1="2" x2="8" y2="6" /><line x1="3" y1="10" x2="21" y2="10" />
               </svg>

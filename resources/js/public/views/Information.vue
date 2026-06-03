@@ -244,28 +244,42 @@ function handleSubmit() {
 
           <!-- Formulaire ou confirmation -->
           <template v-if="!submitted">
-            <input required
-              v-model="form.company_name"
-              type="text"
-              placeholder="Nom de l'entreprise"
-              class="h-[43px] w-full max-w-[450px] rounded-lg bg-white px-4 font-sans text-small text-black shadow-[0_0_4px_rgba(0,0,0,0.25)] outline-none placeholder:text-[#B8B8B8]"
-            />
-            <input required
-              v-model="form.email"
-              type="email"
-              placeholder="Adresse Mail"
-              class="h-[43px] w-full max-w-[450px] rounded-lg bg-white px-4 font-sans text-small text-black shadow-[0_0_4px_rgba(0,0,0,0.25)] outline-none placeholder:text-[#B8B8B8]"
-            />
-            <textarea required
-              v-model="form.message"
-              placeholder="Message"
-              rows="4"
-              class="h-[148px] w-full max-w-[450px] resize-none rounded-lg bg-white px-4 py-3 font-sans text-small text-black shadow-[0_0_4px_rgba(0,0,0,0.25)] outline-none placeholder:text-[#B8B8B8]"
-            ></textarea>
-            <div v-if="status.type === 'error'" class="mb-4 rounded-lg bg-red-50 p-4 text-small text-red-800 ring-1 ring-red-300">
+            <div class="w-full max-w-[450px]">
+              <label class="font-sans text-small font-medium text-violet-800">Nom de l'entreprise</label>
+              <input
+                required
+                v-model="form.company_name"
+                type="text"
+                placeholder="Nom de l'entreprise"
+                class="h-[43px] w-full rounded-lg bg-white px-4 font-sans text-small text-black shadow-[0_0_4px_rgba(0,0,0,0.25)] outline-none placeholder:text-[#B8B8B8]"
+              />
+            </div>
+
+            <div class="w-full max-w-[450px]">
+              <label class="font-sans text-small font-medium text-violet-800">Adresse Mail</label>
+              <input
+                required
+                v-model="form.email"
+                type="email"
+                placeholder="contact@entreprise.ch"
+                class="h-[43px] w-full rounded-lg bg-white px-4 font-sans text-small text-black shadow-[0_0_4px_rgba(0,0,0,0.25)] outline-none placeholder:text-[#B8B8B8]"
+              />
+            </div>
+
+            <div class="w-full max-w-[450px]">
+              <label class="font-sans text-small font-medium text-violet-800">Message</label>
+              <textarea
+                required
+                v-model="form.message"
+                placeholder="Message"
+                rows="4"
+                class="h-[148px] w-full resize-none rounded-lg bg-white px-4 py-3 font-sans text-small text-black shadow-[0_0_4px_rgba(0,0,0,0.25)] outline-none placeholder:text-[#B8B8B8]"
+              ></textarea>
+            </div>
+            <div v-if="status.type === 'error'" class="mb-4 rounded-lg bg-red-50 p-4 text-small text-red-800 ring-1 ring-red-300 w-full max-w-[450px]">
               {{ status.message }}
             </div>
-            <p class="text-xs text-gray-500">Vos données sont transmises au CTS et utilisées uniquement pour répondre à votre demande.</p>
+            <p class="text-xs text-gray-500 w-full max-w-[450px]">Vos données sont transmises au CTS et utilisées uniquement pour répondre à votre demande.</p>
             <button
               @click="handleSubmit"
               :disabled="submitting"
