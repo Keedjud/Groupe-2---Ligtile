@@ -171,31 +171,24 @@ Endpoints réels (nommage différent du plan initial) :
 
 ---
 
-### Phase 8 — Nettoyage code mort (`chore/cleanup`) **(N'importe qui)**
-
-**Prérequis :** toutes les phases fonctionnelles terminées (peut être fait en parallèle dès maintenant pour les items non-risqués)
+### ✅ Phase 8A + 8B — Nettoyage code mort (`chore/cleanup`) — TERMINÉE
 
 **8A — Fichiers Blade inutilisés**
 
 | Tâche | Fichier(s) |
 |-------|-----------|
-| Supprimer la page Laravel par défaut (aucune route ne la sert, référence `app.js` inexistant) | `resources/views/welcome.blade.php` |
-| Supprimer le layout Blade inutilisé (aucune des 3 views ne l'utilise, référence `app.js` inexistant) | `resources/views/components/default-layout.blade.php` |
+| ✅ Supprimer la page Laravel par défaut | `resources/views/welcome.blade.php` |
+| ✅ Supprimer le layout Blade inutilisé + ViewComponent associé | `resources/views/components/default-layout.blade.php`, `app/View/Components/DefaultLayout.php` |
 
 **8B — Modèles et tables jamais peuplés**
 
-`ContactRequest` et `PmeContact` sont créés mais jamais écrits : les deux contrôleurs de contact envoient uniquement par email et incrémentent `ContactStat`. Décision à prendre entre :
-- **Option A (recommandée)** : supprimer les modèles + migrations + tables (les données transitent par email, `ContactStat` suffit pour le comptage)
-- **Option B** : ajouter `ContactRequest::create($validated)` / `PmeContact::create($validated)` dans les contrôleurs pour avoir un historique persisté en base
+Option A retenue : suppression des modèles et migrations. Le `migrate:fresh --seed` du hook de prod suffit — pas besoin de migration de drop intermédiaire.
 
-Dans les deux cas, supprimer la colonne `contact_name` de la migration `contact_requests` — elle n'est ni validée ni utilisée.
-
-| Tâche (Option A) | Fichier(s) |
-|-----------------|-----------|
-| Supprimer le modèle `ContactRequest` | `app/Models/ContactRequest.php` |
-| Supprimer le modèle `PmeContact` | `app/Models/PmeContact.php` |
-| Ajouter migration `drop_contact_requests_and_pme_contacts_tables` | nouveau fichier |
-| Retirer les migrations d'origine du dépôt | `2026_06_01_224000_*`, `2026_06_01_224500_*` |
+| Tâche | Fichier(s) |
+|-------|-----------|
+| ✅ Supprimer le modèle `ContactRequest` | `app/Models/ContactRequest.php` |
+| ✅ Supprimer le modèle `PmeContact` | `app/Models/PmeContact.php` |
+| ✅ Retirer les migrations d'origine du dépôt | `2026_06_01_224000_*`, `2026_06_01_224500_*` |
 
 **8C — Nommage `ApiTropheeController`** *(à faire après Phase 7D)*
 
@@ -218,7 +211,8 @@ Phase 1 ✅ (fondations)
               └── Phase 7A→D (cobrand, Loic)         ← en cours
                     └── aligner slugs dans DashboardMetricsController (après 7D)
                     └── renommer participant_count dans ApiTropheeController (après 7D)
-Phase 8 (cleanup, chore/cleanup)                    ← indépendant, quand disponible
+Phase 8A+8B ✅ (cleanup, chore/cleanup — 3 juin 2026)
+Phase 8C (renommage ApiTropheeController)            ← après Phase 7D
 ```
 
 ---
