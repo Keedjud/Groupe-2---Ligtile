@@ -11,6 +11,7 @@ const form = reactive({
 const showPmeMessage = ref(false)
 const status = ref({ type: '', message: '' })
 const submitting = ref(false)
+const submitted = ref(false)
 
 const { fetchApi } = useFetchApi('/api/v1')
 
@@ -35,7 +36,12 @@ function submit(event) {
   fetchApi({ url: '/contact', data: form })
     .then(() => {
       submitting.value = false
-      status.value = { type: 'success', message: 'Votre demande a bien été envoyée. Le CTS vous recontactera prochainement.' }
+      submitted.value = true
+      Object.assign(form, {
+        company_name: '', employees_count: '',
+        street: '', postal_code: '', city: '',
+        email: '', phone: '',
+      })
     })
     .catch(err => {
       submitting.value = false
@@ -276,6 +282,7 @@ function updateCardsIndex() {
             <form @submit="submit" class="bg-form-bg rounded-xl p-3 ring-1 ring-violet-900/30">
               <h3 class="text-h3 font-bold text-violet-900 text-center mb-4">Prendre <br class="lg:hidden" />rendez-vous</h3>
 
+              <template v-if="!submitted">
               <div class="grid grid-cols-2 gap-3 mb-3">
                 <input required v-model="form.company_name" type="text" placeholder="Nom de l'entreprise" class="w-full min-w-0 h-[50px] lg:h-[43px] rounded-lg bg-white px-3 text-small text-texte-primary-dark shadow-[0_0_4px_rgba(0,0,0,0.25)] placeholder:text-texte-primary-dark/70" />
                 <input required min="1" v-model="form.employees_count" type="number" placeholder="Nombre d'employés" class="w-full min-w-0 h-[50px] lg:h-[43px] rounded-lg bg-white px-3 text-small text-texte-primary-dark shadow-[0_0_4px_rgba(0,0,0,0.25)] placeholder:text-texte-primary-dark/70" />
@@ -292,20 +299,37 @@ function updateCardsIndex() {
 
               <input v-model="form.phone" type="tel" placeholder="Téléphone" class="w-full min-w-0 h-[50px] lg:h-[43px] rounded-lg bg-white px-3 text-small text-texte-primary-dark shadow-[0_0_4px_rgba(0,0,0,0.25)] placeholder:text-texte-primary-dark/70 mb-4" />
 
-              <p class="text-xs text-gray-500">Vos données sont transmises au CTS et utilisées uniquement dans le cadre de l'organisation de votre collecte de sang.</p>
-              <button type="submit" class="w-full rounded-full lg:rounded-2xl bg-button-primary py-4 text-regular text-white shadow">
-                Envoyer
+              <div v-if="status.type === 'error'" class="mb-4 flex items-start gap-3 rounded-xl border border-rouge-500 bg-rouge-500/10 p-4 text-left">
+                <svg xmlns="http://www.w3.org/2000/svg" class="mt-0.5 h-5 w-5 shrink-0 text-rouge-600" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                  <circle cx="12" cy="12" r="10" /><line x1="12" y1="8" x2="12" y2="13" /><line x1="12" y1="16" x2="12.01" y2="16" />
+                </svg>
+                <p class="font-sans text-small text-rouge-600">{{ status.message }}</p>
+              </div>
+
+              <p class="mb-4 text-xs text-gray-500">Vos données sont transmises au CTS et utilisées uniquement dans le cadre de l'organisation de votre collecte de sang.</p>
+              <button type="submit" :disabled="submitting" class="w-full rounded-full lg:rounded-2xl bg-button-primary py-4 text-regular text-white shadow transition-colors hover:bg-violet-800 disabled:opacity-60">
+                {{ submitting ? 'Envoi...' : 'Envoyer' }}
               </button>
 
               <div v-if="showPmeMessage" class="mt-4 rounded-lg bg-white p-4 text-small text-texte-primary-dark ring-1 ring-violet-900/30">
                 Seul les entreprises de plus de 1000 employés peuvent accueillir une collecte de sang. Si vous êtes une PME vous pouvez vous rendre
                 <a href="#/informations#pme" class="underline text-violet-900">sur la page information</a> pour découvrir comment soutenir le don du sang autrement et faire la différence malgré votre taille !
               </div>
-              <div v-if="status.type === 'success'" class="mt-4 rounded-lg bg-green-50 p-4 text-small text-green-800 ring-1 ring-green-300">
-                {{ status.message }}
-              </div>
-              <div v-if="status.type === 'error'" class="mt-4 rounded-lg bg-red-50 p-4 text-small text-red-800 ring-1 ring-red-300">
-                {{ status.message }}
+              </template>
+
+              <!-- Confirmation -->
+              <div v-else class="flex flex-col items-center gap-4 py-8 text-center">
+                <div class="h-12 w-12 rounded-full bg-vert-200 flex items-center justify-center">
+                  <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-vert-600" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7" />
+                  </svg>
+                </div>
+                <p class="font-sans text-h5 font-semibold text-violet-900">
+                  Merci ! Votre demande a bien été envoyée.
+                </p>
+                <p class="font-sans text-small text-texte-primary-dark">
+                  Le CTS vous recontactera dans les plus brefs délais.
+                </p>
               </div>
             </form>
           </div>
