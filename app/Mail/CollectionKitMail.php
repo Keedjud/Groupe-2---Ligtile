@@ -40,6 +40,7 @@ class CollectionKitMail extends Mailable
             with: [
                 'entreprise'        => $this->collecte->company?->name ?? '',
                 'lienCoBrande'      => $base . '/' . $this->collecte->public_token,
+                'lienKitComm'       => $this->collecte->kit_url ?: null,
                 'couleurPrimaire'   => $this->collecte->primary_color ?: '#681764',
                 'couleurSecondaire' => $this->collecte->secondary_color ?: '#681764',
                 'dateDebut'         => $this->formatDate($this->collecte->start_date),
@@ -59,17 +60,9 @@ class CollectionKitMail extends Mailable
     /** @return array<int, Attachment> */
     public function attachments(): array
     {
-        $dossier = public_path('kit');
-
-        if (! is_dir($dossier)) {
-            return [];
-        }
-
-        return collect(scandir($dossier))
-            ->reject(fn ($f) => in_array($f, ['.', '..'], true))
-            ->map(fn ($f) => Attachment::fromPath($dossier . DIRECTORY_SEPARATOR . $f))
-            ->values()
-            ->all();
+        // Le kit de communication est hébergé sur KDrive (lienKitComm dans le contenu de l'email).
+        // Aucune pièce jointe — le lien KDrive remplace les fichiers attachés.
+        return [];
     }
 
     /** @return array{0: ?string, 1: ?string, 2: ?string} */

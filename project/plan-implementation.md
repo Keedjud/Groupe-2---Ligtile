@@ -20,10 +20,10 @@
 
 | Priorité | Bug | Responsable |
 |----------|-----|-------------|
-| 🔴 Urgent | `CollecteForm.vue` : champs `onedoc_url` et `capacity` manquants | Inoé |
-| 🔴 Urgent | `ManageCollectionController` : `onedoc_url` hardcodé à `null`, `capacity` absent de la validation | Inoé |
-| 🔴 Urgent | `useCollectes.js` : `adapterVersApi` ne transmet ni `onedoc_url` ni `capacity` | Inoé |
-| 🔴 Urgent | `App.vue` dashboard : redirection cassée au refresh (async/sync mismatch) | Inoé |
+| ✅ Résolu | `CollecteForm.vue` : champs `onedoc_url`, `capacity` et `kit_url` ajoutés | `fix/dashboard-post-audit` |
+| ✅ Résolu | `ManageCollectionController` : validation `onedoc_url`, `capacity`, `kit_url` + `store()` / `update()` corrigés | `fix/dashboard-post-audit` |
+| ✅ Résolu | `useCollectes.js` : `onedoc_url`, `capacity`, `kit_url` dans les deux adapters | `fix/dashboard-post-audit` |
+| ✅ Résolu | `App.vue` dashboard : redirection cassée au refresh — `await chargerUtilisateur()` + garde `verifAuthEnCours` | `fix/dashboard-post-audit` |
 | 🟡 Normal | `DashboardMetricsController` : `collectes_recurrentes` filtre `> 2` au lieu de `>= 2` — **corrigé dans ce commit** | ✅ |
 | 🟡 Normal | `Metriques.vue` : sélecteur période → remplacer par sélecteur multi-année | Inoé |
 | 🟡 Normal | `Metriques.vue` + `DashboardMetricsController` : skip affiché avec `%` mais retourné en nombre brut | Inoé |
@@ -33,7 +33,7 @@
 | 🟡 Normal | Page Trophées : `ApiTropheeController` utilise `participant_count = 0` provisoire | Inoé (Phase 6) |
 | 🟡 Normal | Navigation : lien actif non mis en évidence dans le header | Elia |
 | 🟡 Normal | Footer : lien "Accessibilité" mal positionné | Elia |
-| 🟡 Normal | Email PME cassé — crash `htmlspecialchars` | Elia |
+| 🟡 Normal | Email confirmation PME : crash `$message->embed()` dans `contactPme-confirmation.blade.php` — `$message` non injecté par Laravel 11+ dans les Mailables API `Content::view` | Elia |
 
 ---
 
@@ -41,10 +41,10 @@
 
 | Sujet | Décision |
 |-------|----------|
-| `onedoc_url` | Champ manuel : le CTS crée sa collecte sur Onedoc, copie l'URL et la colle dans le formulaire. Champ obligatoire. |
-| `capacity` | Champ optionnel (integer nullable). Collectes sans capacity exclues du taux de remplissage. |
+| `onedoc_url` | Champ manuel obligatoire : le CTS crée sa collecte sur Onedoc, copie l'URL et la colle dans le formulaire. Pas d'intégration API Onedoc. |
+| `capacity` | Champ obligatoire (integer ≥ 1). Collectes sans capacity ne peuvent pas être créées. Utilisé pour le taux de remplissage. |
+| Kit de communication | Lien KDrive obligatoire : le CTS prépare les fichiers co-brandés dans un dossier KDrive (1 dossier/entreprise, 1 sous-dossier/collecte) et colle le lien dans le champ `kit_url` du formulaire. Champ requis — l'email de kit ne peut pas être envoyé sans ce lien. |
 | Filtre métriques | Sélection d'année(s) uniquement — multi-select. Remplace le sélecteur mois/trimestre/année. S'applique à tous les groupes A–E. |
-| Kit de communication | ⏳ À définir lors d'une prochaine discussion (workflow, contenu, lien avec Onedoc URL) |
 | Slugs par question (métriques) | À aligner lors de la Phase 7D une fois `quizQuestions.js` défini |
 | Nommage endpoints | Endpoints réels (`/session/connect`, `/manage-collections`, `/analytics-stats`) — plan mis à jour, code cohérent |
 
@@ -53,7 +53,7 @@
 ## Ce qui reste à faire
 
 ### Backend
-- [x] Migration `collections` : suppression `nb_registered`, ajout `capacity`, `logo_url` nullable
+- [x] Migration `collections` : suppression `nb_registered`, ajout `capacity` (NOT NULL), `onedoc_url` (NOT NULL), `kit_url` (NOT NULL), `logo_url` en `longText` NOT NULL — migration consolidée en un seul fichier, migrations d'altération intermédiaires supprimées
 - [x] Migrations `quiz_events`, `page_events`, `contact_requests`, `pme_contacts`, `contact_stats`
 - [x] Modèles `QuizEvent`, `PageEvent`, `ContactRequest`, `PmeContact`, `ContactStat`
 - [x] Réorganisation routes API en 3 fichiers (`public.php`, `dashboard.php`, `cobrand.php`)
@@ -63,7 +63,7 @@
 - [x] Métriques : `GET /api/v1/analytics-stats`
 - [x] Endpoint cobrand public : `GET /api/v1/cobrand/{token}`
 - [x] Comptage anonyme demandes contact : `contact_stats`
-- [x] **Fix `ManageCollectionController`** : `onedoc_url` (required), `capacity` (required, integer ≥ 1), `kit_url` (nullable) ajoutés à la validation, `store()` et `update()`
+- [x] **Fix `ManageCollectionController`** : `onedoc_url` (required), `capacity` (required, integer ≥ 1), `kit_url` (required) ajoutés à la validation, `store()` et `update()`
 - [ ] **Fix `DashboardMetricsController`** : ajouter filtre `years[]` sur tous les groupes A–E **(Inoé)**
 - [ ] **Fix `DashboardMetricsController`** : calculer le taux de skip en `%` dans `performanceParQuestion()` **(Inoé)**
 - [ ] Tracking : `POST /api/v1/quiz/event`, `POST /api/v1/page/event` **(Inoé, Phase 6)**
@@ -74,21 +74,27 @@
 - [ ] Labels sur tous les champs de formulaire — `Home.vue`, `Information.vue` **(Elia)**
 - [ ] Alts sur toutes les images (via `git cherry-pick 63f3b65`) **(Elia)**
 - [ ] Focus trap sur la modale des critères dans `Trophees.vue` **(Elia)**
-- [ ] Fix email PME : corriger `resources/views/emails/contactPme.blade.php` **(Elia)**
+- [ ] Fix email confirmation PME : remplacer `$message->embed(public_path('images/logo-hug.png'))` par une URL publique (`/images/logo-hug.png`) dans `resources/views/emails/contactPme-confirmation.blade.php` — `contactPme.blade.php` (notification CTS) est OK **(Elia)**
+- [ ] `contactPme-confirmation.blade.php` : utiliser `{{ $entreprise }}` pour personnaliser le "Bonjour," (variable passée mais non affichée) **(Elia)**
 - [x] Mentions vie privée sur les deux formulaires de contact
 
 ### Frontend dashboard — fixes post-audit **(Inoé, Phase 4B)**
-- [x] `CollecteForm.vue` : champs `capacity` (obligatoire), `onedoc_url` (obligatoire), `kit_url` (optionnel, lien KDrive) ajoutés
+- [x] `CollecteForm.vue` : champs `capacity` (obligatoire), `onedoc_url` (obligatoire), `kit_url` (obligatoire, lien KDrive) ajoutés
 - [x] `useCollectes.js` : `onedoc_url`, `capacity`, `kit_url` dans `adapterDeApi` et `adapterVersApi`
-- [ ] `App.vue` : corriger la redirection au refresh — attendre la résolution de `chargerUtilisateur()` avant de vérifier `estConnecte`
-- [ ] `Metriques.vue` : remplacer le sélecteur de période par un multi-select d'années ; passer `years[]` à l'API
-- [ ] `Metriques.vue` : corriger l'affichage du skip (ne plus ajouter `%` si c'est un nombre brut, ou afficher le vrai taux calculé)
+- [x] `App.vue` : corriger la redirection au refresh — `await chargerUtilisateur()` + garde `verifAuthEnCours` (évite le flash Login)
+- [x] `Metriques.vue` : sélecteur période supprimé → cases à cocher multi-années ; `years[]` passé à l'API
+- [x] `DashboardMetricsController` : filtre `years[]` sur collections (PHP) et `ContactStat` (whereYear) ; `engagementEntreprises` reçoit `$annees`
+- [x] `Metriques.vue` + `DashboardMetricsController` : skip retourné en `%` réel (`skip / (répondues + sautées) × 100`)
 - [ ] `CollecteDetail.vue` : ajouter aperçu des couleurs de co-branding (primaire + secondaire) **(Inoé)**
-- [ ] `QuestionFlow.vue` : supprimer les `setTimeout` artificiels, fusionner étapes 3+4 en une seule **(Inoé)**
+- [x] `QuestionFlow.vue` : `setTimeout` supprimés, `genererKit()` supprimé, flux réduit à 3 étapes (vérif → lien → mail)
 - [x] `ManageCollectionController` : alias `withCount` renommé `nb_inscrits`
 - [x] `CollectionKitMail` : passe `kit_url` (`lienKitComm`) au template email
 - [x] `collection-kit.blade.php` : bouton "Télécharger le kit" conditionnel si `lienKitComm` renseigné ; suppression de l'attachement `public/kit/`
-- [x] Migration `add_kit_url_to_collections` : champ `kit_url` nullable ajouté
+- [x] `kit_url` (NOT NULL) intégré directement dans la migration d'origine `2026_05_26_131534_collections.php` — pas de migration séparée
+- [x] `DashboardMetricsController` : `demandes_contact` corrigé — `ContactRequest::count()` → `ContactStat::count()` (ContactRequest n'est jamais peuplé)
+- [x] `Metriques.vue` : label "Entreprises récurrentes (≥ 2 collectes)" — corrigé (était ">2")
+- [x] `ManageCollectionController::update()` : branche morte `array_key_exists('logo_url')` supprimée
+- [x] `CollecteForm.vue` : `|| null` mort supprimé sur `kit_url`
 
 ### Frontend cobrand **(Inoé)**
 - [ ] `cobrand/App.vue` — routage hash + chargement données collecte
@@ -142,8 +148,10 @@ UI complète. `onedoc_url` et `capacity` manquants dans le formulaire → corrig
 
 | Tâche | Fichier(s) cible(s) |
 |-------|---------------------|
-| Ajouter `onedoc_url` (requis, string) dans formulaire + validation + adapters | `CollecteForm.vue`, `ManageCollectionController.php`, `useCollectes.js` |
-| Ajouter `capacity` (optionnel, integer) dans formulaire + validation + adapters | `CollecteForm.vue`, `ManageCollectionController.php`, `useCollectes.js` |
+| ✅ Ajouter `onedoc_url` (requis), `capacity` (requis, ≥ 1), `kit_url` (requis) dans formulaire + validation + adapters | `CollecteForm.vue`, `ManageCollectionController.php`, `useCollectes.js` |
+| ✅ Email kit : bouton KDrive (`lienKitComm`) ; suppression attachements `public/kit/` | `CollectionKitMail.php`, `collection-kit.blade.php` |
+| ✅ Migration consolidée : `kit_url`, `capacity`, `logo_url` (longText), `onedoc_url` tous NOT NULL dans `2026_05_26_131534_collections.php` ; migrations d'altération supprimées | `2026_05_26_131534_collections.php` |
+| ✅ Seeder mis à jour : `capacity` et `kit_url` sur toutes les collectes, `logo_url` null remplacé par `/images/logo-hug.png` | `DatabaseSeeder.php` |
 | Corriger la redirection async au refresh | `App.vue` |
 | Remplacer sélecteur période par multi-select années | `Metriques.vue` |
 | Ajouter filtre `years[]` sur tous les groupes A–E | `DashboardMetricsController.php` |
@@ -161,7 +169,7 @@ Endpoints réels (nommage différent du plan initial) :
 - `POST /api/v1/session/disconnect` — logout
 - `GET /api/v1/session/current-user` — utilisateur courant
 - `GET/POST/PUT/DELETE /api/v1/manage-collections` — CRUD
-- `POST /api/v1/manage-collections/{id}/kit/send` — envoi kit *(à confirmer lors de la discussion kit comm)*
+- `POST /api/v1/manage-collections/{id}/kit/send` — envoi kit co-brandé par email (lien KDrive en pièce centrale)
 - `GET /api/v1/analytics-stats` — métriques
 
 ---
@@ -201,6 +209,39 @@ Endpoints réels (nommage différent du plan initial) :
 - `useQuizStore.js`, `Quiz.vue`, `Redirect.vue`
 - **Règle critique : ne jamais modifier un slug en prod sans `UPDATE quiz_events SET question_slug = 'nouveau' WHERE question_slug = 'ancien'`**
 - **Après 7D :** aligner les slugs hardcodés dans `DashboardMetricsController::performanceParQuestion()` avec ceux définis ici
+- **Après 7D :** renommer `participant_count` en `employees_count` (niveau entreprise) dans `ApiTropheeController` pour cohérence avec le calcul réel depuis `quiz_events`
+
+---
+
+### Phase 8 — Nettoyage code mort (`chore/cleanup`) **(Inoé ou n'importe)**
+
+**Prérequis :** toutes les phases fonctionnelles terminées (peut être fait en parallèle dès maintenant pour les items non-risqués)
+
+**8A — Fichiers Blade inutilisés**
+
+| Tâche | Fichier(s) |
+|-------|-----------|
+| Supprimer la page Laravel par défaut (aucune route ne la sert, référence `app.js` inexistant) | `resources/views/welcome.blade.php` |
+| Supprimer le layout Blade inutilisé (aucune des 3 views ne l'utilise, référence `app.js` inexistant) | `resources/views/components/default-layout.blade.php` |
+
+**8B — Modèles et tables jamais peuplés**
+
+`ContactRequest` et `PmeContact` sont créés mais jamais écrits : les deux contrôleurs de contact envoient uniquement par email et incrémentent `ContactStat`. Décision à prendre entre :
+- **Option A (recommandée)** : supprimer les modèles + migrations + tables (les données transitent par email, `ContactStat` suffit pour le comptage)
+- **Option B** : ajouter `ContactRequest::create($validated)` / `PmeContact::create($validated)` dans les contrôleurs pour avoir un historique persisté en base
+
+Dans les deux cas, supprimer la colonne `contact_name` de la migration `contact_requests` — elle n'est ni validée ni utilisée.
+
+| Tâche (Option A) | Fichier(s) |
+|-----------------|-----------|
+| Supprimer le modèle `ContactRequest` | `app/Models/ContactRequest.php` |
+| Supprimer le modèle `PmeContact` | `app/Models/PmeContact.php` |
+| Ajouter migration `drop_contact_requests_and_pme_contacts_tables` | nouveau fichier |
+| Retirer les migrations d'origine du dépôt | `2026_06_01_224000_*`, `2026_06_01_224500_*` |
+
+**8C — Nommage `ApiTropheeController`** *(à faire après Phase 7D)*
+
+Au niveau année, `participant_count` retourne le nombre d'**entreprises uniques** — le nom est trompeur. À renommer en `companies_count` une fois que le calcul réel des participants (employees) sera en place à partir des `quiz_events`.
 
 ---
 
@@ -211,12 +252,14 @@ Phase 1 ✅ (fondations)
   ├── Phase 2 (public site fixes, Elia)             ← en cours
   ├── Phase 3 ✅ (fix trophées, Inoé)
   ├── Phase 4 ✅ (dashboard UI, Loïc — mergée)
-  │     └── Phase 4B (fix post-audit, Inoé)         ← PRIORITÉ IMMÉDIATE
+  │     └── Phase 4B (fix post-audit, Inoé)         ← partiellement mergée dans develop
   └── Phase 5 ✅ (backend dashboard, Loïc)
         └── Phase 5B ✅ (backend cobrand, Inoé)
-              ├── Phase 6 (tracking, Inoé)           ← en cours
-              └── Phase 7A→D (cobrand, Inoé)         ← en cours
+              ├── Phase 6 (tracking, Inoé)           ← à venir
+              └── Phase 7A→D (cobrand, Inoé)         ← à venir
                     └── aligner slugs dans DashboardMetricsController (après 7D)
+                    └── renommer participant_count dans ApiTropheeController (après 7D)
+Phase 8 (cleanup, chore/cleanup)                    ← indépendant, quand disponible
 ```
 
 ---
@@ -236,13 +279,15 @@ Phase 1 ✅ (fondations)
 
 ## Checklist avant merge final dans `main`
 
-- [ ] Phase 4B terminée et mergée
-- [ ] Phase 2 (fixes public) terminée
+- [ ] Phase 4B terminée et mergée (reste : App.vue async, Metriques years[], skip %, CollecteDetail couleurs, QuestionFlow setTimeout)
+- [ ] Phase 2 (fixes public) terminée (reste : nav active, footer, alts, labels form, focus trap, email PME confirmation)
 - [ ] Phase 6 (tracking backend) terminée
 - [ ] Phase 7A–D (cobrand complet) terminée
 - [ ] Slugs `DashboardMetricsController` alignés avec `quizQuestions.js`
-- [ ] Discussion kit de communication conclue et implémentation terminée
-- [ ] Variables d'environnement production configurées sur Infomaniak
+- [ ] Phase 8A : fichiers Blade morts supprimés (`welcome.blade.php`, `default-layout.blade.php`)
+- [ ] Phase 8B : décision prise sur `ContactRequest` / `PmeContact` (supprimer ou persister) et implémentée
+- [ ] Variables d'environnement production configurées sur Infomaniak (dont `KDRIVE_URL` si nécessaire)
 - [ ] Test bout en bout : parcours employé cobrandé complet (Accueil → Prévention → Quiz → Onedoc)
-- [ ] Test bout en bout : CTS crée une collecte (avec `onedoc_url` et `capacity`)
+- [ ] Test bout en bout : CTS crée une collecte (avec `onedoc_url`, `capacity`, `kit_url`)
 - [ ] Review finale du dashboard métriques avec données de test
+- [ ] `demandes_contact` dans les métriques affiche bien un nombre > 0 après soumission d'un formulaire de contact
