@@ -82,8 +82,9 @@
 - [x] `CollecteForm.vue` : champs `capacity` (obligatoire), `onedoc_url` (obligatoire), `kit_url` (obligatoire, lien KDrive) ajoutés
 - [x] `useCollectes.js` : `onedoc_url`, `capacity`, `kit_url` dans `adapterDeApi` et `adapterVersApi`
 - [x] `App.vue` : corriger la redirection au refresh — `await chargerUtilisateur()` + garde `verifAuthEnCours` (évite le flash Login)
-- [ ] `Metriques.vue` : remplacer le sélecteur de période par un multi-select d'années ; passer `years[]` à l'API
-- [ ] `Metriques.vue` : corriger l'affichage du skip (ne plus ajouter `%` si c'est un nombre brut, ou afficher le vrai taux calculé)
+- [x] `Metriques.vue` : sélecteur période supprimé → cases à cocher multi-années ; `years[]` passé à l'API
+- [x] `DashboardMetricsController` : filtre `years[]` sur collections (PHP) et `ContactStat` (whereYear) ; `engagementEntreprises` reçoit `$annees`
+- [x] `Metriques.vue` + `DashboardMetricsController` : skip retourné en `%` réel (`skip / (répondues + sautées) × 100`)
 - [ ] `CollecteDetail.vue` : ajouter aperçu des couleurs de co-branding (primaire + secondaire) **(Inoé)**
 - [ ] `QuestionFlow.vue` : supprimer les `setTimeout` artificiels, fusionner étapes 3+4 en une seule **(Inoé)**
 - [x] `ManageCollectionController` : alias `withCount` renommé `nb_inscrits`
