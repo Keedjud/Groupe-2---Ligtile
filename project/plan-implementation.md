@@ -86,7 +86,7 @@ Namespace, migrations, modèles, routes réorganisées, seeder, vie privée.
 
 ---
 
-### ✅ Phase 4 — Dashboard UI (Loïc) — MERGÉE
+### ✅ Phase 4 — Dashboard UI (Loïc) — EN COURS
 
 UI complète. `onedoc_url` et `capacity` manquants dans le formulaire → corrigés en Phase 4B.
 
@@ -171,7 +171,7 @@ Endpoints réels (nommage différent du plan initial) :
 
 ---
 
-### Phase 8 — Nettoyage code mort (`chore/cleanup`) **(Inoé ou n'importe)**
+### Phase 8 — Nettoyage code mort (`chore/cleanup`) **(N'importe qui)**
 
 **Prérequis :** toutes les phases fonctionnelles terminées (peut être fait en parallèle dès maintenant pour les items non-risqués)
 
@@ -215,7 +215,7 @@ Phase 1 ✅ (fondations)
   └── Phase 5 ✅ (backend dashboard, Loïc)
         └── Phase 5B ✅ (backend cobrand, Inoé)
               ├── Phase 6 ✅ (tracking, Inoé)
-              └── Phase 7A→D (cobrand, Inoé)         ← à venir
+              └── Phase 7A→D (cobrand, Loic)         ← en cours
                     └── aligner slugs dans DashboardMetricsController (après 7D)
                     └── renommer participant_count dans ApiTropheeController (après 7D)
 Phase 8 (cleanup, chore/cleanup)                    ← indépendant, quand disponible
