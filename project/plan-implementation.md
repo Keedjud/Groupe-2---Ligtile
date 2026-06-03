@@ -21,7 +21,6 @@
 | Priorité | Bug | Responsable |
 |----------|-----|-------------|
 | 🟡 Normal | `CollecteForm.vue` + `CollecteDetail.vue` : aperçu co-branding en temps réel + warning contraste WCAG | Inoé (Phase 4C — en attente maquettes) |
-| 🟡 Normal | `ApiTropheeController` : `participant_count = 0` provisoire | Inoé (Phase 6) |
 | 🟡 Normal | Navigation : lien actif non mis en évidence dans le header | Elia |
 | 🟡 Normal | Footer : lien "Accessibilité" mal positionné | Elia |
 | 🟡 Normal | Email confirmation PME : crash `$message->embed()` dans `contactPme-confirmation.blade.php` | Elia |
@@ -31,9 +30,9 @@
 ## Ce qui reste à faire
 
 ### Backend
-- [ ] Tracking : `POST /api/v1/quiz/event`, `POST /api/v1/page/event` **(Inoé, Phase 6)**
 
 ### Frontend site public **(Elia)**
+
 - [ ] Fix nav : lien actif non mis en évidence — `SiteHeader.vue`, `useNavigation.js`
 - [ ] Fix footer : lien "Accessibilité" à déplacer à droite — `SiteFooter.vue`
 - [ ] Labels sur tous les champs de formulaire — `Home.vue`, `Information.vue`
@@ -42,10 +41,12 @@
 - [ ] `contactPme-confirmation.blade.php` : utiliser `{{ $entreprise }}` pour personnaliser le "Bonjour,"
 
 ### Frontend dashboard **(Inoé)**
+
 - [ ] Aperçu co-branding + warning contraste WCAG — `CollecteForm.vue`, `useColorContrast.js` **(Phase 4C — en attente maquettes)**
 - [ ] Aperçu couleurs primaire + secondaire — `CollecteDetail.vue` **(Phase 4C — en attente maquettes)**
 
 ### Frontend cobrand **(Inoé)**
+
 - [ ] `cobrand/App.vue` — routage hash, co-branding CSS, fenêtre de disponibilité
 - [ ] `cobrand/views/Accueil.vue`
 - [ ] `cobrand/views/Prevention.vue` — scrollytelling **(Loïc quand disponible)**
@@ -85,13 +86,13 @@ Namespace, migrations, modèles, routes réorganisées, seeder, vie privée.
 
 ---
 
-### ✅ Phase 4 — Dashboard UI (Loïc) — MERGÉE
+### ✅ Phase 4 — Dashboard UI (Loïc) — EN COURS
 
 UI complète. `onedoc_url` et `capacity` manquants dans le formulaire → corrigés en Phase 4B.
 
 ---
 
-### ✅ Phase 4B — Fix post-audit dashboard (Inoé) — MERGÉE dans develop
+### ✅ Phase 4B — Fix post-audit dashboard (Inoé) — TERMINÉE
 
 **Branche :** `fix/dashboard-post-audit` (mergée le 3 juin 2026)
 
@@ -138,16 +139,15 @@ Endpoints réels (nommage différent du plan initial) :
 
 ---
 
-### Phase 6 — Backend tracking **(Inoé, ~1 jour)**
+### ✅ Phase 6 — Backend tracking (Inoé) — TERMINÉE
 
-**Prérequis :** Phase 5B ✅  
 **Branche :** `feature/backend-tracking`
 
 | Tâche | Fichier cible |
 |-------|--------------|
-| `POST /api/v1/quiz/event` (public, sans auth) | `QuizEventController.php`, `routes/api/cobrand.php` |
-| `POST /api/v1/page/event` (public, sans auth) | `PageEventController.php`, `routes/api/cobrand.php` |
-| Remplacer `participant_count = 0` dans `ApiTropheeController` par calcul réel | `ApiTropheeController.php` |
+| ✅ `POST /api/v1/quiz/event` (public, sans auth) | `QuizEventController.php`, `routes/api/cobrand.php` |
+| ✅ `POST /api/v1/page/event` (public, sans auth) | `PageEventController.php`, `routes/api/cobrand.php` |
+| ✅ Remplacer `participant_count = 0` dans `ApiTropheeController` par calcul réel | `ApiTropheeController.php` |
 
 ---
 
@@ -171,7 +171,7 @@ Endpoints réels (nommage différent du plan initial) :
 
 ---
 
-### Phase 8 — Nettoyage code mort (`chore/cleanup`) **(Inoé ou n'importe)**
+### Phase 8 — Nettoyage code mort (`chore/cleanup`) **(N'importe qui)**
 
 **Prérequis :** toutes les phases fonctionnelles terminées (peut être fait en parallèle dès maintenant pour les items non-risqués)
 
@@ -214,8 +214,8 @@ Phase 1 ✅ (fondations)
   │     └── Phase 4C (aperçu co-branding, Inoé — en attente maquettes)
   └── Phase 5 ✅ (backend dashboard, Loïc)
         └── Phase 5B ✅ (backend cobrand, Inoé)
-              ├── Phase 6 (tracking, Inoé)           ← à venir
-              └── Phase 7A→D (cobrand, Inoé)         ← à venir
+              ├── Phase 6 ✅ (tracking, Inoé)
+              └── Phase 7A→D (cobrand, Loic)         ← en cours
                     └── aligner slugs dans DashboardMetricsController (après 7D)
                     └── renommer participant_count dans ApiTropheeController (après 7D)
 Phase 8 (cleanup, chore/cleanup)                    ← indépendant, quand disponible
@@ -233,21 +233,3 @@ Phase 8 (cleanup, chore/cleanup)                    ← indépendant, quand disp
 | `app/Http/Controllers/Api/v1/ManageCollectionController.php` | Inoé (Phase 4B) | Inoé uniquement |
 | `app/Http/Controllers/Api/v1/DashboardMetricsController.php` | Inoé (Phase 4B + post-7D) | Inoé uniquement |
 | `app/Http/Controllers/Api/v1/ApiTropheeController.php` | Inoé (Phase 3 ✅, puis 6) | Inoé uniquement |
-
----
-
-## Checklist avant merge final dans `main`
-
-- [x] Phase 4B terminée et mergée dans develop
-- [ ] Phase 4C (aperçu co-branding) — en attente des maquettes
-- [ ] Phase 2 (fixes public) terminée (reste : nav active, footer, alts, labels form, focus trap, email PME confirmation)
-- [ ] Phase 6 (tracking backend) terminée
-- [ ] Phase 7A–D (cobrand complet) terminée
-- [ ] Slugs `DashboardMetricsController` alignés avec `quizQuestions.js`
-- [ ] Phase 8A : fichiers Blade morts supprimés (`welcome.blade.php`, `default-layout.blade.php`)
-- [ ] Phase 8B : décision prise sur `ContactRequest` / `PmeContact` (supprimer ou persister) et implémentée
-- [ ] Variables d'environnement production configurées sur Infomaniak (dont `KDRIVE_URL` si nécessaire)
-- [ ] Test bout en bout : parcours employé cobrandé complet (Accueil → Prévention → Quiz → Onedoc)
-- [ ] Test bout en bout : CTS crée une collecte (avec `onedoc_url`, `capacity`, `kit_url`)
-- [ ] Review finale du dashboard métriques avec données de test
-- [ ] `demandes_contact` dans les métriques affiche bien un nombre > 0 après soumission d'un formulaire de contact
