@@ -6,11 +6,11 @@
 
 ## L'équipe
 
-| Développeur | Rôle dans la suite |
-|-------------|-------------------|
-| **Loïc** | Maquettes — en pause sur le code. Reprend sur `cobrand/views/Prevention.vue` (Phase 7C) quand disponible. |
-| **Elia** | Fix et finitions du site public uniquement — ne touche pas au dashboard pour éviter les conflits |
-| **Inoé** | Tous les fixes dashboard (Phase 4B), cobrand complet (Phases 6 + 7), coordination |
+| Développeur | Rôle dans la suite                                                                                        |
+| ----------- | --------------------------------------------------------------------------------------------------------- |
+| **Loïc**    | Maquettes — en pause sur le code. Reprend sur `cobrand/views/Prevention.vue` (Phase 7C) quand disponible. |
+| **Elia**    | Fix et finitions du site public uniquement — ne touche pas au dashboard pour éviter les conflits          |
+| **Inoé**    | Tous les fixes dashboard (Phase 4B), cobrand complet (Phases 6 + 7), coordination                         |
 
 **Règle d'or :** Avant d'ouvrir une PR, faire `git merge develop` sur sa branche et résoudre ses propres conflits. Un reviewer ne résout jamais les conflits d'une autre personne.
 
@@ -18,22 +18,21 @@
 
 ## Bugs ouverts
 
-| Priorité | Bug | Responsable |
-|----------|-----|-------------|
+| Priorité  | Bug                                                                                                   | Responsable                            |
+| --------- | ----------------------------------------------------------------------------------------------------- | -------------------------------------- |
 | 🟡 Normal | `CollecteForm.vue` + `CollecteDetail.vue` : aperçu co-branding en temps réel + warning contraste WCAG | Inoé (Phase 4C — en attente maquettes) |
-| 🟡 Normal | `ApiTropheeController` : `participant_count = 0` provisoire | Inoé (Phase 6) |
-| 🟡 Normal | Navigation : lien actif non mis en évidence dans le header | Elia |
-| 🟡 Normal | Footer : lien "Accessibilité" mal positionné | Elia |
-| 🟡 Normal | Email confirmation PME : crash `$message->embed()` dans `contactPme-confirmation.blade.php` | Elia |
+| 🟡 Normal | Navigation : lien actif non mis en évidence dans le header                                            | Elia                                   |
+| 🟡 Normal | Footer : lien "Accessibilité" mal positionné                                                          | Elia                                   |
+| 🟡 Normal | Email confirmation PME : crash `$message->embed()` dans `contactPme-confirmation.blade.php`           | Elia                                   |
 
 ---
 
 ## Ce qui reste à faire
 
 ### Backend
-- [ ] Tracking : `POST /api/v1/quiz/event`, `POST /api/v1/page/event` **(Inoé, Phase 6)**
 
 ### Frontend site public **(Elia)**
+
 - [ ] Fix nav : lien actif non mis en évidence — `SiteHeader.vue`, `useNavigation.js`
 - [ ] Fix footer : lien "Accessibilité" à déplacer à droite — `SiteFooter.vue`
 - [ ] Labels sur tous les champs de formulaire — `Home.vue`, `Information.vue`
@@ -42,17 +41,19 @@
 - [ ] `contactPme-confirmation.blade.php` : utiliser `{{ $entreprise }}` pour personnaliser le "Bonjour,"
 
 ### Frontend dashboard **(Inoé)**
+
 - [ ] Aperçu co-branding + warning contraste WCAG — `CollecteForm.vue`, `useColorContrast.js` **(Phase 4C — en attente maquettes)**
 - [ ] Aperçu couleurs primaire + secondaire — `CollecteDetail.vue` **(Phase 4C — en attente maquettes)**
 
 ### Frontend cobrand **(Inoé)**
+
 - [ ] `cobrand/App.vue` — routage hash, co-branding CSS, fenêtre de disponibilité
 - [ ] `cobrand/views/Accueil.vue`
 - [ ] `cobrand/views/Prevention.vue` — scrollytelling **(Loïc quand disponible)**
 - [ ] `cobrand/views/Quiz.vue` — P1 + P2 + tracking
 - [ ] `cobrand/views/Redirect.vue` — page Onedoc + tracking
 - [ ] `cobrand/composables/useQuizStore.js`
-- [ ] `cobrand/constants/quizQuestions.js` — slugs stables P1 + P2 *(à aligner dans `DashboardMetricsController` après Phase 7D)*
+- [ ] `cobrand/constants/quizQuestions.js` — slugs stables P1 + P2 _(à aligner dans `DashboardMetricsController` après Phase 7D)_
 
 ---
 
@@ -68,14 +69,14 @@ Namespace, migrations, modèles, routes réorganisées, seeder, vie privée.
 
 **Branche :** `fix/public-site`
 
-| Tâche | Fichier(s) |
-|-------|-----------|
-| Fix navigation active | `SiteHeader.vue`, `useNavigation.js` |
-| Fix footer | `SiteFooter.vue` |
-| Alts images — `git cherry-pick 63f3b65` | vues du site public |
-| Labels sur champs de formulaire | `Home.vue`, `Information.vue` |
-| Focus trap modale | `Trophees.vue` |
-| Fix email PME | `resources/views/emails/contactPme.blade.php` |
+| Tâche                                   | Fichier(s)                                    |
+| --------------------------------------- | --------------------------------------------- |
+| Fix navigation active                   | `SiteHeader.vue`, `useNavigation.js`          |
+| Fix footer                              | `SiteFooter.vue`                              |
+| Alts images — `git cherry-pick 63f3b65` | vues du site public                           |
+| Labels sur champs de formulaire         | `Home.vue`, `Information.vue`                 |
+| Focus trap modale                       | `Trophees.vue`                                |
+| Fix email PME                           | `resources/views/emails/contactPme.blade.php` |
 
 ---
 
@@ -95,17 +96,17 @@ UI complète. `onedoc_url` et `capacity` manquants dans le formulaire → corrig
 
 **Branche :** `fix/dashboard-post-audit` (mergée le 3 juin 2026)
 
-| Tâche | Fichier(s) cible(s) |
-|-------|---------------------|
+| Tâche                                                                                                                  | Fichier(s) cible(s)                                                     |
+| ---------------------------------------------------------------------------------------------------------------------- | ----------------------------------------------------------------------- |
 | ✅ Ajouter `onedoc_url` (requis), `capacity` (requis, ≥ 1), `kit_url` (requis) dans formulaire + validation + adapters | `CollecteForm.vue`, `ManageCollectionController.php`, `useCollectes.js` |
-| ✅ Email kit : bouton KDrive (`lienKitComm`) ; suppression attachements `public/kit/` | `CollectionKitMail.php`, `collection-kit.blade.php` |
-| ✅ Migration consolidée : `kit_url`, `capacity`, `logo_url` (longText), `onedoc_url` tous NOT NULL | `2026_05_26_131534_collections.php` |
-| ✅ Seeder mis à jour : `capacity` et `kit_url` sur toutes les collectes | `DatabaseSeeder.php` |
-| ✅ Corriger la redirection async au refresh | `App.vue` |
-| ✅ Remplacer sélecteur période par cases à cocher multi-années | `Metriques.vue` |
-| ✅ Ajouter filtre `years[]` sur tous les groupes A–E | `DashboardMetricsController.php` |
-| ✅ Corriger affichage skip (taux % réel) | `DashboardMetricsController.php`, `Metriques.vue` |
-| ✅ Simplifier flow `QuestionFlow.vue` : supprimer `setTimeout` fictifs, fusionner étapes 3+4 | `QuestionFlow.vue` |
+| ✅ Email kit : bouton KDrive (`lienKitComm`) ; suppression attachements `public/kit/`                                  | `CollectionKitMail.php`, `collection-kit.blade.php`                     |
+| ✅ Migration consolidée : `kit_url`, `capacity`, `logo_url` (longText), `onedoc_url` tous NOT NULL                     | `2026_05_26_131534_collections.php`                                     |
+| ✅ Seeder mis à jour : `capacity` et `kit_url` sur toutes les collectes                                                | `DatabaseSeeder.php`                                                    |
+| ✅ Corriger la redirection async au refresh                                                                            | `App.vue`                                                               |
+| ✅ Remplacer sélecteur période par cases à cocher multi-années                                                         | `Metriques.vue`                                                         |
+| ✅ Ajouter filtre `years[]` sur tous les groupes A–E                                                                   | `DashboardMetricsController.php`                                        |
+| ✅ Corriger affichage skip (taux % réel)                                                                               | `DashboardMetricsController.php`, `Metriques.vue`                       |
+| ✅ Simplifier flow `QuestionFlow.vue` : supprimer `setTimeout` fictifs, fusionner étapes 3+4                           | `QuestionFlow.vue`                                                      |
 
 ---
 
@@ -113,16 +114,17 @@ UI complète. `onedoc_url` et `capacity` manquants dans le formulaire → corrig
 
 **Branche :** à créer depuis `develop` quand les maquettes sont disponibles
 
-| Tâche | Fichier(s) cible(s) |
-|-------|---------------------|
+| Tâche                                                     | Fichier(s) cible(s)                                           |
+| --------------------------------------------------------- | ------------------------------------------------------------- |
 | Aperçu co-branding en temps réel + warning contraste WCAG | `CollecteForm.vue`, nouveau `composables/useColorContrast.js` |
-| Aperçu couleurs primaire + secondaire en lecture | `CollecteDetail.vue` |
+| Aperçu couleurs primaire + secondaire en lecture          | `CollecteDetail.vue`                                          |
 
 ---
 
 ### ✅ Phase 5 — Backend dashboard + auth Sanctum (Loïc) — TERMINÉE
 
 Endpoints réels (nommage différent du plan initial) :
+
 - `POST /api/v1/session/connect` — login
 - `POST /api/v1/session/disconnect` — logout
 - `GET /api/v1/session/current-user` — utilisateur courant
@@ -138,16 +140,15 @@ Endpoints réels (nommage différent du plan initial) :
 
 ---
 
-### Phase 6 — Backend tracking **(Inoé, ~1 jour)**
+### ✅ Phase 6 — Backend tracking (Inoé) — TERMINÉE
 
-**Prérequis :** Phase 5B ✅  
 **Branche :** `feature/backend-tracking`
 
-| Tâche | Fichier cible |
-|-------|--------------|
-| `POST /api/v1/quiz/event` (public, sans auth) | `QuizEventController.php`, `routes/api/cobrand.php` |
-| `POST /api/v1/page/event` (public, sans auth) | `PageEventController.php`, `routes/api/cobrand.php` |
-| Remplacer `participant_count = 0` dans `ApiTropheeController` par calcul réel | `ApiTropheeController.php` |
+| Tâche                                                                            | Fichier cible                                       |
+| -------------------------------------------------------------------------------- | --------------------------------------------------- |
+| ✅ `POST /api/v1/quiz/event` (public, sans auth)                                 | `QuizEventController.php`, `routes/api/cobrand.php` |
+| ✅ `POST /api/v1/page/event` (public, sans auth)                                 | `PageEventController.php`, `routes/api/cobrand.php` |
+| ✅ Remplacer `participant_count = 0` dans `ApiTropheeController` par calcul réel | `ApiTropheeController.php`                          |
 
 ---
 
@@ -160,9 +161,11 @@ Endpoints réels (nommage différent du plan initial) :
 **7B — `cobrand/views/Accueil.vue`** (`feature/cobrand-accueil`)
 
 **7C — `cobrand/views/Prevention.vue`** (`feature/cobrand-prevention`) — **(Loïc quand disponible, en parallèle de 7D)**
+
 - Émet `prevention_entered` / `prevention_exited` via `$emit` → ne pas appeler l'API directement
 
 **7D — Quiz + Redirect** (`feature/cobrand-quiz`) — **(Inoé)**
+
 - `cobrand/constants/quizQuestions.js` — slugs stables P1 + P2
 - `useQuizStore.js`, `Quiz.vue`, `Redirect.vue`
 - **Règle critique : ne jamais modifier un slug en prod sans `UPDATE quiz_events SET question_slug = 'nouveau' WHERE question_slug = 'ancien'`**
@@ -177,27 +180,28 @@ Endpoints réels (nommage différent du plan initial) :
 
 **8A — Fichiers Blade inutilisés**
 
-| Tâche | Fichier(s) |
-|-------|-----------|
-| Supprimer la page Laravel par défaut (aucune route ne la sert, référence `app.js` inexistant) | `resources/views/welcome.blade.php` |
+| Tâche                                                                                                | Fichier(s)                                            |
+| ---------------------------------------------------------------------------------------------------- | ----------------------------------------------------- |
+| Supprimer la page Laravel par défaut (aucune route ne la sert, référence `app.js` inexistant)        | `resources/views/welcome.blade.php`                   |
 | Supprimer le layout Blade inutilisé (aucune des 3 views ne l'utilise, référence `app.js` inexistant) | `resources/views/components/default-layout.blade.php` |
 
 **8B — Modèles et tables jamais peuplés**
 
 `ContactRequest` et `PmeContact` sont créés mais jamais écrits : les deux contrôleurs de contact envoient uniquement par email et incrémentent `ContactStat`. Décision à prendre entre :
+
 - **Option A (recommandée)** : supprimer les modèles + migrations + tables (les données transitent par email, `ContactStat` suffit pour le comptage)
 - **Option B** : ajouter `ContactRequest::create($validated)` / `PmeContact::create($validated)` dans les contrôleurs pour avoir un historique persisté en base
 
 Dans les deux cas, supprimer la colonne `contact_name` de la migration `contact_requests` — elle n'est ni validée ni utilisée.
 
-| Tâche (Option A) | Fichier(s) |
-|-----------------|-----------|
-| Supprimer le modèle `ContactRequest` | `app/Models/ContactRequest.php` |
-| Supprimer le modèle `PmeContact` | `app/Models/PmeContact.php` |
-| Ajouter migration `drop_contact_requests_and_pme_contacts_tables` | nouveau fichier |
-| Retirer les migrations d'origine du dépôt | `2026_06_01_224000_*`, `2026_06_01_224500_*` |
+| Tâche (Option A)                                                  | Fichier(s)                                   |
+| ----------------------------------------------------------------- | -------------------------------------------- |
+| Supprimer le modèle `ContactRequest`                              | `app/Models/ContactRequest.php`              |
+| Supprimer le modèle `PmeContact`                                  | `app/Models/PmeContact.php`                  |
+| Ajouter migration `drop_contact_requests_and_pme_contacts_tables` | nouveau fichier                              |
+| Retirer les migrations d'origine du dépôt                         | `2026_06_01_224000_*`, `2026_06_01_224500_*` |
 
-**8C — Nommage `ApiTropheeController`** *(à faire après Phase 7D)*
+**8C — Nommage `ApiTropheeController`** _(à faire après Phase 7D)_
 
 Au niveau année, `participant_count` retourne le nombre d'**entreprises uniques** — le nom est trompeur. À renommer en `companies_count` une fois que le calcul réel des participants (employees) sera en place à partir des `quiz_events`.
 
@@ -214,8 +218,8 @@ Phase 1 ✅ (fondations)
   │     └── Phase 4C (aperçu co-branding, Inoé — en attente maquettes)
   └── Phase 5 ✅ (backend dashboard, Loïc)
         └── Phase 5B ✅ (backend cobrand, Inoé)
-              ├── Phase 6 (tracking, Inoé)           ← à venir
-              └── Phase 7A→D (cobrand, Inoé)         ← à venir
+              ├── Phase 6 ✅ (tracking, Inoé)
+              └── Phase 7A→D (cobrand, Loic)         ← en cours
                     └── aligner slugs dans DashboardMetricsController (après 7D)
                     └── renommer participant_count dans ApiTropheeController (après 7D)
 Phase 8 (cleanup, chore/cleanup)                    ← indépendant, quand disponible
@@ -225,29 +229,11 @@ Phase 8 (cleanup, chore/cleanup)                    ← indépendant, quand disp
 
 ## Fichiers partagés — zones à risque de conflit
 
-| Fichier | Qui y touche | Règle |
-|---------|-------------|-------|
-| `routes/api/cobrand.php` | Inoé (Phase 5B ✅, 6) | Inoé uniquement |
-| `routes/api/dashboard.php` | Inoé (Phase 4B) | Inoé uniquement |
-| `resources/js/cobrand/App.vue` | Inoé (Phase 7A) | Inoé uniquement |
-| `app/Http/Controllers/Api/v1/ManageCollectionController.php` | Inoé (Phase 4B) | Inoé uniquement |
+| Fichier                                                      | Qui y touche              | Règle           |
+| ------------------------------------------------------------ | ------------------------- | --------------- |
+| `routes/api/cobrand.php`                                     | Inoé (Phase 5B ✅, 6)     | Inoé uniquement |
+| `routes/api/dashboard.php`                                   | Inoé (Phase 4B)           | Inoé uniquement |
+| `resources/js/cobrand/App.vue`                               | Inoé (Phase 7A)           | Inoé uniquement |
+| `app/Http/Controllers/Api/v1/ManageCollectionController.php` | Inoé (Phase 4B)           | Inoé uniquement |
 | `app/Http/Controllers/Api/v1/DashboardMetricsController.php` | Inoé (Phase 4B + post-7D) | Inoé uniquement |
-| `app/Http/Controllers/Api/v1/ApiTropheeController.php` | Inoé (Phase 3 ✅, puis 6) | Inoé uniquement |
-
----
-
-## Checklist avant merge final dans `main`
-
-- [x] Phase 4B terminée et mergée dans develop
-- [ ] Phase 4C (aperçu co-branding) — en attente des maquettes
-- [ ] Phase 2 (fixes public) terminée (reste : nav active, footer, alts, labels form, focus trap, email PME confirmation)
-- [ ] Phase 6 (tracking backend) terminée
-- [ ] Phase 7A–D (cobrand complet) terminée
-- [ ] Slugs `DashboardMetricsController` alignés avec `quizQuestions.js`
-- [ ] Phase 8A : fichiers Blade morts supprimés (`welcome.blade.php`, `default-layout.blade.php`)
-- [ ] Phase 8B : décision prise sur `ContactRequest` / `PmeContact` (supprimer ou persister) et implémentée
-- [ ] Variables d'environnement production configurées sur Infomaniak (dont `KDRIVE_URL` si nécessaire)
-- [ ] Test bout en bout : parcours employé cobrandé complet (Accueil → Prévention → Quiz → Onedoc)
-- [ ] Test bout en bout : CTS crée une collecte (avec `onedoc_url`, `capacity`, `kit_url`)
-- [ ] Review finale du dashboard métriques avec données de test
-- [ ] `demandes_contact` dans les métriques affiche bien un nombre > 0 après soumission d'un formulaire de contact
+| `app/Http/Controllers/Api/v1/ApiTropheeController.php`       | Inoé (Phase 3 ✅, puis 6) | Inoé uniquement |
