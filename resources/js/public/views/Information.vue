@@ -69,15 +69,18 @@ function handleSubmit() {
         <!-- Image mobile -->
         <img
           :src="'/images/lungs.png'"
-          alt="Pourquoi donner son sang ?"
+          alt=""
           class="w-[280px] h-auto object-contain shrink-0 md:hidden"
         />
+        <!--Image purement décorative, pas besoin d'alt, bonne pratique-->
+
         <!-- Image desktop -->
         <img
           :src="'/images/hello.png'"
-          alt="Pourquoi donner son sang ?"
+          alt=""
           class="hidden md:block w-[180px] lg:w-[202px] h-auto object-contain shrink-0"
         />
+        <!--Image purement décorative, pas besoin d'alt, bonne pratique-->
         <div class="flex flex-1 flex-col gap-6">
           <h1 class="font-sans text-h1 font-semibold text-texte-primary-dark">
             Pourquoi donner son sang ?
@@ -148,9 +151,10 @@ function handleSubmit() {
 
         <img
           :src="'/images/composition_petites_gouttes.png'"
-          alt="Collecte de sang"
+          alt=""
           class="w-full lg:w-[700px] h-auto object-contain shrink-0"
         />
+        <!--Image purement décorative, pas besoin d'alt, bonne pratique-->
       </div>
     </section>
 
@@ -210,9 +214,10 @@ function handleSubmit() {
 
         <img
           :src="'/images/fournis.png'"
-          alt="Ce que le CTS fourni"
+          alt=""
           class="w-full lg:max-w-[500px] lg:max-h-[380px] h-auto rounded-[100px] object-contain"
         />
+        <!--Image purement décorative, pas besoin d'alt, bonne pratique-->
       </div>
     </section>
 

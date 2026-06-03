@@ -20,7 +20,7 @@ const legal = [
         <div class="flex gap-6 lg:gap-3.5">
           <a v-for="s in socials" :key="s.label" :href="s.href" :aria-label="s.label"
              class="transition-opacity hover:opacity-70">
-            <img :src="s.icon" :alt="s.label" class="h-[30px] w-[30px]" />
+            <img :src="s.icon" :alt="'Logo ' + s.label" class="h-[30px] w-[30px]" />
           </a>
         </div>
         <a href="https://www.hug.ch/bienvenue-aux-personnes-avec-deficit-ou-handicap" class="py-2.5 font-sans text-small text-violet-950 hover:text-violet-500 lg:py-0">

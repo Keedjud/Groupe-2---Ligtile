@@ -37,7 +37,6 @@
 - [ ] Fix nav : lien actif non mis en évidence — `SiteHeader.vue`, `useNavigation.js`
 - [ ] Fix footer : lien "Accessibilité" à déplacer à droite — `SiteFooter.vue`
 - [ ] Labels sur tous les champs de formulaire — `Home.vue`, `Information.vue`
-- [ ] Alts sur toutes les images (via `git cherry-pick 63f3b65`)
 - [ ] Focus trap sur la modale des critères — `Trophees.vue`
 - [ ] Fix email confirmation PME : remplacer `$message->embed(...)` par une URL publique dans `contactPme-confirmation.blade.php`
 - [ ] `contactPme-confirmation.blade.php` : utiliser `{{ $entreprise }}` pour personnaliser le "Bonjour,"

@@ -40,12 +40,12 @@ const rankedCompanies = computed(() => ranks.map(r => companyForRank(r)))
     <!-- Leaderboard SVG (desktop / mobile) -->
     <img
       :src="'/images/leaderboard.svg'"
-      alt="Estrade des vainqueurs"
+      alt="Podium"
       class="hidden md:block w-full h-auto relative z-[1]"
     />
     <img
       :src="'/images/leaderboard_mobile.svg'"
-      alt="Estrade des vainqueurs"
+      alt="Podium"
       class="md:hidden w-full h-auto relative z-[1] -scale-x-100"
     />
 
