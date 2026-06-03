@@ -166,18 +166,18 @@ async function soumettre() {
           <div class="flex flex-1 flex-col gap-1">
             <label class="font-sans text-small font-semibold text-violet-950">Nom de l'entreprise</label>
             <input v-model="champNom" type="text" placeholder="Nom de l'entreprise"
-              class="w-full rounded-lg bg-white px-3 py-2.5 font-sans text-small text-violet-950 shadow-[0_0_4px_rgba(0,0,0,0.25)] outline-none focus:ring-2 focus:ring-violet-400" :class="{ 'ring-rouge-500 ring-1': champsInvalides.nom }" />
+              class="w-full rounded-lg bg-white px-3 py-2.5 font-sans text-small text-violet-800 shadow-[0_0_4px_rgba(0,0,0,0.25)] outline-none focus:ring-2 focus:ring-violet-400" :class="{ 'ring-rouge-500 ring-1': champsInvalides.nom }" />
           </div>
           <div class="flex flex-col gap-1 sm:w-40">
             <label class="font-sans text-small font-semibold text-violet-950">Nb d'employé·es</label>
             <input v-model="champNbEmployes" type="number" min="1" placeholder="ex. 1200"
-              class="w-full rounded-lg bg-white px-3 py-2.5 font-sans text-small text-violet-950 shadow-[0_0_4px_rgba(0,0,0,0.25)] outline-none focus:ring-2 focus:ring-violet-400" :class="{ 'ring-rouge-500 ring-1': champsInvalides.nbEmployes }" />
+              class="w-full rounded-lg bg-white px-3 py-2.5 font-sans text-small text-violet-800 shadow-[0_0_4px_rgba(0,0,0,0.25)] outline-none focus:ring-2 focus:ring-violet-400" :class="{ 'ring-rouge-500 ring-1': champsInvalides.nbEmployes }" />
           </div>
         </div>
 
         <!-- Adresse -->
         <div class="flex flex-col gap-1">
-          <label class="font-sans text-small font-semibold text-violet-950">Adresse (rue + n°)</label>
+          <label class="font-sans text-small font-semibold text-violet-800">Adresse (rue + n°)</label>
           <div class="flex gap-2">
             <input v-model="champRue" type="text" placeholder="Rue"
               class="flex-1 rounded-lg bg-white px-3 py-2.5 font-sans text-small text-violet-950 shadow-[0_0_4px_rgba(0,0,0,0.25)] outline-none focus:ring-2 focus:ring-violet-400" :class="{ 'ring-rouge-500 ring-1': champsInvalides.rue }" />
