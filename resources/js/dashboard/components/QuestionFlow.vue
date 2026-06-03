@@ -1,4 +1,4 @@
-<!-- Flux de questions (étapes 1 a 4) -->
+<!-- Flux de questions (étapes 1 à 3) -->
 <script setup>
 import { ref, computed, watch } from 'vue'
 import { useFetchApi } from '@/composables/api/useFetchApi'
@@ -20,14 +20,9 @@ const overlayNonVisible = ref(false)
 
 // États des actions
 const lienGenere     = ref(false)
-const kitGenere      = ref(false)
 const mailEnvoye     = ref(false)
 const pressePapierOk = ref(false)
-
-// Etats de chargement
-const generationLienEnCours = ref(false)
-const generationKitEnCours  = ref(false)
-const envoiMailEnCours      = ref(false)
+const envoiMailEnCours = ref(false)
 
 const lienCoBrande = ref('')
 const erreurEnvoi  = ref('')
@@ -92,13 +87,10 @@ function fermerOverlay() {
   overlayNonVisible.value = false
 }
 
-// Étape 2 : génération du lien
-async function genererLien() {
-  generationLienEnCours.value = true
-  await new Promise(r => setTimeout(r, 800))
+// Étape 2 : génération du lien (calcul instantané depuis jeton_public)
+function genererLien() {
   lienCoBrande.value = window.location.origin + '/' + props.collecte.jeton_public
   lienGenere.value = true
-  generationLienEnCours.value = false
   etapeRevele.value = 3
 }
 
@@ -112,16 +104,7 @@ async function sauvegarderLienMemoire() {
   }
 }
 
-// Étape 3 : kit de communication
-async function genererKit() {
-  generationKitEnCours.value = true
-  await new Promise(r => setTimeout(r, 1000))
-  kitGenere.value = true
-  generationKitEnCours.value = false
-  etapeRevele.value = 4
-}
-
-// Étape 4 : envoi du kit par mail à l'entreprise partenaire
+// Étape 3 : envoi du kit par mail à l'entreprise partenaire
 async function envoyerMail() {
   envoiMailEnCours.value = true
   erreurEnvoi.value = ''
@@ -188,18 +171,8 @@ async function envoyerMail() {
                 type="button"
                 v-if="!lienGenere"
                 @click="genererLien"
-                :disabled="generationLienEnCours"
-                class="rounded-[40px] bg-violet-900 px-5 py-2 font-sans text-small text-white transition-opacity hover:opacity-90 disabled:opacity-60"
-              >
-                <span v-if="generationLienEnCours" class="flex items-center gap-2">
-                  <svg class="h-4 w-4 animate-spin" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
-                    <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4" />
-                    <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.4 0 0 5.4 0 12h4z" />
-                  </svg>
-                  Génération…
-                </span>
-                <span v-else>Générer</span>
-              </button>
+                class="rounded-[40px] bg-violet-900 px-5 py-2 font-sans text-small text-white transition-opacity hover:opacity-90"
+              >Générer</button>
               <span v-else class="inline-flex items-center gap-2 rounded-[40px] bg-vert-400 px-5 py-2 font-sans text-small text-white">
                 <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="3">
                   <path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7" />
@@ -232,45 +205,11 @@ async function envoyerMail() {
         </div>
       </Transition>
 
-      <!-- Étape 3 : Kit de communication -->
+      <!-- Étape 3 : Envoyer le kit -->
       <Transition name="glisser">
         <div v-if="etapeRevele >= 3" class="flex items-start gap-7">
           <div class="flex h-9 w-9 shrink-0 items-center justify-center rounded-full bg-violet-500 font-sans text-regular text-black">
             3
-          </div>
-          <div class="flex items-center gap-4">
-            <span class="font-sans text-h5">Générer le kit de communication</span>
-            <button
-              type="button"
-              v-if="!kitGenere"
-              @click="genererKit"
-              :disabled="generationKitEnCours"
-              class="rounded-[40px] bg-violet-900 px-5 py-2 font-sans text-small text-white transition-opacity hover:opacity-90 disabled:opacity-60"
-            >
-              <span v-if="generationKitEnCours" class="flex items-center gap-2">
-                <svg class="h-4 w-4 animate-spin" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
-                  <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4" />
-                  <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.4 0 0 5.4 0 12h4z" />
-                </svg>
-                Génération…
-              </span>
-              <span v-else>Générer</span>
-            </button>
-            <span v-else class="inline-flex items-center gap-2 rounded-[40px] bg-vert-400 px-5 py-2 font-sans text-small text-white">
-              <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="3">
-                <path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7" />
-              </svg>
-              Kit généré
-            </span>
-          </div>
-        </div>
-      </Transition>
-
-      <!-- Étape 4 : Envoyer le kit -->
-      <Transition name="glisser">
-        <div v-if="etapeRevele >= 4" class="flex items-start gap-7">
-          <div class="flex h-9 w-9 shrink-0 items-center justify-center rounded-full bg-violet-500 font-sans text-regular text-black">
-            4
           </div>
           <div class="flex flex-col gap-2">
             <div class="flex items-center gap-4">

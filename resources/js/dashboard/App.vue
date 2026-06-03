@@ -1,33 +1,39 @@
 <!-- App dashboard -->
 <script setup>
-import { computed, onMounted } from 'vue'
+import { computed, onMounted, ref } from 'vue'
 import { useRouteurDashboard } from './composables/useRouteur.js'
 import { useSessionAuth }      from './composables/useSessionAuth.js'
 
-import Login         from './views/Login.vue'
-import Collectes     from './views/Collectes.vue'
-import CollecteForm  from './views/CollecteForm.vue'
+import Login          from './views/Login.vue'
+import Collectes      from './views/Collectes.vue'
+import CollecteForm   from './views/CollecteForm.vue'
 import CollecteDetail from './views/CollecteDetail.vue'
-import Metriques     from './views/Metriques.vue'
+import Metriques      from './views/Metriques.vue'
 
 const { estConnecte, chargerUtilisateur } = useSessionAuth()
 
 // Routes du dashboard
 const tableauRoutes = [
-  { pattern: '#/connexion',             cle: 'connexion',       component: Login         },
-  { pattern: '#/collectes',             cle: 'collectes',       component: Collectes     },
-  { pattern: '#/collectes/nouvelle',    cle: 'nouvelle',        component: CollecteForm  },
-  { pattern: '#/collectes/:id/edit',    cle: 'edit',            component: CollecteForm  },
-  { pattern: '#/collectes/:id',         cle: 'detail',          component: CollecteDetail },
-  { pattern: '#/analytics/:idEntreprise', cle: 'analytics-entreprise', component: Metriques },
-  { pattern: '#/analytics',             cle: 'analytics',       component: Metriques     },
+  { pattern: '#/connexion',               cle: 'connexion',            component: Login          },
+  { pattern: '#/collectes',               cle: 'collectes',            component: Collectes      },
+  { pattern: '#/collectes/nouvelle',      cle: 'nouvelle',             component: CollecteForm   },
+  { pattern: '#/collectes/:id/edit',      cle: 'edit',                 component: CollecteForm   },
+  { pattern: '#/collectes/:id',           cle: 'detail',               component: CollecteDetail },
+  { pattern: '#/analytics/:idEntreprise', cle: 'analytics-entreprise', component: Metriques      },
+  { pattern: '#/analytics',               cle: 'analytics',            component: Metriques      },
 ]
 
 const { composantActif, routeActive, parametres, allerVers } = useRouteurDashboard(tableauRoutes)
 
-// Redirection si non connecté
-onMounted(() => {
-  chargerUtilisateur()
+// Bloque l'affichage le temps de vérifier la session au chargement initial.
+// Sans ce garde, vueAffichee retournerait Login (estConnecte encore faux)
+// et l'utilisateur authentifié verrait un flash de la page de connexion.
+const verifAuthEnCours = ref(true)
+
+onMounted(async () => {
+  await chargerUtilisateur()
+  verifAuthEnCours.value = false
+
   if (!estConnecte.value && routeActive.value?.cle !== 'connexion') {
     allerVers('#/connexion')
   }
@@ -64,5 +70,8 @@ const propsComposant = computed(() => {
 </script>
 
 <template>
-  <component :is="vueAffichee" v-bind="propsComposant" />
+  <div v-if="verifAuthEnCours" class="flex min-h-screen items-center justify-center">
+    <span class="font-sans text-regular text-violet-400">Chargement…</span>
+  </div>
+  <component v-else :is="vueAffichee" v-bind="propsComposant" />
 </template>

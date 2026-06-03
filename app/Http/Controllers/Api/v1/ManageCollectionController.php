@@ -33,17 +33,22 @@ class ManageCollectionController extends Controller
             // Collecte
             'start_date' => ['required', 'date'],
             'end_date' => ['required', 'date', 'after:start_date'],
+            'capacity' => ['required', 'integer', 'min:1'],
             'primary_color' => ['required', 'string', 'max:10'],
             'secondary_color' => ['required', 'string', 'max:10'],
             // Logo obligatoire : data URL base64 ou chemin d'image, envoyé en JSON.
             'logo_url' => ['required', 'string', 'max:5000000'],
+            // Lien Onedoc : créé manuellement par le CTS sur la plateforme Onedoc.
+            'onedoc_url' => ['required', 'url', 'max:2048'],
+            // Lien KDrive du dossier kit de communication — obligatoire, nécessaire pour l'envoi de l'email de kit.
+            'kit_url' => ['required', 'url', 'max:2048'],
         ];
     }
 
     /** Comptage inscrits (onedoc_clicked). */
     private function comptageInscrits(): array
     {
-        return ['quizEvents as nb_registered' => fn ($q) => $q->where('event_type', 'onedoc_clicked')];
+        return ['quizEvents as nb_inscrits' => fn ($q) => $q->where('event_type', 'onedoc_clicked')];
     }
 
     public function index()
@@ -82,10 +87,12 @@ class ManageCollectionController extends Controller
                 'address_id' => $adresse->id,
                 'start_date' => $valide['start_date'],
                 'end_date' => $valide['end_date'],
+                'capacity' => $valide['capacity'],
                 'primary_color' => $valide['primary_color'],
                 'secondary_color' => $valide['secondary_color'],
-                'logo_url' => $valide['logo_url'] ?? null,
-                'onedoc_url' => null,
+                'logo_url' => $valide['logo_url'],
+                'onedoc_url' => $valide['onedoc_url'],
+                'kit_url' => $valide['kit_url'],
                 'public_token' => Str::random(32),
             ]);
         });
@@ -117,13 +124,14 @@ class ManageCollectionController extends Controller
             $donnees = [
                 'start_date' => $valide['start_date'],
                 'end_date' => $valide['end_date'],
+                'capacity' => $valide['capacity'],
+                'onedoc_url' => $valide['onedoc_url'],
+                'kit_url' => $valide['kit_url'],
                 'primary_color' => $valide['primary_color'],
                 'secondary_color' => $valide['secondary_color'],
             ];
 
-            if (array_key_exists('logo_url', $valide)) {
-                $donnees['logo_url'] = $valide['logo_url'];
-            }
+            $donnees['logo_url'] = $valide['logo_url'];
 
             $collecte->update($donnees);
         });
