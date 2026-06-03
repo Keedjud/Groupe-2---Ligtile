@@ -110,7 +110,7 @@ onMounted(() => {
       <!-- Image : première en mobile, à droite en desktop -->
       <img
         :src="heroImg"
-        alt="Image du label"
+        alt="label CTS"
         class="h-[286px] w-[267px] object-contain lg:order-last lg:h-auto lg:max-h-[387px] lg:w-[361px]"
       />
       <div class="flex max-w-[762px] flex-col gap-6 lg:gap-[58px]">
