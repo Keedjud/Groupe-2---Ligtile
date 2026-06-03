@@ -26,7 +26,7 @@ function enterSite() {
         <div class="flex flex-col items-center gap-5">
           <img
             :src="'/images/logo-hug.png'"
-            alt="Logo des HUG"
+            alt="Logo HUG"
             class="h-24 w-auto object-contain"
           />
           <h2 class="font-sans text-h5 sm:text-h2">

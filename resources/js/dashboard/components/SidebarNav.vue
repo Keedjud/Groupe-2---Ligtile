@@ -20,7 +20,7 @@ function gererLogout() {
   <!-- Sidebar desktop -->
   <aside class="hidden h-full w-[215px] shrink-0 flex-col gap-4 overflow-hidden px-[30px] py-8 lg:flex">
     <!-- Logo HUG -->
-    <img :src="'/images/logo-hug.png'" alt="HUG" class="mb-6 h-auto w-full max-w-[155px]" />
+    <img :src="'/images/logo-hug.png'" alt="logo HUG" class="mb-6 h-auto w-full max-w-[155px]" />
 
     <!-- Collectes -->
     <button

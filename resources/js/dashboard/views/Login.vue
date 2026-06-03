@@ -41,7 +41,7 @@ async function soumettre() {
 
         <!-- En-tête carte -->
         <div class="mb-6 flex flex-col items-center gap-1">
-          <img :src="'/images/logo-hug.png'" alt="HUG" class="mb-4 h-auto w-full max-w-[155px]" />
+          <img :src="'/images/logo-hug.png'" alt="logo HUG" class="mb-4 h-auto w-full max-w-[155px]" />
         </div>
 
         <h1 class="mb-1 text-center font-sans text-h1 font-bold text-violet-900">Connexion</h1>
