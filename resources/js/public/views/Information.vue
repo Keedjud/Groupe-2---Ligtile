@@ -14,15 +14,16 @@ const status = ref({ type: '', message: '' })
 const { fetchApi } = useFetchApi('/api/v1')
 
 function scrollToHashFragment() {
-  const hash = window.location.hash
-  const marker = '#/informations#'
-  if (!hash || !hash.includes(marker)) return
+  const hash = window.location.hash;
+  const fragment = hash.includes('#/informations#') ? hash.split('#/informations#')[1] : null;
+  if (!fragment) {
+    return;
+  }
 
-  const fragment = hash.split(marker)[1]
-  if (!fragment) return
-
-  const target = document.getElementById(fragment)
-  if (target) target.scrollIntoView({ behavior: 'smooth' })
+  const target = document.getElementById(fragment);
+  if (target) {
+    target.scrollIntoView({ behavior: 'smooth' });
+  }
 }
 
 onMounted(() => {
@@ -67,16 +68,19 @@ function handleSubmit() {
       <div class="mx-auto flex w-full max-w-[1512px] flex-col items-center gap-8 md:flex-row md:gap-16 lg:gap-[249px]">
         <!-- Image mobile -->
         <img
-:src="'/images/lungs.png'"
-          alt="Pourquoi donner son sang ?"
+          :src="'/images/lungs.png'"
+          alt=""
           class="w-[280px] h-auto object-contain shrink-0 md:hidden"
         />
+        <!--Image purement décorative, pas besoin d'alt, bonne pratique-->
+
         <!-- Image desktop -->
         <img
-:src="'/images/hi.png'"
-          alt="Mascotte goutte de sang qui dit bonjour"
+          :src="'/images/hello.png'"
+          alt=""
           class="hidden md:block w-[180px] lg:w-[202px] h-auto object-contain shrink-0"
         />
+        <!--Image purement décorative, pas besoin d'alt, bonne pratique-->
         <div class="flex flex-1 flex-col gap-6">
           <h1 class="font-sans text-h1 font-semibold text-texte-primary-dark">
             Pourquoi donner son sang ?
@@ -147,9 +151,10 @@ function handleSubmit() {
 
         <img
           :src="'/images/composition_petites_gouttes.png'"
-          alt="Petites gouttes de sang qui se rendent vers un bâtiment et un médecin les accueille"
+          alt=""
           class="w-full lg:w-[700px] h-auto object-contain shrink-0"
         />
+        <!--Image purement décorative, pas besoin d'alt, bonne pratique-->
       </div>
     </section>
 
@@ -209,9 +214,10 @@ function handleSubmit() {
 
         <img
           :src="'/images/fournis.png'"
-          alt="Pile de documents"
+          alt=""
           class="w-full lg:max-w-[500px] lg:max-h-[380px] h-auto rounded-[100px] object-contain"
         />
+        <!--Image purement décorative, pas besoin d'alt, bonne pratique-->
       </div>
     </section>
 
@@ -261,10 +267,13 @@ function handleSubmit() {
               rows="4"
               class="h-[148px] w-full max-w-[450px] resize-none rounded-lg bg-white px-4 py-3 font-sans text-small text-black shadow-[0_0_4px_rgba(0,0,0,0.25)] outline-none placeholder:text-[#B8B8B8]"
             ></textarea>
-            <div v-if="status.type === 'error'" class="mb-4 rounded-lg bg-red-50 p-4 text-small text-red-800 ring-1 ring-red-300">
-              {{ status.message }}
+            <div v-if="status.type === 'error'" class="mb-4 flex w-full max-w-[450px] items-start gap-3 rounded-xl border border-rouge-500 bg-rouge-500/10 p-4 text-left">
+              <svg xmlns="http://www.w3.org/2000/svg" class="mt-0.5 h-5 w-5 shrink-0 text-rouge-600" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                <circle cx="12" cy="12" r="10" /><line x1="12" y1="8" x2="12" y2="13" /><line x1="12" y1="16" x2="12.01" y2="16" />
+              </svg>
+              <p class="font-sans text-small text-rouge-600">{{ status.message }}</p>
             </div>
-            <p class="text-xs text-gray-500">Vos données sont transmises au CTS et utilisées uniquement pour répondre à votre demande.</p>
+            <p class="mb-4 text-xs text-gray-500">Vos données sont transmises au CTS et utilisées uniquement pour répondre à votre demande.</p>
             <button
               @click="handleSubmit"
               :disabled="submitting"

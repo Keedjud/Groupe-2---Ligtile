@@ -90,7 +90,8 @@ function updateCardsIndex() {
               <a href="#/informations" class="flex items-center justify-between rounded-2xl bg-form-bg p-3 lg:bg-transparent lg:p-0 lg:rounded-none">
                 <span class="flex items-center gap-3 lg:gap-4">
                   <span class="grid h-[51px] w-[51px] place-items-center rounded-full bg-violet-200 shrink-0">
-                    <img :src="'/images/check.png'" alt="Icône de validation" class="h-6 w-6" />
+                    <img :src="'/images/check.png'" alt="" class="h-6 w-6" />
+                    <!--Image purement décorative, pas besoin d'alt, bonne pratique-->
                   </span>
                   <span class="text-regular text-texte-primary-dark">Simple à mettre en place</span>
                 </span>
@@ -101,7 +102,8 @@ function updateCardsIndex() {
               <a href="#/informations" class="flex items-center justify-between rounded-2xl bg-form-bg p-3 lg:bg-transparent lg:p-0 lg:rounded-none">
                 <span class="flex items-center gap-3 lg:gap-4">
                   <span class="grid h-[51px] w-[51px] place-items-center rounded-full bg-violet-200 shrink-0">
-                    <img :src="'/images/verified_user.png'" alt="Icône utilisateur vérifié" class="h-6 w-6" />
+                    <img :src="'/images/verified_user.png'" alt="" class="h-6 w-6" />
+                    <!--Image purement décorative, pas besoin d'alt, bonne pratique-->
                   </span>
                   <span class="text-regular text-texte-primary-dark">Adapté à votre structure</span>
                 </span>
@@ -112,7 +114,8 @@ function updateCardsIndex() {
               <a href="#/informations" class="flex items-center justify-between rounded-2xl bg-form-bg p-3 lg:bg-transparent lg:p-0 lg:rounded-none">
                 <span class="flex items-center gap-3 lg:gap-4">
                   <span class="grid h-[51px] w-[51px] place-items-center rounded-full bg-violet-200 shrink-0">
-                    <img :src="'/images/favorite.png'" alt="Icône favori" class="h-6 w-6" />
+                    <img :src="'/images/favorite.png'" alt="" class="h-6 w-6" />
+                    <!--Image purement décorative, pas besoin d'alt, bonne pratique-->
                   </span>
                   <span class="text-regular text-texte-primary-dark">Aucune expertise médicale requise</span>
                 </span>
@@ -127,7 +130,8 @@ function updateCardsIndex() {
         </div>
         <div>
           <div class="rounded-3xl bg-gradient-to-r from-violet-100 to-vert-300 overflow-hidden h-[208px] lg:h-[523px] relative">
-            <img :src="'/images/composition.png'" class="absolute inset-0 h-full w-full object-cover" alt="Bâtiment d'entreprise avec un médecin de l'HUG et un employé" />
+            <img :src="'/images/composition.png'" class="" />
+            <!--Image purement décorative, pas besoin d'alt, bonne pratique-->
           </div>
         </div>
       </div>

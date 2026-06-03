@@ -50,9 +50,23 @@ Page à part entière pour la création et la modification d'une collecte. Le m�
 **Contenu du formulaire :**
 - Informations de l'entreprise partenaire (nom, email de contact)
 - Date de début et date de fin de la collecte, lieu, horaires
-- Lien Onedoc pour l'inscription des employés
-- Capacité de la collecte (nombre de créneaux disponibles) — utilisée pour le taux de remplissage
+- Lien Onedoc pour l'inscription des employés — le CTS crée préalablement la collecte sur la plateforme Onedoc, récupère l'URL générée, et la colle ici. Pas d'intégration API avec Onedoc. *Recommandation future : une intégration API Onedoc pourrait créer la collecte automatiquement et retourner le lien directement.*
+- Capacité de la collecte (nombre de créneaux disponibles) — utilisée pour le taux de remplissage. Champ obligatoire.
+- Lien KDrive du kit de communication — lien vers le dossier KDrive (Infomaniak) de la collecte, contenant les fichiers co-brandés préparés manuellement par le CTS (affiches, flyers, visuels RS, etc.). Le CTS organise son KDrive avec un dossier par entreprise et un sous-dossier par collecte. Ce lien est inclus dans l'email de kit envoyé à l'entreprise partenaire. Champ optionnel : peut être ajouté après la création de la collecte si le kit n'est pas encore prêt.
 - Couleurs de co-branding (color picker) et upload du logo
+
+**Aperçu co-branding et contraste des couleurs :**
+
+La saisie des couleurs est accompagnée d'un **aperçu en temps réel** reprenant plusieurs éléments visuels du site cobrandé (contenu exact défini par les maquettes). Cet aperçu permet au CTS de se rendre compte immédiatement du rendu avant de valider.
+
+En parallèle, un **calcul de lisibilité WCAG** (ratio de contraste) est effectué côté client sur chaque couleur saisie. Si le contraste est insuffisant (ratio < 4.5:1 pour le texte normal, seuil WCAG AA), un avertissement non bloquant est affiché sous le color picker concerné.
+
+La correction des couleurs reste entièrement à la discrétion du CTS — aucun blocage technique n'est imposé sur le formulaire ni sur le site cobrandé. La responsabilité de choisir des couleurs lisibles incombe au CTS.
+
+**Implémentation prévue :**
+- Composant `ColorPreview.vue` (ou section intégrée dans `CollecteForm.vue`) : aperçu réactif aux deux `v-model` couleur + logo
+- Fonction utilitaire `getContrastRatio(hex)` dans `resources/js/composables/useColorContrast.js` — partageable entre `CollecteForm.vue` et tout futur composant en ayant besoin
+- Contenu exact de l'aperçu : **en attente de validation des maquettes**
 
 **Responsabilité des dates :**
 La saisie correcte des dates est entièrement sous la responsabilité du CTS. Aucune contrainte d'intégrité n'est imposée côté base de données sur les dates (cohérence, chevauchement, etc.) — le CTS dispose déjà de ses propres processus internes pour valider ces informations lors de la prise de décision.
@@ -74,6 +88,14 @@ Page de détail accessible en cliquant sur une collecte depuis la liste. Permet 
 - Aperçu du co-branding (couleurs + logo)
 - Bouton **Modifier** — navigue vers le formulaire pré-rempli (`#editer-{id}`)
 
+**Flow d'envoi du kit de communication :**
+Depuis la page de détail, le CTS peut envoyer le kit à l'entreprise partenaire via un bouton dédié. L'email envoyé est co-brandé (couleurs + logo de l'entreprise) et inclut :
+- Le lien vers le site cobrandé de la collecte
+- Un bouton **"Télécharger votre kit de communication"** pointant vers le dossier KDrive de la collecte (si `kit_url` renseigné)
+- Les dates de la collecte
+
+Le dossier KDrive est préparé manuellement par le CTS avant l'envoi. Structure recommandée : `KDrive / Entreprises / {Nom entreprise} / {Année} / {Dates collecte} /` contenant les fichiers co-brandés (affiches, flyers, visuels RS).
+
 ---
 
 #### 2d. Dashboard des métriques (`#metriques`)
@@ -89,7 +111,7 @@ Page de détail accessible en cliquant sur une collecte depuis la liste. Permet 
 | Nombre total de collectes organisées | Volume brut sur une période sélectionnable |
 | Nombre total d'inscrits cumulé | Total de clics Onedoc toutes collectes confondues |
 | Nombre d'entreprises distinctes touchées | Combien d'entreprises différentes ont participé sur la période |
-| Évolution temporelle | Dimension transversale : les KPIs principaux visualisables par mois / trimestre / année |
+| Évolution temporelle | Filtre par année(s) : l'admin sélectionne une ou plusieurs années, toutes les métriques se recalculent sur la période correspondante |
 
 **Engagement entreprises**
 
@@ -300,19 +322,26 @@ Collection::whereBetween('start_date', [$debut, $fin])
     ->count('company_id');
 ```
 
-**Évolution temporelle** — groupement par mois, à adapter selon la granularité souhaitée :
+**Évolution temporelle** — groupement par année, filtré sur les années sélectionnées par l'admin :
 ```php
-$periodExpr = DB::connection()->getDriverName() === 'sqlite'
-    ? "strftime('%Y-%m', created_at)"
-    : "DATE_FORMAT(created_at, '%Y-%m')";
+// $years = tableau d'entiers ex. [2025, 2026] — transmis via ?years[]=2025&years[]=2026
+$yearExpr = DB::connection()->getDriverName() === 'sqlite'
+    ? "strftime('%Y', start_date)"
+    : "YEAR(start_date)";
 
-QuizEvent::where('event_type', 'onedoc_clicked')
-    ->selectRaw("{$periodExpr} as period, COUNT(DISTINCT session_id) as nb_inscrits")
-    ->groupByRaw($periodExpr)
-    ->orderBy('period')
-    ->get();
+Collection::withCount(['quizEvents as nb_inscrits' => fn ($q) => $q->where('event_type', 'onedoc_clicked')])
+    ->when($years, fn ($q) => $q->whereRaw("{$yearExpr} IN (" . implode(',', $years) . ")"))
+    ->get()
+    ->groupBy(fn ($c) => substr((string) $c->start_date, 0, 4))
+    ->map(fn ($groupe, $annee) => [
+        'annee'     => $annee,
+        'collectes' => $groupe->count(),
+        'inscrits'  => (int) $groupe->sum('nb_inscrits'),
+    ])
+    ->sortKeys()
+    ->values();
 ```
-> La forme de visualisation (graphes, courbes) sera définie par la maquette. Des librairies comme Chart.js ou d3.js pourront être ajoutées selon les besoins — à documenter après validation des maquettes.
+> Le filtre années s'applique à **toutes** les métriques du dashboard (groupes A à E), pas seulement à l'évolution. Voir `DashboardMetricsController::overview()` qui reçoit le paramètre `years[]`.
 
 ---
 
