@@ -58,7 +58,7 @@ function gererLogout() {
 
   <!-- Barre mobile -->
   <nav class="flex items-center justify-between gap-2 border-b border-violet-200 bg-beige-50 px-4 py-2 lg:hidden">
-    <img :src="'/images/logo-hug.png'" alt="HUG" class="h-7 w-auto" />
+    <img :src="'/images/logo-hug.png'" alt="logo HUG" class="h-7 w-auto" />
     <div class="flex gap-2 flex-wrap">
       <button
         @click="allerVers('#/collectes')"

@@ -14,16 +14,15 @@ const status = ref({ type: '', message: '' })
 const { fetchApi } = useFetchApi('/api/v1')
 
 function scrollToHashFragment() {
-  const hash = window.location.hash;
-  const fragment = hash.includes('#/informations#') ? hash.split('#/informations#')[1] : null;
-  if (!fragment) {
-    return;
-  }
+  const hash = window.location.hash
+  const marker = '#/informations#'
+  if (!hash || !hash.includes(marker)) return
 
-  const target = document.getElementById(fragment);
-  if (target) {
-    target.scrollIntoView({ behavior: 'smooth' });
-  }
+  const fragment = hash.split(marker)[1]
+  if (!fragment) return
+
+  const target = document.getElementById(fragment)
+  if (target) target.scrollIntoView({ behavior: 'smooth' })
 }
 
 onMounted(() => {
@@ -68,19 +67,14 @@ function handleSubmit() {
       <div class="mx-auto flex w-full max-w-[1512px] flex-col items-center gap-8 md:flex-row md:gap-16 lg:gap-[249px]">
         <!-- Image mobile -->
         <img
-          :src="'/images/lungs.png'"
+:src="'/images/lungs.png'"
           alt="Pourquoi donner son sang ?"
           class="w-[280px] h-auto object-contain shrink-0 md:hidden"
         />
         <!-- Image desktop -->
         <img
-<<<<<<< HEAD
-          :src="'/images/hello.png'"
-          alt="Pourquoi donner son sang ?"
-=======
-          :src="'/images/hi.png'"
+:src="'/images/hi.png'"
           alt="Mascotte goutte de sang qui dit bonjour"
->>>>>>> 63f3b65 (Add alts to images)
           class="hidden md:block w-[180px] lg:w-[202px] h-auto object-contain shrink-0"
         />
         <div class="flex flex-1 flex-col gap-6">

@@ -46,13 +46,8 @@ const { isOpen: showCriteria, toggle: toggleCriteria } = useDisclosure()
         <div class="flex flex-col items-center justify-center gap-10 lg:w-[480px] w-full lg:flex-shrink-0">
           <img
             :src="'/images/trophy_top.png'"
-<<<<<<< HEAD
-            alt="Trophée de la Générosité"
-            class="hidden md:block w-[250px] h-auto object-contain"
-=======
             alt="Trophée de la première place"
             class="hidden md:block w-[178px] h-auto object-contain"
->>>>>>> 63f3b65 (Add alts to images)
           />
           <div class="flex h-[45px] w-[250px] cursor-pointer items-center justify-center gap-2 rounded-[40px] bg-texte-primary-light px-3 py-2 shadow-[0_0_4px_rgba(0,0,0,0.25)] transition-shadow hover:shadow-md">
             <span class="font-sans text-regular text-texte-secondary">Découvrir le trophée →</span>
