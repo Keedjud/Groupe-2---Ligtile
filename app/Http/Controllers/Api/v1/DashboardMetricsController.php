@@ -5,7 +5,7 @@ namespace App\Http\Controllers\Api\v1;
 use App\Http\Controllers\Controller;
 use App\Models\Collection;
 use App\Models\Company;
-use App\Models\ContactRequest;
+use App\Models\ContactStat;
 use App\Models\PageEvent;
 use App\Models\QuizEvent;
 use Illuminate\Http\Request;
@@ -17,16 +17,22 @@ class DashboardMetricsController extends Controller
     {
         $request->validate([
             'company_id' => ['nullable', 'integer', 'exists:companies,id'],
+            'years'      => ['nullable', 'array'],
+            'years.*'    => ['integer', 'min:2000', 'max:2100'],
         ]);
 
         $companyId = $request->query('company_id');
+        $annees    = array_map('intval', $request->query('years', []));
         $entreprise = $companyId ? Company::find($companyId) : null;
 
-        // Inscrits (onedoc_clicked)
+        // Inscrits (onedoc_clicked) — filtrage par année côté PHP pour compatibilité SQLite + MariaDB
         $collections = Collection::with('company')
             ->withCount(['quizEvents as inscrits' => fn ($q) => $q->where('event_type', 'onedoc_clicked')])
             ->when($companyId, fn ($q) => $q->where('company_id', $companyId))
-            ->get();
+            ->get()
+            ->when(!empty($annees), fn ($col) => $col->filter(
+                fn ($c) => in_array((int) substr((string) $c->start_date, 0, 4), $annees)
+            )->values());
 
         $ids = $collections->pluck('id');
 
@@ -37,7 +43,7 @@ class DashboardMetricsController extends Controller
                 'portee'         => $entreprise ? 'entreprise' : 'global',
             ],
             'groupe_a' => $this->vueEnsemble($collections),
-            'groupe_b' => $this->engagementEntreprises($collections),
+            'groupe_b' => $this->engagementEntreprises($collections, $annees),
             'groupe_c' => $this->performanceQuiz($ids),
             'groupe_d' => ['questions' => $this->performanceParQuestion($ids)],
             'groupe_e' => $this->engagementPrevention($ids),
@@ -72,7 +78,7 @@ class DashboardMetricsController extends Controller
     }
 
     /** Groupe B */
-    private function engagementEntreprises($collections): array
+    private function engagementEntreprises($collections, array $annees = []): array
     {
         $tauxRemplissage = $collections
             ->filter(fn ($c) => $c->capacity > 0)
@@ -89,10 +95,21 @@ class DashboardMetricsController extends Controller
             ->take(5)
             ->values();
 
+        // Filtre par année via whereYear (compatible SQLite + MariaDB)
+        $demandesContact = ContactStat::when(!empty($annees), function ($q) use ($annees) {
+            $q->where(function ($q) use ($annees) {
+                foreach ($annees as $i => $annee) {
+                    $i === 0
+                        ? $q->whereYear('created_at', $annee)
+                        : $q->orWhereYear('created_at', $annee);
+                }
+            });
+        })->count();
+
         return [
             'taux_remplissage_moyen' => $tauxRemplissage->isEmpty() ? 0 : (int) round($tauxRemplissage->average()),
-            'collectes_recurrentes'  => $collections->groupBy('company_id')->filter(fn ($g) => $g->count() > 2)->count(),
-            'demandes_contact'       => ContactRequest::count(),
+            'collectes_recurrentes'  => $collections->groupBy('company_id')->filter(fn ($g) => $g->count() >= 2)->count(),
+            'demandes_contact'       => $demandesContact,
             'top_entreprises'        => $topEntreprises,
         ];
     }
@@ -152,7 +169,8 @@ class DashboardMetricsController extends Controller
                 'label'     => $label,
                 'bonnes'    => $this->pct($bonnes, $total),
                 'mauvaises' => $this->pct($mauvaises, $total),
-                'skip'      => $skip,
+                // skip % = questions sautées / (répondues + sautées)
+                'skip'      => $this->pct($skip, $total + $skip),
             ];
         }
 
