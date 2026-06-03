@@ -16,10 +16,10 @@ const { isOpen: showCriteria, toggle: toggleCriteria } = useDisclosure()
         <!-- Image de trophy_top visible uniquement sur mobile au sommet -->
         <img
           :src="'/images/trophy_top.png'"
-          alt="Trophée de la première place"
+          alt=""
           class="md:hidden w-[176px] h-auto object-contain"
         />
-
+        <!--Image purement décorative, pas besoin d'alt, bonne pratique-->
         <!-- Colonne gauche : Texte -->
         <div class="flex flex-1 flex-col gap-10 lg:max-w-[800px]">
           <h1 class="font-sans text-h1 font-semibold text-black">
@@ -46,9 +46,10 @@ const { isOpen: showCriteria, toggle: toggleCriteria } = useDisclosure()
         <div class="flex flex-col items-center justify-center gap-10 lg:w-[480px] w-full lg:flex-shrink-0">
           <img
             :src="'/images/trophy_top.png'"
-            alt="Trophée de la première place"
+            alt=""
             class="hidden md:block w-[178px] h-auto object-contain"
           />
+          <!--Image purement décorative, pas besoin d'alt, bonne pratique-->
           <div class="flex h-[45px] w-[250px] cursor-pointer items-center justify-center gap-2 rounded-[40px] bg-texte-primary-light px-3 py-2 shadow-[0_0_4px_rgba(0,0,0,0.25)] transition-shadow hover:shadow-md">
             <span class="font-sans text-regular text-texte-secondary">Découvrir le trophée →</span>
           </div>
@@ -92,9 +93,7 @@ const { isOpen: showCriteria, toggle: toggleCriteria } = useDisclosure()
 
       <!-- Podium -->
       <div v-else class="flex w-full max-w-[1000px] flex-col items-center">
-<<<<<<< HEAD
         <PodiumDisplay :companies="podium.companies" />
-=======
         <!-- Desktop Podium Wrapper (hidden on mobile, visible on md+) -->
         <div class="hidden md:block podium-wrapper relative w-full">
 
@@ -110,7 +109,7 @@ const { isOpen: showCriteria, toggle: toggleCriteria } = useDisclosure()
           <!-- SVG leaderboard (les marches du podium) -->
           <img
             :src="'/images/leaderboard.svg'"
-            alt="Estrade des vainqueurs"
+            alt="Podium"
             class="w-full h-auto block relative z-[1] -scale-x-100"
           />
 
@@ -164,7 +163,7 @@ const { isOpen: showCriteria, toggle: toggleCriteria } = useDisclosure()
           <!-- SVG leaderboard (les marches du podium) -->
           <img
             :src="'/images/leaderboard_mobile.svg'"
-            alt="Estrade des vainqueurs"
+            alt="Podium"
             class="w-full h-auto block relative z-[1] -scale-x-100"
           />
 
@@ -202,7 +201,6 @@ const { isOpen: showCriteria, toggle: toggleCriteria } = useDisclosure()
           </div>
 
         </div>
->>>>>>> 63f3b65 (Add alts to images)
 
         <!-- Critères d'attribution — aligné avec le bord gauche du SVG -->
         <button
@@ -244,7 +242,7 @@ const { isOpen: showCriteria, toggle: toggleCriteria } = useDisclosure()
             </h3>
             <img
               :src="'/images/infos.png'"
-              alt="Mascotte qui se pose des questions"
+              alt="Mascotte goutte de sang qui se pose des questions"
               class="hidden md:block absolute right-[126px] top-[24px] w-[117px] h-[174px] object-contain"
             />
           </div>
@@ -254,8 +252,9 @@ const { isOpen: showCriteria, toggle: toggleCriteria } = useDisclosure()
             <!-- Régularité -->
             <div class="flex items-center gap-6">
               <div class="flex h-[50px] w-[50px] md:h-[60px] md:w-[60px] flex-shrink-0 items-center justify-center rounded-full bg-[#E5F5F0]">
-                <img :src="'/images/regularite.png'" alt="Régularité" class="h-[28px] w-[28px] md:h-[36px] md:w-[36px] object-contain" />
+                <img :src="'/images/regularite.png'" alt="" class="h-[28px] w-[28px] md:h-[36px] md:w-[36px] object-contain" />
               </div>
+              <!--Image purement décorative, pas besoin d'alt, bonne pratique-->
               <div>
                 <p class="font-sans text-[16px] md:text-[22px] font-bold text-texte-primary-dark leading-snug">Régularité</p>
                 <p class="font-sans text-[14px] md:text-[18px] font-normal text-texte-primary-dark/80 leading-snug">Engagement durable dans la collecte de sang</p>
@@ -265,8 +264,9 @@ const { isOpen: showCriteria, toggle: toggleCriteria } = useDisclosure()
             <!-- Nombre d'inscrits -->
             <div class="flex items-center gap-6">
               <div class="flex h-[50px] w-[50px] md:h-[60px] md:w-[60px] flex-shrink-0 items-center justify-center rounded-full bg-[#E5F5F0]">
-                <img :src="'/images/inscrit.png'" alt="Nombre d'inscrits" class="h-[28px] w-[28px] md:h-[36px] md:w-[36px] object-contain" />
+                <img :src="'/images/inscrit.png'" alt="" class="h-[28px] w-[28px] md:h-[36px] md:w-[36px] object-contain" />
               </div>
+              <!--Image purement décorative, pas besoin d'alt, bonne pratique-->
               <div>
                 <p class="font-sans text-[16px] md:text-[22px] font-bold text-texte-primary-dark leading-snug">Nombre d'inscrits</p>
                 <p class="font-sans text-[14px] md:text-[18px] font-normal text-texte-primary-dark/80 leading-snug">Participation des collaborateurs aux collectes organisées</p>
@@ -276,8 +276,9 @@ const { isOpen: showCriteria, toggle: toggleCriteria } = useDisclosure()
             <!-- Taux d'engagement -->
             <div class="flex items-center gap-6">
               <div class="flex h-[50px] w-[50px] md:h-[60px] md:w-[60px] flex-shrink-0 items-center justify-center rounded-full bg-[#E5F5F0]">
-                <img :src="'/images/engagement.png'" alt="Taux d'engagement" class="h-[28px] w-[28px] md:h-[36px] md:w-[36px] object-contain" />
+                <img :src="'/images/engagement.png'" alt="" class="h-[28px] w-[28px] md:h-[36px] md:w-[36px] object-contain" />
               </div>
+              <!--Image purement décorative, pas besoin d'alt, bonne pratique-->
               <div>
                 <p class="font-sans text-[16px] md:text-[22px] font-bold text-texte-primary-dark leading-snug">Taux d'engagement</p>
                 <p class="font-sans text-[14px] md:text-[18px] font-normal text-texte-primary-dark/80 leading-snug">Participation effective lors des collectes</p>
@@ -287,8 +288,9 @@ const { isOpen: showCriteria, toggle: toggleCriteria } = useDisclosure()
             <!-- Appréciation du jury -->
             <div class="flex items-center gap-6">
               <div class="flex h-[50px] w-[50px] md:h-[60px] md:w-[60px] flex-shrink-0 items-center justify-center rounded-full bg-[#E5F5F0]">
-                <img :src="'/images/appreciation.png'" alt="Appréciation du jury" class="h-[28px] w-[28px] md:h-[36px] md:w-[36px] object-contain" />
+                <img :src="'/images/appreciation.png'" alt="" class="h-[28px] w-[28px] md:h-[36px] md:w-[36px] object-contain" />
               </div>
+              <!--Image purement décorative, pas besoin d'alt, bonne pratique-->
               <div>
                 <p class="font-sans text-[16px] md:text-[22px] font-bold text-texte-primary-dark leading-snug">Appréciation du jury</p>
                 <p class="font-sans text-[14px] md:text-[18px] font-normal text-texte-primary-dark/80 leading-snug">Qualité des actions de communications</p>
