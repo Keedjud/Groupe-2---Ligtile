@@ -1,27 +1,63 @@
 <script setup>
-import { ref } from 'vue'
+import { ref, onBeforeUnmount, onMounted } from 'vue'
+import { useFetchApi } from '@/composables/api/useFetchApi'
 
 const form = ref({
-  company: '',
+  company_name: '',
   email: '',
   message: '',
 })
 const submitted = ref(false)
 const submitting = ref(false)
-const formError = ref(null)
+const status = ref({ type: '', message: '' })
+
+const { fetchApi } = useFetchApi('/api/v1')
+
+function scrollToHashFragment() {
+  const hash = window.location.hash;
+  const fragment = hash.includes('#/informations#') ? hash.split('#/informations#')[1] : null;
+  if (!fragment) {
+    return;
+  }
+
+  const target = document.getElementById(fragment);
+  if (target) {
+    target.scrollIntoView({ behavior: 'smooth' });
+  }
+}
+
+onMounted(() => {
+  scrollToHashFragment();
+  window.addEventListener('hashchange', scrollToHashFragment);
+});
+
+onBeforeUnmount(() => {
+  window.removeEventListener('hashchange', scrollToHashFragment);
+});
 
 function handleSubmit() {
-  formError.value = null
+  status.value = { type: '', message: '' }
 
-  if (!form.value.company || !form.value.email || !form.value.message) {
-    formError.value = 'Veuillez remplir tous les champs.'
+  if (!form.value.company_name || !form.value.email || !form.value.message) {
+    status.value = { type: 'error', message: 'Veuillez remplir tous les champs.' }
     return
   }
 
   submitting.value = true
-  submitted.value = true
-  submitting.value = false
-  // TODO: backend — ajouter try/catch avec formError.value = ...
+  submitted.value = false
+
+  fetchApi({ url: '/pme-contact', data: form.value })
+    .then(() => {
+      submitting.value = false
+      submitted.value = true
+      form.value.company_name = ''
+      form.value.email = ''
+      form.value.message = ''
+    })
+    .catch(err => {
+      submitting.value = false
+      status.value = { type: 'error', message: err.data?.message || 'Une erreur est survenue lors de l\'envoi.' }
+    })
 }
 </script>
 
@@ -33,13 +69,13 @@ function handleSubmit() {
         <!-- Image mobile -->
         <img
           :src="'/images/lungs.png'"
-          alt="Pourquoi donner son sang ?"
+          alt=""
           class="w-[280px] h-auto object-contain shrink-0 md:hidden"
         />
         <!-- Image desktop -->
         <img
-          :src="'/images/hi.png'"
-          alt="Pourquoi donner son sang ?"
+          :src="'/images/hello.png'"
+          alt=""
           class="hidden md:block w-[180px] lg:w-[202px] h-auto object-contain shrink-0"
         />
         <div class="flex flex-1 flex-col gap-6">
@@ -112,7 +148,7 @@ function handleSubmit() {
 
         <img
           :src="'/images/composition_petites_gouttes.png'"
-          alt="Collecte de sang"
+          alt=""
           class="w-full lg:w-[700px] h-auto object-contain shrink-0"
         />
       </div>
@@ -174,14 +210,14 @@ function handleSubmit() {
 
         <img
           :src="'/images/fournis.png'"
-          alt="Ce que le CTS fourni"
+          alt=""
           class="w-full lg:max-w-[500px] lg:max-h-[380px] h-auto rounded-[100px] object-contain"
         />
       </div>
     </section>
 
     <!-- ===== Section 5 : Moins de 1 000 collaborateurs + Formulaire ===== -->
-    <section class="bg-violet-100 px-4 py-12 lg:px-[60px] lg:py-[57px] mt-16 lg:mt-24">
+    <section id="pme" class="bg-violet-100 px-4 py-12 lg:px-[60px] lg:py-[57px] mt-16 lg:mt-24">
       <div class="mx-auto flex max-w-[1512px] flex-col items-center gap-8 lg:flex-row lg:gap-28">
         <!-- Colonne gauche : texte -->
         <div class="flex flex-col gap-6 lg:max-w-[636px]">
@@ -208,27 +244,42 @@ function handleSubmit() {
 
           <!-- Formulaire ou confirmation -->
           <template v-if="!submitted">
-            <p v-if="formError" class="w-full max-w-[450px] rounded-lg bg-rouge-100 px-4 py-2 text-center font-sans text-small text-rouge-600">
-              {{ formError }}
-            </p>
-            <input
-              v-model="form.company"
-              type="text"
-              placeholder="Nom de l'entreprise"
-              class="h-[43px] w-full max-w-[450px] rounded-lg bg-white px-4 font-sans text-small text-black shadow-[0_0_4px_rgba(0,0,0,0.25)] outline-none placeholder:text-[#B8B8B8]"
-            />
-            <input
-              v-model="form.email"
-              type="email"
-              placeholder="Adresse Mail"
-              class="h-[43px] w-full max-w-[450px] rounded-lg bg-white px-4 font-sans text-small text-black shadow-[0_0_4px_rgba(0,0,0,0.25)] outline-none placeholder:text-[#B8B8B8]"
-            />
-            <textarea
-              v-model="form.message"
-              placeholder="Message"
-              rows="4"
-              class="h-[148px] w-full max-w-[450px] resize-none rounded-lg bg-white px-4 py-3 font-sans text-small text-black shadow-[0_0_4px_rgba(0,0,0,0.25)] outline-none placeholder:text-[#B8B8B8]"
-            ></textarea>
+            <div class="w-full max-w-[450px]">
+              <label class="font-sans text-small font-medium text-violet-800">Nom de l'entreprise</label>
+              <input
+                required
+                v-model="form.company_name"
+                type="text"
+                placeholder="Nom de l'entreprise"
+                class="h-[43px] w-full rounded-lg bg-white px-4 font-sans text-small text-black shadow-[0_0_4px_rgba(0,0,0,0.25)] outline-none placeholder:text-[#B8B8B8]"
+              />
+            </div>
+
+            <div class="w-full max-w-[450px]">
+              <label class="font-sans text-small font-medium text-violet-800">Adresse Mail</label>
+              <input
+                required
+                v-model="form.email"
+                type="email"
+                placeholder="contact@entreprise.ch"
+                class="h-[43px] w-full rounded-lg bg-white px-4 font-sans text-small text-black shadow-[0_0_4px_rgba(0,0,0,0.25)] outline-none placeholder:text-[#B8B8B8]"
+              />
+            </div>
+
+            <div class="w-full max-w-[450px]">
+              <label class="font-sans text-small font-medium text-violet-800">Message</label>
+              <textarea
+                required
+                v-model="form.message"
+                placeholder="Message"
+                rows="4"
+                class="h-[148px] w-full resize-none rounded-lg bg-white px-4 py-3 font-sans text-small text-black shadow-[0_0_4px_rgba(0,0,0,0.25)] outline-none placeholder:text-[#B8B8B8]"
+              ></textarea>
+            </div>
+            <div v-if="status.type === 'error'" class="mb-4 rounded-lg bg-red-50 p-4 text-small text-red-800 ring-1 ring-red-300 w-full max-w-[450px]">
+              {{ status.message }}
+            </div>
+            <p class="text-xs text-gray-500 w-full max-w-[450px]">Vos données sont transmises au CTS et utilisées uniquement pour répondre à votre demande.</p>
             <button
               @click="handleSubmit"
               :disabled="submitting"
