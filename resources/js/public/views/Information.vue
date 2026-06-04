@@ -12,7 +12,6 @@ const submitted = ref(false)
 const { formErrors, globalError, submitting, validate, submit: submitPme } = usePmeContactForm()
 const aDesErreurs = computed(() => Object.keys(formErrors.value).length > 0)
 
-// Re-validation live dès qu'une erreur existe (patron du cours).
 watch(form, () => {
   if (Object.keys(formErrors.value).length > 0) validate(form.value)
 }, { deep: true })
