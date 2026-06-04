@@ -1,4 +1,5 @@
 <script setup>
+import '@google/model-viewer'
 import { useTrophees } from '../composables/useTrophees'
 import { useDisclosure } from '@/composables/useDisclosure'
 import { companyForRank } from '../composables/usePodiumLogos'
@@ -6,6 +7,10 @@ import PodiumDisplay from '../components/PodiumDisplay.vue'
 
 const { podium, history, loading, error, fetchNow } = useTrophees()
 const { isOpen: showCriteria, toggle: toggleCriteria } = useDisclosure()
+
+// Aperçu 3D du trophée (modèle .glb dans public/images/3D)
+const { isOpen: show3d, toggle: toggle3d, close: close3d } = useDisclosure()
+const trophyModelSrc = '/images/3D/Untitled.glb'
 </script>
 
 <template>
@@ -50,9 +55,13 @@ const { isOpen: showCriteria, toggle: toggleCriteria } = useDisclosure()
             class="hidden md:block w-[178px] h-auto object-contain"
           />
           <!--Image purement décorative, pas besoin d'alt, bonne pratique-->
-          <div class="flex h-[45px] w-[250px] cursor-pointer items-center justify-center gap-2 rounded-[40px] bg-texte-primary-light px-3 py-2 shadow-[0_0_4px_rgba(0,0,0,0.25)] transition-shadow hover:shadow-md">
+          <button
+            type="button"
+            @click="toggle3d"
+            class="flex h-[45px] w-[250px] cursor-pointer items-center justify-center gap-2 rounded-[40px] bg-texte-primary-light px-3 py-2 shadow-[0_0_4px_rgba(0,0,0,0.25)] transition-shadow hover:shadow-md"
+          >
             <span class="font-sans text-regular text-texte-secondary">Découvrir le trophée →</span>
-          </div>
+          </button>
         </div>
       </div>
     </section>
@@ -190,6 +199,53 @@ const { isOpen: showCriteria, toggle: toggleCriteria } = useDisclosure()
               </div>
             </div>
           </div>
+        </div>
+      </div>
+    </Transition>
+
+    <!-- Overlay aperçu 3D du trophée -->
+    <Transition
+      enter-active-class="transition-opacity duration-300 ease-out"
+      enter-from-class="opacity-0"
+      enter-to-class="opacity-100"
+      leave-active-class="transition-opacity duration-200 ease-in"
+      leave-from-class="opacity-100"
+      leave-to-class="opacity-0"
+    >
+      <div
+        v-if="show3d"
+        class="fixed inset-0 z-50 flex items-center justify-center bg-black/40 backdrop-blur-sm p-4"
+        @click.self="close3d"
+      >
+        <div class="relative w-full max-w-[857px] h-[80dvh] md:h-[595px] rounded-[25px] bg-form-bg p-6 md:p-[47px] flex flex-col overflow-hidden">
+          <!-- Bouton fermer -->
+          <button
+            @click="close3d"
+            aria-label="Fermer l'aperçu du trophée"
+            class="absolute right-4 top-4 md:right-[40px] md:top-[40px] flex h-8 w-8 items-center justify-center rounded-full text-texte-primary-dark transition-colors hover:bg-violet-100 z-10"
+          >
+            ✕
+          </button>
+
+          <h3 class="font-sans text-[24px] md:text-[32px] font-semibold leading-tight text-texte-primary-dark">
+            Le Trophée de la Générosité en 3D
+          </h3>
+
+          <!-- Visionneuse 3D -->
+          <model-viewer
+            :src="trophyModelSrc"
+            alt="Modèle 3D du Trophée de la Générosité"
+            camera-controls
+            touch-action="pan-y"
+            auto-rotate
+            shadow-intensity="1"
+            class="mt-4 h-full w-full flex-1"
+            style="--poster-color: transparent"
+          ></model-viewer>
+
+          <p class="mt-2 text-center font-sans text-small text-texte-primary-dark/70">
+            Faites glisser pour faire pivoter le trophée.
+          </p>
         </div>
       </div>
     </Transition>
