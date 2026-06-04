@@ -354,7 +354,7 @@ function updateCardsIndex() {
                lg:mx-0 lg:px-0 lg:grid lg:grid-cols-3 lg:gap-6 lg:overflow-visible"
       >
         <div class="snap-center shrink-0 w-[calc(100vw-2rem)] lg:w-auto bg-violet-50 rounded-3xl p-10 flex flex-col items-center text-center">
-          <img :src="'/images/classement/trophy.png'" class="h-52 w-auto" alt="Trophée" />
+          <img :src="'/images/classement/trophee-1.png'" class="h-52 w-auto" alt="Trophée" />
           <h3 class="text-h3 font-bold text-violet-900 mt-6 min-h-[5rem]">Trophée de la générosité</h3>
           <p class="text-regular text-violet-900 mt-6 flex-1">Découvrez les entreprises reconnues pour leur engagement autour du don du sang</p>
           <a href="#/trophee" class="mt-6 inline-flex items-center justify-center rounded-full px-8 py-2 text-small underline underline-offset-2 w-full lg:w-56 bg-white text-violet-900 lg:bg-button-primary lg:text-beige-50 lg:ring-2 lg:ring-violet-50">En savoir plus</a>
