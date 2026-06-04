@@ -2,10 +2,11 @@ import { toValue } from 'vue'
 
 // Mapping des noms d'entreprises vers les fichiers logos locaux (fallback)
 const localLogos = {
-  'coop': '/images/Coop_(Switzerland)-Logo.wine-1486175068 1.png',
-  'nestle': '/images/Nestle-Logo.png',
-  'nestlé': '/images/Nestle-Logo.png',
-  'ubs': '/images/ubs-1024-758683775 1.png',
+  'coop':    '/images/logo-coop.png',
+  'migros':  '/images/logo-migros.png',
+  'nestle':  '/images/logo-nestle.png',
+  'nestlé':  '/images/logo-nestle.png',
+  'ubs':     '/images/logo-ubs.png',
 }
 
 /**
