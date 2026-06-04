@@ -52,7 +52,7 @@ Page à part entière pour la création et la modification d'une collecte. Le m�
 - Date de début et date de fin de la collecte, lieu, horaires
 - Lien Onedoc pour l'inscription des employés — le CTS crée préalablement la collecte sur la plateforme Onedoc, récupère l'URL générée, et la colle ici. Pas d'intégration API avec Onedoc. *Recommandation future : une intégration API Onedoc pourrait créer la collecte automatiquement et retourner le lien directement.*
 - Capacité de la collecte (nombre de créneaux disponibles) — utilisée pour le taux de remplissage. Champ obligatoire.
-- Lien KDrive du kit de communication — lien vers le dossier KDrive (Infomaniak) de la collecte, contenant les fichiers co-brandés préparés manuellement par le CTS (affiches, flyers, visuels RS, etc.). Le CTS organise son KDrive avec un dossier par entreprise et un sous-dossier par collecte. Ce lien est inclus dans l'email de kit envoyé à l'entreprise partenaire. Champ optionnel : peut être ajouté après la création de la collecte si le kit n'est pas encore prêt.
+- Lien KDrive du kit de communication — lien vers le dossier KDrive (Infomaniak) de la collecte, contenant les fichiers co-brandés préparés manuellement par le CTS (affiches, flyers, visuels RS, etc.). Le CTS organise son KDrive avec un dossier par entreprise et un sous-dossier par collecte. Ce lien est inclus dans l'email de kit envoyé à l'entreprise partenaire. Champ obligatoire : le kit doit être préparé et le lien renseigné avant de finaliser la collecte dans le dashboard, car l'email de kit ne peut pas être envoyé sans lui.
 - Couleurs de co-branding (color picker) et upload du logo
 
 **Aperçu co-branding et contraste des couleurs :**
@@ -91,7 +91,7 @@ Page de détail accessible en cliquant sur une collecte depuis la liste. Permet 
 **Flow d'envoi du kit de communication :**
 Depuis la page de détail, le CTS peut envoyer le kit à l'entreprise partenaire via un bouton dédié. L'email envoyé est co-brandé (couleurs + logo de l'entreprise) et inclut :
 - Le lien vers le site cobrandé de la collecte
-- Un bouton **"Télécharger votre kit de communication"** pointant vers le dossier KDrive de la collecte (si `kit_url` renseigné)
+- Un bouton **"Télécharger votre kit de communication"** pointant vers le dossier KDrive de la collecte (`kit_url`, toujours présent car obligatoire)
 - Les dates de la collecte
 
 Le dossier KDrive est préparé manuellement par le CTS avant l'envoi. Structure recommandée : `KDrive / Entreprises / {Nom entreprise} / {Année} / {Dates collecte} /` contenant les fichiers co-brandés (affiches, flyers, visuels RS).
@@ -278,7 +278,8 @@ Un changement de slug sans migration produit deux entrées distinctes pour la m�
 
 #### Modification de la table `collections`
 
-- **Colonne ajoutée :** `capacity` (INT nullable) — nombre de créneaux disponibles, saisi par le CTS dans le formulaire. Les collectes sans capacité renseignée sont exclues du calcul du taux de remplissage.
+- **Colonnes ajoutées :** `capacity` (INT NOT NULL), `onedoc_url` (VARCHAR NOT NULL), `kit_url` (VARCHAR NOT NULL), `logo_url` migré en `LONGTEXT NOT NULL` — tous obligatoires, saisis dans le formulaire de création de collecte.
+- **Colonne supprimée :** `nb_registered` — le nombre d'inscrits est désormais calculé dynamiquement depuis `quiz_events` (`COUNT DISTINCT session_id WHERE event_type = 'onedoc_clicked'`).
 - **Colonne supprimée :** `nb_registered` — le nombre d'inscrits est désormais calculé dynamiquement depuis `quiz_events` (`COUNT DISTINCT session_id WHERE event_type = 'onedoc_clicked'`).
 
 ---

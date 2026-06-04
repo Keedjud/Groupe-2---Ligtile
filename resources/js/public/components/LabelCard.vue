@@ -14,7 +14,7 @@ const logoUrl = computed(
 const labelStartDate = computed(
     () => props.company.labels?.[0]?.pivot?.start_date ?? null,
 );
-const badgeImg = "/images/" + "label_empty.png";
+const badgeImg = "/images/classement/label-empty.png";
 
 function formatDate(dateString) {
     if (!dateString) return "";
