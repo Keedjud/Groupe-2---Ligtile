@@ -21,7 +21,7 @@ return new class extends Migration
             $table->integer('capacity');
             $table->string('primary_color');
             $table->string('secondary_color');
-            $table->longText('logo_url');
+            $table->string('logo_url');
             $table->string('onedoc_url');
             $table->string('kit_url');
             $table->string('public_token');
