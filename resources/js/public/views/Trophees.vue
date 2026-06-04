@@ -238,6 +238,7 @@ const trophyModelSrc = '/images/3D/Untitled.glb'
             camera-controls
             touch-action="pan-y"
             auto-rotate
+            camera-orbit="-90deg 75deg auto"
             shadow-intensity="1"
             class="mt-4 h-full w-full flex-1"
             style="--poster-color: transparent"
