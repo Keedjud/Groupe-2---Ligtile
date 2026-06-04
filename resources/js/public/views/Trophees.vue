@@ -1,15 +1,15 @@
 <script setup>
-import '@google/model-viewer'
 import { useTrophees } from '../composables/useTrophees'
 import { useDisclosure } from '@/composables/useDisclosure'
 import { companyForRank } from '../composables/usePodiumLogos'
 import PodiumDisplay from '../components/PodiumDisplay.vue'
+import Trophy3dModal from '../components/Trophy3dModal.vue'
 
 const { podium, history, loading, error, fetchNow } = useTrophees()
 const { isOpen: showCriteria, toggle: toggleCriteria } = useDisclosure()
 
 // Aperçu 3D du trophée (modèle .glb dans public/images/3D)
-const { isOpen: show3d, toggle: toggle3d, close: close3d } = useDisclosure()
+const { isOpen: show3d, toggle: toggle3d } = useDisclosure()
 const trophyModelSrc = '/images/3D/Untitled.glb'
 </script>
 
@@ -203,53 +203,8 @@ const trophyModelSrc = '/images/3D/Untitled.glb'
       </div>
     </Transition>
 
-    <!-- Overlay aperçu 3D du trophée -->
-    <Transition
-      enter-active-class="transition-opacity duration-300 ease-out"
-      enter-from-class="opacity-0"
-      enter-to-class="opacity-100"
-      leave-active-class="transition-opacity duration-200 ease-in"
-      leave-from-class="opacity-100"
-      leave-to-class="opacity-0"
-    >
-      <div
-        v-if="show3d"
-        class="fixed inset-0 z-50 flex items-center justify-center bg-black/40 backdrop-blur-sm p-4"
-        @click.self="close3d"
-      >
-        <div class="relative w-full max-w-[857px] h-[80dvh] md:h-[595px] rounded-[25px] bg-form-bg p-6 md:p-[47px] flex flex-col overflow-hidden">
-          <!-- Bouton fermer -->
-          <button
-            @click="close3d"
-            aria-label="Fermer l'aperçu du trophée"
-            class="absolute right-4 top-4 md:right-[40px] md:top-[40px] flex h-8 w-8 items-center justify-center rounded-full text-texte-primary-dark transition-colors hover:bg-violet-100 z-10"
-          >
-            ✕
-          </button>
-
-          <h3 class="font-sans text-[24px] md:text-[32px] font-semibold leading-tight text-texte-primary-dark">
-            Le Trophée de la Générosité en 3D
-          </h3>
-
-          <!-- Visionneuse 3D -->
-          <model-viewer
-            :src="trophyModelSrc"
-            alt="Modèle 3D du Trophée de la Générosité"
-            camera-controls
-            touch-action="pan-y"
-            auto-rotate
-            camera-orbit="-90deg 75deg auto"
-            shadow-intensity="1"
-            class="mt-4 h-full w-full flex-1"
-            style="--poster-color: transparent"
-          ></model-viewer>
-
-          <p class="mt-2 text-center font-sans text-small text-texte-primary-dark/70">
-            Faites glisser pour faire pivoter le trophée.
-          </p>
-        </div>
-      </div>
-    </Transition>
+    <!-- Aperçu 3D du trophée -->
+    <Trophy3dModal v-model="show3d" :src="trophyModelSrc" />
 
     <!-- ===== Section D : Tableau des lauréats ===== -->
     <section class="bg-violet-100 px-4 py-10 lg:px-[60px] lg:py-[40px]">
