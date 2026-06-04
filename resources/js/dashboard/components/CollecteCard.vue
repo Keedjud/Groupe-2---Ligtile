@@ -36,7 +36,7 @@ function formaterDate(dateStr) {
       </div>
       <!-- Badge label CTS -->
       <img
-        :src="'/images/label_empty.png'"
+        :src="'/images/classement/label-empty.png'"
         alt="Label CTS vide"
         class="h-[60px] w-[57px] shrink-0 object-contain"
       />

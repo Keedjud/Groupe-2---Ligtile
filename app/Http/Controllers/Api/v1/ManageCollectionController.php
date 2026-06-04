@@ -36,12 +36,12 @@ class ManageCollectionController extends Controller
             'capacity' => ['required', 'integer', 'min:1'],
             'primary_color' => ['required', 'string', 'max:10'],
             'secondary_color' => ['required', 'string', 'max:10'],
-            // Logo obligatoire : data URL base64 ou chemin d'image, envoyé en JSON.
-            'logo_url' => ['required', 'string', 'max:5000000'],
+            // Logo obligatoire : chemin /storage/logos/… retourné par POST /api/v1/logos/upload.
+            'logo_url' => ['required', 'string', 'max:255'],
             // Lien Onedoc : créé manuellement par le CTS sur la plateforme Onedoc.
-            'onedoc_url' => ['required', 'url', 'max:2048'],
+            'onedoc_url' => ['required', 'url', 'max:255'],
             // Lien KDrive du dossier kit de communication — obligatoire, nécessaire pour l'envoi de l'email de kit.
-            'kit_url' => ['required', 'url', 'max:2048'],
+            'kit_url' => ['required', 'url', 'max:255'],
         ];
     }
 

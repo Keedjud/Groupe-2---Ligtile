@@ -18,33 +18,33 @@ const rankedCompanies = computed(() => ranks.map(r => companyForRank(r)))
 
     <!-- Trophée 2ème place (argent) -->
     <img
-      :src="'/images/2.png'"
+      :src="'/images/classement/trophee-2.png'"
       alt="Deuxième place"
       class="absolute z-[2] h-auto -translate-x-1/2 w-[27%] md:w-[15%] left-[15.6%] md:left-[19%] bottom-[39%] md:bottom-[26%]"
     />
 
     <!-- Trophée 1ère place (or) -->
     <img
-      :src="'/images/1.png'"
+      :src="'/images/classement/trophee-1.png'"
       alt="Première place"
       class="absolute z-[2] h-auto -translate-x-1/2 left-1/2 bottom-[49.5%] md:bottom-[33%] w-[27.5%] md:w-[17%]"
     />
 
     <!-- Trophée 3ème place (bronze) -->
     <img
-      :src="'/images/3.png'"
+      :src="'/images/classement/trophee-3.png'"
       alt="Troisième place"
       class="absolute z-[2] h-auto -translate-x-1/2 w-[27%] md:w-[15%] left-[84.4%] md:left-[81%] bottom-[30%] md:bottom-[18.5%]"
     />
 
     <!-- Leaderboard SVG (desktop / mobile) -->
     <img
-      :src="'/images/leaderboard.svg'"
+      :src="'/images/classement/leaderboard.svg'"
       alt="Podium"
       class="hidden md:block w-full h-auto relative z-[1]"
     />
     <img
-      :src="'/images/leaderboard_mobile.svg'"
+      :src="'/images/classement/leaderboard-mobile.svg'"
       alt="Podium"
       class="md:hidden w-full h-auto relative z-[1] -scale-x-100"
     />

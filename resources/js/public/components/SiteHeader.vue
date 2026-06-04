@@ -12,7 +12,7 @@ const { links, isActive } = useNavigation(currentRef)
 
 const props = defineProps({
   current: { type: String, default: null },
-  logo:    { type: String, default: '/images/logo-hug.png' },
+  logo:    { type: String, default: '/images/logos/logo-hug.png' },
 })
 
 const { isOpen, toggle, close } = useDisclosure()

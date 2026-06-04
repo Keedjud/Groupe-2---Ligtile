@@ -6,7 +6,7 @@ import { useLabelCompanies } from '@/composables/useLabelCompanies'
 const { fetchApi } = useLabelCompanies()
 
 // Image hero de la page Label
-const heroImg = '/images/' + 'label.png'
+const heroImg = '/images/classement/label.png'
 
 // ===== État =====
 const companies = ref([])

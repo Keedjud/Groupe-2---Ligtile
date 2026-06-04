@@ -15,7 +15,7 @@ const { isOpen: showCriteria, toggle: toggleCriteria } = useDisclosure()
       <div class="flex w-full flex-col items-center gap-8 lg:flex-row lg:gap-16">
         <!-- Image de trophy_top visible uniquement sur mobile au sommet -->
         <img
-          :src="'/images/trophy_top.png'"
+          :src="'/images/classement/trophy-top.png'"
           alt=""
           class="md:hidden w-[176px] h-auto object-contain"
         />
@@ -45,7 +45,7 @@ const { isOpen: showCriteria, toggle: toggleCriteria } = useDisclosure()
         <!-- Colonne droite : Image + bouton -->
         <div class="flex flex-col items-center justify-center gap-10 lg:w-[480px] w-full lg:flex-shrink-0">
           <img
-            :src="'/images/trophy_top.png'"
+            :src="'/images/classement/trophy-top.png'"
             alt=""
             class="hidden md:block w-[178px] h-auto object-contain"
           />
@@ -134,7 +134,7 @@ const { isOpen: showCriteria, toggle: toggleCriteria } = useDisclosure()
               Quels sont les critères pour remporter un trophée ?
             </h3>
             <img
-              :src="'/images/infos.png'"
+              :src="'/images/illustrations/infos.png'"
               alt="Mascotte goutte de sang qui se pose des questions"
               class="hidden md:block absolute right-[126px] top-[24px] w-[117px] h-[174px] object-contain"
             />
@@ -145,7 +145,7 @@ const { isOpen: showCriteria, toggle: toggleCriteria } = useDisclosure()
             <!-- Régularité -->
             <div class="flex items-center gap-6">
               <div class="flex h-[50px] w-[50px] md:h-[60px] md:w-[60px] flex-shrink-0 items-center justify-center rounded-full bg-[#E5F5F0]">
-                <img :src="'/images/regularite.png'" alt="" class="h-[28px] w-[28px] md:h-[36px] md:w-[36px] object-contain" />
+                <img :src="'/images/icons/regularite.png'" alt="" class="h-[28px] w-[28px] md:h-[36px] md:w-[36px] object-contain" />
               </div>
               <!--Image purement décorative, pas besoin d'alt, bonne pratique-->
               <div>
@@ -157,7 +157,7 @@ const { isOpen: showCriteria, toggle: toggleCriteria } = useDisclosure()
             <!-- Nombre d'inscrits -->
             <div class="flex items-center gap-6">
               <div class="flex h-[50px] w-[50px] md:h-[60px] md:w-[60px] flex-shrink-0 items-center justify-center rounded-full bg-[#E5F5F0]">
-                <img :src="'/images/inscrit.png'" alt="" class="h-[28px] w-[28px] md:h-[36px] md:w-[36px] object-contain" />
+                <img :src="'/images/icons/inscrit.png'" alt="" class="h-[28px] w-[28px] md:h-[36px] md:w-[36px] object-contain" />
               </div>
               <!--Image purement décorative, pas besoin d'alt, bonne pratique-->
               <div>
@@ -169,7 +169,7 @@ const { isOpen: showCriteria, toggle: toggleCriteria } = useDisclosure()
             <!-- Taux d'engagement -->
             <div class="flex items-center gap-6">
               <div class="flex h-[50px] w-[50px] md:h-[60px] md:w-[60px] flex-shrink-0 items-center justify-center rounded-full bg-[#E5F5F0]">
-                <img :src="'/images/engagement.png'" alt="" class="h-[28px] w-[28px] md:h-[36px] md:w-[36px] object-contain" />
+                <img :src="'/images/icons/engagement.png'" alt="" class="h-[28px] w-[28px] md:h-[36px] md:w-[36px] object-contain" />
               </div>
               <!--Image purement décorative, pas besoin d'alt, bonne pratique-->
               <div>
@@ -181,7 +181,7 @@ const { isOpen: showCriteria, toggle: toggleCriteria } = useDisclosure()
             <!-- Appréciation du jury -->
             <div class="flex items-center gap-6">
               <div class="flex h-[50px] w-[50px] md:h-[60px] md:w-[60px] flex-shrink-0 items-center justify-center rounded-full bg-[#E5F5F0]">
-                <img :src="'/images/appreciation.png'" alt="" class="h-[28px] w-[28px] md:h-[36px] md:w-[36px] object-contain" />
+                <img :src="'/images/icons/appreciation.png'" alt="" class="h-[28px] w-[28px] md:h-[36px] md:w-[36px] object-contain" />
               </div>
               <!--Image purement décorative, pas besoin d'alt, bonne pratique-->
               <div>
