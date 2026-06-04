@@ -4,7 +4,7 @@ import { useDisclosure } from '@/composables/useDisclosure'
 
 const props = defineProps({
   current: { type: String, default: null },
-  logo:    { type: String, default: '/images/logo-hug.png' },
+  logo:    { type: String, default: '/images/logos/logo-hug.png' },
 })
 
 const { links, isActive } = useNavigation(() => props.current)

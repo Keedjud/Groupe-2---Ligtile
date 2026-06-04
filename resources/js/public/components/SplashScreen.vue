@@ -25,7 +25,7 @@ function enterSite() {
         <!-- Colonne HUG -->
         <div class="flex flex-col items-center gap-5">
           <img
-            :src="'/images/logo-hug.png'"
+            :src="'/images/logos/logo-hug.png'"
             alt="Logo HUG"
             class="h-24 w-auto object-contain"
           />
@@ -44,7 +44,7 @@ function enterSite() {
         <!-- Colonne Notre site -->
         <div class="flex flex-col items-center gap-5">
           <img
-            :src="'/images/hello.png'"
+            :src="'/images/illustrations/hello.png'"
             alt="Mascotte goutte de sang qui dit bonjour"
             class="h-24 w-auto object-contain"
           />

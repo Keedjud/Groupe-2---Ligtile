@@ -68,7 +68,7 @@ function handleSubmit() {
       <div class="mx-auto flex w-full max-w-[1512px] flex-col items-center gap-8 md:flex-row md:gap-16 lg:gap-[249px]">
         <!-- Image mobile -->
         <img
-          :src="'/images/lungs.png'"
+          :src="'/images/illustrations/lungs.png'"
           alt=""
           class="w-[280px] h-auto object-contain shrink-0 md:hidden"
         />
@@ -76,7 +76,7 @@ function handleSubmit() {
 
         <!-- Image desktop -->
         <img
-          :src="'/images/hello.png'"
+          :src="'/images/illustrations/hello.png'"
           alt=""
           class="hidden md:block w-[180px] lg:w-[202px] h-auto object-contain shrink-0"
         />
@@ -107,7 +107,7 @@ function handleSubmit() {
         <div class="flex flex-1 flex-col gap-[54px] lg:max-w-[737px]">
           <!-- Badge -->
           <div class="inline-flex items-center gap-5 rounded-[40px] bg-white px-6 py-3 w-fit">
-            <img :src="'/images/building.png'" class="h-[29px] w-[30px] shrink-0 object-contain" />
+            <img :src="'/images/icons/building.png'" class="h-[29px] w-[30px] shrink-0 object-contain" />
             <span class="font-sans text-h3 font-bold text-texte-primary-dark">
               Pour les entreprises de plus de 1 000 collaborateurs
             </span>
@@ -150,7 +150,7 @@ function handleSubmit() {
         </div>
 
         <img
-          :src="'/images/composition_petites_gouttes.png'"
+          :src="'/images/illustrations/composition-petites-gouttes.png'"
           alt=""
           class="w-full lg:w-[700px] h-auto object-contain shrink-0"
         />
@@ -188,7 +188,7 @@ function handleSubmit() {
         <div class="flex flex-1 flex-col gap-9 lg:max-w-[619px]">
           <!-- Badge -->
           <div class="inline-flex items-center gap-5 rounded-[40px] bg-white px-6 py-3 w-fit">
-            <img :src="'/images/building.png'" class="h-[29px] w-[30px] shrink-0 object-contain" />
+            <img :src="'/images/icons/building.png'" class="h-[29px] w-[30px] shrink-0 object-contain" />
             <span class="font-sans text-h3 font-bold text-texte-primary-dark">
               Pour toutes les entreprises
             </span>
@@ -213,7 +213,7 @@ function handleSubmit() {
         </div>
 
         <img
-          :src="'/images/fournis.png'"
+          :src="'/images/illustrations/fournis.png'"
           alt=""
           class="w-full lg:max-w-[500px] lg:max-h-[380px] h-auto rounded-[100px] object-contain"
         />

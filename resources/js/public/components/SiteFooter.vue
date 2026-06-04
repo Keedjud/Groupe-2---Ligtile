@@ -1,9 +1,9 @@
 <script setup>
 const socials = [
-  { label: 'Facebook',  icon: '/images/facebook.png',  href: 'https://www.facebook.com/hopitaux.universitaires.geneve' },
-  { label: 'Instagram', icon: '/images/instagram.png', href: 'https://www.instagram.com/hug_ge/' },
-  { label: 'X',         icon: '/images/x.png',         href: 'https://x.com/hug_ge?lang=fr' },
-  { label: 'LinkedIn',  icon: '/images/linkedln.png',  href: 'https://ch.linkedin.com/company/hopitaux-universitaires-de-geneve?trk=ppro_cprof' },
+  { label: 'Facebook',  icon: '/images/social/facebook.png',  href: 'https://www.facebook.com/hopitaux.universitaires.geneve' },
+  { label: 'Instagram', icon: '/images/social/instagram.png', href: 'https://www.instagram.com/hug_ge/' },
+  { label: 'X',         icon: '/images/social/x.png',         href: 'https://x.com/hug_ge?lang=fr' },
+  { label: 'LinkedIn',  icon: '/images/social/linkedin.png',  href: 'https://ch.linkedin.com/company/hopitaux-universitaires-de-geneve?trk=ppro_cprof' },
 ]
 const legal = [
   { label: 'Charte éthique', href: 'https://www.hug.ch/conditions_generales' },
