@@ -63,7 +63,7 @@ async function gererFichier(event) {
 
 <template>
   <div class="flex flex-col items-start gap-1">
-    <span class="font-sans text-regular">Ajouter un logo</span>
+    <span class="font-sans text-small font-medium text-violet-800">Ajouter un logo</span>
     <label class="flex h-[60px] w-[60px] cursor-pointer items-center justify-center rounded-lg bg-violet-100 shadow-[0_0_4px_rgba(0,0,0,0.15)] hover:bg-violet-200 transition-colors overflow-hidden"
            :class="chargement ? 'opacity-60 pointer-events-none' : ''">
 

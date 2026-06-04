@@ -12,7 +12,7 @@ const { isOpen: showCriteria, toggle: toggleCriteria } = useDisclosure()
   <div>
     <!-- ===== Section A : Hero ===== -->
     <section class="bg-violet-100 px-4 py-12 lg:px-[60px] lg:py-0 lg:min-h-[calc(100dvh-110px)] lg:flex lg:items-center">
-      <div class="mx-auto flex max-w-[1512px] w-full flex-col items-center gap-8 lg:flex-row lg:gap-16">
+      <div class="flex w-full flex-col items-center gap-8 lg:flex-row lg:gap-16">
         <!-- Image de trophy_top visible uniquement sur mobile au sommet -->
         <img
           :src="'/images/classement/trophy-top.png'"
@@ -196,7 +196,7 @@ const { isOpen: showCriteria, toggle: toggleCriteria } = useDisclosure()
 
     <!-- ===== Section D : Tableau des lauréats ===== -->
     <section class="bg-violet-100 px-4 py-10 lg:px-[60px] lg:py-[40px]">
-      <div class="mx-auto max-w-[1512px]">
+      <div>
         <h2 class="mb-10 font-sans text-h1 font-semibold text-button-primary">
           Tous les lauréats
         </h2>
