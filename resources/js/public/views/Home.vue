@@ -1,6 +1,6 @@
 <script setup>
-import { reactive, ref, onMounted, onUnmounted } from 'vue'
-import { useFetchApi } from '@/composables/api/useFetchApi'
+import { reactive, ref, computed, watch, onMounted, onUnmounted } from 'vue'
+import { useContactForm } from '../composables/useContactForm'
 
 const form = reactive({
   company_name: '', employees_count: '',
@@ -9,29 +9,34 @@ const form = reactive({
 })
 
 const showPmeMessage = ref(false)
-const status = ref({ type: '', message: '' })
-const submitting = ref(false)
+const status = ref({ type: '', message: '' }) // succès uniquement
 
-const { fetchApi } = useFetchApi('/api/v1')
+const { formErrors, globalError, submitting, validate, submit: submitContact } = useContactForm()
+const aDesErreurs = computed(() => Object.keys(formErrors.value).length > 0)
 
-function submit() {
-  if (!form.employees_count || Number(form.employees_count) < 1000) {
+// Re-validation live dès qu'une erreur existe (patron du cours).
+watch(form, () => {
+  if (Object.keys(formErrors.value).length > 0) validate(form)
+}, { deep: true })
+
+async function submit() {
+  status.value = { type: '', message: '' }
+  showPmeMessage.value = false
+
+  if (!validate(form)) return
+
+  // Seules les entreprises de 1000+ employés peuvent accueillir une collecte.
+  if (Number(form.employees_count) < 1000) {
     showPmeMessage.value = true
     return
   }
 
-  status.value = { type: '', message: '' }
-  submitting.value = true
-
-  fetchApi({ url: '/contact', data: form })
-    .then(() => {
-      submitting.value = false
-      status.value = { type: 'success', message: 'Votre demande a bien été envoyée. Le CTS vous recontactera prochainement.' }
-    })
-    .catch(err => {
-      submitting.value = false
-      status.value = { type: 'error', message: err.data?.message || 'Une erreur est survenue. Veuillez réessayer.' }
-    })
+  try {
+    await submitContact(form)
+    status.value = { type: 'success', message: 'Votre demande a bien été envoyée. Le CTS vous recontactera prochainement.' }
+  } catch {
+    // globalError est défini par le composable
+  }
 }
 
 // Défilement vers le formulaire quand on arrive via "Prendre RDV" (#/prendre-rdv).
@@ -75,7 +80,7 @@ function updateCardsIndex() {
 <template>
   <!-- Hero -->
   <section class="py-10">
-    <div class="max-w-[1632px] mx-auto px-4 lg:px-[60px]">
+    <div class="px-4 lg:px-[60px]">
       <div class="flex flex-col-reverse gap-8 lg:grid lg:grid-cols-2 lg:gap-10 lg:items-center">
         <div>
           <h1 class="text-h1 font-semibold text-texte-primary-dark leading-tight max-w-[260px] lg:max-w-none">
@@ -140,7 +145,7 @@ function updateCardsIndex() {
 
   <!-- Pourquoi accueillir une collecte -->
   <section class="bg-violet-100 py-10">
-    <div class="max-w-[1632px] mx-auto px-4 lg:px-[60px]">
+    <div class="px-4 lg:px-[60px]">
       <h2 class="text-h1 font-semibold text-center text-violet-900">Pourquoi accueillir une collecte ?</h2>
       <p class="text-h4 text-violet-900 text-center mt-2">Un geste utile, directement sur votre lieu de travail.</p>
       <div class="mx-auto mt-2 h-[3px] w-48 rounded-full bg-vert-300"></div>
@@ -181,7 +186,7 @@ function updateCardsIndex() {
 
   <!-- Organisation pensee pour les entreprises -->
   <section class="py-10">
-    <div class="max-w-[1632px] mx-auto px-4 lg:px-[60px]">
+    <div class="px-4 lg:px-[60px]">
       <h2 class="text-h1 font-semibold text-center text-violet-900">Une organisation pensée pour les entreprises</h2>
       <div class="mx-auto mt-2 h-[3px] w-48 rounded-full bg-vert-300"></div>
 
@@ -250,7 +255,7 @@ function updateCardsIndex() {
 
   <!-- Parlons de votre future collecte -->
   <section id="prendre-rdv" class="py-10">
-    <div class="max-w-[1632px] mx-auto px-4 lg:px-[60px]">
+    <div class="px-4 lg:px-[60px]">
       <div class="rounded-3xl bg-violet-100 p-3 lg:p-14 overflow-hidden">
         <div class="grid lg:grid-cols-2 gap-10 items-center">
           <div class="flex flex-col items-center text-center lg:block lg:text-left min-w-0">
@@ -268,24 +273,45 @@ function updateCardsIndex() {
           </div>
 
           <div id="prendre-rdv-form" class="min-w-0 scroll-mt-24 lg:scroll-mt-28">
-            <form @submit.prevent="submit" class="bg-form-bg rounded-xl p-3 ring-1 ring-violet-900/30">
+            <form @submit.prevent="submit" novalidate class="bg-form-bg rounded-xl p-3 ring-1 ring-violet-900/30">
               <h3 class="text-h3 font-bold text-violet-900 text-center mb-4">Prendre <br class="lg:hidden" />rendez-vous</h3>
 
               <div class="grid grid-cols-2 gap-3 mb-3">
-                <input required v-model="form.company_name" type="text" placeholder="Nom de l'entreprise" class="w-full min-w-0 h-[50px] lg:h-[43px] rounded-lg bg-white px-3 text-small text-texte-primary-dark shadow-[0_0_4px_rgba(0,0,0,0.25)] placeholder:text-texte-primary-dark/70" />
-                <input required v-model="form.employees_count" type="number" placeholder="Nombre d'employés" class="w-full min-w-0 h-[50px] lg:h-[43px] rounded-lg bg-white px-3 text-small text-texte-primary-dark shadow-[0_0_4px_rgba(0,0,0,0.25)] placeholder:text-texte-primary-dark/70" />
+                <div class="flex flex-col gap-1">
+                  <label class="font-sans text-small font-medium text-violet-800">Nom de l'entreprise <span class="text-rouge-500">*</span></label>
+                  <input required v-model="form.company_name" type="text" placeholder="Nom de l'entreprise" class="w-full min-w-0 h-[50px] lg:h-[43px] rounded-lg bg-white px-3 text-small text-texte-primary-dark shadow-[0_0_4px_rgba(0,0,0,0.25)] placeholder:text-texte-primary-dark/70" :class="{ 'ring-1 ring-rouge-500': formErrors.company_name }" />
+                </div>
+                <div class="flex flex-col gap-1">
+                  <label class="font-sans text-small font-medium text-violet-800">Nombre d'employés <span class="text-rouge-500">*</span></label>
+                  <input required min="1" v-model="form.employees_count" type="number" placeholder="ex. 1200" class="w-full min-w-0 h-[50px] lg:h-[43px] rounded-lg bg-white px-3 text-small text-texte-primary-dark shadow-[0_0_4px_rgba(0,0,0,0.25)] placeholder:text-texte-primary-dark/70" :class="{ 'ring-1 ring-rouge-500': formErrors.employees_count }" />
+                </div>
               </div>
 
-              <input required v-model="form.street" type="text" placeholder="Adresse" class="w-full min-w-0 h-[50px] lg:h-[43px] rounded-lg bg-white px-3 text-small text-texte-primary-dark shadow-[0_0_4px_rgba(0,0,0,0.25)] placeholder:text-texte-primary-dark/70 mb-3" />
+              <div class="flex flex-col gap-1 mb-3">
+                <label class="font-sans text-small font-medium text-violet-800">Adresse <span class="text-rouge-500">*</span></label>
+                <input required v-model="form.street" type="text" placeholder="Rue n°" class="w-full min-w-0 h-[50px] lg:h-[43px] rounded-lg bg-white px-3 text-small text-texte-primary-dark shadow-[0_0_4px_rgba(0,0,0,0.25)] placeholder:text-texte-primary-dark/70" :class="{ 'ring-1 ring-rouge-500': formErrors.street }" />
+              </div>
 
               <div class="flex gap-3 mb-3">
-                <input required v-model="form.postal_code" type="text" placeholder="NPA" class="w-24 min-w-0 h-[50px] lg:h-[43px] rounded-lg bg-white px-3 text-small text-texte-primary-dark shadow-[0_0_4px_rgba(0,0,0,0.25)] placeholder:text-texte-primary-dark/70" />
-                <input required v-model="form.city" type="text" placeholder="Ville" class="flex-grow min-w-0 h-[50px] lg:h-[43px] rounded-lg bg-white px-3 text-small text-texte-primary-dark shadow-[0_0_4px_rgba(0,0,0,0.25)] placeholder:text-texte-primary-dark/70" />
+                <div class="flex flex-col gap-1">
+                  <label class="font-sans text-small font-medium text-violet-800">NPA <span class="text-rouge-500">*</span></label>
+                  <input required v-model="form.postal_code" type="text" placeholder="1200" class="w-24 min-w-0 h-[50px] lg:h-[43px] rounded-lg bg-white px-3 text-small text-texte-primary-dark shadow-[0_0_4px_rgba(0,0,0,0.25)] placeholder:text-texte-primary-dark/70" :class="{ 'ring-1 ring-rouge-500': formErrors.postal_code }" />
+                </div>
+                <div class="flex flex-col gap-1 flex-grow min-w-0">
+                  <label class="font-sans text-small font-medium text-violet-800">Ville <span class="text-rouge-500">*</span></label>
+                  <input required v-model="form.city" type="text" placeholder="Genève" class="w-full min-w-0 h-[50px] lg:h-[43px] rounded-lg bg-white px-3 text-small text-texte-primary-dark shadow-[0_0_4px_rgba(0,0,0,0.25)] placeholder:text-texte-primary-dark/70" :class="{ 'ring-1 ring-rouge-500': formErrors.city }" />
+                </div>
               </div>
 
-              <input required v-model="form.email" type="email" placeholder="Adresse e-mail" class="w-full min-w-0 h-[50px] lg:h-[43px] rounded-lg bg-white px-3 text-small text-texte-primary-dark shadow-[0_0_4px_rgba(0,0,0,0.25)] placeholder:text-texte-primary-dark/70 mb-3" />
+              <div class="flex flex-col gap-1 mb-3">
+                <label class="font-sans text-small font-medium text-violet-800">Adresse e-mail <span class="text-rouge-500">*</span></label>
+                <input required v-model="form.email" type="email" placeholder="contact@entreprise.ch" class="w-full min-w-0 h-[50px] lg:h-[43px] rounded-lg bg-white px-3 text-small text-texte-primary-dark shadow-[0_0_4px_rgba(0,0,0,0.25)] placeholder:text-texte-primary-dark/70" :class="{ 'ring-1 ring-rouge-500': formErrors.email }" />
+              </div>
 
-              <input v-model="form.phone" type="tel" placeholder="Téléphone" class="w-full min-w-0 h-[50px] lg:h-[43px] rounded-lg bg-white px-3 text-small text-texte-primary-dark shadow-[0_0_4px_rgba(0,0,0,0.25)] placeholder:text-texte-primary-dark/70 mb-4" />
+              <div class="flex flex-col gap-1 mb-4">
+                <label class="font-sans text-small font-medium text-violet-800">Téléphone <span class="text-rouge-500">*</span></label>
+                <input required v-model="form.phone" type="tel" placeholder="+41 22 000 00 00" class="w-full min-w-0 h-[50px] lg:h-[43px] rounded-lg bg-white px-3 text-small text-texte-primary-dark shadow-[0_0_4px_rgba(0,0,0,0.25)] placeholder:text-texte-primary-dark/70" :class="{ 'ring-1 ring-rouge-500': formErrors.phone }" />
+              </div>
 
               <div v-if="showPmeMessage" class="mb-4 rounded-lg bg-white p-4 text-small text-texte-primary-dark ring-1 ring-violet-900/30">
                 Seul les entreprises de plus de 1000 employés peuvent accueillir une collecte de sang. Si vous êtes une PME vous pouvez vous rendre
@@ -294,13 +320,22 @@ function updateCardsIndex() {
               <div v-if="status.type === 'success'" class="mb-4 rounded-lg bg-green-50 p-4 text-small text-green-800 ring-1 ring-green-300">
                 {{ status.message }}
               </div>
-              <div v-if="status.type === 'error'" class="mb-4 rounded-lg bg-red-50 p-4 text-small text-red-800 ring-1 ring-red-300">
-                {{ status.message }}
+              <div v-if="aDesErreurs || globalError" class="mb-4 flex items-start gap-3 rounded-xl border border-rouge-500 bg-rouge-500/10 p-4">
+                <svg xmlns="http://www.w3.org/2000/svg" class="mt-0.5 h-5 w-5 shrink-0 text-rouge-600" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                  <circle cx="12" cy="12" r="10" /><line x1="12" y1="8" x2="12" y2="13" /><line x1="12" y1="16" x2="12.01" y2="16" />
+                </svg>
+                <div class="font-sans text-small text-rouge-600">
+                  <p class="font-semibold">Merci de corriger les points suivants :</p>
+                  <ul class="mt-1 list-disc pl-4">
+                    <li v-for="(message, champ) in formErrors" :key="champ">{{ message }}</li>
+                    <li v-if="globalError">{{ globalError }}</li>
+                  </ul>
+                </div>
               </div>
 
-              <p class="text-xs text-gray-500">Vos données sont transmises au CTS et utilisées uniquement dans le cadre de l'organisation de votre collecte de sang.</p>
-              <button type="submit" class="w-full rounded-full lg:rounded-2xl bg-button-primary py-4 text-regular text-white shadow">
-                Envoyer
+              <p class="mb-4 text-xs text-gray-500">Vos données sont transmises au CTS et utilisées uniquement dans le cadre de l'organisation de votre collecte de sang.</p>
+              <button type="submit" :disabled="submitting" class="w-full rounded-full lg:rounded-2xl bg-button-primary py-4 text-regular text-white shadow transition-colors hover:bg-[#410E3F] disabled:opacity-60">
+                {{ submitting ? 'Envoi…' : 'Envoyer' }}
               </button>
             </form>
           </div>
@@ -311,7 +346,7 @@ function updateCardsIndex() {
 
   <!-- Three info cards -->
   <section class="py-10 pb-20">
-    <div class="max-w-[1632px] mx-auto px-4 lg:px-[60px]">
+    <div class="px-4 lg:px-[60px]">
       <div
         ref="cardsScroll"
         @scroll.passive="updateCardsIndex"

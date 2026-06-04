@@ -14,7 +14,7 @@ class ApiContactController extends Controller
     public function contact(Request $request)
     {
         $validated = $request->validate([
-            'phone' => 'nullable|string|regex:/^[+0-9\s]{7,20}$/|max:20',
+            'phone' => 'required|string|regex:/^[+0-9\s]{7,20}$/|max:20',
             'email' => 'required|email|max:100',
             'company_name' => 'required|string|min:3|max:255',
             'employees_count' => 'required|integer|min:1000',

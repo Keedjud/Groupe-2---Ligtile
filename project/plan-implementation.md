@@ -31,7 +31,28 @@
 
 ### Backend
 
+<<<<<<< HEAD
+### Frontend site public
+<<<<<<< HEAD
+- [x] Fix nav : lien actif non mis en évidence (Elia)
+- [ ] Fix footer : lien "Accessibilité" à déplacer à droite (Elia)
+- [ ] Labels sur tous les champs de formulaire — `Home.vue`, `Information.vue` (Elia)
+- [ ] Alts sur toutes les images (via `git cherry-pick 63f3b65`) (Elia)
+- [ ] Focus trap sur la modale des critères dans `Trophees.vue` (Elia)
+- [ ] Fix email PME : corriger `resources/views/emails/contactPme.blade.php` — crash `htmlspecialchars` dû à un objet `Message` passé comme string (Elia)
+=======
+- [ ] Fix nav : lien actif non mis en évidence **(Elia)**
+- [ ] Fix footer : lien "Accessibilité" à déplacer à droite **(Elia)**
+- [ ] Labels sur tous les champs de formulaire — `Home.vue`, `Information.vue` **(Elia)**
+- [ ] Alts sur toutes les images (via `git cherry-pick 63f3b65`) **(Elia)**
+- [ ] Focus trap sur la modale des critères dans `Trophees.vue` **(Elia)**
+- [ ] Fix email confirmation PME : remplacer `$message->embed(public_path('images/logo-hug.png'))` par une URL publique (`/images/logo-hug.png`) dans `resources/views/emails/contactPme-confirmation.blade.php` — `contactPme.blade.php` (notification CTS) est OK **(Elia)**
+- [ ] `contactPme-confirmation.blade.php` : utiliser `{{ $entreprise }}` pour personnaliser le "Bonjour," (variable passée mais non affichée) **(Elia)**
+>>>>>>> develop
+- [x] Mentions vie privée sur les deux formulaires de contact
+=======
 ### Frontend site public **(Elia)**
+>>>>>>> 9f15ecf2f24718621bc8f3784febe762e17efd59
 
 - [ ] Fix nav : lien actif non mis en évidence — `SiteHeader.vue`, `useNavigation.js`
 - [ ] Fix footer : lien "Accessibilité" à déplacer à droite — `SiteFooter.vue`

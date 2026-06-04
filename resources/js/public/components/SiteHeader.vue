@@ -2,12 +2,19 @@
 import { useNavigation } from '@/composables/useNavigation'
 import { useDisclosure } from '@/composables/useDisclosure'
 
+import { computed } from 'vue'
+
+const currentRef = computed(() => props.current)
+const { links, isActive } = useNavigation(currentRef)
+
+// Debug: uncomment to vérifier la valeur de la route active
+// console.log('SiteHeader current =', props.current)
+
 const props = defineProps({
   current: { type: String, default: null },
   logo:    { type: String, default: '/images/logo-hug.png' },
 })
 
-const { links, isActive } = useNavigation(() => props.current)
 const { isOpen, toggle, close } = useDisclosure()
 </script>
 
@@ -48,7 +55,9 @@ const { isOpen, toggle, close } = useDisclosure()
       leave-from-class="opacity-100 translate-y-0" leave-to-class="opacity-0 -translate-y-2">
       <nav v-show="isOpen" class="absolute inset-x-0 top-full z-30 border-t border-black/10 bg-beige-50 px-6 pb-4 pt-2 shadow-[0_4px_4px_rgba(0,0,0,0.10)] lg:hidden">
         <a v-for="link in links" :key="link.key" :href="link.href" @click="close"
-           class="block border-b border-black/5 py-3 font-sans text-h5 text-violet-950 last:border-0 hover:text-violet-500">
+           :class="isActive(link.key)
+             ? 'block border-b border-black/5 py-3 font-sans text-h5 font-bold text-violet-900 last:border-0'
+             : 'block border-b border-black/5 py-3 font-sans text-h5 text-violet-950 last:border-0 hover:text-violet-500'">
           {{ link.label }}
         </a>
       </nav>
