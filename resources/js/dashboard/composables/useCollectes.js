@@ -43,26 +43,25 @@ export function useCollectes() {
 
   // Front → API
   function adapterVersApi(donnees) {
-    return {
-      company: {
-        name: donnees.entreprise.nom,
-        nb_employee: donnees.entreprise.nb_employes,
-      },
-      contact_email: donnees.contact_email,
-      contact_phone: donnees.contact_phone,
+    const payload = {
+      contact_email:     donnees.contact_email,
+      contact_phone:     donnees.contact_phone,
       venue_street:      donnees.adresse.rue,
       venue_number:      donnees.adresse.numero,
       venue_postal_code: donnees.adresse.npa,
       venue_city:        donnees.adresse.ville,
-      start_date: donnees.date_debut,
-      end_date: donnees.date_fin,
-      capacity: donnees.capacity,
-      primary_color: donnees.couleur_principale,
-      secondary_color: donnees.couleur_secondaire,
-      logo_url: donnees.logo_url,
-      onedoc_url: donnees.onedoc_url,
-      kit_url: donnees.kit_url,
+      start_date:        donnees.date_debut,
+      end_date:          donnees.date_fin,
+      capacity:          donnees.capacity,
+      primary_color:     donnees.couleur_principale,
+      secondary_color:   donnees.couleur_secondaire,
+      logo_url:          donnees.logo_url,
+      onedoc_url:        donnees.onedoc_url,
+      kit_url:           donnees.kit_url,
     }
+    // company_id présent uniquement en création (jamais en édition)
+    if (donnees.company_id) payload.company_id = donnees.company_id
+    return payload
   }
 
   function trouverParId(id) {
