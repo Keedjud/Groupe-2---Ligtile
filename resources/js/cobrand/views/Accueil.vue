@@ -14,7 +14,6 @@ const bloodTypes = [
 </script>
 <template>
 
-    const collecteToken = document.getElementById('app').dataset.collecteToken
   <div class="min-h-screen text-[var(--color-texte-primary-dark)]">
 
     <main class="mx-auto max-w-[1512px] px-6 py-10 lg:px-[60px]">
@@ -24,23 +23,23 @@ const bloodTypes = [
 
           <div class="space-y-4  p-6">
             <p class="text-h4 font-medium text-[var(--color-texte-primary-dark)]">L’équipe {{ collection?.company_name }} à Genève, compte {{ collection?.employees_count }} employé·e·s</p>
-            <p class="text-h4 text-[var(--color-texte-primary-dark)]"><span class="font-semibold">xx</span> se sont inscrit·e·s pour la <span class="text-[var(--color-light-palette-orange)]">collecte actuelle</span></p>
+            <p class="text-h4 text-[var(--color-texte-primary-dark)]"> {{ collection?.capacity }} se sont inscrit·e·s pour la <span class="text-{{ collection?.primary_color }}">collecte actuelle</span></p>
             <p class="text-h4 text-[var(--color-texte-primary-dark)]">Il reste <span class="font-semibold">xx</span> places</p>
 
-            <a href="#/inscription" class="inline-flex w-max items-center justify-center rounded-full bg-[var(--color-button-primary)] px-8 py-3 text-regular font-semibold text-[var(--color-button-secondary)] shadow transition hover:bg-[var(--color-violet-800)]">Réservez votre place</a>
+            <a href="#/inscription" class="inline-flex w-max items-center justify-center rounded-full bg-{{ collection?.primary_color }} px-8 py-3 text-regular font-semibold text-[var(--color-button-secondary)] shadow transition hover:bg-[var(--color-violet-800)]">Réservez votre place</a>
           </div>
         </div>
 
-        <div class="rounded-[32px] bg-white p-8 shadow-[0_24px_60px_rgba(104,23,100,0.08)]">
+        <div class=" p-8 ">
           <img :src="'/images/goute_sang_75.png'" alt="" class="mx-auto h-[327px] w-full max-w-[196px] object-cover" />
           <p class="mt-6 text-center text-h1 font-bold text-[var(--color-violet-900)]">72<span class="text-h4 font-semibold">%</span></p>
         </div>
       </section>
 
-      <section class="mt-16 rounded-[32px] border border-[var(--color-violet-100)] bg-white p-8 shadow-[0_24px_60px_rgba(104,23,100,0.08)] lg:p-10">
+      <section class="mt-16 p-8  lg:p-10">
         <div class="text-center">
           <h2 class="text-h1 font-semibold text-[var(--color-violet-900)]">Pourquoi donner son sang ?</h2>
-          <div class="mx-auto mt-4 h-1 w-[216px] rounded-full bg-[var(--color-light-palette-orange)]"></div>
+          <div class="mx-auto mt-4 h-1 w-[216px] rounded-full bg-{{ collection?.primary_color }}"></div>
         </div>
 
         <div class="mt-10 flex flex-col gap-10 lg:flex-row lg:items-start">
@@ -51,7 +50,7 @@ const bloodTypes = [
           <div class="flex w-full flex-col gap-6">
             <div class="space-y-3">
               <div class="flex items-start gap-4">
-                <span class="text-[var(--color-light-palette-orange)] text-[32px] font-semibold">1.</span>
+                <span class="text-{{ collection?.primary_color }} text-[32px] font-semibold">1.</span>
                 <div>
                   <p class="text-h4 font-semibold text-[var(--color-violet-950)]">Sauver des vies</p>
                   <p class="mt-2 text-regular text-[var(--color-texte-primary-dark)]">Chaque don peut aider jusqu’à trois personnes</p>
@@ -61,7 +60,7 @@ const bloodTypes = [
 
             <div class="space-y-3">
               <div class="flex items-start gap-4">
-                <span class="text-[var(--color-light-palette-orange)] text-[32px] font-semibold">2.</span>
+                <span class="text-{{ collection?.primary_color }} text-[32px] font-semibold">2.</span>
                 <div>
                   <p class="text-h4 font-semibold text-[var(--color-violet-950)]">Les réserves sont basses</p>
                   <p class="mt-2 text-regular text-[var(--color-texte-primary-dark)]">En donnant, vous aidez à maintenir des réserves suffisantes pour faire face aux urgences</p>
@@ -71,7 +70,7 @@ const bloodTypes = [
 
             <div class="space-y-3">
               <div class="flex items-start gap-4">
-                <span class="text-[var(--color-light-palette-orange)] text-[32px] font-semibold">3.</span>
+                <span class="text-{{ collection?.primary_color }} text-[32px] font-semibold">3.</span>
                 <div>
                   <p class="text-h4 font-semibold text-[var(--color-violet-950)]">Un acte de solidarité</p>
                   <p class="mt-2 text-regular text-[var(--color-texte-primary-dark)]">C’est un acte simple mais puissant. Une manière de montrer que vous vous souciez des autres.</p>
@@ -81,7 +80,7 @@ const bloodTypes = [
 
             <div class="space-y-3">
               <div class="flex items-start gap-4">
-                <span class="text-[var(--color-light-palette-orange)] text-[32px] font-semibold">4.</span>
+                <span class="text-{{ collection?.primary_color }} text-[32px] font-semibold">4.</span>
                 <div>
                   <p class="text-h4 font-semibold text-[var(--color-violet-950)]">C’est rapide et facile</p>
                   <p class="mt-2 text-regular text-[var(--color-texte-primary-dark)]">Le CTS se déplace sur votre lieu de travail pour réduire encore plus vos désagréments.</p>
@@ -91,7 +90,7 @@ const bloodTypes = [
 
             <div class="space-y-3">
               <div class="flex items-start gap-4">
-                <span class="text-[var(--color-light-palette-orange)] text-[32px] font-semibold">5.</span>
+                <span class="text-{{ collection?.primary_color }} text-[32px] font-semibold">5.</span>
                 <div>
                   <p class="text-h4 font-semibold text-[var(--color-violet-950)]">Vous vous sentirez bien</p>
                   <p class="mt-2 text-regular text-[var(--color-texte-primary-dark)]">Une bonne action procure un sentiment de satisfaction et de bien-être.</p>
@@ -102,7 +101,7 @@ const bloodTypes = [
         </div>
       </section>
 
-      <section class="mt-16 rounded-[32px] border border-[var(--color-violet-100)] bg-[var(--color-beige-50)] p-8 shadow-[0_24px_60px_rgba(104,23,100,0.08)] lg:p-10">
+      <section class="mt-16   p-8  lg:p-10">
         <div class="text-center">
           <h2 class="text-h2 font-semibold text-[var(--color-violet-900)]">État actuel des réserves de sang à Genève</h2>
           <p class="mt-3 text-regular text-[var(--color-texte-primary-dark)]">Aujourd’hui, certains groupes sanguins nécessitent une attention particulière.</p>
@@ -118,7 +117,7 @@ const bloodTypes = [
           </div>
         </div>
 
-        <div class="mt-8 rounded-[28px] bg-white p-6 shadow-[0_10px_30px_rgba(104,23,100,0.08)]">
+        <div class="mt-8  p-6 ">
           <div class="grid gap-4 sm:grid-cols-2 lg:grid-cols-5">
             <div class="flex items-center gap-3">
               <span class="h-3 w-3 rounded-full bg-[var(--color-vert-500)]"></span>
@@ -139,12 +138,16 @@ const bloodTypes = [
             <div class="flex items-center gap-3">
               <span class="h-3 w-3 rounded-full bg-[var(--color-rouge-600)]"></span>
               <span class="text-small text-[var(--color-texte-primary-dark)]">Dangereusement bas — besoins urgents</span>
+              <div class="ml-auto h-10 w-max">
+              <button class="ml-auto rounded-full border bg-[var(--color-light-palette-white)] px-4 py-2 text-small font-semibold text-black transition hover:bg-[var(--color-rouge-700)]">Consulter le baromètre complet des HUG</button>
+              </div>
             </div>
           </div>
         </div>
       </section>
 
-      <section class="mt-16 rounded-[32px] border border-[var(--color-violet-100)] bg-white p-8 shadow-[0_24px_60px_rgba(104,23,100,0.08)] lg:p-10">
+      <section class="mt-16  p-8  lg:p-10">
+        <div class="mx-auto mt-4 h-1 w-[216px] rounded-full bg-{{ collection?.primary_color }}"></div>
         <div class="grid gap-8 lg:grid-cols-[0.9fr_1.1fr] lg:items-center">
           <div class="rounded-[28px] bg-[var(--color-beige-50)] p-8 shadow-[0_10px_30px_rgba(104,23,100,0.08)]">
             <img :src="'/images/composition_petites_gouttes.png'" alt="" class="w-full rounded-[24px] object-cover" />
@@ -156,8 +159,8 @@ const bloodTypes = [
           </div>
         </div>
       </section>
-
-      <div class="mt-16 rounded-[32px] border border-[var(--color-violet-100)] bg-[var(--color-beige-50)] p-8 text-center shadow-[0_24px_60px_rgba(104,23,100,0.08)]">
+      <div class="mx-auto mt-4 h-1 w-[216px] rounded-full bg-{{ collection?.primary_color }}"></div>
+      <div class="mt-16    p-8 text-center ">
         <p class="text-h3 font-semibold text-[var(--color-violet-900)]">Je veux donner mon sang</p>
         <a href="#/inscription" class="mt-6 inline-flex rounded-full bg-[var(--color-button-primary)] px-10 py-3 text-regular font-semibold text-[var(--color-button-secondary)] transition hover:bg-[var(--color-violet-800)]">Réservez votre place</a>
       </div>
