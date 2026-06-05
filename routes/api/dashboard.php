@@ -5,6 +5,7 @@ use App\Http\Controllers\Api\v1\CollectionKitController;
 use App\Http\Controllers\Api\v1\DashboardMetricsController;
 use App\Http\Controllers\Api\v1\LogoUploadController;
 use App\Http\Controllers\Api\v1\ManageCollectionController;
+use App\Http\Controllers\Api\v1\ManageCompanyController;
 use Illuminate\Support\Facades\Route;
 
 // Routes dashboard CTS
@@ -28,6 +29,11 @@ Route::prefix('v1')->group(function () {
 
         // Kit de communication
         Route::post('/manage-collections/{collecte}/kit/send', [CollectionKitController::class, 'send']);
+
+        // Gestion des entreprises
+        Route::get('/companies',             [ManageCompanyController::class, 'index']);
+        Route::get('/companies/{company}',   [ManageCompanyController::class, 'show']);
+        Route::put('/companies/{company}',   [ManageCompanyController::class, 'update']);
 
         // Analytics / KPI
         Route::get('/analytics-stats', [DashboardMetricsController::class, 'overview']);

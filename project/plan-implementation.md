@@ -1,6 +1,6 @@
 # Plan d'implémentation — Fin de projet
 
-> Mis à jour le 5 juin 2026 (dernière màj : Phase 4D terminée — adapters useCollectes alignés sur nouveau modèle, fenêtre cobrand alignée sur 7 jours). Ce document définit ce qui reste à faire pour finir le projet.
+> Mis à jour le 5 juin 2026 (dernière màj : Phase 4E terminée — gestion entreprises dashboard). Ce document définit ce qui reste à faire pour finir le projet.
 
 ---
 
@@ -34,7 +34,7 @@ Les pages publiques (Trophées, Labels) ne font **pas de cache** : chaque charge
 
 - [x] Adapter `CollecteForm.vue` aux nouveaux champs backend — `venue_*`, `contact_email`, `contact_phone` (Phase 4D)
 - [x] Adapter `CollecteDetail.vue` à l'affichage des nouveaux champs (Phase 4D)
-- [ ] Gestion des entreprises — nouvelle vue listant les entreprises et leurs contacts, avec édition (Phase 4E)
+- [x] Gestion des entreprises — nouvelle vue listant les entreprises et leurs contacts, avec édition (Phase 4E)
 - [ ] Gestion des trophées — nouvel onglet + formulaire pour saisir les lauréats d'une nouvelle année (Phase 4F)
 - [ ] Aperçu co-branding + warning contraste WCAG — `CollecteForm.vue`, `useColorContrast.js` (Phase 4C — en attente maquettes)
 - [ ] Aperçu couleurs primaire + secondaire en lecture — `CollecteDetail.vue` (Phase 4C — en attente maquettes)
@@ -127,25 +127,14 @@ Correction centralisée dans `useCollectes.js` (adaptateurs `adapterDeApi` / `ad
 
 ---
 
-### Phase 4E — Gestion des entreprises dans le dashboard
+### ✅ Phase 4E — Gestion des entreprises dans le dashboard — TERMINÉE
 
-Nouvelle vue dédiée permettant de lister les entreprises et d'éditer leurs informations (nom, nb_employés, adresse du siège, contact référent).
-
-**Backend à créer :**
-
-| Route | Controller | Action |
-|-------|-----------|--------|
-| `GET /api/v1/companies` | `ManageCompanyController` | Liste paginée |
-| `GET /api/v1/companies/{company}` | `ManageCompanyController` | Détail |
-| `PUT /api/v1/companies/{company}` | `ManageCompanyController` | Mise à jour |
-
-> Pas de `POST` ni `DELETE` — une entreprise est créée automatiquement lors de la création d'une collecte, et ne doit pas être supprimée indépendamment (cascade sur les collectes).
-
-**Frontend à créer :**
-
-- `dashboard/views/Companies.vue` — liste des entreprises avec recherche
-- `dashboard/views/CompanyDetail.vue` — fiche entreprise (infos + contact + liste de ses collectes)
-- Ajouter l'entrée dans `SidebarNav.vue`
+- `ManageCompanyController` : `index` (GET + ?search=), `show`, `update`
+- Routes `GET/PUT /api/v1/companies` et `/companies/{company}` dans `dashboard.php`
+- `useCompanies.js` : composable avec `chargerEntreprises`, `chargerEntreprise`, `mettreAJourEntreprise`
+- `Companies.vue` : tableau avec recherche debounce, clic → fiche
+- `CompanyDetail.vue` : fiche lecture + édition inline (nom, nb_employés, adresse siège, contact)
+- `SidebarNav.vue` + `App.vue` : entrée "Entreprises" + routes `#/entreprises` et `#/entreprises/:id`
 
 ---
 

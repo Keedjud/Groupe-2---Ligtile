@@ -33,6 +33,17 @@ function gererLogout() {
       Collectes
     </button>
 
+    <!-- Entreprises -->
+    <button
+      @click="allerVers('#/entreprises')"
+      class="w-full rounded-[40px] px-6 py-2.5 font-sans text-regular transition-all"
+      :class="vueCourante === 'entreprises'
+        ? 'bg-violet-950 font-semibold text-beige-50 underline shadow-[0_0_4px_rgba(0,0,0,0.25)]'
+        : 'bg-white text-texte-secondary shadow-[0_0_4px_rgba(0,0,0,0.25)] hover:bg-violet-50'"
+    >
+      Entreprises
+    </button>
+
     <!-- Analytics -->
     <button
       @click="allerVers('#/analytics')"
@@ -65,6 +76,11 @@ function gererLogout() {
         class="rounded-[40px] px-4 py-1.5 font-sans text-small transition-all"
         :class="vueCourante === 'collectes' ? 'bg-violet-950 text-beige-50 underline' : 'bg-white text-texte-secondary shadow-[0_0_4px_rgba(0,0,0,0.25)]'"
       >Collectes</button>
+      <button
+        @click="allerVers('#/entreprises')"
+        class="rounded-[40px] px-4 py-1.5 font-sans text-small transition-all"
+        :class="vueCourante === 'entreprises' ? 'bg-violet-950 text-beige-50 underline' : 'bg-white text-texte-secondary shadow-[0_0_4px_rgba(0,0,0,0.25)]'"
+      >Entreprises</button>
       <button
         @click="allerVers('#/analytics')"
         class="rounded-[40px] px-4 py-1.5 font-sans text-small transition-all"
