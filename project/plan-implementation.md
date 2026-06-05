@@ -1,6 +1,6 @@
 # Plan d'implémentation — Fin de projet
 
-> Mis à jour le 5 juin 2026. Ce document définit ce qui reste à faire pour finir le projet.
+> Mis à jour le 5 juin 2026 (dernière màj : fixes site public Phase 2). Ce document définit ce qui reste à faire pour finir le projet.
 
 ---
 
@@ -18,9 +18,6 @@
 
 | Priorité | Bug | Fichier(s) |
 |----------|-----|-----------|
-| 🟡 Normal | Logo HUG dans le header recharge la page au lieu de naviguer vers Home — `href="/"` doit être `href="#/home"` | `SiteHeader.vue` ligne 25 |
-| 🟡 Normal | Navigation : lien actif non mis en évidence dans le header | `SiteHeader.vue`, `useNavigation.js` |
-| 🟡 Normal | Footer : lien "Accessibilité" mal positionné | `SiteFooter.vue` |
 | 🟡 Normal | `CollecteForm.vue` + `CollecteDetail.vue` : aperçu co-branding en temps réel + warning contraste WCAG | `CollecteForm.vue`, `useColorContrast.js` (Phase 4C — en attente maquettes) |
 
 ---
@@ -29,11 +26,11 @@
 
 ### Frontend site public
 
-- [ ] Fix logo HUG : `href="/"` → `href="#/home"` — `SiteHeader.vue` ligne 25
-- [ ] Fix nav : lien actif non mis en évidence — `SiteHeader.vue`, `useNavigation.js`
-- [ ] Fix footer : lien "Accessibilité" à déplacer à droite — `SiteFooter.vue`
-- [ ] Labels sur tous les champs de formulaire — `Home.vue`, `Information.vue`
-- [ ] Focus trap sur la modale des critères — `Trophees.vue`
+- [x] Fix logo HUG : `href="/"` → `href="#/home"` — `SiteHeader.vue`
+- [x] Fix nav : lien actif — `defineProps` manquant dans `PublicDefaultLayout.vue`
+- [x] Fix footer : "Accessibilité" déplacé en dernier + faute de frappe corrigée — `SiteFooter.vue`
+- [x] Labels `for`/`id` sur tous les champs — `Home.vue`, `Information.vue`
+- [x] Focus trap + rôle ARIA sur la modale des critères — `Trophees.vue`
 
 ### Frontend dashboard
 
@@ -67,17 +64,15 @@ Namespace, migrations, modèles, routes réorganisées, seeder, vie privée.
 
 ---
 
-### Phase 2 — Fix et finitions site public
+### ✅ Phase 2 — Fix et finitions site public — TERMINÉE
 
-**Branche :** `fix/public-site`
-
-| Tâche | Fichier(s) |
-|-------|-----------|
-| Fix logo HUG (`href="/"` → `href="#/home"`) | `SiteHeader.vue` |
-| Fix navigation active | `SiteHeader.vue`, `useNavigation.js` |
-| Fix footer | `SiteFooter.vue` |
-| Labels sur champs de formulaire | `Home.vue`, `Information.vue` |
-| Focus trap modale | `Trophees.vue` |
+| Tâche | Fichier(s) | Détail |
+|-------|-----------|--------|
+| ✅ Fix logo HUG | `SiteHeader.vue` | `href="/"` → `href="#/home"` |
+| ✅ Fix navigation active | `PublicDefaultLayout.vue` | `defineProps` manquant — `current` était toujours `undefined` |
+| ✅ Fix footer | `SiteFooter.vue` | "Accessibilité" déplacé en dernier + faute de frappe corrigée |
+| ✅ Labels `for`/`id` sur les formulaires | `Home.vue`, `Information.vue` | 7 champs liés correctement |
+| ✅ Focus trap modale critères | `Trophees.vue` | `role="dialog"`, `aria-modal`, `aria-labelledby`, Escape, Tab cyclique, focus auto |
 
 ---
 

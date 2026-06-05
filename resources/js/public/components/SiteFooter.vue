@@ -6,9 +6,9 @@ const socials = [
   { label: 'LinkedIn',  icon: '/images/social/linkedin.png',  href: 'https://ch.linkedin.com/company/hopitaux-universitaires-de-geneve?trk=ppro_cprof' },
 ]
 const legal = [
-  { label: 'Accessiblilité', href: 'https://www.hug.ch/bienvenue-aux-personnes-avec-deficit-ou-handicap' },
   { label: 'Charte éthique', href: 'https://www.hug.ch/conditions_generales' },
   { label: 'Confidentialité', href: 'https://www.hug.ch/politique-protection-donnees-personnelles' },
+  { label: 'Accessibilité', href: 'https://www.hug.ch/bienvenue-aux-personnes-avec-deficit-ou-handicap' },
 ]
 </script>
 

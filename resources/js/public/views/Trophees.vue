@@ -1,4 +1,5 @@
 <script setup>
+import { ref, watch, nextTick } from 'vue'
 import { useTrophees } from '../composables/useTrophees'
 import { useDisclosure } from '@/composables/useDisclosure'
 import { companyForRank } from '../composables/usePodiumLogos'
@@ -6,6 +7,32 @@ import PodiumDisplay from '../components/PodiumDisplay.vue'
 
 const { podium, history, loading, error, fetchNow } = useTrophees()
 const { isOpen: showCriteria, toggle: toggleCriteria } = useDisclosure()
+
+const modalRef = ref(null)
+
+// Focus le bouton de fermeture dès l'ouverture de la modale.
+watch(showCriteria, async (ouvert) => {
+  if (ouvert) {
+    await nextTick()
+    modalRef.value?.querySelector('button')?.focus()
+  }
+})
+
+function trapFocus(event) {
+  const modal = modalRef.value
+  if (!modal) return
+  const focusables = Array.from(
+    modal.querySelectorAll('button, [href], input, select, textarea, [tabindex]:not([tabindex="-1"])')
+  ).filter(el => !el.disabled)
+  if (!focusables.length) return
+  const first = focusables[0]
+  const last = focusables[focusables.length - 1]
+  if (event.shiftKey) {
+    if (document.activeElement === first) { event.preventDefault(); last.focus() }
+  } else {
+    if (document.activeElement === last) { event.preventDefault(); first.focus() }
+  }
+}
 </script>
 
 <template>
@@ -118,8 +145,16 @@ const { isOpen: showCriteria, toggle: toggleCriteria } = useDisclosure()
         v-if="showCriteria"
         class="fixed inset-0 z-50 flex items-center justify-center bg-black/40 backdrop-blur-sm p-4"
         @click.self="toggleCriteria"
+        @keydown.esc="toggleCriteria"
+        @keydown.tab="trapFocus"
       >
-        <div class="relative w-full max-w-[857px] md:h-[595px] rounded-[25px] bg-form-bg p-6 md:p-[47px] flex flex-col justify-between overflow-y-auto md:overflow-hidden">
+        <div
+          ref="modalRef"
+          class="relative w-full max-w-[857px] md:h-[595px] rounded-[25px] bg-form-bg p-6 md:p-[47px] flex flex-col justify-between overflow-y-auto md:overflow-hidden"
+          role="dialog"
+          aria-modal="true"
+          aria-labelledby="criteria-title"
+        >
           <!-- Bouton fermer -->
           <button
             @click="toggleCriteria"
@@ -130,7 +165,7 @@ const { isOpen: showCriteria, toggle: toggleCriteria } = useDisclosure()
 
           <!-- Top part: Title + Personnage absolute -->
           <div class="relative w-full">
-            <h3 class="max-w-[516px] font-sans text-[24px] md:text-[32px] font-semibold leading-tight text-texte-primary-dark md:mt-[32px]">
+            <h3 id="criteria-title" class="max-w-[516px] font-sans text-[24px] md:text-[32px] font-semibold leading-tight text-texte-primary-dark md:mt-[32px]">
               Quels sont les critères pour remporter un trophée ?
             </h3>
             <img
