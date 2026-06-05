@@ -11,17 +11,21 @@ const sessionId    = ref(null);
 
 // Branding entreprise
 const companyName  = ref(null);
+const nbEmployee   = ref(null);
 const logoUrl      = ref(null);
 const theme        = ref(null);
 
 // Informations de la collecte
-const startDate    = ref(null);
-const endDate      = ref(null);
-const capacity     = ref(null);
-const onedocUrl    = ref(null);
-const contactEmail = ref(null);
-const contactPhone = ref(null);
-const venue        = ref(null);
+const startDate       = ref(null);
+const endDate         = ref(null);
+const capacity        = ref(null);
+const nbInscrits      = ref(null);
+const placesRestantes = ref(null);
+const tauxRemplissage = ref(null);
+const onedocUrl       = ref(null);
+const contactEmail    = ref(null);
+const contactPhone    = ref(null);
+const venue           = ref(null);
 
 let initPromise = null;
 
@@ -41,17 +45,21 @@ export function initSession(token) {
 
     initPromise = fetchApi({ url: `/cobrand/${token}` })
         .then((data) => {
-            collectionId.value = data.id;
-            companyName.value  = data.company_name;
-            logoUrl.value      = data.logo_url;
-            theme.value        = data.theme;
-            startDate.value    = data.start_date;
-            endDate.value      = data.end_date;
-            capacity.value     = data.capacity;
-            onedocUrl.value    = data.onedoc_url;
-            contactEmail.value = data.contact_email;
-            contactPhone.value = data.contact_phone;
-            venue.value        = data.venue;
+            collectionId.value    = data.id;
+            companyName.value     = data.company_name;
+            nbEmployee.value      = data.nb_employee;
+            logoUrl.value         = data.logo_url;
+            theme.value           = data.theme;
+            startDate.value       = data.start_date;
+            endDate.value         = data.end_date;
+            capacity.value        = data.capacity;
+            nbInscrits.value      = data.nb_inscrits;
+            placesRestantes.value = data.places_restantes;
+            tauxRemplissage.value = data.taux_remplissage;
+            onedocUrl.value       = data.onedoc_url;
+            contactEmail.value    = data.contact_email;
+            contactPhone.value    = data.contact_phone;
+            venue.value           = data.venue;
         })
         .catch(() => {});
 
@@ -108,6 +116,7 @@ export function useCobrandSession() {
 
         // Branding — utiliser pour le header et le thème CSS
         companyName,
+        nbEmployee,
         logoUrl,
         theme,
 
@@ -115,6 +124,9 @@ export function useCobrandSession() {
         startDate,
         endDate,
         capacity,
+        nbInscrits,
+        placesRestantes,
+        tauxRemplissage,
         onedocUrl,
         contactEmail,
         contactPhone,
