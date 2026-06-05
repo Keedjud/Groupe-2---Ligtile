@@ -1,6 +1,6 @@
 # Plan d'implémentation — Fin de projet
 
-> Mis à jour le 5 juin 2026 (dernière màj : Phase 7A + 7D partiellement terminées — App.vue cobrand, quiz complet, Redirect.vue ; Accueil.vue et Prevention.vue restent à faire). Ce document définit ce qui reste à faire pour finir le projet.
+> Mis à jour le 5 juin 2026 (dernière màj : Phase 4F terminée — gestion trophées dashboard ; prochaine branche : cobrand Accueil.vue + Prevention.vue). Ce document définit ce qui reste à faire pour finir le projet.
 
 ---
 
@@ -248,13 +248,13 @@ Les dates de collecte (`start_date` / `end_date`) sont les dates réelles de l'�
 }
 ```
 
-> À compléter dans `ApiCobrandController` : ajouter le compte d'inscrits (`onedoc_clicked`) pour l'affichage sur `Accueil.vue`.
+> `nb_inscrits`, `places_restantes` et `taux_remplissage` sont déjà calculés et retournés par `ApiCobrandController` — prêts à l'emploi dans `Accueil.vue`.
 
 ---
 
 **7B — `cobrand/views/Accueil.vue`** ← PROCHAINE TÂCHE
 
-- Fetch collection via `useQuizStore`
+- Données disponibles via `useCobrandSession` : `companyName`, `logoUrl`, `startDate`, `endDate`, `capacity`, `nbInscrits`, `placesRestantes`, `tauxRemplissage`, `venue`
 - Affichage : nom entreprise, logo, lieu, dates, compteur inscrits / capacité
 - CTA → Prevention
 
@@ -294,7 +294,7 @@ Phase 1 ✅
   │     ├── Phase 4C      (co-branding)          ← en attente maquettes
   │     ├── Phase 4D ✅   (adaptation new model)
   │     ├── Phase 4E ✅   (gestion entreprises)
-  │     └── Phase 4F      (gestion trophées)     ← à faire
+  │     └── Phase 4F ✅   (gestion trophées)
   └── Phase 5 ✅      (backend dashboard)
         └── Phase 5B ✅   (backend cobrand + refactoring)
               └── Phase 6 ✅   (tracking)
