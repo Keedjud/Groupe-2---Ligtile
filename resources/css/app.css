@@ -126,3 +126,16 @@ html {
   --color-gris-50: rgba(210, 206, 206, 1);
   --color-form-bg: rgba(251, 250, 248, 1);
 }
+
+/* Cobrand — palette générée dynamiquement par JS selon l'entreprise.
+   Les variables --cobrand-* sont injectées sur <html> par App.vue au chargement. */
+@theme inline {
+  --color-cobrand-primary:         var(--cobrand-primary);
+  --color-cobrand-primary-light:   var(--cobrand-primary-light);
+  --color-cobrand-primary-dark:    var(--cobrand-primary-dark);
+  --color-cobrand-primary-text:    var(--cobrand-primary-text);
+  --color-cobrand-secondary:       var(--cobrand-secondary);
+  --color-cobrand-secondary-light: var(--cobrand-secondary-light);
+  --color-cobrand-secondary-dark:  var(--cobrand-secondary-dark);
+  --color-cobrand-secondary-text:  var(--cobrand-secondary-text);
+}
