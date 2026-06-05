@@ -8,6 +8,8 @@ const SESSION_KEY = "cobrand_session_id";
 const collectionId = ref(null);
 const sessionId = ref(null);
 const onedocUrl = ref(null);
+const companyName = ref(null);
+const logoUrl = ref(null);
 
 let initPromise = null;
 
@@ -29,6 +31,8 @@ export function initSession(token) {
         .then((data) => {
             collectionId.value = data.id;
             onedocUrl.value = data.onedoc_url;
+            companyName.value = data.company_name;
+            logoUrl.value = data.logo_url;
         })
         .catch(() => {});
 
@@ -63,5 +67,13 @@ async function trackQuiz({
 }
 
 export function useCobrandSession() {
-    return { collectionId, sessionId, onedocUrl, initSession, trackQuiz };
+    return {
+        collectionId,
+        sessionId,
+        onedocUrl,
+        companyName,
+        logoUrl,
+        initSession,
+        trackQuiz,
+    };
 }

@@ -1,10 +1,13 @@
 <script setup>
 import { useDisclosure } from "@/composables/useDisclosure";
+import { useCobrandSession } from "../composables/useCobrandSession";
 
 defineProps({
     current: { type: String, default: null },
     logo: { type: String, default: "/images/logos/logo-hug.png" },
 });
+
+const { companyName, logoUrl } = useCobrandSession();
 
 const links = [
     { key: "accueil", label: "Accueil", href: "#/accueil" },
@@ -34,10 +37,22 @@ const { isOpen, toggle, close } = useDisclosure();
                     class="h-[30px] w-px shrink-0 bg-gris-50 lg:h-[35px]"
                     aria-hidden="true"
                 ></span>
+                <img
+                    v-if="logoUrl"
+                    :src="logoUrl"
+                    :alt="companyName"
+                    class="h-7 w-auto shrink-0"
+                />
                 <span
+                    v-else-if="companyName"
                     class="truncate text-h5 font-bold tracking-wide text-light-palette-orange lg:text-h4"
-                    >MIGROS</span
+                    >{{ companyName }}</span
                 >
+                <span
+                    v-else
+                    class="h-7 w-28 shrink-0 rounded bg-gris-50"
+                    aria-hidden="true"
+                ></span>
             </div>
 
             <nav class="hidden items-center gap-7 lg:flex">
