@@ -57,9 +57,9 @@ const bloodTypes = [
           <div class="mx-auto mt-4 h-1 w-[216px] rounded-full bg-{{ collection?.primary_color }}"></div>
         </div>
 
-        <div class="mt-10 flex flex-col gap-10 lg:flex-row lg:items-start">
-          <div class="w-full lg:w-[686px] rounded-[28px] bg-[var(--color-violet-100)] p-6 shadow-[0_10px_30px_rgba(104,23,100,0.08)]">
-            <img :src="'/images/goutes_ensemble_coeur.svg'" alt="" class="h-[389px] w-full rounded-[20px] object-contain" />
+        <div class="mt-10 flex flex-col  lg:flex-row ">
+          <div class="w-full lg:w-[686px]  p-10">
+            <img :src="'/images/goutes_ensemble_coeur.svg'" alt="" class="h-[389px] w-full object-contain" />
           </div>
 
           <div class="flex w-full flex-col gap-6">
