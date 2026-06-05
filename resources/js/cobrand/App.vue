@@ -36,7 +36,7 @@ const routes = [
     { hash: "#/inscription", key: "inscription",  component: Redirect },
 ];
 
-const { currentComponent, currentRoute } = useHashRoute(routes);
+const { currentComponent } = useHashRoute(routes);
 </script>
 
 <template>
