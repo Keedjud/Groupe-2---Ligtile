@@ -46,11 +46,10 @@ const bloodTypes = [
                         <p class="text-h4 text-[var(--color-texte-primary-dark)]"> {{ nbInscrits }} se sont
                             inscrit·e·s pour la <span class="text-cobrand-primary">collecte
                                 actuelle</span></p>
-                        <p class="text-h4 text-[var(--color-texte-primary-dark)]">Il reste <span
-                                class="font-semibold">xx</span> places</p>
+                        <p class="text-h4 text-[var(--color-texte-primary-dark)]">Il reste {{ placesRestantes }} places</p>
 
                         <a href="#/inscription"
-                            class="inline-flex w-max items-center justify-center rounded-full bg-{{ collection?.primary_color }} px-8 py-3 text-regular font-semibold text-[var(--color-button-secondary)] shadow transition hover:bg-[var(--color-violet-800)]">Réservez
+                            class="inline-flex w-max items-center justify-center rounded-full bg-cobrand-primary px-8 py-3 text-regular font-semibold text-[var(--color-button-secondary)] shadow transition hover:bg-[var(--color-violet-800)]">Réservez
                             votre place</a>
                     </div>
                 </div>
@@ -58,7 +57,7 @@ const bloodTypes = [
                 <div class=" p-8 ">
                     <img :src="'/images/goute_sang_75.png'" alt=""
                         class="mx-auto h-[327px] w-full max-w-[196px] object-contain" />
-                    <p class="mt-6 text-center text-h1 font-bold text-[var(--color-violet-900)]">72<span
+                    <p class="mt-6 text-center text-h1 font-bold text-[var(--color-violet-900)]">{{ tauxRemplissage }}<span
                             class="text-h4 font-semibold">%</span></p>
                 </div>
             </section>
@@ -169,8 +168,8 @@ const bloodTypes = [
                 <div class="mx-auto mt-4 h-1 w-[216px] rounded-full bg-{{ collection?.primary_color }}"></div>
                 <div class="grid gap-8 lg:grid-cols-[0.9fr_1.1fr] lg:items-center">
                     <div
-                        class="rounded-[28px] bg-[var(--color-beige-50)] p-8 shadow-[0_10px_30px_rgba(104,23,100,0.08)]">
-                        <img :src="'/images/composition_petites_gouttes.png'" alt=""
+                        class=" p-8 ">
+                        <img :src="'/images/illustrations/composition-petites-gouttes.png'" alt=""
                             class="w-full rounded-[24px] object-contain" />
                     </div>
                     <div>

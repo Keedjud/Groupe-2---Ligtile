@@ -10,7 +10,7 @@
 </head>
 
 <body>
-    <div id="app" data-collecte-id="{{ $collecteToken }}"></div>
+    <div id="app" data-collecte-id="{{ $collecteId }}"></div>
 </body>
 
 </html>
