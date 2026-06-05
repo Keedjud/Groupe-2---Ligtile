@@ -10,7 +10,7 @@ class ApiCobrandController extends Controller
     public function show(string $token)
     {
         $collection = Collection::where('public_token', $token)
-            ->with(['company', 'address'])
+            ->with('company')
             ->firstOrFail();
 
         return response()->json([
@@ -23,11 +23,13 @@ class ApiCobrandController extends Controller
             'secondary_color' => $collection->secondary_color,
             'logo_url'        => $collection->logo_url,
             'onedoc_url'      => $collection->onedoc_url,
-            'address'         => [
-                'street'      => $collection->address->street,
-                'number'      => $collection->address->number,
-                'postal_code' => $collection->address->postal_code,
-                'city'        => $collection->address->city,
+            'contact_email'   => $collection->contact_email,
+            'contact_phone'   => $collection->contact_phone,
+            'venue'           => [
+                'street'      => $collection->venue_street,
+                'number'      => $collection->venue_number,
+                'postal_code' => $collection->venue_postal_code,
+                'city'        => $collection->venue_city,
             ],
         ]);
     }

@@ -12,7 +12,6 @@ const submitted = ref(false)
 const { formErrors, globalError, submitting, validate, submit: submitPme } = usePmeContactForm()
 const aDesErreurs = computed(() => Object.keys(formErrors.value).length > 0)
 
-// Re-validation live dès qu'une erreur existe (patron du cours).
 watch(form, () => {
   if (Object.keys(formErrors.value).length > 0) validate(form.value)
 }, { deep: true })
@@ -243,8 +242,9 @@ async function handleSubmit() {
           <!-- Formulaire ou confirmation -->
           <template v-if="!submitted">
             <div class="w-full max-w-[450px]">
-              <label class="font-sans text-small font-medium text-violet-800">Nom de l'entreprise <span class="text-rouge-500">*</span></label>
+              <label for="pme-company" class="font-sans text-small font-medium text-violet-800">Nom de l'entreprise <span class="text-rouge-500">*</span></label>
               <input
+                id="pme-company"
                 required
                 v-model="form.company_name"
                 type="text"
@@ -255,8 +255,9 @@ async function handleSubmit() {
             </div>
 
             <div class="w-full max-w-[450px]">
-              <label class="font-sans text-small font-medium text-violet-800">Adresse Mail <span class="text-rouge-500">*</span></label>
+              <label for="pme-email" class="font-sans text-small font-medium text-violet-800">Adresse e-mail <span class="text-rouge-500">*</span></label>
               <input
+                id="pme-email"
                 required
                 v-model="form.email"
                 type="email"
@@ -267,8 +268,9 @@ async function handleSubmit() {
             </div>
 
             <div class="w-full max-w-[450px]">
-              <label class="font-sans text-small font-medium text-violet-800">Message <span class="text-rouge-500">*</span></label>
+              <label for="pme-message" class="font-sans text-small font-medium text-violet-800">Message <span class="text-rouge-500">*</span></label>
               <textarea
+                id="pme-message"
                 required
                 v-model="form.message"
                 placeholder="Message"

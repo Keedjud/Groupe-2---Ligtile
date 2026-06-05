@@ -1,4 +1,6 @@
 *.log
+*.blend
+*.blend1
 .DS_Store
 .env
 .env.backup

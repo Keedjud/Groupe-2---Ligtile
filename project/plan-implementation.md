@@ -1,250 +1,334 @@
 # Plan d'implémentation — Fin de projet
 
-> Mis à jour le 3 juin 2026. Ce document définit qui fait quoi, dans quel ordre, pour finir le projet sans se marcher dessus.
+> Mis à jour le 5 juin 2026 (dernière màj : page labels publique + Phase 2B terminée). Ce document définit ce qui reste à faire pour finir le projet.
 
 ---
 
 ## L'équipe
 
-| Développeur | Rôle dans la suite |
-|-------------|-------------------|
-| **Loïc** | Maquettes — en pause sur le code. Reprend sur `cobrand/views/Prevention.vue` (Phase 7C) quand disponible. |
-| **Elia** | Fix et finitions du site public uniquement — ne touche pas au dashboard pour éviter les conflits |
-| **Inoé** | Tous les fixes dashboard (Phase 4B), cobrand complet (Phases 6 + 7), coordination |
-
-**Règle d'or :** Avant d'ouvrir une PR, faire `git merge develop` sur sa branche et résoudre ses propres conflits. Un reviewer ne résout jamais les conflits d'une autre personne.
+| Développeur | Rôle |
+|-------------|------|
+| **Loïc** | Frontend cobrand |
+| **Elia** | Frontend cobrand |
+| **Inoé** | Backend, coordination, fixes dashboard |
 
 ---
 
 ## Bugs ouverts
 
-| Priorité | Bug | Responsable |
-|----------|-----|-------------|
-| 🟡 Normal | `CollecteForm.vue` + `CollecteDetail.vue` : aperçu co-branding en temps réel + warning contraste WCAG | Inoé (Phase 4C — en attente maquettes) |
-| 🟡 Normal | Navigation : lien actif non mis en évidence dans le header | Elia |
-| 🟡 Normal | Footer : lien "Accessibilité" mal positionné | Elia |
-| 🟡 Normal | Email confirmation PME : crash `$message->embed()` dans `contactPme-confirmation.blade.php` | Elia |
+| Priorité | Bug | Fichier(s) |
+|----------|-----|-----------|
+| 🟡 Normal | `CollecteForm.vue` + `CollecteDetail.vue` : aperçu co-branding en temps réel + warning contraste WCAG | `CollecteForm.vue`, `useColorContrast.js` (Phase 4C — en attente maquettes) |
+
+---
+
+## Note — Mise à jour automatique des pages publiques
+
+Les pages publiques (Trophées, Labels) ne font **pas de cache** : chaque chargement interroge directement la base de données via l'API. Toute modification effectuée depuis le dashboard (nouveau trophée, nouvelle collecte, nouveau label) est donc immédiatement visible sur le site public au prochain chargement de la page. Pas de travail supplémentaire nécessaire pour ce comportement.
 
 ---
 
 ## Ce qui reste à faire
 
-### Backend
+### Frontend dashboard
 
-<<<<<<< HEAD
-### Frontend site public
-<<<<<<< HEAD
-- [x] Fix nav : lien actif non mis en évidence (Elia)
-- [ ] Fix footer : lien "Accessibilité" à déplacer à droite (Elia)
-- [ ] Labels sur tous les champs de formulaire — `Home.vue`, `Information.vue` (Elia)
-- [ ] Alts sur toutes les images (via `git cherry-pick 63f3b65`) (Elia)
-- [ ] Focus trap sur la modale des critères dans `Trophees.vue` (Elia)
-- [ ] Fix email PME : corriger `resources/views/emails/contactPme.blade.php` — crash `htmlspecialchars` dû à un objet `Message` passé comme string (Elia)
-=======
-- [ ] Fix nav : lien actif non mis en évidence **(Elia)**
-- [ ] Fix footer : lien "Accessibilité" à déplacer à droite **(Elia)**
-- [ ] Labels sur tous les champs de formulaire — `Home.vue`, `Information.vue` **(Elia)**
-- [ ] Alts sur toutes les images (via `git cherry-pick 63f3b65`) **(Elia)**
-- [ ] Focus trap sur la modale des critères dans `Trophees.vue` **(Elia)**
-- [ ] Fix email confirmation PME : remplacer `$message->embed(public_path('images/logo-hug.png'))` par une URL publique (`/images/logo-hug.png`) dans `resources/views/emails/contactPme-confirmation.blade.php` — `contactPme.blade.php` (notification CTS) est OK **(Elia)**
-- [ ] `contactPme-confirmation.blade.php` : utiliser `{{ $entreprise }}` pour personnaliser le "Bonjour," (variable passée mais non affichée) **(Elia)**
->>>>>>> develop
-- [x] Mentions vie privée sur les deux formulaires de contact
-=======
-### Frontend site public **(Elia)**
->>>>>>> 9f15ecf2f24718621bc8f3784febe762e17efd59
+- [ ] **URGENT** Adapter `CollecteForm.vue` aux nouveaux champs backend — `venue_*`, `contact_email`, `contact_phone` (Phase 4D)
+- [ ] **URGENT** Adapter `CollecteDetail.vue` à l'affichage des nouveaux champs (Phase 4D)
+- [ ] Gestion des entreprises — nouvelle vue listant les entreprises et leurs contacts, avec édition (Phase 4E)
+- [ ] Gestion des trophées — nouvel onglet + formulaire pour saisir les lauréats d'une nouvelle année (Phase 4F)
+- [ ] Aperçu co-branding + warning contraste WCAG — `CollecteForm.vue`, `useColorContrast.js` (Phase 4C — en attente maquettes)
+- [ ] Aperçu couleurs primaire + secondaire en lecture — `CollecteDetail.vue` (Phase 4C — en attente maquettes)
 
-- [ ] Fix nav : lien actif non mis en évidence — `SiteHeader.vue`, `useNavigation.js`
-- [ ] Fix footer : lien "Accessibilité" à déplacer à droite — `SiteFooter.vue`
-- [ ] Labels sur tous les champs de formulaire — `Home.vue`, `Information.vue`
-- [ ] Focus trap sur la modale des critères — `Trophees.vue`
-- [ ] Fix email confirmation PME : remplacer `$message->embed(...)` par une URL publique dans `contactPme-confirmation.blade.php`
-- [ ] `contactPme-confirmation.blade.php` : utiliser `{{ $entreprise }}` pour personnaliser le "Bonjour,"
-
-### Frontend dashboard **(Inoé)**
-
-- [ ] Aperçu co-branding + warning contraste WCAG — `CollecteForm.vue`, `useColorContrast.js` **(Phase 4C — en attente maquettes)**
-- [ ] Aperçu couleurs primaire + secondaire — `CollecteDetail.vue` **(Phase 4C — en attente maquettes)**
-
-### Frontend cobrand **(Inoé)**
+### Frontend cobrand
 
 - [ ] `cobrand/App.vue` — routage hash, co-branding CSS, fenêtre de disponibilité
 - [ ] `cobrand/views/Accueil.vue`
-- [ ] `cobrand/views/Prevention.vue` — scrollytelling **(Loïc quand disponible)**
+- [ ] `cobrand/views/Prevention.vue` — scrollytelling
 - [ ] `cobrand/views/Quiz.vue` — P1 + P2 + tracking
 - [ ] `cobrand/views/Redirect.vue` — page Onedoc + tracking
 - [ ] `cobrand/composables/useQuizStore.js`
-- [ ] `cobrand/constants/quizQuestions.js` — slugs stables P1 + P2 *(à aligner dans `DashboardMetricsController` après Phase 7D)*
+- [ ] `cobrand/constants/quizQuestions.js` — slugs stables P1 + P2
 
 ---
 
 ## Phases d'implémentation
 
-### ✅ Phase 1 — Fondations (Inoé) — TERMINÉE
+### ✅ Phase 1 — Fondations — TERMINÉE
 
 Namespace, migrations, modèles, routes réorganisées, seeder, vie privée.
 
 ---
 
-### Phase 2 — Fix et finitions site public **(Elia)**
+### ✅ Phase 2 — Fix et finitions site public — TERMINÉE
 
-**Branche :** `fix/public-site`
-
-| Tâche | Fichier(s) |
-|-------|-----------|
-| Fix navigation active | `SiteHeader.vue`, `useNavigation.js` |
-| Fix footer | `SiteFooter.vue` |
-| Alts images — `git cherry-pick 63f3b65` | vues du site public |
-| Labels sur champs de formulaire | `Home.vue`, `Information.vue` |
-| Focus trap modale | `Trophees.vue` |
-| Fix email PME | `resources/views/emails/contactPme.blade.php` |
+| Tâche | Fichier(s) | Détail |
+|-------|-----------|--------|
+| ✅ Fix logo HUG | `SiteHeader.vue` | `href="/"` → `href="#/home"` |
+| ✅ Fix navigation active | `PublicDefaultLayout.vue` | `defineProps` manquant — `current` était toujours `undefined` |
+| ✅ Fix footer | `SiteFooter.vue` | "Accessibilité" déplacé en dernier + faute de frappe corrigée |
+| ✅ Labels `for`/`id` sur les formulaires | `Home.vue`, `Information.vue` | 7 champs liés correctement |
+| ✅ Focus trap modale critères | `Trophees.vue` | `role="dialog"`, `aria-modal`, `aria-labelledby`, Escape, Tab cyclique, focus auto |
 
 ---
 
-### ✅ Phase 3 — Fix urgent Trophées (Inoé) — TERMINÉE
+### ✅ Phase 2B — Page labels publique : filtre actif / échu — TERMINÉE
+
+| Tâche | Fichier(s) | Détail |
+|-------|-----------|--------|
+| ✅ Filtre `?status=active\|expired` | `ApiLabelCompanyController.php` | Charge le bon label selon le contexte ; une entreprise avec un label échu ET un label actif apparaît dans les deux onglets |
+| ✅ Suppression filtre année | `ApiLabelCompanyController.php`, `Label.vue` | `years()` + route `/label-years` retirés |
+| ✅ Toggle "Labellisées" / "Labels échus" | `Label.vue` | Remplace le select année ; titre et description réactifs |
+| ✅ Phrase de période dans la carte | `LabelCard.vue` | "Est labelisé de X à Y." / "A été labelisé de X à Y." selon `end_date` |
+
+---
+
+### ✅ Phase 3 — Fix urgent Trophées — TERMINÉE
 
 `ApiTropheeController` corrigé. `participant_count` reste provisoirement à `0` en attendant Phase 6.
 
 ---
 
-### ✅ Phase 4 — Dashboard UI (Loïc) — EN COURS
-
-UI complète. `onedoc_url` et `capacity` manquants dans le formulaire → corrigés en Phase 4B.
+### ✅ Phase 4 — Dashboard UI — TERMINÉE
 
 ---
 
-### ✅ Phase 4B — Fix post-audit dashboard (Inoé) — TERMINÉE
+### ✅ Phase 4B — Fix post-audit dashboard — TERMINÉE
 
-**Branche :** `fix/dashboard-post-audit` (mergée le 3 juin 2026)
+**Branche :** `fix/dashboard-post-audit` (mergée)
 
-| Tâche | Fichier(s) cible(s) |
-|-------|---------------------|
-| ✅ Ajouter `onedoc_url` (requis), `capacity` (requis, ≥ 1), `kit_url` (requis) dans formulaire + validation + adapters | `CollecteForm.vue`, `ManageCollectionController.php`, `useCollectes.js` |
-| ✅ Email kit : bouton KDrive (`lienKitComm`) ; suppression attachements `public/kit/` | `CollectionKitMail.php`, `collection-kit.blade.php` |
-| ✅ Migration consolidée : `kit_url`, `capacity`, `logo_url` (longText), `onedoc_url` tous NOT NULL | `2026_05_26_131534_collections.php` |
-| ✅ Seeder mis à jour : `capacity` et `kit_url` sur toutes les collectes | `DatabaseSeeder.php` |
+| Tâche | Fichier(s) |
+|-------|-----------|
+| ✅ `onedoc_url`, `capacity`, `kit_url` dans formulaire + validation | `CollecteForm.vue`, `ManageCollectionController.php` |
+| ✅ Email kit : bouton KDrive, suppression attachements `public/kit/` | `CollectionKitMail.php`, `collection-kit.blade.php` |
 | ✅ Corriger la redirection async au refresh | `App.vue` |
 | ✅ Remplacer sélecteur période par cases à cocher multi-années | `Metriques.vue` |
-| ✅ Ajouter filtre `years[]` sur tous les groupes A–E | `DashboardMetricsController.php` |
+| ✅ Filtre `years[]` sur tous les groupes A–E | `DashboardMetricsController.php` |
 | ✅ Corriger affichage skip (taux % réel) | `DashboardMetricsController.php`, `Metriques.vue` |
-| ✅ Simplifier flow `QuestionFlow.vue` : supprimer `setTimeout` fictifs, fusionner étapes 3+4 | `QuestionFlow.vue` |
+| ✅ Simplifier flow `QuestionFlow.vue` | `QuestionFlow.vue` |
 
 ---
 
-### Phase 4C — Aperçu co-branding dashboard **(Inoé) ← EN ATTENTE DES MAQUETTES**
+### Phase 4C — Aperçu co-branding dashboard ← EN ATTENTE DES MAQUETTES
 
-**Branche :** à créer depuis `develop` quand les maquettes sont disponibles
-
-| Tâche | Fichier(s) cible(s) |
-|-------|---------------------|
+| Tâche | Fichier(s) |
+|-------|-----------|
 | Aperçu co-branding en temps réel + warning contraste WCAG | `CollecteForm.vue`, nouveau `composables/useColorContrast.js` |
 | Aperçu couleurs primaire + secondaire en lecture | `CollecteDetail.vue` |
 
 ---
 
-### ✅ Phase 5 — Backend dashboard + auth Sanctum (Loïc) — TERMINÉE
+### Phase 4D — Adaptation frontend dashboard au nouveau modèle de données ← URGENT
 
-Endpoints réels (nommage différent du plan initial) :
+Suite du refactoring Phase 5B : le backend a changé mais le frontend n'a pas encore suivi.
+
+**`CollecteForm.vue`** — renommer les champs envoyés à l'API :
+
+| Ancien (cassé) | Nouveau |
+|----------------|---------|
+| `adresse.rue` | `venue_street` |
+| `adresse.numero` | `venue_number` |
+| `adresse.npa` | `venue_postal_code` |
+| `adresse.ville` | `venue_city` |
+| `entreprise.email` | `contact_email` |
+| `entreprise.telephone` | `contact_phone` |
+
+Aussi mettre à jour le pré-remplissage en mode édition (lecture depuis `collecte.venue_street` etc. au lieu de `collecte.adresse.rue`).
+
+**`CollecteDetail.vue`** — mettre à jour l'affichage :
+
+| Ancien (cassé) | Nouveau |
+|----------------|---------|
+| `collecte.adresse.rue` / `.numero` | `collecte.venue_street` / `.venue_number` |
+| `collecte.adresse.npa` | `collecte.venue_postal_code` |
+| `collecte.adresse.ville` | `collecte.venue_city` |
+| `collecte.entreprise.email` | `collecte.contact_email` |
+| `collecte.entreprise.telephone` | `collecte.contact_phone` |
+
+---
+
+### Phase 4E — Gestion des entreprises dans le dashboard
+
+Nouvelle vue dédiée permettant de lister les entreprises et d'éditer leurs informations (nom, nb_employés, adresse du siège, contact référent).
+
+**Backend à créer :**
+
+| Route | Controller | Action |
+|-------|-----------|--------|
+| `GET /api/v1/companies` | `ManageCompanyController` | Liste paginée |
+| `GET /api/v1/companies/{company}` | `ManageCompanyController` | Détail |
+| `PUT /api/v1/companies/{company}` | `ManageCompanyController` | Mise à jour |
+
+> Pas de `POST` ni `DELETE` — une entreprise est créée automatiquement lors de la création d'une collecte, et ne doit pas être supprimée indépendamment (cascade sur les collectes).
+
+**Frontend à créer :**
+
+- `dashboard/views/Companies.vue` — liste des entreprises avec recherche
+- `dashboard/views/CompanyDetail.vue` — fiche entreprise (infos + contact + liste de ses collectes)
+- Ajouter l'entrée dans `SidebarNav.vue`
+
+---
+
+### Phase 4F — Gestion des trophées dans le dashboard
+
+Nouvel onglet permettant au CTS de saisir les lauréats d'une nouvelle année en sélectionnant des entreprises déjà en base.
+
+**Comportement :**
+- La page **Trophées** du site public se met à jour automatiquement (pas de cache — voir note en haut du document)
+- Un seul podium par année — si une année existe déjà, l'interface propose de la modifier plutôt que d'en créer une nouvelle
+
+**Backend à créer :**
+
+| Route | Controller | Action |
+|-------|-----------|--------|
+| `GET /api/v1/manage-trophees` | `ManageTropheeController` | Liste des années existantes + lauréats |
+| `POST /api/v1/manage-trophees` | `ManageTropheeController` | Créer les trophées d'une nouvelle année (3 entreprises + rangs) |
+| `PUT /api/v1/manage-trophees/{year}` | `ManageTropheeController` | Modifier les lauréats d'une année existante |
+| `DELETE /api/v1/manage-trophees/{year}` | `ManageTropheeController` | Supprimer le podium d'une année |
+
+Le `store()` crée 3 `Trophee` (`Trophée Or/Argent/Bronze {année}`) et les attache aux entreprises via `company_trophee` avec leur rang.
+
+**Frontend à créer :**
+
+- `dashboard/views/Trophees.vue` — liste des podiums par année (tableau) + bouton "Nouveau podium"
+- Formulaire intégré (ou modale) : sélecteur d'année + 3 champs "entreprise" avec autocomplete sur les entreprises en base
+- Ajouter l'entrée dans `SidebarNav.vue`
+
+> **Remarque :** les trophées du seeder utilisent des noms figés (`'Trophée Or 2021'`, etc.) — le controller devra générer ces noms automatiquement depuis l'année saisie pour rester cohérent.
+
+---
+
+### ✅ Phase 5 — Backend dashboard + auth Sanctum — TERMINÉE
+
+Endpoints :
 - `POST /api/v1/session/connect` — login
 - `POST /api/v1/session/disconnect` — logout
-- `GET /api/v1/session/current-user` — utilisateur courant
-- `GET/POST/PUT/DELETE /api/v1/manage-collections` — CRUD
-- `POST /api/v1/manage-collections/{id}/kit/send` — envoi kit co-brandé par email (lien KDrive en pièce centrale)
-- `GET /api/v1/analytics-stats` — métriques
+- `GET /api/v1/session/current-user`
+- `GET/POST/PUT/DELETE /api/v1/manage-collections`
+- `POST /api/v1/manage-collections/{id}/kit/send`
+- `GET /api/v1/analytics-stats`
 
 ---
 
-### ✅ Phase 5B — Backend cobrand + contact_stats (Inoé) — TERMINÉE
+### ✅ Phase 5B — Backend cobrand + refactoring modèle de données — TERMINÉE
 
-`GET /api/v1/cobrand/{token}` opérationnel. `ContactStat` créé.
+| Tâche | Détail |
+|-------|--------|
+| ✅ `GET /api/v1/cobrand/{token}` | `ApiCobrandController.php` |
+| ✅ `ContactStat` | Comptage brut des demandes de contact |
+| ✅ Table `contacts` | Email + téléphone sortis de `companies` — un contact référent par entreprise (`HasOne`) |
+| ✅ Snapshot lieu sur `collections` | `address_id` FK remplacé par `contact_email`, `contact_phone`, `venue_street`, `venue_number`, `venue_postal_code`, `venue_city` |
+| ✅ `ManageCollectionController` mis à jour | Validation, `store()`, `update()` adaptés au nouveau modèle |
+| ✅ Seeder mis à jour | Section `CONTACTS` ajoutée, 23 collections avec snapshot |
 
----
-
-### ✅ Phase 6 — Backend tracking (Inoé) — TERMINÉE
-
-**Branche :** `feature/backend-tracking`
-
-| Tâche | Fichier cible |
-|-------|--------------|
-| ✅ `POST /api/v1/quiz/event` (public, sans auth) | `QuizEventController.php`, `routes/api/cobrand.php` |
-| ✅ `POST /api/v1/page/event` (public, sans auth) | `PageEventController.php`, `routes/api/cobrand.php` |
-| ✅ Remplacer `participant_count = 0` dans `ApiTropheeController` par calcul réel | `ApiTropheeController.php` |
+> **Note :** `ApiCobrandController` retourne les colonnes snapshot directement (`venue.*`, `contact_email`, `contact_phone`) — plus de relation `address`.
 
 ---
 
-### Phase 7 — Cobrand **(Inoé)**
+### ✅ Phase 6 — Backend tracking — TERMINÉE
 
-**Prérequis :** Phase 5B ✅
-
-**7A — `cobrand/App.vue`** (`feature/cobrand-app`) — routage hash, co-branding, fenêtre de disponibilité
-
-**7B — `cobrand/views/Accueil.vue`** (`feature/cobrand-accueil`)
-
-**7C — `cobrand/views/Prevention.vue`** (`feature/cobrand-prevention`) — **(Loïc quand disponible, en parallèle de 7D)**
-- Émet `prevention_entered` / `prevention_exited` via `$emit` → ne pas appeler l'API directement
-
-**7D — Quiz + Redirect** (`feature/cobrand-quiz`) — **(Inoé)**
-- `cobrand/constants/quizQuestions.js` — slugs stables P1 + P2
-- `useQuizStore.js`, `Quiz.vue`, `Redirect.vue`
-- **Règle critique : ne jamais modifier un slug en prod sans `UPDATE quiz_events SET question_slug = 'nouveau' WHERE question_slug = 'ancien'`**
-- **Après 7D :** aligner les slugs hardcodés dans `DashboardMetricsController::performanceParQuestion()` avec ceux définis ici
-- **Après 7D :** renommer `participant_count` en `employees_count` (niveau entreprise) dans `ApiTropheeController` pour cohérence avec le calcul réel depuis `quiz_events`
+| Tâche | Fichier |
+|-------|--------|
+| ✅ `POST /api/v1/quiz/event` | `QuizEventController.php` |
+| ✅ `POST /api/v1/page/event` | `PageEventController.php` |
+| ✅ Calcul réel `participant_count` dans `ApiTropheeController` | `ApiTropheeController.php` |
 
 ---
 
-### ✅ Phase 8A + 8B — Nettoyage code mort (`chore/cleanup`) — TERMINÉE
+### Phase 7 — Cobrand
 
-**8A — Fichiers Blade inutilisés**
+**Prérequis :** Phase 5B ✅, Phase 6 ✅
 
-| Tâche | Fichier(s) |
-|-------|-----------|
-| ✅ Supprimer la page Laravel par défaut | `resources/views/welcome.blade.php` |
-| ✅ Supprimer le layout Blade inutilisé + ViewComponent associé | `resources/views/components/default-layout.blade.php`, `app/View/Components/DefaultLayout.php` |
+#### Fenêtre de disponibilité du site cobrand
 
-**8B — Modèles et tables jamais peuplés**
+Les dates de collecte (`start_date` / `end_date`) sont les dates réelles de l'événement. La disponibilité du site cobrand suit une logique différente :
 
-Option A retenue : suppression des modèles et migrations. Le `migrate:fresh --seed` du hook de prod suffit — pas besoin de migration de drop intermédiaire.
+- **Début :** `created_at` de la collecte (dès que l'admin crée la collecte dans le dashboard)
+- **Fin :** `end_date + 7 jours`
 
-| Tâche | Fichier(s) |
-|-------|-----------|
-| ✅ Supprimer le modèle `ContactRequest` | `app/Models/ContactRequest.php` |
-| ✅ Supprimer le modèle `PmeContact` | `app/Models/PmeContact.php` |
-| ✅ Retirer les migrations d'origine du dépôt | `2026_06_01_224000_*`, `2026_06_01_224500_*` |
+`created_at` est déjà présent sur `collections` via `timestamps()` — pas de nouvelle colonne.
 
-**8C — Nommage `ApiTropheeController`** *(à faire après Phase 7D)*
+À implémenter :
+- Dans `ApiCobrandController` : retourner une 404 si on est hors fenêtre (évite d'exposer les données)
+- Dans `cobrand/App.vue` : afficher un message approprié si hors fenêtre (avant ouverture ou après fermeture)
 
-Au niveau année, `participant_count` retourne le nombre d'**entreprises uniques** — le nom est trompeur. À renommer en `companies_count` une fois que le calcul réel des participants (employees) sera en place à partir des `quiz_events`.
+#### Données disponibles depuis `GET /api/v1/cobrand/{token}`
+
+```json
+{
+  "company_name", "start_date", "end_date", "capacity",
+  "primary_color", "secondary_color", "logo_url", "onedoc_url",
+  "contact_email", "contact_phone",
+  "venue": { "street", "number", "postal_code", "city" }
+}
+```
+
+> À compléter dans `ApiCobrandController` : ajouter le compte d'inscrits (`onedoc_clicked`) pour l'affichage sur `Accueil.vue`.
+
+---
+
+**7A — `cobrand/App.vue`**
+
+Routage hash, injection des couleurs cobrand en CSS vars, gestion de la fenêtre de disponibilité (`created_at` → `end_date + 7j`).
+
+---
+
+**7B — `cobrand/views/Accueil.vue`**
+
+- Fetch collection via `useQuizStore`
+- Affichage : nom entreprise, logo, lieu, dates, compteur inscrits / capacité
+- CTA → Prevention
+
+---
+
+**7C — `cobrand/views/Prevention.vue`**
+
+Scrollytelling. Émet `prevention_entered` / `prevention_exited` (avec `engaged` + `time_on_page`) via le store — ne pas appeler l'API directement depuis la vue.
+
+---
+
+**7D — Quiz + Redirect**
+
+Ordre de développement conseillé :
+1. `cobrand/constants/quizQuestions.js` — définir P1 + P2 avec slugs stables (`age`, `poids`, `sante-generale`, `medicaments`, `voyages` pour P1)
+2. `useQuizStore.js` — fetch API, navigation entre vues, UUID `session_id`, helpers `sendQuizEvent()` / `sendPageEvent()`
+3. `Redirect.vue` — message intermédiaire, track `onedoc_clicked` au clic, ouvrir `onedoc_url`
+4. `Quiz.vue` — P1 éliminatoire + P2 informative/skippable
+
+**Règle critique slugs :** ne jamais modifier un slug en prod sans migrer les données historiques (`UPDATE quiz_events SET question_slug = 'nouveau' WHERE question_slug = 'ancien'`).
+
+**Après 7D :**
+- Aligner les slugs hardcodés dans `DashboardMetricsController::performanceParQuestion()` avec ceux définis dans `quizQuestions.js`
+- Renommer `participant_count` → `companies_count` dans `ApiTropheeController` (représente des entreprises, pas des participants)
+
+---
+
+### ✅ Phase 8A + 8B — Nettoyage code mort — TERMINÉE
+
+Suppression fichiers Blade inutilisés, modèles `ContactRequest` et `PmeContact`, migrations orphelines.
+
+### Phase 8C — Renommage `ApiTropheeController` *(après Phase 7D)*
+
+`participant_count` → `companies_count` au niveau année.
 
 ---
 
 ## Résumé des dépendances
 
 ```
-Phase 1 ✅ (fondations)
-  ├── Phase 2 (public site fixes, Elia)             ← en cours
-  ├── Phase 3 ✅ (fix trophées, Inoé)
-  ├── Phase 4 ✅ (dashboard UI, Loïc — mergée)
-  │     ├── Phase 4B ✅ (fix post-audit, Inoé — mergée dans develop)
-  │     └── Phase 4C (aperçu co-branding, Inoé — en attente maquettes)
-  └── Phase 5 ✅ (backend dashboard, Loïc)
-        └── Phase 5B ✅ (backend cobrand, Inoé)
-              ├── Phase 6 ✅ (tracking, Inoé)
-              └── Phase 7A→D (cobrand, Loic)         ← en cours
-                    └── aligner slugs dans DashboardMetricsController (après 7D)
-                    └── renommer participant_count dans ApiTropheeController (après 7D)
-Phase 8A+8B ✅ (cleanup, chore/cleanup — 3 juin 2026)
-Phase 8C (renommage ApiTropheeController)            ← après Phase 7D
+Phase 1 ✅
+  ├── Phase 2 ✅      (fixes public)
+  │     └── Phase 2B ✅  (labels actif/échu)
+  ├── Phase 3 ✅      (trophées)
+  ├── Phase 4 ✅      (dashboard UI)
+  │     ├── Phase 4B ✅   (fix post-audit)
+  │     ├── Phase 4C      (co-branding)          ← en attente maquettes
+  │     ├── Phase 4D      (adaptation new model) ← URGENT
+  │     ├── Phase 4E      (gestion entreprises)
+  │     └── Phase 4F      (gestion trophées)
+  └── Phase 5 ✅      (backend dashboard)
+        └── Phase 5B ✅   (backend cobrand + refactoring)
+              └── Phase 6 ✅   (tracking)
+                    └── Phase 7A→D   (cobrand)            ← en cours
+                          └── Phase 8C  (renommage)       ← après 7D
+Phase 8A+8B ✅  (cleanup)
 ```
-
----
-
-## Fichiers partagés — zones à risque de conflit
-
-| Fichier | Qui y touche | Règle |
-|---------|-------------|-------|
-| `routes/api/cobrand.php` | Inoé (Phase 5B ✅, 6) | Inoé uniquement |
-| `routes/api/dashboard.php` | Inoé (Phase 4B) | Inoé uniquement |
-| `resources/js/cobrand/App.vue` | Inoé (Phase 7A) | Inoé uniquement |
-| `app/Http/Controllers/Api/v1/ManageCollectionController.php` | Inoé (Phase 4B) | Inoé uniquement |
-| `app/Http/Controllers/Api/v1/DashboardMetricsController.php` | Inoé (Phase 4B + post-7D) | Inoé uniquement |
-| `app/Http/Controllers/Api/v1/ApiTropheeController.php` | Inoé (Phase 3 ✅, puis 6) | Inoé uniquement |
