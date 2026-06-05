@@ -1,6 +1,6 @@
 # Plan d'implémentation — Fin de projet
 
-> Mis à jour le 5 juin 2026 (dernière màj : fixes site public Phase 2). Ce document définit ce qui reste à faire pour finir le projet.
+> Mis à jour le 5 juin 2026 (dernière màj : page labels publique + Phase 2B terminée). Ce document définit ce qui reste à faire pour finir le projet.
 
 ---
 
@@ -22,27 +22,22 @@
 
 ---
 
+## Note — Mise à jour automatique des pages publiques
+
+Les pages publiques (Trophées, Labels) ne font **pas de cache** : chaque chargement interroge directement la base de données via l'API. Toute modification effectuée depuis le dashboard (nouveau trophée, nouvelle collecte, nouveau label) est donc immédiatement visible sur le site public au prochain chargement de la page. Pas de travail supplémentaire nécessaire pour ce comportement.
+
+---
+
 ## Ce qui reste à faire
-
-### Frontend site public
-
-- [x] Fix logo HUG : `href="/"` → `href="#/home"` — `SiteHeader.vue`
-- [x] Fix nav : lien actif — `defineProps` manquant dans `PublicDefaultLayout.vue`
-- [x] Fix footer : "Accessibilité" déplacé en dernier + faute de frappe corrigée — `SiteFooter.vue`
-- [x] Labels `for`/`id` sur tous les champs — `Home.vue`, `Information.vue`
-- [x] Focus trap + rôle ARIA sur la modale des critères — `Trophees.vue`
 
 ### Frontend dashboard
 
 - [ ] **URGENT** Adapter `CollecteForm.vue` aux nouveaux champs backend — `venue_*`, `contact_email`, `contact_phone` (Phase 4D)
 - [ ] **URGENT** Adapter `CollecteDetail.vue` à l'affichage des nouveaux champs (Phase 4D)
 - [ ] Gestion des entreprises — nouvelle vue listant les entreprises et leurs contacts, avec édition (Phase 4E)
+- [ ] Gestion des trophées — nouvel onglet + formulaire pour saisir les lauréats d'une nouvelle année (Phase 4F)
 - [ ] Aperçu co-branding + warning contraste WCAG — `CollecteForm.vue`, `useColorContrast.js` (Phase 4C — en attente maquettes)
 - [ ] Aperçu couleurs primaire + secondaire en lecture — `CollecteDetail.vue` (Phase 4C — en attente maquettes)
-
-### Page labels publique
-
-- [ ] Filtrer les entreprises par état label actif / échu — `Label.vue` + `ApiLabelCompanyController` (Phase 2B)
 
 ### Frontend cobrand
 
@@ -73,6 +68,17 @@ Namespace, migrations, modèles, routes réorganisées, seeder, vie privée.
 | ✅ Fix footer | `SiteFooter.vue` | "Accessibilité" déplacé en dernier + faute de frappe corrigée |
 | ✅ Labels `for`/`id` sur les formulaires | `Home.vue`, `Information.vue` | 7 champs liés correctement |
 | ✅ Focus trap modale critères | `Trophees.vue` | `role="dialog"`, `aria-modal`, `aria-labelledby`, Escape, Tab cyclique, focus auto |
+
+---
+
+### ✅ Phase 2B — Page labels publique : filtre actif / échu — TERMINÉE
+
+| Tâche | Fichier(s) | Détail |
+|-------|-----------|--------|
+| ✅ Filtre `?status=active\|expired` | `ApiLabelCompanyController.php` | Charge le bon label selon le contexte ; une entreprise avec un label échu ET un label actif apparaît dans les deux onglets |
+| ✅ Suppression filtre année | `ApiLabelCompanyController.php`, `Label.vue` | `years()` + route `/label-years` retirés |
+| ✅ Toggle "Labellisées" / "Labels échus" | `Label.vue` | Remplace le select année ; titre et description réactifs |
+| ✅ Phrase de période dans la carte | `LabelCard.vue` | "Est labelisé de X à Y." / "A été labelisé de X à Y." selon `end_date` |
 
 ---
 
@@ -162,22 +168,32 @@ Nouvelle vue dédiée permettant de lister les entreprises et d'éditer leurs in
 
 ---
 
-### Phase 2B — Page labels publique : filtre actif / échu
+### Phase 4F — Gestion des trophées dans le dashboard
 
-**Contexte :** le pivot `company_label` a une colonne `end_date`. Une entreprise est considérée **labellisée** si au moins un de ses labels a `end_date >= aujourd'hui`, et **échue** si tous ses labels ont `end_date < aujourd'hui`.
+Nouvel onglet permettant au CTS de saisir les lauréats d'une nouvelle année en sélectionnant des entreprises déjà en base.
 
-**Backend — `ApiLabelCompanyController`** :
+**Comportement :**
+- La page **Trophées** du site public se met à jour automatiquement (pas de cache — voir note en haut du document)
+- Un seul podium par année — si une année existe déjà, l'interface propose de la modifier plutôt que d'en créer une nouvelle
 
-Ajouter un paramètre `?status=active|expired` (défaut : `active`) :
-- `active` → `whereHas('labels', fn($q) => $q->where('end_date', '>=', now()))`
-- `expired` → `whereHas('labels')` + `whereDoesntHave('labels', fn($q) => $q->where('end_date', '>=', now()))`
+**Backend à créer :**
 
-Supprimer le filtre par `year` (plus pertinent avec cette logique).
+| Route | Controller | Action |
+|-------|-----------|--------|
+| `GET /api/v1/manage-trophees` | `ManageTropheeController` | Liste des années existantes + lauréats |
+| `POST /api/v1/manage-trophees` | `ManageTropheeController` | Créer les trophées d'une nouvelle année (3 entreprises + rangs) |
+| `PUT /api/v1/manage-trophees/{year}` | `ManageTropheeController` | Modifier les lauréats d'une année existante |
+| `DELETE /api/v1/manage-trophees/{year}` | `ManageTropheeController` | Supprimer le podium d'une année |
 
-**Frontend — `Label.vue`** :
+Le `store()` crée 3 `Trophee` (`Trophée Or/Argent/Bronze {année}`) et les attache aux entreprises via `company_trophee` avec leur rang.
 
-- Remplacer le filtre année par un toggle "Labellisées" / "Labels échus"
-- Le toggle passe `?status=active` ou `?status=expired` à l'API
+**Frontend à créer :**
+
+- `dashboard/views/Trophees.vue` — liste des podiums par année (tableau) + bouton "Nouveau podium"
+- Formulaire intégré (ou modale) : sélecteur d'année + 3 champs "entreprise" avec autocomplete sur les entreprises en base
+- Ajouter l'entrée dans `SidebarNav.vue`
+
+> **Remarque :** les trophées du seeder utilisent des noms figés (`'Trophée Or 2021'`, etc.) — le controller devra générer ces noms automatiquement depuis l'année saisie pour rester cohérent.
 
 ---
 
@@ -300,14 +316,15 @@ Suppression fichiers Blade inutilisés, modèles `ContactRequest` et `PmeContact
 
 ```
 Phase 1 ✅
-  ├── Phase 2         (fixes public)             ← en cours
-  │     └── Phase 2B  (labels actif/échu)        ← en cours
+  ├── Phase 2 ✅      (fixes public)
+  │     └── Phase 2B ✅  (labels actif/échu)
   ├── Phase 3 ✅      (trophées)
   ├── Phase 4 ✅      (dashboard UI)
   │     ├── Phase 4B ✅   (fix post-audit)
   │     ├── Phase 4C      (co-branding)          ← en attente maquettes
   │     ├── Phase 4D      (adaptation new model) ← URGENT
-  │     └── Phase 4E      (gestion entreprises)
+  │     ├── Phase 4E      (gestion entreprises)
+  │     └── Phase 4F      (gestion trophées)
   └── Phase 5 ✅      (backend dashboard)
         └── Phase 5B ✅   (backend cobrand + refactoring)
               └── Phase 6 ✅   (tracking)
