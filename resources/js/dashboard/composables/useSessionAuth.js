@@ -15,7 +15,7 @@ export function useSessionAuth() {
     try {
       // Cookie CSRF
       await fetchApi({ url: '/sanctum/csrf-cookie', method: 'GET', baseUrl: '' })
-      
+
       const match = document.cookie.match(/(?:^|;\s*)XSRF-TOKEN=([^;]+)/)
       if (match) setDefaultHeaders({ 'X-XSRF-TOKEN': decodeURIComponent(match[1]) })
 
@@ -25,7 +25,7 @@ export function useSessionAuth() {
         method: 'POST',
         data: { email, password }
       })
-      
+
       utilisateur.value = response.user
       return { succes: true }
     } catch (error) {
@@ -63,4 +63,3 @@ export function useSessionAuth() {
     chargerUtilisateur,
   }
 }
-

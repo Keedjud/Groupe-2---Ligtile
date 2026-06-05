@@ -9,7 +9,7 @@ const emit = defineEmits(['update:modelValue'])
 
 <template>
   <div class="flex flex-col items-start gap-1">
-    <span class="font-sans text-regular">{{ label }}</span>
+    <span class="font-sans text-small font-medium text-violet-800">{{ label }}</span>
     <!-- Carré couleur cliquable qui ouvre le color picker natif -->
     <label class="cursor-pointer">
       <div

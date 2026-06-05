@@ -6,7 +6,7 @@ import { useLabelCompanies } from '@/composables/useLabelCompanies'
 const { fetchApi } = useLabelCompanies()
 
 // Image hero de la page Label
-const heroImg = '/images/' + 'label.png'
+const heroImg = '/images/classement/label.png'
 
 // ===== État =====
 const companies = ref([])
@@ -103,7 +103,7 @@ onMounted(() => {
 </script>
 
 <template>
-  <div class="mx-auto max-w-[1632px] bg-brand-bg-beige">
+  <div class="bg-brand-bg-beige">
 
     <!-- ===== Hero Section ===== -->
     <section class="flex flex-col items-center gap-10 px-3 py-10 lg:flex-row lg:gap-[160px] lg:px-[60px] lg:py-16">
