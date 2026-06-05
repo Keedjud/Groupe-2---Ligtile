@@ -2,7 +2,6 @@ import { ref } from 'vue'
 import { useFetchApi } from '@/composables/api/useFetchApi'
 
 // Validation + envoi du formulaire de prise de rendez-vous (page Home → /contact).
-// Même patron que usePollForm du cours : formErrors / globalError / validate / submit.
 export function useContactForm() {
   const { fetchApi } = useFetchApi('/api/v1')
 

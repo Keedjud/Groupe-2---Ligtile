@@ -14,7 +14,6 @@ const status = ref({ type: '', message: '' }) // succès uniquement
 const { formErrors, globalError, submitting, validate, submit: submitContact } = useContactForm()
 const aDesErreurs = computed(() => Object.keys(formErrors.value).length > 0)
 
-// Re-validation live dès qu'une erreur existe (patron du cours).
 watch(form, () => {
   if (Object.keys(formErrors.value).length > 0) validate(form)
 }, { deep: true })
