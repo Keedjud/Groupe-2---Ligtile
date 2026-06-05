@@ -30,7 +30,8 @@ export function useRouteurDashboard(tableauRoutes) {
   }))
 
   function synchroDepuisUrl() {
-    const hash = window.location.hash || routeParDefaut.pattern
+    const rawHash = window.location.hash || routeParDefaut.pattern
+    const hash = rawHash.split('?')[0]  // ignore les query params pour le matching
     for (const r of routesComportement) {
       const match = hash.match(r.regex)
       if (match) {

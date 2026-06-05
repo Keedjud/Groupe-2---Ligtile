@@ -7,17 +7,14 @@ import { useFetchApi } from "@/composables/api/useFetchApi";
 
 const props = defineProps({
     allerVers: { type: Function, required: true },
-    idEntreprise: { type: [String, Number], default: null },
 });
 
 const { listeCollectes, chargerCollectes } = useCollectes();
 const { fetchApi } = useFetchApi();
 
 // Filtres
-const anneesSelectionnees = ref([]); // [] = toutes les années
-const entrepriseFiltre = ref(
-    props.idEntreprise ? Number(props.idEntreprise) : "",
-);
+const anneesSelectionnees = ref([]);
+const entrepriseFiltre = ref("");
 
 const anneesDisponibles = computed(() => {
     const set = new Set();
@@ -108,22 +105,34 @@ async function chargerStats() {
     }
 }
 
+function parseFiltersFromHash() {
+    const qi = window.location.hash.indexOf("?");
+    if (qi === -1) return;
+    const params = new URLSearchParams(window.location.hash.slice(qi + 1));
+    const cid = params.get("company_id");
+    if (cid) entrepriseFiltre.value = Number(cid);
+    const years = params.getAll("years[]");
+    if (years.length) anneesSelectionnees.value = years;
+}
+
+function syncHashFilters() {
+    const params = new URLSearchParams();
+    if (entrepriseFiltre.value) params.set("company_id", String(entrepriseFiltre.value));
+    for (const y of anneesSelectionnees.value) params.append("years[]", y);
+    const qs = params.toString();
+    window.history.replaceState(null, "", qs ? `#/analytics?${qs}` : "#/analytics");
+}
+
 onMounted(async () => {
+    parseFiltersFromHash();
     if (!listeCollectes.value.length) {
         await chargerCollectes();
     }
     await chargerStats();
 });
 
-watch(entrepriseFiltre, chargerStats);
-watch(anneesSelectionnees, chargerStats);
-
-watch(
-    () => props.idEntreprise,
-    (v) => {
-        entrepriseFiltre.value = v ? Number(v) : "";
-    },
-);
+watch(entrepriseFiltre, () => { syncHashFilters(); chargerStats(); });
+watch(anneesSelectionnees, () => { syncHashFilters(); chargerStats(); });
 
 // Graphique barres SVG
 const graphiqueH = 180;

@@ -135,7 +135,7 @@ const aDesErreurs = computed(() => Object.keys(champsInvalides.value).length > 0
           <div class="flex gap-3">
             <button
               v-if="!modeEdition"
-              @click="allerVers('#/analytics/' + entreprise.id)"
+              @click="allerVers('#/analytics?company_id=' + entreprise.id)"
               class="rounded-[40px] bg-white px-4 py-2 font-sans text-small text-texte-secondary underline shadow-[0_0_4px_rgba(0,0,0,0.15)] hover:bg-violet-50 transition-colors"
             >Analytics</button>
             <button
