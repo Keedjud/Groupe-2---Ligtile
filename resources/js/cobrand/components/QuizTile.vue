@@ -127,7 +127,7 @@ function choose(variant) {
         </div>
     </div>
 
-    <div v-else class="relative w-full lg:w-[520px]">
+    <div v-else class="relative w-full lg:max-w-[520px]">
         <img
             :src="IMG[status]"
             alt=""

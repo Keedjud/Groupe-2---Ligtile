@@ -1,5 +1,5 @@
 <script setup>
-import { ref, computed, nextTick, onMounted } from "vue";
+import { ref, computed, nextTick, onMounted, watch } from "vue";
 import { useMediaQuery } from "@/composables/useMediaQuery";
 import { useQuizStore } from "../composables/useQuizStore";
 import QuizTile from "../components/QuizTile.vue";
@@ -17,6 +17,7 @@ const {
     reset,
     fillRatio,
     allMandatoryAnswered,
+    hasMandatoryNegative,
     eligible,
     canSkip,
 } = useQuizStore();
@@ -29,7 +30,6 @@ onMounted(() => {
 const inscriptionRef = ref(null);
 const rowRefs = ref([]);
 const showOverlay = ref(false);
-const overlayShown = ref(false);
 
 const isMobile = useMediaQuery("(max-width: 1023px)");
 
@@ -49,13 +49,13 @@ function scrollToNext(i) {
     });
 }
 
+watch(hasMandatoryNegative, (isNegative, wasNegative) => {
+    if (isNegative && !wasNegative) showOverlay.value = true;
+});
+
 function onAnswer(i, value) {
     answer(i, value);
     if (statuses.value[i] === "good") scrollToNext(i);
-    if (questions[i].mandatory && statuses.value[i] === "sad" && !overlayShown.value) {
-        showOverlay.value = true;
-        overlayShown.value = true;
-    }
 }
 
 function onSkip(i) {
@@ -203,11 +203,11 @@ function skip() {
                         class="relative h-[210px]"
                     >
                         <div
-                            class="absolute top-1/2 -translate-y-1/2"
-                            :style="
+                            class="absolute top-1/2 -translate-y-1/2 flex w-[calc(50%-80px)]"
+                            :class="
                                 side(i) === 'left'
-                                    ? 'left: 60px;'
-                                    : 'right: 60px;'
+                                    ? 'right-[calc(50%+80px)] justify-end'
+                                    : 'left-[calc(50%+80px)] justify-start'
                             "
                         >
                             <QuizTile
@@ -221,11 +221,11 @@ function skip() {
                         </div>
 
                         <div
-                            class="absolute top-1/2 h-0 border-t-[3px] border-dashed border-black"
-                            :style="
+                            class="absolute top-1/2 h-0 w-[80px] border-t-[3px] border-dashed border-black"
+                            :class="
                                 side(i) === 'left'
-                                    ? 'left: 580px; right: 50%;'
-                                    : 'right: 580px; left: 50%;'
+                                    ? 'right-1/2'
+                                    : 'left-1/2'
                             "
                         ></div>
 
