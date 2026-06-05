@@ -1,8 +1,9 @@
 <script setup>
-import CobrandLayout from "./layouts/CobrandLayout.vue";
+import { watch } from "vue";
 import { useHashRoute } from "@/composables/router";
-import { initSession } from "./composables/useCobrandSession";
+import { initSession, useCobrandSession } from "./composables/useCobrandSession";
 
+import CobrandLayout from "./layouts/CobrandLayout.vue";
 import Accueil from "./views/Accueil.vue";
 import Prevention from "./views/Prevention.vue";
 import Quiz from "./views/Quiz.vue";
@@ -12,7 +13,22 @@ const props = defineProps({
     cobrandToken: { type: String, required: true },
 });
 
+const { theme } = useCobrandSession();
 initSession(props.cobrandToken);
+
+// Injection des couleurs de l'entreprise comme variables CSS sur :root.
+// Toutes les vues cobrand peuvent ensuite utiliser var(--cobrand-primary) etc.
+watch(
+    theme,
+    (t) => {
+        if (!t) return;
+        const style = document.documentElement.style;
+        Object.entries(t).forEach(([key, val]) => {
+            style.setProperty(`--cobrand-${key.replace(/_/g, "-")}`, val);
+        });
+    },
+    { immediate: true },
+);
 
 const routes = [
     { hash: "#/accueil", key: "accueil", component: Accueil },

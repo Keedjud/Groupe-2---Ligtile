@@ -1,8 +1,5 @@
 <script setup>
-import { useCobrandSession } from "../composables/useCobrandSession";
-
 const ORANGE = "#FF9500";
-const { primaryColor } = useCobrandSession();
 
 const ICONS = [
     "/images/cobrand/quizz/heart.svg",
@@ -55,7 +52,7 @@ const motifs = buildMotifs();
                 height: m.size + 'px',
                 transform: `rotate(${m.rot}deg)`,
                 opacity: 0.12,
-                backgroundColor: primaryColor || ORANGE,
+                backgroundColor: `var(--cobrand-primary, ${ORANGE})`,
                 maskImage: `url(${m.src})`,
                 WebkitMaskImage: `url(${m.src})`,
                 maskRepeat: 'no-repeat',

@@ -6,7 +6,7 @@ defineProps({
     current: { type: String, default: null },
 });
 
-const { companyName, logoUrl, primaryColor } = useCobrandSession();
+const { companyName, logoUrl } = useCobrandSession();
 
 const links = [
     { key: "accueil", label: "Accueil", href: "#/accueil" },
@@ -45,7 +45,7 @@ const { isOpen, toggle, close } = useDisclosure();
                 <span
                     v-else-if="companyName"
                     class="truncate text-h5 font-bold tracking-wide lg:text-h4"
-                    :style="{ color: primaryColor || 'var(--color-light-palette-orange)' }"
+                    :style="{ color: 'var(--cobrand-primary, var(--color-light-palette-orange))' }"
                     >{{ companyName }}</span
                 >
                 <span
