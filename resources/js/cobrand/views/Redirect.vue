@@ -1,10 +1,16 @@
 <script setup>
 import { onMounted } from "vue";
 import { useCobrandSession } from "../composables/useCobrandSession";
+import { useQuizStore } from "../composables/useQuizStore";
 
 const { onedocUrl, trackQuiz } = useCobrandSession();
+const { eligible } = useQuizStore();
 
-onMounted(() => trackQuiz({ event_type: "quiz_completed" }));
+onMounted(() => {
+    if (eligible.value) {
+        trackQuiz({ event_type: "quiz_completed" });
+    }
+});
 
 function trackOnedoc() {
     trackQuiz({ event_type: "onedoc_clicked" });

@@ -14,17 +14,22 @@ const {
     answer,
     skipQuestion,
     skipForm,
+    reset,
     fillRatio,
     allMandatoryAnswered,
     eligible,
     canSkip,
 } = useQuizStore();
 
-onMounted(start);
+onMounted(() => {
+    reset();
+    start();
+});
 
 const inscriptionRef = ref(null);
 const rowRefs = ref([]);
 const showOverlay = ref(false);
+const overlayShown = ref(false);
 
 const isMobile = useMediaQuery("(max-width: 1023px)");
 
@@ -47,8 +52,9 @@ function scrollToNext(i) {
 function onAnswer(i, value) {
     answer(i, value);
     if (statuses.value[i] === "good") scrollToNext(i);
-    if (questions[i].mandatory && statuses.value[i] === "sad") {
+    if (questions[i].mandatory && statuses.value[i] === "sad" && !overlayShown.value) {
         showOverlay.value = true;
+        overlayShown.value = true;
     }
 }
 
@@ -60,8 +66,8 @@ function onSkip(i) {
 function dropType(i) {
     const s = statuses.value[i];
     if (s === "good") return "falling";
-    if (s === "sad") return "black";
-    return "red";
+    if (s === "sad") return "incorrect";
+    return "unanswered";
 }
 
 const message = computed(() => {
@@ -114,13 +120,13 @@ function skip() {
                             class="absolute left-[18px] top-[53px] z-10 -translate-x-1/2 -translate-y-1/2"
                         >
                             <img
-                                v-if="dropType(i) === 'red'"
+                                v-if="dropType(i) === 'unanswered'"
                                 :src="'/images/cobrand/quizz/goutte_rouge.svg'"
                                 class="h-9 w-auto"
                                 alt=""
                             />
                             <img
-                                v-else-if="dropType(i) === 'black'"
+                                v-else-if="dropType(i) === 'incorrect'"
                                 :src="'/images/cobrand/quizz/goutte_rouge.svg'"
                                 class="h-9 w-auto"
                                 style="filter: brightness(0)"
@@ -183,7 +189,7 @@ function skip() {
             </Teleport>
         </div>
 
-        <div v-else class="relative mx-auto w-[1240px] pb-24 pt-[280px]">
+        <div v-else class="relative mx-auto w-full max-w-[1240px] px-8 pb-24 pt-[280px]">
             <div class="relative">
                 <div
                     class="absolute bottom-0 left-1/2 top-0 w-[5px] -translate-x-1/2 bg-black"
@@ -227,13 +233,13 @@ function skip() {
                             class="absolute left-1/2 top-1/2 z-10 -translate-x-1/2 -translate-y-1/2"
                         >
                             <img
-                                v-if="dropType(i) === 'red'"
+                                v-if="dropType(i) === 'unanswered'"
                                 :src="'/images/cobrand/quizz/goutte_rouge.svg'"
                                 class="h-12 w-auto"
                                 alt=""
                             />
                             <img
-                                v-else-if="dropType(i) === 'black'"
+                                v-else-if="dropType(i) === 'incorrect'"
                                 :src="'/images/cobrand/quizz/goutte_rouge.svg'"
                                 class="h-12 w-auto"
                                 style="filter: brightness(0)"
@@ -277,7 +283,7 @@ function skip() {
                         : 'bg-violet-200 text-white/70'
                 "
             >
-                Skip
+                Passer ›
             </button>
         </div>
     </template>

@@ -4,10 +4,9 @@ import { useCobrandSession } from "../composables/useCobrandSession";
 
 defineProps({
     current: { type: String, default: null },
-    logo: { type: String, default: "/images/logos/logo-hug.png" },
 });
 
-const { companyName, logoUrl } = useCobrandSession();
+const { companyName, logoUrl, primaryColor } = useCobrandSession();
 
 const links = [
     { key: "accueil", label: "Accueil", href: "#/accueil" },
@@ -28,7 +27,7 @@ const { isOpen, toggle, close } = useDisclosure();
             <div class="flex min-w-0 items-center gap-3 lg:gap-[22px]">
                 <a href="#/accueil" class="shrink-0">
                     <img
-                        :src="logo"
+                        :src="'/images/logos/logo-hug.png'"
                         alt="HUG - Hôpitaux Universitaires de Genève"
                         class="h-7 w-auto"
                     />
@@ -45,7 +44,8 @@ const { isOpen, toggle, close } = useDisclosure();
                 />
                 <span
                     v-else-if="companyName"
-                    class="truncate text-h5 font-bold tracking-wide text-light-palette-orange lg:text-h4"
+                    class="truncate text-h5 font-bold tracking-wide lg:text-h4"
+                    :style="{ color: primaryColor || 'var(--color-light-palette-orange)' }"
                     >{{ companyName }}</span
                 >
                 <span

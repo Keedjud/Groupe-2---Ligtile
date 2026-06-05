@@ -9,10 +9,10 @@ import Quiz from "./views/Quiz.vue";
 import Redirect from "./views/Redirect.vue";
 
 const props = defineProps({
-    collecteId: { type: String, required: true },
+    cobrandToken: { type: String, required: true },
 });
 
-initSession(props.collecteId);
+initSession(props.cobrandToken);
 
 const routes = [
     { hash: "#/accueil", key: "accueil", component: Accueil },

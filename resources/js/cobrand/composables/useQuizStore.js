@@ -1,4 +1,4 @@
-import { ref, computed } from "vue";
+import { ref, computed, readonly } from "vue";
 import { quizQuestions } from "../constants/quizQuestions";
 import { useCobrandSession } from "./useCobrandSession";
 
@@ -107,6 +107,7 @@ export function useQuizStore() {
         );
         answers.value = quizQuestions.map(() => null);
         processed.value = quizQuestions.map(() => false);
+        firedStarted = false;
         firedP1Eliminated = false;
         firedP1Completed = false;
         firedP2Completed = false;
@@ -142,8 +143,8 @@ export function useQuizStore() {
 
     return {
         questions: quizQuestions,
-        statuses,
-        answers,
+        statuses: readonly(statuses),
+        answers: readonly(answers),
         start,
         answer,
         skipQuestion,

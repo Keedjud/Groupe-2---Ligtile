@@ -10,6 +10,8 @@ const sessionId = ref(null);
 const onedocUrl = ref(null);
 const companyName = ref(null);
 const logoUrl = ref(null);
+const primaryColor = ref(null);
+const sessionError = ref(null);
 
 let initPromise = null;
 
@@ -33,8 +35,11 @@ export function initSession(token) {
             onedocUrl.value = data.onedoc_url;
             companyName.value = data.company_name;
             logoUrl.value = data.logo_url;
+            primaryColor.value = data.primary_color;
         })
-        .catch(() => {});
+        .catch((err) => {
+            sessionError.value = err;
+        });
 
     return initPromise;
 }
@@ -73,6 +78,8 @@ export function useCobrandSession() {
         onedocUrl,
         companyName,
         logoUrl,
+        primaryColor,
+        sessionError,
         initSession,
         trackQuiz,
     };
