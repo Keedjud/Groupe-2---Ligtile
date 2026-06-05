@@ -7,8 +7,9 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\Relations\HasOne;
 
-#[Fillable(['address_id', 'name', 'phone_number', 'email', 'nb_employee'])]
+#[Fillable(['address_id', 'name', 'nb_employee'])]
 
 class Company extends Model
 {
@@ -30,6 +31,11 @@ class Company extends Model
     public function address(): BelongsTo //clé étrangère dans ma table
     {
         return $this->belongsTo(Address::class);
+    }
+
+    public function contact(): HasOne
+    {
+        return $this->hasOne(Contact::class);
     }
 
     public function collections(): HasMany //clé étrangère dans une autre classe
