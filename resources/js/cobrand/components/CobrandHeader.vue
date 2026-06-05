@@ -9,8 +9,7 @@ defineProps({
 const { companyName, logoUrl } = useCobrandSession();
 
 const links = [
-    { key: "accueil", label: "Accueil", href: "#/accueil" },
-    { key: "inscription", label: "Formulaire", href: "#/inscription" },
+    { key: "quiz", label: "Formulaire", href: "#/quiz" },
     { key: "prevention", label: "Prévention", href: "#/prevention" },
 ];
 

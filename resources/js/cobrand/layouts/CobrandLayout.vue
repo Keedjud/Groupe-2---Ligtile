@@ -19,8 +19,9 @@ defineProps({
 
         <BackgroundMotifs />
 
+        <FictifBanner class="relative z-30" />
+
         <div class="sticky top-0 z-30">
-            <FictifBanner />
             <CobrandHeader :current="current" />
         </div>
 
