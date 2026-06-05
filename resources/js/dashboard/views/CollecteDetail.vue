@@ -117,8 +117,8 @@ const dureesJours = computed(() => {
           </div>
           <!-- Colonne contacts -->
           <div class="flex flex-1 flex-col gap-3">
-            <div class="rounded-lg bg-white px-3 py-2.5 font-sans text-small font-medium text-violet-950 shadow-[0_0_4px_rgba(0,0,0,0.25)]">{{ collecte.entreprise.email }}</div>
-            <div class="rounded-lg bg-white px-3 py-2.5 font-sans text-small font-medium text-violet-950 shadow-[0_0_4px_rgba(0,0,0,0.25)]">{{ collecte.entreprise.telephone }}</div>
+            <div class="rounded-lg bg-white px-3 py-2.5 font-sans text-small font-medium text-violet-950 shadow-[0_0_4px_rgba(0,0,0,0.25)]">{{ collecte.contact_email }}</div>
+            <div class="rounded-lg bg-white px-3 py-2.5 font-sans text-small font-medium text-violet-950 shadow-[0_0_4px_rgba(0,0,0,0.25)]">{{ collecte.contact_phone }}</div>
           </div>
         </div>
 

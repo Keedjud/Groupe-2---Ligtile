@@ -49,8 +49,8 @@ onMounted(() => {
       champNumero.value       = collecte.adresse.numero
       champNpa.value          = collecte.adresse.npa
       champVille.value        = collecte.adresse.ville
-      champEmail.value        = collecte.entreprise.email
-      champTelephone.value    = collecte.entreprise.telephone
+      champEmail.value        = collecte.contact_email
+      champTelephone.value    = collecte.contact_phone
       couleurPrincipale.value = collecte.couleur_principale
       couleurSecondaire.value = collecte.couleur_secondaire
       logoUrl.value           = collecte.logo_url
@@ -110,9 +110,9 @@ async function soumettre() {
     entreprise: {
       nom:         champNom.value.trim(),
       nb_employes: Number(champNbEmployes.value) || 0,
-      email:       champEmail.value.trim(),
-      telephone:   champTelephone.value.trim(),
     },
+    contact_email: champEmail.value.trim(),
+    contact_phone: champTelephone.value.trim(),
     adresse: {
       rue:    champRue.value.trim(),
       numero: champNumero.value.trim(),

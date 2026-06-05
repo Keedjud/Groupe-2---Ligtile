@@ -163,7 +163,9 @@ class ManageCollectionController extends Controller
             ]);
         });
 
-        return response()->json($collecte->load('company'));
+        return response()->json(
+            $collecte->load('company')->loadCount($this->comptageInscrits())
+        );
     }
 
     public function destroy(Collection $collecte)

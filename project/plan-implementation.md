@@ -1,6 +1,6 @@
 # Plan d'implémentation — Fin de projet
 
-> Mis à jour le 5 juin 2026 (dernière màj : page labels publique + Phase 2B terminée). Ce document définit ce qui reste à faire pour finir le projet.
+> Mis à jour le 5 juin 2026 (dernière màj : Phase 4D terminée — adapters useCollectes alignés sur nouveau modèle, fenêtre cobrand alignée sur 7 jours). Ce document définit ce qui reste à faire pour finir le projet.
 
 ---
 
@@ -18,7 +18,7 @@
 
 | Priorité | Bug | Fichier(s) |
 |----------|-----|-----------|
-| 🟡 Normal | `CollecteForm.vue` + `CollecteDetail.vue` : aperçu co-branding en temps réel + warning contraste WCAG | `CollecteForm.vue`, `useColorContrast.js` (Phase 4C — en attente maquettes) |
+| 🟡 Normal | Aperçu co-branding en temps réel + warning contraste WCAG | `CollecteForm.vue`, `useColorContrast.js` (Phase 4C — en attente maquettes) |
 
 ---
 
@@ -32,8 +32,8 @@ Les pages publiques (Trophées, Labels) ne font **pas de cache** : chaque charge
 
 ### Frontend dashboard
 
-- [ ] **URGENT** Adapter `CollecteForm.vue` aux nouveaux champs backend — `venue_*`, `contact_email`, `contact_phone` (Phase 4D)
-- [ ] **URGENT** Adapter `CollecteDetail.vue` à l'affichage des nouveaux champs (Phase 4D)
+- [x] Adapter `CollecteForm.vue` aux nouveaux champs backend — `venue_*`, `contact_email`, `contact_phone` (Phase 4D)
+- [x] Adapter `CollecteDetail.vue` à l'affichage des nouveaux champs (Phase 4D)
 - [ ] Gestion des entreprises — nouvelle vue listant les entreprises et leurs contacts, avec édition (Phase 4E)
 - [ ] Gestion des trophées — nouvel onglet + formulaire pour saisir les lauréats d'une nouvelle année (Phase 4F)
 - [ ] Aperçu co-branding + warning contraste WCAG — `CollecteForm.vue`, `useColorContrast.js` (Phase 4C — en attente maquettes)
@@ -117,32 +117,13 @@ Namespace, migrations, modèles, routes réorganisées, seeder, vie privée.
 
 ---
 
-### Phase 4D — Adaptation frontend dashboard au nouveau modèle de données ← URGENT
+### ✅ Phase 4D — Adaptation frontend dashboard au nouveau modèle de données — TERMINÉE
 
-Suite du refactoring Phase 5B : le backend a changé mais le frontend n'a pas encore suivi.
-
-**`CollecteForm.vue`** — renommer les champs envoyés à l'API :
-
-| Ancien (cassé) | Nouveau |
-|----------------|---------|
-| `adresse.rue` | `venue_street` |
-| `adresse.numero` | `venue_number` |
-| `adresse.npa` | `venue_postal_code` |
-| `adresse.ville` | `venue_city` |
-| `entreprise.email` | `contact_email` |
-| `entreprise.telephone` | `contact_phone` |
-
-Aussi mettre à jour le pré-remplissage en mode édition (lecture depuis `collecte.venue_street` etc. au lieu de `collecte.adresse.rue`).
-
-**`CollecteDetail.vue`** — mettre à jour l'affichage :
-
-| Ancien (cassé) | Nouveau |
-|----------------|---------|
-| `collecte.adresse.rue` / `.numero` | `collecte.venue_street` / `.venue_number` |
-| `collecte.adresse.npa` | `collecte.venue_postal_code` |
-| `collecte.adresse.ville` | `collecte.venue_city` |
-| `collecte.entreprise.email` | `collecte.contact_email` |
-| `collecte.entreprise.telephone` | `collecte.contact_phone` |
+Correction centralisée dans `useCollectes.js` (adaptateurs `adapterDeApi` / `adapterVersApi`) :
+- `adapterDeApi` lit désormais `c.venue_street`, `c.contact_email`, etc. depuis la réponse API
+- `adapterVersApi` envoie `venue_street`, `contact_email`, etc. à la racine du payload
+- `CollecteForm.vue` (mode édition), `CollecteDetail.vue` et `QuestionFlow.vue` mis à jour pour lire `collecte.contact_email` / `collecte.contact_phone` au lieu de `collecte.entreprise.email/telephone`
+- `ManageCollectionController.update()` corrigé pour retourner `nb_inscrits` (loadCount manquant)
 
 ---
 
