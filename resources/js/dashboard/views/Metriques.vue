@@ -5,7 +5,7 @@ import DashboardLayout from "../layouts/DashboardLayout.vue";
 import { useCollectes } from "../composables/useCollectes.js";
 import { useFetchApi } from "@/composables/api/useFetchApi";
 
-const props = defineProps({
+defineProps({
     allerVers: { type: Function, required: true },
 });
 

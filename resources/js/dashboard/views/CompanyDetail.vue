@@ -9,7 +9,7 @@ const props = defineProps({
   allerVers:    { type: Function, required: true },
 })
 
-const { chargement, erreur, chargerEntreprise, mettreAJourEntreprise, supprimerEntreprise } = useCompanies()
+const { chargement, chargerEntreprise, mettreAJourEntreprise, supprimerEntreprise } = useCompanies()
 
 const entreprise = ref(null)
 const modeEdition = ref(false)

@@ -4,7 +4,7 @@ import { ref, onMounted } from 'vue'
 import DashboardLayout from '../layouts/DashboardLayout.vue'
 import { useCompanies } from '../composables/useCompanies.js'
 
-const props = defineProps({
+defineProps({
   allerVers: { type: Function, required: true },
 })
 
@@ -19,13 +19,6 @@ function surRecherche() {
 }
 
 onMounted(() => chargerEntreprises())
-
-function formaterDate(dateStr) {
-  if (!dateStr) return ''
-  return new Date(dateStr).toLocaleDateString('fr-CH', {
-    day: '2-digit', month: '2-digit', year: 'numeric',
-  })
-}
 </script>
 
 <template>
