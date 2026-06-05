@@ -12,7 +12,6 @@ const heroImg = '/images/classement/label.png'
 const companies = ref([])
 const loading = ref(true)
 const error = ref(null)
-const years = ref([])
 
 // Pagination
 const currentPage = ref(1)
@@ -26,8 +25,8 @@ const pagesToShow = computed(() => {
 })
 
 // Filtres
+const status = ref('active')
 const search = ref('')
-const selectedYear = ref('')
 const selectedSize = ref('')
 
 // Debounce recherche
@@ -44,13 +43,14 @@ function onSearchInput() {
 function buildQuery(page) {
   const params = new URLSearchParams()
   params.set('page', page)
+  params.set('status', status.value)
   if (search.value) params.set('search', search.value)
-  if (selectedYear.value) params.set('year', selectedYear.value)
   if (selectedSize.value) params.set('size', selectedSize.value)
   return params.toString()
 }
 
 async function fetchCompanies() {
+  loading.value = true
   error.value = null
 
   try {
@@ -68,14 +68,6 @@ async function fetchCompanies() {
   }
 }
 
-async function fetchYears() {
-  try {
-    years.value = await fetchApi({ url: '/label-years', method: 'GET' })
-  } catch {
-    // silencieux — le filtre année sera simplement vide
-  }
-}
-
 function goToPage(page) {
   if (page < 1 || page > lastPage.value) return
   currentPage.value = page
@@ -83,22 +75,27 @@ function goToPage(page) {
   document.getElementById('companies-grid')?.scrollIntoView({ behavior: 'smooth' })
 }
 
-function resetFilters() {
-  search.value = ''
-  selectedYear.value = ''
-  selectedSize.value = ''
+function setStatus(value) {
+  status.value = value
   currentPage.value = 1
   fetchCompanies()
 }
 
-watch([selectedYear, selectedSize], () => {
+function resetFilters() {
+  search.value = ''
+  selectedSize.value = ''
+  status.value = 'active'
+  currentPage.value = 1
+  fetchCompanies()
+}
+
+watch([selectedSize], () => {
   currentPage.value = 1
   fetchCompanies()
 })
 
 onMounted(() => {
   fetchCompanies()
-  fetchYears()
 })
 </script>
 
@@ -231,10 +228,12 @@ onMounted(() => {
     <section class="flex flex-col gap-6 px-3 pb-10 lg:px-[60px] lg:pb-16">
       <div class="flex flex-col gap-6">
         <h2 class="font-sans text-h1 font-semibold text-black">
-          Les entreprises engagées à nos côtés
+          {{ status === 'active' ? 'Les entreprises engagées à nos côtés' : 'Entreprises au label échu' }}
         </h2>
         <p class="max-w-[1113px] font-sans text-h5 text-black">
-          Découvrez les entreprises labellisées par le CTS pour leur engagement concret en faveur du don du sang.
+          {{ status === 'active'
+            ? 'Découvrez les entreprises labellisées par le CTS pour leur engagement concret en faveur du don du sang.'
+            : 'Ces entreprises ont obtenu le Label CTS par le passé. Leur label n\'est plus en cours de validité.' }}
         </p>
       </div>
 
@@ -242,6 +241,25 @@ onMounted(() => {
       <div class="flex items-center gap-3 rounded-[10px] bg-violet-100 px-4 py-2.5 lg:justify-between lg:gap-4 lg:px-[60px] overflow-visible">
         <!-- Filtres : scroll horizontal en mobile -->
         <div class="flex flex-nowrap items-center gap-[22px] overflow-x-auto lg:overflow-visible lg:flex-wrap py-1">
+
+          <!-- Toggle actif / échu -->
+          <div class="flex shrink-0 items-center rounded-[50px] bg-white p-1 shadow-[0_0_4px_rgba(0,0,0,0.25)]">
+            <button
+              @click="setStatus('active')"
+              class="rounded-[50px] px-4 py-2 font-sans text-regular transition-colors"
+              :class="status === 'active' ? 'bg-violet-900 text-white' : 'text-violet-950 hover:bg-violet-100'"
+            >
+              Labellisées
+            </button>
+            <button
+              @click="setStatus('expired')"
+              class="rounded-[50px] px-4 py-2 font-sans text-regular transition-colors"
+              :class="status === 'expired' ? 'bg-violet-900 text-white' : 'text-violet-950 hover:bg-violet-100'"
+            >
+              Labels échus
+            </button>
+          </div>
+
           <!-- Recherche -->
           <div class="flex shrink-0 items-center gap-3 rounded-[50px] bg-white px-3 shadow-[0_0_4px_rgba(0,0,0,0.25)]">
             <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
@@ -255,17 +273,6 @@ onMounted(() => {
               class="w-[180px] bg-transparent py-3 font-sans text-regular text-violet-950 outline-none placeholder:text-violet-950 lg:w-[237px]"
               @input="onSearchInput"
             />
-          </div>
-
-          <!-- Filtre Année -->
-          <div class="flex shrink-0 items-center gap-3 rounded-[50px] bg-white px-2.5 shadow-[0_0_4px_rgba(0,0,0,0.25)]">
-            <select
-              v-model="selectedYear"
-              class="bg-transparent px-2.5 py-3 font-sans text-regular text-violet-950 outline-none"
-            >
-              <option value="">Labélisée depuis</option>
-              <option v-for="year in years" :key="year" :value="year">{{ year }}</option>
-            </select>
           </div>
 
           <!-- Filtre Taille -->
@@ -313,7 +320,7 @@ onMounted(() => {
         <!-- Grille -->
         <template v-else>
           <div v-if="companies.length === 0" class="py-16 text-center font-sans text-regular text-violet-600">
-            Aucune entreprise trouvée pour ces critères.
+            {{ status === 'active' ? 'Aucune entreprise labellisée pour ces critères.' : 'Aucune entreprise au label échu pour ces critères.' }}
           </div>
           <div v-else class="grid grid-cols-2 gap-4 lg:grid-cols-3 lg:gap-6 xl:grid-cols-4">
             <LabelCard v-for="company in companies" :key="company.id" :company="company" />

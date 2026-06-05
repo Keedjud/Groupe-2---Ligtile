@@ -6,22 +6,50 @@ use App\Http\Controllers\Controller;
 use App\Models\Company;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\DB;
 
 class ApiLabelCompanyController extends Controller
 {
     /**
      * Retourne les entreprises labellisées avec filtres et pagination.
+     *
+     * ?status=active  (défaut) — au moins un label en cours (end_date >= aujourd'hui)
+     *                            → charge le label actif le plus récent
+     * ?status=expired           — au moins un label échu (end_date < aujourd'hui)
+     *                            → charge le label échu le plus récent
+     *
+     * Une entreprise avec un ancien label échu ET un nouveau label actif
+     * apparaît dans les deux sections, avec le label approprié dans chaque cas.
      */
     public function index(Request $request): JsonResponse
     {
-        $query = Company::whereHas('labels')
-            ->with(['labels' => function ($q) {
-                $q->orderByDesc('start_date')->limit(1);
-            }])
-            ->with(['collections' => function ($q) {
-                $q->orderByDesc('start_date')->limit(1);
-            }]);
+        $status = $request->query('status', 'active');
+        $now    = now();
+
+        if ($status === 'expired') {
+            $query = Company::with(['labels' => function ($q) use ($now) {
+                    // Label échu le plus récent.
+                    $q->where('end_date', '<', $now)
+                      ->orderByDesc('end_date')
+                      ->limit(1);
+                }])
+                ->with(['collections' => function ($q) {
+                    $q->orderByDesc('start_date')->limit(1);
+                }])
+                // A eu au moins un label échu (indépendamment des labels actifs).
+                ->whereHas('labels', fn ($q) => $q->where('end_date', '<', $now));
+        } else {
+            $query = Company::with(['labels' => function ($q) use ($now) {
+                    // Label actif le plus récent.
+                    $q->where('end_date', '>=', $now)
+                      ->orderByDesc('start_date')
+                      ->limit(1);
+                }])
+                ->with(['collections' => function ($q) {
+                    $q->orderByDesc('start_date')->limit(1);
+                }])
+                // Au moins un label encore valide.
+                ->whereHas('labels', fn ($q) => $q->where('end_date', '>=', $now));
+        }
 
         // Filtre par recherche texte (nom de l'entreprise)
         if ($search = $request->query('search')) {
@@ -34,33 +62,9 @@ class ApiLabelCompanyController extends Controller
             $query->whereBetween('nb_employee', [$min, $max]);
         }
 
-        // Filtre par année de labellisation (basé sur start_date du pivot)
-        if ($year = $request->query('year')) {
-            $query->whereHas('labels', function ($q) use ($year) {
-                $q->whereYear('start_date', $year);
-            });
-        }
-
         $companies = $query->orderBy('name')->paginate(8);
 
         return response()->json($companies);
-    }
-
-    /**
-     * Retourne les années disponibles pour le filtre "Labellisée depuis".
-     */
-    public function years(): JsonResponse
-    {
-        $yearExpr = DB::connection()->getDriverName() === 'sqlite'
-            ? 'strftime("%Y", start_date)'
-            : 'YEAR(start_date)';
-
-        $years = DB::table('company_label')
-            ->selectRaw("DISTINCT {$yearExpr} as year")
-            ->orderByDesc('year')
-            ->pluck('year');
-
-        return response()->json($years);
     }
 
     /**
