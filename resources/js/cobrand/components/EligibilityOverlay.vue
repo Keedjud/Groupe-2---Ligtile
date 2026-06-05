@@ -25,7 +25,6 @@ function close() {
                 class="fixed inset-0 z-[60] flex items-center justify-center bg-black/20 p-4 backdrop-blur-md"
                 @click.self="close"
             >
-                <!-- ============================= MOBILE ============================= -->
                 <div v-if="mobile" class="relative w-full max-w-[360px]">
                     <img
                         :src="'/images/cobrand/quizz/overlay_mobile.svg'"
@@ -57,7 +56,7 @@ function close() {
                         <h2
                             class="text-h5 font-bold leading-tight text-violet-950"
                         >
-                            Désolé, vous n'êtes plus éligible pour donner votre
+                            Désolé, vous n'êtes pas éligible pour donner votre
                             sang
                         </h2>
 
@@ -66,7 +65,7 @@ function close() {
                             class="mt-5 rounded-full bg-white px-5 py-2.5 text-small font-semibold text-violet-900 shadow-sm transition-colors hover:bg-white/90"
                             @click="close"
                         >
-                            Voir pourquoi je ne suis plus éligible
+                            Voir pourquoi je ne suis pas éligible
                         </a>
                         <a
                             href="#/accueil"
@@ -121,7 +120,6 @@ function close() {
                     </div>
                 </div>
 
-                <!-- ============================= DESKTOP ============================= -->
                 <div v-else class="relative w-full max-w-[900px]">
                     <img
                         :src="'/images/cobrand/quizz/overlay.svg'"
@@ -153,7 +151,7 @@ function close() {
                         <h2
                             class="text-h4 font-bold leading-tight text-violet-950"
                         >
-                            Désolé, vous n'êtes plus éligible pour donner votre
+                            Désolé, vous n'êtes pas éligible pour donner votre
                             sang
                         </h2>
 
@@ -162,7 +160,7 @@ function close() {
                             class="mt-5 rounded-full bg-white px-6 py-3 text-regular font-semibold text-violet-900 shadow-sm transition-colors hover:bg-white/90"
                             @click="close"
                         >
-                            Voir pourquoi je ne suis plus éligible
+                            Voir pourquoi je ne suis pas éligible
                         </a>
                         <a
                             href="#/accueil"

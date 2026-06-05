@@ -1,15 +1,18 @@
 <script setup>
 import CobrandLayout from "./layouts/CobrandLayout.vue";
 import { useHashRoute } from "@/composables/router";
+import { initSession } from "./composables/useCobrandSession";
 
 import Accueil from "./views/Accueil.vue";
 import Prevention from "./views/Prevention.vue";
 import Quiz from "./views/Quiz.vue";
 import Redirect from "./views/Redirect.vue";
 
-defineProps({
+const props = defineProps({
     collecteId: { type: String, required: true },
 });
+
+initSession(props.collecteId);
 
 const routes = [
     { hash: "#/accueil", key: "accueil", component: Accueil },

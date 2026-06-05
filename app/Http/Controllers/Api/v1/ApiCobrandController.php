@@ -14,6 +14,7 @@ class ApiCobrandController extends Controller
             ->firstOrFail();
 
         return response()->json([
+            'id'              => $collection->id,
             'company_name'    => $collection->company->name,
             'start_date'      => $collection->start_date,
             'end_date'        => $collection->end_date,

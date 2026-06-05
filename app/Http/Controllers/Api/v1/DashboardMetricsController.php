@@ -135,11 +135,24 @@ class DashboardMetricsController extends Controller
     private function performanceParQuestion($ids): array
     {
         $libelles = [
-            'age'             => 'Âge',
-            'poids'           => 'Poids',
-            'sante-generale'  => 'Santé générale',
-            'medicaments'     => 'Médicaments',
-            'voyages'         => 'Voyages récents',
+            'poids-minimum'       => 'Poids minimum',
+            'test-positif-ist'    => 'Test IST positif',
+            'antecedent-cancer'   => 'Antécédent de cancer',
+            'hemochromatose'      => 'Hémochromatose',
+            'maladie-cardiaque'   => 'Maladie cardiaque',
+            'diabete-insuline'    => 'Diabète (insuline)',
+            'transfusion-recue'   => 'Transfusion reçue',
+            'drogues-injectables' => 'Drogues injectables',
+            'partenaires-recents' => 'Partenaires récents',
+            'tatouage-piercing'   => 'Tatouage / piercing',
+            'gastro-coloscopie'   => 'Gastro / coloscopie',
+            'voyage-hors-europe'  => 'Voyage hors Europe',
+            'antibiotiques'       => 'Antibiotiques',
+            'grossesse-recente'   => 'Grossesse récente',
+            'chirurgie-recente'   => 'Chirurgie récente',
+            'vaccin-recent'       => 'Vaccin récent',
+            'fievre-infection'    => 'Fièvre / infection',
+            'bonne-sante'         => 'Bonne santé',
         ];
 
         $compte = function (string $slug, string $type, ?string $result = null) use ($ids): int {

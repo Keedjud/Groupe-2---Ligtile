@@ -43,7 +43,7 @@ const canSkipQuestion = computed(
 
 const sadNote = computed(() =>
     props.question.mandatory
-        ? "Vous n'êtes plus éligible."
+        ? "Vous n'êtes pas éligible."
         : "Vous êtes toujours éligible.",
 );
 
@@ -59,7 +59,6 @@ function choose(variant) {
 </script>
 
 <template>
-    <!-- ============================= MOBILE ============================= -->
     <div
         v-if="mobile"
         class="w-full overflow-hidden rounded-[26px] bg-[#f7e8fb] shadow-[0_4px_8px_rgba(0,0,0,0.06)]"
@@ -128,7 +127,6 @@ function choose(variant) {
         </div>
     </div>
 
-    <!-- ============================= DESKTOP ============================= -->
     <div v-else class="relative w-full lg:w-[520px]">
         <img
             :src="IMG[status]"

@@ -9,7 +9,7 @@ const props = defineProps({
 
 const note = computed(() =>
     props.mandatory
-        ? "Vous n'êtes plus éligible."
+        ? "Vous n'êtes pas éligible."
         : "Vous êtes toujours éligible.",
 );
 </script>
