@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Api\v1;
 
 use App\Http\Controllers\Controller;
 use App\Models\Collection;
+use App\Services\ColorPaletteService;
 
 class ApiCobrandController extends Controller
 {
@@ -14,22 +15,25 @@ class ApiCobrandController extends Controller
             ->firstOrFail();
 
         return response()->json([
-            'company_name'    => $collection->company->name,
-            'start_date'      => $collection->start_date,
-            'end_date'        => $collection->end_date,
-            'capacity'        => $collection->capacity,
-            'primary_color'   => $collection->primary_color,
-            'secondary_color' => $collection->secondary_color,
-            'logo_url'        => $collection->logo_url,
-            'onedoc_url'      => $collection->onedoc_url,
-            'contact_email'   => $collection->contact_email,
-            'contact_phone'   => $collection->contact_phone,
-            'venue'           => [
+            'id'            => $collection->id,
+            'company_name'  => $collection->company->name,
+            'logo_url'      => $collection->logo_url,
+            'start_date'    => $collection->start_date,
+            'end_date'      => $collection->end_date,
+            'capacity'      => $collection->capacity,
+            'onedoc_url'    => $collection->onedoc_url,
+            'contact_email' => $collection->contact_email,
+            'contact_phone' => $collection->contact_phone,
+            'venue'         => [
                 'street'      => $collection->venue_street,
                 'number'      => $collection->venue_number,
                 'postal_code' => $collection->venue_postal_code,
                 'city'        => $collection->venue_city,
             ],
+            'theme'         => ColorPaletteService::fromTwo(
+                $collection->primary_color,
+                $collection->secondary_color,
+            ),
         ]);
     }
 }
