@@ -12,6 +12,7 @@ import Metriques      from './views/Metriques.vue'
 import Companies      from './views/Companies.vue'
 import CompanyDetail  from './views/CompanyDetail.vue'
 import CompanyForm    from './views/CompanyForm.vue'
+import Trophees      from './views/Trophees.vue'
 
 const { estConnecte, chargerUtilisateur } = useSessionAuth()
 
@@ -25,6 +26,7 @@ const tableauRoutes = [
   { pattern: '#/entreprises/nouvelle',     cle: 'entreprise-nouvelle',  component: CompanyForm    },
   { pattern: '#/entreprises/:id',         cle: 'entreprise-detail',    component: CompanyDetail  },
   { pattern: '#/entreprises',             cle: 'entreprises',          component: Companies      },
+  { pattern: '#/trophees',                cle: 'trophees',             component: Trophees       },
   { pattern: '#/analytics',               cle: 'analytics',            component: Metriques      },
 ]
 

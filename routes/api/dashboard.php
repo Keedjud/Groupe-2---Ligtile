@@ -6,6 +6,7 @@ use App\Http\Controllers\Api\v1\DashboardMetricsController;
 use App\Http\Controllers\Api\v1\LogoUploadController;
 use App\Http\Controllers\Api\v1\ManageCollectionController;
 use App\Http\Controllers\Api\v1\ManageCompanyController;
+use App\Http\Controllers\Api\v1\ManageTropheeController;
 use Illuminate\Support\Facades\Route;
 
 // Routes dashboard CTS
@@ -36,6 +37,12 @@ Route::prefix('v1')->group(function () {
         Route::get('/companies/{company}',    [ManageCompanyController::class, 'show']);
         Route::put('/companies/{company}',    [ManageCompanyController::class, 'update']);
         Route::delete('/companies/{company}', [ManageCompanyController::class, 'destroy']);
+
+        // Gestion des trophées
+        Route::get('/manage-trophees',         [ManageTropheeController::class, 'index']);
+        Route::post('/manage-trophees',        [ManageTropheeController::class, 'store']);
+        Route::put('/manage-trophees/{year}',  [ManageTropheeController::class, 'update']);
+        Route::delete('/manage-trophees/{year}', [ManageTropheeController::class, 'destroy']);
 
         // Analytics / KPI
         Route::get('/analytics-stats', [DashboardMetricsController::class, 'overview']);
