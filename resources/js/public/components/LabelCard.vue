@@ -11,20 +11,19 @@ const props = defineProps({
 const logoUrl = computed(
     () => props.company.collections?.[0]?.logo_url ?? null,
 );
-const labelStartDate = computed(
-    () => props.company.labels?.[0]?.pivot?.start_date ?? null,
-);
 const badgeImg = "/images/classement/label-empty.png";
 
-function formatDate(dateString) {
-    if (!dateString) return "";
-    const d = new Date(dateString);
-    return d.toLocaleDateString("fr-CH", {
-        day: "2-digit",
-        month: "2-digit",
-        year: "numeric",
-    });
-}
+const labelPivot = computed(() => props.company.labels?.[0]?.pivot ?? null)
+
+const labelPhrase = computed(() => {
+    const pivot = labelPivot.value
+    if (!pivot?.start_date || !pivot?.end_date) return null
+    const startYear = new Date(pivot.start_date).getFullYear()
+    const endYear   = new Date(pivot.end_date).getFullYear()
+    const isActive  = new Date(pivot.end_date) >= new Date()
+    const verb      = isActive ? 'Est' : 'A été'
+    return `${verb} labelisé de ${startYear} à ${endYear}.`
+})
 </script>
 
 <template>
@@ -88,9 +87,9 @@ function formatDate(dateString) {
                 </span>
             </div>
 
-            <!-- Date -->
-            <div class="flex items-center gap-5">
-                <div class="flex h-6 w-6 items-center justify-center">
+            <!-- Période de labellisation -->
+            <div class="flex items-start gap-5">
+                <div class="flex h-6 w-6 shrink-0 items-center justify-center">
                     <svg
                         xmlns="http://www.w3.org/2000/svg"
                         class="h-[18px] w-[18px] text-vert-400"
@@ -99,23 +98,14 @@ function formatDate(dateString) {
                         stroke="currentColor"
                         stroke-width="2"
                     >
-                        <rect
-                            x="3"
-                            y="4"
-                            width="18"
-                            height="18"
-                            rx="2"
-                            ry="2"
-                        />
+                        <rect x="3" y="4" width="18" height="18" rx="2" ry="2" />
                         <line x1="16" y1="2" x2="16" y2="6" />
                         <line x1="8" y1="2" x2="8" y2="6" />
                         <line x1="3" y1="10" x2="21" y2="10" />
                     </svg>
                 </div>
-                <span
-                    class="py-2.5 text-center font-sans text-regular text-violet-950"
-                >
-                    {{ formatDate(labelStartDate) }}
+                <span class="py-0.5 font-sans text-small text-violet-950">
+                    {{ labelPhrase ?? '—' }}
                 </span>
             </div>
         </div>
