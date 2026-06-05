@@ -6,12 +6,12 @@ use App\Http\Controllers\Controller;
 use App\Models\Trophee;
 use App\Models\Collection;
 use Illuminate\Http\JsonResponse;
+use Illuminate\Support\Facades\DB;
 
 class ApiTropheeController extends Controller
 {
     public function index(): JsonResponse
     {
-        // Récupère toutes les années distinctes, triées par ordre décroissant
         $years = Trophee::select('year')
             ->distinct()
             ->orderBy('year', 'desc')
@@ -24,60 +24,69 @@ class ApiTropheeController extends Controller
             ]);
         }
 
+        $yearExpr = DB::connection()->getDriverName() === 'sqlite'
+            ? "strftime('%Y', start_date)"
+            : "YEAR(start_date)";
+
         $allYears = [];
 
         foreach ($years as $year) {
-            // Récupère tous les trophées de l'année avec leurs companies et le pivot rank
             $trophees = Trophee::where('year', $year)
                 ->with(['companies' => function ($query) {
                     $query->orderBy('rank');
                 }])
                 ->get();
 
-            // Collecte toutes les companies avec leur rank pour cette année
-            $companies = [];
             $companyIds = [];
-
             foreach ($trophees as $trophee) {
                 foreach ($trophee->companies as $company) {
                     $companyIds[] = $company->id;
+                }
+            }
 
-                    // Calcule le nombre de participants pour cette company
-                    // en sommant les nb_registered de ses collections dans l'année du trophée
-                    $participantCount = Collection::where('company_id', $company->id)
-                        ->whereYear('start_date', $year)
-                        ->sum('nb_registered');
+            $uniqueCompanyIds = array_unique($companyIds);
 
-                    // Récupère le logo depuis la collection la plus récente de cette company
-                    $latestCollection = Collection::where('company_id', $company->id)
-                        ->whereNotNull('logo_url')
-                        ->latest('start_date')
-                        ->first();
+            // Logos — une requête pour éviter le N+1
+            $logos = Collection::whereIn('company_id', $uniqueCompanyIds)
+                ->whereNotNull('logo_url')
+                ->orderByDesc('start_date')
+                ->get()
+                ->groupBy('company_id')
+                ->map(fn($cols) => $cols->first()->logo_url);
 
+            // Inscrits par entreprise (clics Onedoc distincts) — une requête batch
+            $participantCounts = DB::table('quiz_events')
+                ->join('collections', 'quiz_events.collection_id', '=', 'collections.id')
+                ->where('quiz_events.event_type', 'onedoc_clicked')
+                ->whereIn('collections.company_id', $uniqueCompanyIds)
+                ->whereRaw("{$yearExpr} = ?", [$year])
+                ->groupBy('collections.company_id')
+                ->select('collections.company_id', DB::raw('COUNT(DISTINCT quiz_events.session_id) as count'))
+                ->pluck('count', 'company_id');
+
+            $companies = [];
+            foreach ($trophees as $trophee) {
+                foreach ($trophee->companies as $company) {
                     $companies[] = [
-                        'rank' => $company->pivot->rank,
-                        'name' => $company->name,
-                        'logo_url' => $latestCollection?->logo_url,
-                        'participant_count' => (int) $participantCount,
+                        'rank'              => $company->pivot->rank,
+                        'name'              => $company->name,
+                        'logo_url'          => $logos[$company->id] ?? null,
+                        'participant_count' => (int) ($participantCounts[$company->id] ?? 0),
                     ];
                 }
             }
 
-            // Trie par rank
             usort($companies, fn($a, $b) => $a['rank'] <=> $b['rank']);
 
-            // Nombre total distinct de companies participantes cette année
-            $participantCount = count(array_unique($companyIds));
-
             $allYears[] = [
-                'year' => (int) $year,
-                'companies' => $companies,
-                'participant_count' => $participantCount,
+                'year'              => (int) $year,
+                'companies'         => $companies,
+                'participant_count' => count($uniqueCompanyIds),
             ];
         }
 
         return response()->json([
-            'podium' => $allYears[0] ?? null,
+            'podium'  => $allYears[0] ?? null,
             'history' => array_slice($allYears, 1),
         ]);
     }

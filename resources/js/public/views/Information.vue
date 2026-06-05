@@ -1,6 +1,11 @@
 <script setup>
+<<<<<<< HEAD
 import { ref, onBeforeUnmount, onMounted } from 'vue'
 import { useFetchApi } from '@/composables/api/useFetchApi'
+=======
+import { ref, computed, watch, onBeforeUnmount, onMounted } from 'vue'
+import { usePmeContactForm } from '../composables/usePmeContactForm'
+>>>>>>> develop
 
 const form = ref({
   company_name: '',
@@ -8,6 +13,7 @@ const form = ref({
   message: '',
 })
 const submitted = ref(false)
+<<<<<<< HEAD
 const submitting = ref(false)
 const status = ref({ type: '', message: '' })
 
@@ -58,6 +64,51 @@ function handleSubmit() {
       submitting.value = false
       status.value = { type: 'error', message: err.data?.message || 'Une erreur est survenue lors de l\'envoi.' }
     })
+=======
+
+const { formErrors, globalError, submitting, validate, submit: submitPme } = usePmeContactForm()
+const aDesErreurs = computed(() => Object.keys(formErrors.value).length > 0)
+
+// Re-validation live dès qu'une erreur existe (patron du cours).
+watch(form, () => {
+  if (Object.keys(formErrors.value).length > 0) validate(form.value)
+}, { deep: true })
+
+function scrollToHashFragment() {
+  const hash = window.location.hash;
+  const fragment = hash.includes('#/informations#') ? hash.split('#/informations#')[1] : null;
+  if (!fragment) {
+    return;
+  }
+
+  const target = document.getElementById(fragment);
+  if (target) {
+    target.scrollIntoView({ behavior: 'smooth' });
+  }
+}
+
+onMounted(() => {
+  scrollToHashFragment();
+  window.addEventListener('hashchange', scrollToHashFragment);
+});
+
+onBeforeUnmount(() => {
+  window.removeEventListener('hashchange', scrollToHashFragment);
+});
+
+async function handleSubmit() {
+  submitted.value = false
+
+  try {
+    await submitPme(form.value)
+    submitted.value = true
+    form.value.company_name = ''
+    form.value.email = ''
+    form.value.message = ''
+  } catch {
+    // formErrors / globalError sont définis par le composable
+  }
+>>>>>>> develop
 }
 </script>
 
@@ -65,19 +116,30 @@ function handleSubmit() {
   <div>
     <!-- ===== Section 1 : Hero — Pourquoi donner son sang ? ===== -->
     <section class="flex items-center px-4 py-10 lg:px-[60px] lg:py-[70px] min-h-[385px]">
-      <div class="mx-auto flex w-full max-w-[1512px] flex-col items-center gap-8 md:flex-row md:gap-16 lg:gap-[249px]">
+      <div class="flex w-full flex-col items-center gap-8 md:flex-row md:gap-16 lg:gap-[249px]">
         <!-- Image mobile -->
         <img
+<<<<<<< HEAD
           :src="'/images/lungs.png'"
+=======
+          :src="'/images/illustrations/lungs.png'"
+>>>>>>> develop
           alt=""
           class="w-[280px] h-auto object-contain shrink-0 md:hidden"
         />
+        <!--Image purement décorative, pas besoin d'alt, bonne pratique-->
+
         <!-- Image desktop -->
         <img
+<<<<<<< HEAD
           :src="'/images/hello.png'"
+=======
+          :src="'/images/illustrations/hello.png'"
+>>>>>>> develop
           alt=""
           class="hidden md:block w-[180px] lg:w-[202px] h-auto object-contain shrink-0"
         />
+        <!--Image purement décorative, pas besoin d'alt, bonne pratique-->
         <div class="flex flex-1 flex-col gap-6">
           <h1 class="font-sans text-h1 font-semibold text-texte-primary-dark">
             Pourquoi donner son sang ?
@@ -99,12 +161,12 @@ function handleSubmit() {
 
     <!-- ===== Section 2 : Comment se déroule une collecte ? (+ prévoir sur mobile) ===== -->
     <section class="bg-violet-100 px-4 py-12 lg:px-[60px] lg:py-[60px]">
-      <div class="mx-auto flex max-w-[1512px] flex-col gap-8 lg:flex-row lg:gap-[87px]">
+      <div class="flex flex-col gap-8 lg:flex-row lg:gap-[87px]">
         <!-- Colonne gauche -->
         <div class="flex flex-1 flex-col gap-[54px] lg:max-w-[737px]">
           <!-- Badge -->
           <div class="inline-flex items-center gap-5 rounded-[40px] bg-white px-6 py-3 w-fit">
-            <img :src="'/images/building.png'" class="h-[29px] w-[30px] shrink-0 object-contain" />
+            <img :src="'/images/icons/building.png'" class="h-[29px] w-[30px] shrink-0 object-contain" />
             <span class="font-sans text-h3 font-bold text-texte-primary-dark">
               Pour les entreprises de plus de 1 000 collaborateurs
             </span>
@@ -147,16 +209,21 @@ function handleSubmit() {
         </div>
 
         <img
+<<<<<<< HEAD
           :src="'/images/composition_petites_gouttes.png'"
+=======
+          :src="'/images/illustrations/composition-petites-gouttes.png'"
+>>>>>>> develop
           alt=""
           class="w-full lg:w-[700px] h-auto object-contain shrink-0"
         />
+        <!--Image purement décorative, pas besoin d'alt, bonne pratique-->
       </div>
     </section>
 
     <!-- ===== Section 3 : Ce que l'entreprise doit prévoir (desktop uniquement) ===== -->
     <section class="hidden md:block px-4 py-12 lg:px-[60px] lg:py-[60px]">
-      <div class="mx-auto flex max-w-[1512px] flex-col gap-8 md:flex-row md:gap-[87px]">
+      <div class="flex flex-col gap-8 md:flex-row md:gap-[87px]">
         <div class="md:w-[619px] shrink-0">
           <h2 class="font-sans text-h1 font-semibold text-violet-950">
             Ce que l'entreprise doit prévoir
@@ -179,12 +246,12 @@ function handleSubmit() {
 
     <!-- ===== Section 4 : Ce que le CTS fourni ===== -->
     <section class="px-4 py-6 lg:px-[60px] lg:py-6 mt-8 lg:mt-12">
-      <div class="mx-auto flex max-w-[1512px] flex-col gap-8 lg:flex-row lg:gap-[87px]">
+      <div class="flex flex-col gap-8 lg:flex-row lg:gap-[87px]">
         <!-- Colonne gauche -->
-        <div class="flex flex-1 flex-col gap-9 lg:max-w-[619px]">
+        <div class="flex flex-1 flex-col gap-9 lg:max-w-[850px]">
           <!-- Badge -->
           <div class="inline-flex items-center gap-5 rounded-[40px] bg-white px-6 py-3 w-fit">
-            <img :src="'/images/building.png'" class="h-[29px] w-[30px] shrink-0 object-contain" />
+            <img :src="'/images/icons/building.png'" class="h-[29px] w-[30px] shrink-0 object-contain" />
             <span class="font-sans text-h3 font-bold text-texte-primary-dark">
               Pour toutes les entreprises
             </span>
@@ -209,18 +276,27 @@ function handleSubmit() {
         </div>
 
         <img
+<<<<<<< HEAD
           :src="'/images/fournis.png'"
+=======
+          :src="'/images/illustrations/fournis.png'"
+>>>>>>> develop
           alt=""
           class="w-full lg:max-w-[500px] lg:max-h-[380px] h-auto rounded-[100px] object-contain"
         />
+        <!--Image purement décorative, pas besoin d'alt, bonne pratique-->
       </div>
     </section>
 
     <!-- ===== Section 5 : Moins de 1 000 collaborateurs + Formulaire ===== -->
     <section id="pme" class="bg-violet-100 px-4 py-12 lg:px-[60px] lg:py-[57px] mt-16 lg:mt-24">
+<<<<<<< HEAD
       <div class="mx-auto flex max-w-[1512px] flex-col items-center gap-8 lg:flex-row lg:gap-28">
+=======
+      <div class="flex flex-col items-center gap-8 lg:flex-row lg:gap-28">
+>>>>>>> develop
         <!-- Colonne gauche : texte -->
-        <div class="flex flex-col gap-6 lg:max-w-[636px]">
+        <div class="flex flex-col gap-6 lg:flex-1 lg:max-w-[850px]">
           <h2 class="font-sans text-h1 font-semibold text-violet-950">
             Votre entreprise compte
             <span class="text-violet-500">moins de <br />1 000 collaborateurs ?</span>
@@ -245,45 +321,82 @@ function handleSubmit() {
           <!-- Formulaire ou confirmation -->
           <template v-if="!submitted">
             <div class="w-full max-w-[450px]">
+<<<<<<< HEAD
               <label class="font-sans text-small font-medium text-violet-800">Nom de l'entreprise</label>
+=======
+              <label class="font-sans text-small font-medium text-violet-800">Nom de l'entreprise <span class="text-rouge-500">*</span></label>
+>>>>>>> develop
               <input
                 required
                 v-model="form.company_name"
                 type="text"
                 placeholder="Nom de l'entreprise"
                 class="h-[43px] w-full rounded-lg bg-white px-4 font-sans text-small text-black shadow-[0_0_4px_rgba(0,0,0,0.25)] outline-none placeholder:text-[#B8B8B8]"
+<<<<<<< HEAD
+=======
+                :class="{ 'ring-1 ring-rouge-500': formErrors.company_name }"
+>>>>>>> develop
               />
             </div>
 
             <div class="w-full max-w-[450px]">
+<<<<<<< HEAD
               <label class="font-sans text-small font-medium text-violet-800">Adresse Mail</label>
+=======
+              <label class="font-sans text-small font-medium text-violet-800">Adresse Mail <span class="text-rouge-500">*</span></label>
+>>>>>>> develop
               <input
                 required
                 v-model="form.email"
                 type="email"
                 placeholder="contact@entreprise.ch"
                 class="h-[43px] w-full rounded-lg bg-white px-4 font-sans text-small text-black shadow-[0_0_4px_rgba(0,0,0,0.25)] outline-none placeholder:text-[#B8B8B8]"
+<<<<<<< HEAD
+=======
+                :class="{ 'ring-1 ring-rouge-500': formErrors.email }"
+>>>>>>> develop
               />
             </div>
 
             <div class="w-full max-w-[450px]">
+<<<<<<< HEAD
               <label class="font-sans text-small font-medium text-violet-800">Message</label>
+=======
+              <label class="font-sans text-small font-medium text-violet-800">Message <span class="text-rouge-500">*</span></label>
+>>>>>>> develop
               <textarea
                 required
                 v-model="form.message"
                 placeholder="Message"
                 rows="4"
                 class="h-[148px] w-full resize-none rounded-lg bg-white px-4 py-3 font-sans text-small text-black shadow-[0_0_4px_rgba(0,0,0,0.25)] outline-none placeholder:text-[#B8B8B8]"
+<<<<<<< HEAD
               ></textarea>
             </div>
             <div v-if="status.type === 'error'" class="mb-4 rounded-lg bg-red-50 p-4 text-small text-red-800 ring-1 ring-red-300 w-full max-w-[450px]">
               {{ status.message }}
+=======
+                :class="{ 'ring-1 ring-rouge-500': formErrors.message }"
+              ></textarea>
+            </div>
+            <div v-if="aDesErreurs || globalError" class="flex w-full max-w-[450px] items-start gap-3 rounded-xl border border-rouge-500 bg-rouge-500/10 p-4 text-left">
+              <svg xmlns="http://www.w3.org/2000/svg" class="mt-0.5 h-5 w-5 shrink-0 text-rouge-600" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                <circle cx="12" cy="12" r="10" /><line x1="12" y1="8" x2="12" y2="13" /><line x1="12" y1="16" x2="12.01" y2="16" />
+              </svg>
+              <div class="font-sans text-small text-rouge-600">
+                <p class="font-semibold">Merci de corriger les points suivants :</p>
+                <ul class="mt-1 list-disc pl-4">
+                  <li v-for="(message, champ) in formErrors" :key="champ">{{ message }}</li>
+                  <li v-if="globalError">{{ globalError }}</li>
+                </ul>
+              </div>
+>>>>>>> develop
             </div>
             <p class="text-xs text-gray-500 w-full max-w-[450px]">Vos données sont transmises au CTS et utilisées uniquement pour répondre à votre demande.</p>
             <button
               @click="handleSubmit"
               :disabled="submitting"
-              class="h-[45px] w-full max-w-[450px] rounded-[40px] bg-button-primary font-sans text-regular text-texte-primary-light shadow-[0_4px_4px_rgba(0,0,0,0.25)] transition-colors hover:bg-violet-800 disabled:opacity-60"
+              class="h-[45px] w-full max-w-[450px] rounded-[40px] bg-button-primary font-sans text-regular text-texte-primary-light shadow-[0_4px_4px_rgba(0,0,0,0.25)] transition-colors hover:bg-[#410E3F] disabled:opacity-60"
             >
               {{ submitting ? 'Envoi...' : 'Envoyer' }}
             </button>

@@ -1,13 +1,15 @@
 <template>
-  <div class="min-h-screen bg-[var(--color-beige-50)] text-[var(--color-texte-primary-dark)]">
+
+    const collecteId = document.getElementById('app').dataset.collecteId
+  <div class="min-h-screen text-[var(--color-texte-primary-dark)]">
 
     <main class="mx-auto max-w-[1512px] px-6 py-10 lg:px-[60px]">
       <section class="grid gap-8 lg:grid-cols-[1.15fr_0.85fr] lg:items-center">
-        <div class="space-y-6 rounded-[32px] border border-[var(--color-violet-100)] bg-[var(--color-beige-50)] p-8 shadow-[0_24px_60px_rgba(104,23,100,0.08)]">
+        <div class="space-y-6  border border-[var(--color-violet-100)]  p-8 ">
           <h1 class="text-h1 font-semibold text-[var(--color-violet-900)]">État de la collecte</h1>
 
-          <div class="space-y-4 rounded-[28px] bg-white p-6 shadow-[0_10px_30px_rgba(104,23,100,0.08)]">
-            <p class="text-h4 font-medium text-[var(--color-texte-primary-dark)]">L’équipe <span class="font-semibold">{entreprise}</span> à Genève, compte <span class="font-semibold">xx</span> employé·e·s</p>
+          <div class="space-y-4  p-6">
+            <p class="text-h4 font-medium text-[var(--color-texte-primary-dark)]">L’équipe ${company.name} à Genève, compte ${company.nb_employee} employé·e·s</p>
             <p class="text-h4 text-[var(--color-texte-primary-dark)]"><span class="font-semibold">xx</span> se sont inscrit·e·s pour la <span class="text-[var(--color-light-palette-orange)]">collecte actuelle</span></p>
             <p class="text-h4 text-[var(--color-texte-primary-dark)]">Il reste <span class="font-semibold">xx</span> places</p>
 
@@ -16,7 +18,7 @@
         </div>
 
         <div class="rounded-[32px] bg-white p-8 shadow-[0_24px_60px_rgba(104,23,100,0.08)]">
-          <img src="goute_sang_75.png" alt="Illustration collecte" class="mx-auto h-[327px] w-full max-w-[196px] object-cover" />
+          <img :src="'/images/goute_sang_75.png'" alt="" class="mx-auto h-[327px] w-full max-w-[196px] object-cover" />
           <p class="mt-6 text-center text-h1 font-bold text-[var(--color-violet-900)]">72<span class="text-h4 font-semibold">%</span></p>
         </div>
       </section>
@@ -29,7 +31,7 @@
 
         <div class="mt-10 flex flex-col gap-10 lg:flex-row lg:items-start">
           <div class="w-full lg:w-[686px] rounded-[28px] bg-[var(--color-violet-100)] p-6 shadow-[0_10px_30px_rgba(104,23,100,0.08)]">
-            <img src="goutes_ensemble_coeur.svg" alt="Illustration Pourquoi donner" class="h-[389px] w-full rounded-[20px] object-cover" />
+            <img :src="'/images/goutes_ensemble_coeur.svg'" alt="" class="h-[389px] w-full rounded-[20px] object-cover" />
           </div>
 
           <div class="flex w-full flex-col gap-6">
@@ -97,7 +99,7 @@
             <div class="mx-auto mb-4 flex h-20 w-20 items-center justify-center rounded-full bg-[var(--color-violet-50)]">
               <span class="text-h4 font-bold text-[var(--color-rouge-600)]">{{ type.label }}</span>
             </div>
-            <img src="sangAneg.png" alt="Groupe sanguin {{ type.label }}" class="mx-auto mb-4 h-28 w-28 object-cover" />
+            <img :src="'/images/sangAneg.png'" alt="Groupe sanguin {{ type.label }}" class="mx-auto mb-4 h-28 w-28 object-cover" />
             <p class="text-regular font-semibold text-[var(--color-violet-900)]">{{ type.description }}</p>
           </div>
         </div>
@@ -131,7 +133,7 @@
       <section class="mt-16 rounded-[32px] border border-[var(--color-violet-100)] bg-white p-8 shadow-[0_24px_60px_rgba(104,23,100,0.08)] lg:p-10">
         <div class="grid gap-8 lg:grid-cols-[0.9fr_1.1fr] lg:items-center">
           <div class="rounded-[28px] bg-[var(--color-beige-50)] p-8 shadow-[0_10px_30px_rgba(104,23,100,0.08)]">
-            <img src="composition_petites_gouttes.png" alt="" class="w-full rounded-[24px] object-cover" />
+            <img :src="'/images/composition_petites_gouttes.png'" alt="" class="w-full rounded-[24px] object-cover" />
           </div>
           <div>
             <h3 class="text-h4 font-semibold text-[var(--color-violet-900)]">Qui peut donner son sang ?</h3>

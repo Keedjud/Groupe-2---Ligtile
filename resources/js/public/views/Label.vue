@@ -6,7 +6,7 @@ import { useLabelCompanies } from '@/composables/useLabelCompanies'
 const { fetchApi } = useLabelCompanies()
 
 // Image hero de la page Label
-const heroImg = '/images/' + 'label_top.png'
+const heroImg = '/images/classement/label.png'
 
 // ===== État =====
 const companies = ref([])
@@ -103,14 +103,14 @@ onMounted(() => {
 </script>
 
 <template>
-  <div class="mx-auto max-w-[1512px] bg-brand-bg-beige">
+  <div class="bg-brand-bg-beige">
 
     <!-- ===== Hero Section ===== -->
     <section class="flex flex-col items-center gap-10 px-3 py-10 lg:flex-row lg:gap-[160px] lg:px-[60px] lg:py-16">
       <!-- Image : première en mobile, à droite en desktop -->
       <img
         :src="heroImg"
-        alt="Illustration Label CTS"
+        alt="label CTS"
         class="h-[286px] w-[267px] object-contain lg:order-last lg:h-auto lg:max-h-[387px] lg:w-[361px]"
       />
       <div class="flex max-w-[762px] flex-col gap-6 lg:gap-[58px]">
@@ -176,9 +176,9 @@ onMounted(() => {
       </div>
 
       <!-- Version desktop : 3 étapes horizontales -->
-      <div class="relative hidden w-full max-w-[1392px] flex-row items-center justify-between gap-0 rounded-[40px] border border-violet-900/30 bg-form-bg px-8 py-10 lg:flex lg:px-16">
+      <div class="relative hidden w-full flex-row items-center justify-between gap-0 rounded-[40px] border border-violet-900/30 bg-form-bg px-8 py-10 lg:flex lg:px-16">
         <!-- Candidater -->
-        <div class="z-10 flex flex-col items-center gap-2 text-center">
+        <div class="z-10 flex flex-col items-center gap-2 text-center lg:w-[220px]">
           <div class="flex h-[50px] w-[50px] items-center justify-center">
             <div class="flex h-[35px] w-[35px] items-center justify-center rounded-full bg-vert-400 text-white">
               <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3">
@@ -189,10 +189,10 @@ onMounted(() => {
           <span class="font-sans text-h5 text-black">Candidater</span>
         </div>
 
-        <div class="h-[3px] w-[440px] rounded-[24px] bg-vert-400" />
+        <div class="h-[3px] flex-1 rounded-[24px] bg-vert-400" />
 
         <!-- Organiser une collecte -->
-        <div class="z-10 flex flex-col items-center gap-2 text-center">
+        <div class="z-10 flex flex-col items-center gap-2 text-center lg:w-[220px]">
           <div class="flex h-[50px] w-[50px] items-center justify-center">
             <div class="flex h-[35px] w-[35px] items-center justify-center rounded-full bg-vert-400 text-white">
               <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3">
@@ -203,10 +203,10 @@ onMounted(() => {
           <span class="font-sans text-h5 text-black">Organiser une collecte</span>
         </div>
 
-        <div class="h-[3px] w-[440px] rounded-[24px] bg-vert-400" />
+        <div class="h-[3px] flex-1 rounded-[24px] bg-vert-400" />
 
         <!-- Recevoir le label -->
-        <div class="z-10 flex flex-col items-center gap-2 text-center">
+        <div class="z-10 flex flex-col items-center gap-2 text-center lg:w-[220px]">
           <div class="flex h-[50px] w-[56px] items-center justify-center">
             <div class="flex h-10 w-10 items-center justify-center rounded-full border-2 border-vert-400 bg-transparent">
               <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-vert-400" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3">
@@ -239,9 +239,9 @@ onMounted(() => {
       </div>
 
       <!-- Barre de filtres -->
-      <div class="flex items-center gap-3 rounded-[50px] bg-violet-50 px-4 py-2.5 lg:justify-between lg:gap-4 lg:px-[60px]">
+      <div class="flex items-center gap-3 rounded-[10px] bg-violet-100 px-4 py-2.5 lg:justify-between lg:gap-4 lg:px-[60px] overflow-visible">
         <!-- Filtres : scroll horizontal en mobile -->
-        <div class="flex flex-nowrap items-center gap-[22px] overflow-x-auto lg:flex-wrap">
+        <div class="flex flex-nowrap items-center gap-[22px] overflow-x-auto lg:overflow-visible lg:flex-wrap py-1">
           <!-- Recherche -->
           <div class="flex shrink-0 items-center gap-3 rounded-[50px] bg-white px-3 shadow-[0_0_4px_rgba(0,0,0,0.25)]">
             <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
