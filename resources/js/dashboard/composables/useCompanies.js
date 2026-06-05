@@ -55,6 +55,53 @@ export function useCompanies() {
     return adapterDeApi(reponse)
   }
 
+  async function creerEntreprise(donnees) {
+    chargement.value = true
+    erreur.value = null
+    try {
+      const payload = {
+        name:        donnees.nom,
+        nb_employee: Number(donnees.nb_employes),
+        address: {
+          street:      donnees.adresse.rue,
+          number:      donnees.adresse.numero,
+          postal_code: donnees.adresse.npa,
+          city:        donnees.adresse.ville,
+        },
+        contact: {
+          email: donnees.contact.email,
+          phone: donnees.contact.telephone || null,
+        },
+      }
+      const reponse = await fetchApi({ url: '/companies', method: 'POST', data: payload })
+      const nouvelle = adapterDeApi(reponse)
+      listeEntreprises.value.push(nouvelle)
+      listeEntreprises.value.sort((a, b) => a.nom.localeCompare(b.nom))
+      return nouvelle
+    } catch (err) {
+      console.error(err)
+      erreur.value = err?.data?.message || "Erreur lors de la création."
+      throw err
+    } finally {
+      chargement.value = false
+    }
+  }
+
+  async function supprimerEntreprise(id) {
+    chargement.value = true
+    erreur.value = null
+    try {
+      await fetchApi({ url: `/companies/${id}`, method: 'DELETE' })
+      listeEntreprises.value = listeEntreprises.value.filter(e => e.id !== Number(id))
+    } catch (err) {
+      console.error(err)
+      erreur.value = err?.data?.message || 'Erreur lors de la suppression.'
+      throw err
+    } finally {
+      chargement.value = false
+    }
+  }
+
   async function mettreAJourEntreprise(id, donnees) {
     chargement.value = true
     erreur.value = null
@@ -93,6 +140,8 @@ export function useCompanies() {
     erreur,
     chargerEntreprises,
     chargerEntreprise,
+    creerEntreprise,
     mettreAJourEntreprise,
+    supprimerEntreprise,
   }
 }

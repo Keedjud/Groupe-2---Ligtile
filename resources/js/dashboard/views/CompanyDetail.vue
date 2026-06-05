@@ -9,12 +9,29 @@ const props = defineProps({
   allerVers:    { type: Function, required: true },
 })
 
-const { chargement, erreur, chargerEntreprise, mettreAJourEntreprise } = useCompanies()
+const { chargement, erreur, chargerEntreprise, mettreAJourEntreprise, supprimerEntreprise } = useCompanies()
 
 const entreprise = ref(null)
 const modeEdition = ref(false)
 const champsInvalides = ref({})
 const erreurServeur = ref('')
+const confirmeSuppression = ref(false)
+const erreurSuppression = ref('')
+
+async function gererSuppression() {
+  if (!confirmeSuppression.value) {
+    confirmeSuppression.value = true
+    return
+  }
+  erreurSuppression.value = ''
+  try {
+    await supprimerEntreprise(props.idEntreprise)
+    props.allerVers('#/entreprises')
+  } catch (e) {
+    erreurSuppression.value = e?.data?.message || 'Erreur lors de la suppression.'
+    confirmeSuppression.value = false
+  }
+}
 
 // Champs formulaire
 const champNom       = ref('')
@@ -262,12 +279,22 @@ const aDesErreurs = computed(() => Object.keys(champsInvalides.value).length > 0
           </form>
         </template>
 
-        <!-- Bouton retour -->
-        <div v-if="!modeEdition" class="mt-4 flex justify-start">
+        <!-- Barre d'actions bas -->
+        <div v-if="!modeEdition" class="mt-4 flex items-center justify-between gap-3">
           <button
             @click="allerVers('#/entreprises')"
             class="rounded-[40px] bg-white px-5 py-2 font-sans text-small text-texte-secondary underline shadow-[0_0_4px_rgba(0,0,0,0.15)] hover:bg-violet-50 transition-colors"
           >← Retour</button>
+
+          <div class="flex flex-col items-end gap-1">
+            <button
+              @click="gererSuppression"
+              :disabled="chargement"
+              class="rounded-[40px] px-5 py-2 font-sans text-small text-white transition-opacity hover:opacity-90 disabled:opacity-60"
+              :class="confirmeSuppression ? 'bg-rouge-700' : 'bg-rouge-500'"
+            >{{ confirmeSuppression ? 'Confirmer la suppression' : 'Supprimer' }}</button>
+            <p v-if="erreurSuppression" class="font-sans text-xs text-rouge-600">{{ erreurSuppression }}</p>
+          </div>
         </div>
       </div>
 

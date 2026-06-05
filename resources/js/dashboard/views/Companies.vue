@@ -35,18 +35,26 @@ function formaterDate(dateStr) {
     <div class="mb-6 flex flex-wrap items-center justify-between gap-3">
       <h1 class="font-sans text-h2 font-bold text-texte-secondary">Entreprises</h1>
 
-      <!-- Recherche -->
-      <div class="relative">
-        <svg xmlns="http://www.w3.org/2000/svg" class="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-violet-400" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
-          <circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/>
-        </svg>
-        <input
-          v-model="recherche"
-          @input="surRecherche"
-          type="search"
-          placeholder="Rechercher une entreprise…"
-          class="rounded-[40px] bg-white py-2 pl-9 pr-4 font-sans text-small text-violet-950 shadow-[0_0_4px_rgba(0,0,0,0.15)] outline-none focus:ring-2 focus:ring-violet-400 w-64"
-        />
+      <div class="flex items-center gap-3">
+        <!-- Bouton création -->
+        <button
+          @click="allerVers('#/entreprises/nouvelle')"
+          class="rounded-[40px] bg-violet-900 px-5 py-2 font-sans text-small text-white hover:opacity-90 transition-opacity"
+        >+ Nouvelle entreprise</button>
+
+        <!-- Recherche -->
+        <div class="relative">
+          <svg xmlns="http://www.w3.org/2000/svg" class="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-violet-400" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+            <circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/>
+          </svg>
+          <input
+            v-model="recherche"
+            @input="surRecherche"
+            type="search"
+            placeholder="Rechercher une entreprise…"
+            class="rounded-[40px] bg-white py-2 pl-9 pr-4 font-sans text-small text-violet-950 shadow-[0_0_4px_rgba(0,0,0,0.15)] outline-none focus:ring-2 focus:ring-violet-400 w-64"
+          />
+        </div>
       </div>
     </div>
 

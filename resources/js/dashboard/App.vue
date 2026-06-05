@@ -11,6 +11,7 @@ import CollecteDetail from './views/CollecteDetail.vue'
 import Metriques      from './views/Metriques.vue'
 import Companies      from './views/Companies.vue'
 import CompanyDetail  from './views/CompanyDetail.vue'
+import CompanyForm    from './views/CompanyForm.vue'
 
 const { estConnecte, chargerUtilisateur } = useSessionAuth()
 
@@ -21,6 +22,7 @@ const tableauRoutes = [
   { pattern: '#/collectes/nouvelle',      cle: 'nouvelle',             component: CollecteForm   },
   { pattern: '#/collectes/:id/edit',      cle: 'edit',                 component: CollecteForm   },
   { pattern: '#/collectes/:id',           cle: 'detail',               component: CollecteDetail },
+  { pattern: '#/entreprises/nouvelle',     cle: 'entreprise-nouvelle',  component: CompanyForm    },
   { pattern: '#/entreprises/:id',         cle: 'entreprise-detail',    component: CompanyDetail  },
   { pattern: '#/entreprises',             cle: 'entreprises',          component: Companies      },
   { pattern: '#/analytics',               cle: 'analytics',            component: Metriques      },

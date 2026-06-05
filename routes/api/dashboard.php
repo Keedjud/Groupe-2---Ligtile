@@ -31,9 +31,11 @@ Route::prefix('v1')->group(function () {
         Route::post('/manage-collections/{collecte}/kit/send', [CollectionKitController::class, 'send']);
 
         // Gestion des entreprises
-        Route::get('/companies',             [ManageCompanyController::class, 'index']);
-        Route::get('/companies/{company}',   [ManageCompanyController::class, 'show']);
-        Route::put('/companies/{company}',   [ManageCompanyController::class, 'update']);
+        Route::get('/companies',              [ManageCompanyController::class, 'index']);
+        Route::post('/companies',             [ManageCompanyController::class, 'store']);
+        Route::get('/companies/{company}',    [ManageCompanyController::class, 'show']);
+        Route::put('/companies/{company}',    [ManageCompanyController::class, 'update']);
+        Route::delete('/companies/{company}', [ManageCompanyController::class, 'destroy']);
 
         // Analytics / KPI
         Route::get('/analytics-stats', [DashboardMetricsController::class, 'overview']);
