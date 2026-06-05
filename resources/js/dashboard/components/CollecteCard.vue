@@ -1,29 +1,16 @@
-<<<<<<< HEAD
-<!-- Tuile pour afficher une collecte -->
-<script setup>
-const props = defineProps({
-=======
 <!-- CollecteCard -->
 <script setup>
 defineProps({
->>>>>>> develop
   collecte:  { type: Object, required: true },
   allerVers: { type: Function, required: true },
 })
 
-<<<<<<< HEAD
-function formaterDate(dateStr) {
-  if (!dateStr) return ''
-  const d = new Date(dateStr)
-  return d.toLocaleDateString('fr-CH', { day: '2-digit', month: '2-digit', year: '2-digit' })
-=======
 // Format suisse jj.mm.aaaa
 function formaterDate(dateStr) {
   if (!dateStr) return ''
   return new Date(dateStr).toLocaleDateString('fr-CH', {
     day: '2-digit', month: '2-digit', year: 'numeric',
   })
->>>>>>> develop
 }
 </script>
 
@@ -49,13 +36,8 @@ function formaterDate(dateStr) {
       </div>
       <!-- Badge label CTS -->
       <img
-<<<<<<< HEAD
-        :src="'/images/label_empty.png'"
-        alt="Label CTS"
-=======
         :src="'/images/classement/label-empty.png'"
         alt="Label CTS vide"
->>>>>>> develop
         class="h-[60px] w-[57px] shrink-0 object-contain"
       />
     </div>

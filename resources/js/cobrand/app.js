@@ -3,6 +3,8 @@ import App from './App.vue';
 import '../../css/app.css';
 
 const el = document.getElementById('app');
-const collecteId = el?.dataset?.collecteId ?? null;
+const collecteToken = el?.dataset?.collecteToken ?? null;
 
-createApp(App, { collecteId }).mount(el);
+createApp(App, { collecteToken }).mount(el);
+
+

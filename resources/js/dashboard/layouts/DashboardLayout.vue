@@ -12,11 +12,7 @@ defineProps({
 <template>
   <div class="flex h-screen flex-col bg-beige-50 font-sans antialiased overflow-hidden">
 
-<<<<<<< HEAD
-    <div class="sticky top-0 z-30">
-=======
     <div class="top-0 z-30">
->>>>>>> develop
       <FictifBanner />
     </div>
 

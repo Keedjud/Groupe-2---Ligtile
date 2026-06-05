@@ -1,6 +1,20 @@
+<script setup>
+
+defineProps({ collection: Object })
+const bloodTypes = [
+  { label: 'O+', value: 'O+', level: 85, barColor: 'var(--color-vert-500)', description: 'Élevé' },
+  { label: 'A+', value: 'A+', level: 60, barColor: 'var(--color-vert-500)', description: 'Normal' },
+  { label: 'AB+', value: 'AB+', level: 35, barColor: 'var(--color-light-palette-orange)', description: 'Bas' },
+  { label: 'B+', value: 'B+', level: 20, barColor: 'var(--color-light-palette-orange)', description: 'Bas' },
+  { label: 'O-', value: 'O-', level: 75, barColor: 'var(--color-vert-500)', description: 'Normal' },
+  { label: 'A-', value: 'A-', level: 45, barColor: 'var(--color-light-palette-orange)', description: 'Bas' },
+  { label: 'AB-', value: 'AB-', level: 15, barColor: 'var(--color-rouge-400)', description: 'Critique' },
+  { label: 'B-', value: 'B-', level: 10, barColor: 'var(--color-rouge-600)', description: 'Dangereusement bas' },
+]
+</script>
 <template>
 
-    const collecteId = document.getElementById('app').dataset.collecteId
+    const collecteToken = document.getElementById('app').dataset.collecteToken
   <div class="min-h-screen text-[var(--color-texte-primary-dark)]">
 
     <main class="mx-auto max-w-[1512px] px-6 py-10 lg:px-[60px]">
@@ -9,7 +23,7 @@
           <h1 class="text-h1 font-semibold text-[var(--color-violet-900)]">État de la collecte</h1>
 
           <div class="space-y-4  p-6">
-            <p class="text-h4 font-medium text-[var(--color-texte-primary-dark)]">L’équipe ${company.name} à Genève, compte ${company.nb_employee} employé·e·s</p>
+            <p class="text-h4 font-medium text-[var(--color-texte-primary-dark)]">L’équipe {{ collection?.company_name }} à Genève, compte {{ collection?.employees_count }} employé·e·s</p>
             <p class="text-h4 text-[var(--color-texte-primary-dark)]"><span class="font-semibold">xx</span> se sont inscrit·e·s pour la <span class="text-[var(--color-light-palette-orange)]">collecte actuelle</span></p>
             <p class="text-h4 text-[var(--color-texte-primary-dark)]">Il reste <span class="font-semibold">xx</span> places</p>
 
@@ -151,15 +165,4 @@
   </div>
 </template>
 
-<script setup>
-const bloodTypes = [
-  { label: 'O+', value: 'O+', level: 85, barColor: 'var(--color-vert-500)', description: 'Élevé' },
-  { label: 'A+', value: 'A+', level: 60, barColor: 'var(--color-vert-500)', description: 'Normal' },
-  { label: 'AB+', value: 'AB+', level: 35, barColor: 'var(--color-light-palette-orange)', description: 'Bas' },
-  { label: 'B+', value: 'B+', level: 20, barColor: 'var(--color-light-palette-orange)', description: 'Bas' },
-  { label: 'O-', value: 'O-', level: 75, barColor: 'var(--color-vert-500)', description: 'Normal' },
-  { label: 'A-', value: 'A-', level: 45, barColor: 'var(--color-light-palette-orange)', description: 'Bas' },
-  { label: 'AB-', value: 'AB-', level: 15, barColor: 'var(--color-rouge-400)', description: 'Critique' },
-  { label: 'B-', value: 'B-', level: 10, barColor: 'var(--color-rouge-600)', description: 'Dangereusement bas' },
-]
-</script>
+

@@ -1,11 +1,6 @@
 <script setup>
-<<<<<<< HEAD
-import { ref, onBeforeUnmount, onMounted } from 'vue'
-import { useFetchApi } from '@/composables/api/useFetchApi'
-=======
 import { ref, computed, watch, onBeforeUnmount, onMounted } from 'vue'
 import { usePmeContactForm } from '../composables/usePmeContactForm'
->>>>>>> develop
 
 const form = ref({
   company_name: '',
@@ -13,58 +8,6 @@ const form = ref({
   message: '',
 })
 const submitted = ref(false)
-<<<<<<< HEAD
-const submitting = ref(false)
-const status = ref({ type: '', message: '' })
-
-const { fetchApi } = useFetchApi('/api/v1')
-
-function scrollToHashFragment() {
-  const hash = window.location.hash;
-  const fragment = hash.includes('#/informations#') ? hash.split('#/informations#')[1] : null;
-  if (!fragment) {
-    return;
-  }
-
-  const target = document.getElementById(fragment);
-  if (target) {
-    target.scrollIntoView({ behavior: 'smooth' });
-  }
-}
-
-onMounted(() => {
-  scrollToHashFragment();
-  window.addEventListener('hashchange', scrollToHashFragment);
-});
-
-onBeforeUnmount(() => {
-  window.removeEventListener('hashchange', scrollToHashFragment);
-});
-
-function handleSubmit() {
-  status.value = { type: '', message: '' }
-
-  if (!form.value.company_name || !form.value.email || !form.value.message) {
-    status.value = { type: 'error', message: 'Veuillez remplir tous les champs.' }
-    return
-  }
-
-  submitting.value = true
-  submitted.value = false
-
-  fetchApi({ url: '/pme-contact', data: form.value })
-    .then(() => {
-      submitting.value = false
-      submitted.value = true
-      form.value.company_name = ''
-      form.value.email = ''
-      form.value.message = ''
-    })
-    .catch(err => {
-      submitting.value = false
-      status.value = { type: 'error', message: err.data?.message || 'Une erreur est survenue lors de l\'envoi.' }
-    })
-=======
 
 const { formErrors, globalError, submitting, validate, submit: submitPme } = usePmeContactForm()
 const aDesErreurs = computed(() => Object.keys(formErrors.value).length > 0)
@@ -108,7 +51,6 @@ async function handleSubmit() {
   } catch {
     // formErrors / globalError sont définis par le composable
   }
->>>>>>> develop
 }
 </script>
 
@@ -119,11 +61,7 @@ async function handleSubmit() {
       <div class="flex w-full flex-col items-center gap-8 md:flex-row md:gap-16 lg:gap-[249px]">
         <!-- Image mobile -->
         <img
-<<<<<<< HEAD
-          :src="'/images/lungs.png'"
-=======
           :src="'/images/illustrations/lungs.png'"
->>>>>>> develop
           alt=""
           class="w-[280px] h-auto object-contain shrink-0 md:hidden"
         />
@@ -131,11 +69,7 @@ async function handleSubmit() {
 
         <!-- Image desktop -->
         <img
-<<<<<<< HEAD
-          :src="'/images/hello.png'"
-=======
           :src="'/images/illustrations/hello.png'"
->>>>>>> develop
           alt=""
           class="hidden md:block w-[180px] lg:w-[202px] h-auto object-contain shrink-0"
         />
@@ -209,11 +143,7 @@ async function handleSubmit() {
         </div>
 
         <img
-<<<<<<< HEAD
-          :src="'/images/composition_petites_gouttes.png'"
-=======
           :src="'/images/illustrations/composition-petites-gouttes.png'"
->>>>>>> develop
           alt=""
           class="w-full lg:w-[700px] h-auto object-contain shrink-0"
         />
@@ -276,11 +206,7 @@ async function handleSubmit() {
         </div>
 
         <img
-<<<<<<< HEAD
-          :src="'/images/fournis.png'"
-=======
           :src="'/images/illustrations/fournis.png'"
->>>>>>> develop
           alt=""
           class="w-full lg:max-w-[500px] lg:max-h-[380px] h-auto rounded-[100px] object-contain"
         />
@@ -290,11 +216,7 @@ async function handleSubmit() {
 
     <!-- ===== Section 5 : Moins de 1 000 collaborateurs + Formulaire ===== -->
     <section id="pme" class="bg-violet-100 px-4 py-12 lg:px-[60px] lg:py-[57px] mt-16 lg:mt-24">
-<<<<<<< HEAD
-      <div class="mx-auto flex max-w-[1512px] flex-col items-center gap-8 lg:flex-row lg:gap-28">
-=======
       <div class="flex flex-col items-center gap-8 lg:flex-row lg:gap-28">
->>>>>>> develop
         <!-- Colonne gauche : texte -->
         <div class="flex flex-col gap-6 lg:flex-1 lg:max-w-[850px]">
           <h2 class="font-sans text-h1 font-semibold text-violet-950">
@@ -321,61 +243,37 @@ async function handleSubmit() {
           <!-- Formulaire ou confirmation -->
           <template v-if="!submitted">
             <div class="w-full max-w-[450px]">
-<<<<<<< HEAD
-              <label class="font-sans text-small font-medium text-violet-800">Nom de l'entreprise</label>
-=======
               <label class="font-sans text-small font-medium text-violet-800">Nom de l'entreprise <span class="text-rouge-500">*</span></label>
->>>>>>> develop
               <input
                 required
                 v-model="form.company_name"
                 type="text"
                 placeholder="Nom de l'entreprise"
                 class="h-[43px] w-full rounded-lg bg-white px-4 font-sans text-small text-black shadow-[0_0_4px_rgba(0,0,0,0.25)] outline-none placeholder:text-[#B8B8B8]"
-<<<<<<< HEAD
-=======
                 :class="{ 'ring-1 ring-rouge-500': formErrors.company_name }"
->>>>>>> develop
               />
             </div>
 
             <div class="w-full max-w-[450px]">
-<<<<<<< HEAD
-              <label class="font-sans text-small font-medium text-violet-800">Adresse Mail</label>
-=======
               <label class="font-sans text-small font-medium text-violet-800">Adresse Mail <span class="text-rouge-500">*</span></label>
->>>>>>> develop
               <input
                 required
                 v-model="form.email"
                 type="email"
                 placeholder="contact@entreprise.ch"
                 class="h-[43px] w-full rounded-lg bg-white px-4 font-sans text-small text-black shadow-[0_0_4px_rgba(0,0,0,0.25)] outline-none placeholder:text-[#B8B8B8]"
-<<<<<<< HEAD
-=======
                 :class="{ 'ring-1 ring-rouge-500': formErrors.email }"
->>>>>>> develop
               />
             </div>
 
             <div class="w-full max-w-[450px]">
-<<<<<<< HEAD
-              <label class="font-sans text-small font-medium text-violet-800">Message</label>
-=======
               <label class="font-sans text-small font-medium text-violet-800">Message <span class="text-rouge-500">*</span></label>
->>>>>>> develop
               <textarea
                 required
                 v-model="form.message"
                 placeholder="Message"
                 rows="4"
                 class="h-[148px] w-full resize-none rounded-lg bg-white px-4 py-3 font-sans text-small text-black shadow-[0_0_4px_rgba(0,0,0,0.25)] outline-none placeholder:text-[#B8B8B8]"
-<<<<<<< HEAD
-              ></textarea>
-            </div>
-            <div v-if="status.type === 'error'" class="mb-4 rounded-lg bg-red-50 p-4 text-small text-red-800 ring-1 ring-red-300 w-full max-w-[450px]">
-              {{ status.message }}
-=======
                 :class="{ 'ring-1 ring-rouge-500': formErrors.message }"
               ></textarea>
             </div>
@@ -390,7 +288,6 @@ async function handleSubmit() {
                   <li v-if="globalError">{{ globalError }}</li>
                 </ul>
               </div>
->>>>>>> develop
             </div>
             <p class="text-xs text-gray-500 w-full max-w-[450px]">Vos données sont transmises au CTS et utilisées uniquement pour répondre à votre demande.</p>
             <button

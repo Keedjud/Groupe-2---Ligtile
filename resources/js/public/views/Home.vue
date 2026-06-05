@@ -1,11 +1,6 @@
 <script setup>
-<<<<<<< HEAD
-import { reactive, ref, onMounted, onUnmounted } from 'vue'
-import { useFetchApi } from '@/composables/api/useFetchApi'
-=======
 import { reactive, ref, computed, watch, onMounted, onUnmounted } from 'vue'
 import { useContactForm } from '../composables/useContactForm'
->>>>>>> develop
 
 const form = reactive({
   company_name: '', employees_count: '',
@@ -14,15 +9,6 @@ const form = reactive({
 })
 
 const showPmeMessage = ref(false)
-<<<<<<< HEAD
-const status = ref({ type: '', message: '' })
-const submitting = ref(false)
-
-const { fetchApi } = useFetchApi('/api/v1')
-
-function submit() {
-  if (!form.employees_count || Number(form.employees_count) < 1000) {
-=======
 const status = ref({ type: '', message: '' }) // succès uniquement
 
 const { formErrors, globalError, submitting, validate, submit: submitContact } = useContactForm()
@@ -41,33 +27,16 @@ async function submit() {
 
   // Seules les entreprises de 1000+ employés peuvent accueillir une collecte.
   if (Number(form.employees_count) < 1000) {
->>>>>>> develop
     showPmeMessage.value = true
     return
   }
 
-<<<<<<< HEAD
-  showPmeMessage.value = false
-  status.value = { type: '', message: '' }
-  submitting.value = true
-
-  fetchApi({ url: '/contact', data: form })
-    .then(() => {
-      submitting.value = false
-      status.value = { type: 'success', message: 'Votre demande a bien été envoyée. Le CTS vous recontactera prochainement.' }
-    })
-    .catch(err => {
-      submitting.value = false
-      status.value = { type: 'error', message: err.data?.message || 'Une erreur est survenue. Veuillez réessayer.' }
-    })
-=======
   try {
     await submitContact(form)
     status.value = { type: 'success', message: 'Votre demande a bien été envoyée. Le CTS vous recontactera prochainement.' }
   } catch {
     // globalError est défini par le composable
   }
->>>>>>> develop
 }
 
 // Défilement vers le formulaire quand on arrive via "Prendre RDV" (#/prendre-rdv).
@@ -111,11 +80,7 @@ function updateCardsIndex() {
 <template>
   <!-- Hero -->
   <section class="py-10">
-<<<<<<< HEAD
-    <div class="max-w-[1632px] mx-auto px-4 lg:px-[60px]">
-=======
     <div class="px-4 lg:px-[60px]">
->>>>>>> develop
       <div class="flex flex-col-reverse gap-8 lg:grid lg:grid-cols-2 lg:gap-10 lg:items-center">
         <div>
           <h1 class="text-h1 font-semibold text-texte-primary-dark leading-tight max-w-[260px] lg:max-w-none">
@@ -170,11 +135,7 @@ function updateCardsIndex() {
         </div>
         <div>
           <div class="rounded-3xl bg-gradient-to-r from-violet-100 to-vert-300 overflow-hidden h-[208px] lg:h-[523px] relative">
-<<<<<<< HEAD
-            <img :src="'/images/composition.png'" class="" />
-=======
             <img :src="'/images/illustrations/composition.png'" class="" />
->>>>>>> develop
             <!--Image purement décorative, pas besoin d'alt, bonne pratique-->
           </div>
         </div>
@@ -184,11 +145,7 @@ function updateCardsIndex() {
 
   <!-- Pourquoi accueillir une collecte -->
   <section class="bg-violet-100 py-10">
-<<<<<<< HEAD
-    <div class="max-w-[1632px] mx-auto px-4 lg:px-[60px]">
-=======
     <div class="px-4 lg:px-[60px]">
->>>>>>> develop
       <h2 class="text-h1 font-semibold text-center text-violet-900">Pourquoi accueillir une collecte ?</h2>
       <p class="text-h4 text-violet-900 text-center mt-2">Un geste utile, directement sur votre lieu de travail.</p>
       <div class="mx-auto mt-2 h-[3px] w-48 rounded-full bg-vert-300"></div>
@@ -200,38 +157,22 @@ function updateCardsIndex() {
                lg:mx-0 lg:px-0 lg:grid lg:grid-cols-4 lg:gap-6 lg:overflow-visible"
       >
         <div class="snap-center shrink-0 w-[calc(100vw-2rem)] lg:w-auto flex flex-col">
-<<<<<<< HEAD
-          <img :src="'/images/pillule.png'" class="h-32 w-auto mx-auto" alt="Icône de médicament" />
-=======
           <img :src="'/images/illustrations/pillule.png'" class="h-32 w-auto mx-auto" alt="Icône de médicament" />
->>>>>>> develop
           <h3 class="text-h3 font-bold text-violet-900 text-center mt-4">Répondre à un besoin réel</h3>
           <p class="text-regular text-violet-900 text-center mt-4">Les produits sanguins sont nécessaires chaque jour pour soigner de nombreux patients. Chaque collecte compte.</p>
         </div>
         <div class="snap-center shrink-0 w-[calc(100vw-2rem)] lg:w-auto flex flex-col">
-<<<<<<< HEAD
-          <img :src="'/images/pillule2.png'" class="h-32 w-auto mx-auto" alt="Icône de médicament" />
-=======
           <img :src="'/images/illustrations/pillule2.png'" class="h-32 w-auto mx-auto" alt="Icône de médicament" />
->>>>>>> develop
           <h3 class="text-h3 font-bold text-violet-900 text-center mt-4">Faciliter l'engagement des collaborateurs</h3>
           <p class="text-regular text-violet-900 text-center mt-4">Organiser une collecte directement sur le lieu de travail réduit les contraintes et encourage la participation.</p>
         </div>
         <div class="snap-center shrink-0 w-[calc(100vw-2rem)] lg:w-auto flex flex-col">
-<<<<<<< HEAD
-          <img :src="'/images/pillule.png'" class="h-32 w-auto mx-auto" alt="Icône de médicament" />
-=======
           <img :src="'/images/illustrations/pillule.png'" class="h-32 w-auto mx-auto" alt="Icône de médicament" />
->>>>>>> develop
           <h3 class="text-h3 font-bold text-violet-900 text-center mt-4">Créer une dynamique collective</h3>
           <p class="text-regular text-violet-900 text-center mt-4">Une collecte peut devenir un moment fédérateur autour d'une action commune et porteuse de sens.</p>
         </div>
         <div class="snap-center shrink-0 w-[calc(100vw-2rem)] lg:w-auto flex flex-col">
-<<<<<<< HEAD
-          <img :src="'/images/pillule2.png'" class="h-32 w-auto mx-auto" alt="Icône de médicament" />
-=======
           <img :src="'/images/illustrations/pillule2.png'" class="h-32 w-auto mx-auto" alt="Icône de médicament" />
->>>>>>> develop
           <h3 class="text-h3 font-bold text-violet-900 text-center mt-4">Valoriser l'engagement de l'entreprise</h3>
           <p class="text-regular text-violet-900 text-center mt-4">Accueillir une collecte permet d'inscrire votre démarche sociétale dans une action visible, concrète et positive.</p>
         </div>
@@ -245,21 +186,13 @@ function updateCardsIndex() {
 
   <!-- Organisation pensee pour les entreprises -->
   <section class="py-10">
-<<<<<<< HEAD
-    <div class="max-w-[1632px] mx-auto px-4 lg:px-[60px]">
-=======
     <div class="px-4 lg:px-[60px]">
->>>>>>> develop
       <h2 class="text-h1 font-semibold text-center text-violet-900">Une organisation pensée pour les entreprises</h2>
       <div class="mx-auto mt-2 h-[3px] w-48 rounded-full bg-vert-300"></div>
 
       <div class="grid lg:grid-cols-2 gap-10 items-center mt-12">
         <div>
-<<<<<<< HEAD
-          <img :src="'/images/nombreforce.png'" class="w-full max-w-[503px] mx-auto" alt="Des gouttes de sang portent un cœur pour signifier la force du nombre" />
-=======
           <img :src="'/images/illustrations/nombreforce.png'" class="w-full max-w-[503px] mx-auto" alt="Des gouttes de sang portent un cœur pour signifier la force du nombre" />
->>>>>>> develop
         </div>
         <div>
           <ul class="space-y-0 flex flex-col items-center lg:items-stretch">
@@ -322,28 +255,16 @@ function updateCardsIndex() {
 
   <!-- Parlons de votre future collecte -->
   <section id="prendre-rdv" class="py-10">
-<<<<<<< HEAD
-    <div class="max-w-[1632px] mx-auto px-4 lg:px-[60px]">
-      <div class="rounded-3xl bg-violet-100 p-3 lg:p-14 overflow-hidden">
-        <div class="grid lg:grid-cols-2 gap-10 items-center">
-          <div class="flex flex-col items-center text-center lg:block lg:text-left min-w-0">
-            <img :src="'/images/Goutte_mascotte.png'" class="h-32 w-auto mb-6 lg:hidden" alt="Mascotte goutte de sang qui salue" />
-=======
     <div class="px-4 lg:px-[60px]">
       <div class="rounded-3xl bg-violet-100 p-3 lg:p-14 overflow-hidden">
         <div class="grid lg:grid-cols-2 gap-10 items-center">
           <div class="flex flex-col items-center text-center lg:block lg:text-left min-w-0">
             <img :src="'/images/illustrations/goutte-mascotte.png'" class="h-32 w-auto mb-6 lg:hidden" alt="Mascotte goutte de sang qui salue" />
->>>>>>> develop
             <h2 class="text-h1 font-semibold text-violet-950">
               Parlons de votre <span class="text-violet-500">future collecte</span>
             </h2>
             <div class="mt-8 flex flex-col items-center gap-6 lg:flex-row lg:items-center">
-<<<<<<< HEAD
-              <img :src="'/images/Goutte_mascotte.png'" class="hidden lg:block h-48 w-auto" alt="Mascotte goutte de sang qui salue" />
-=======
               <img :src="'/images/illustrations/goutte-mascotte.png'" class="hidden lg:block h-48 w-auto" alt="Mascotte goutte de sang qui salue" />
->>>>>>> develop
               <div>
                 <h3 class="text-h3 font-bold text-violet-950">Quelques informations suffisent pour démarrer</h3>
                 <p class="text-h5 text-violet-950 mt-3">Le CTS vous recontacte ensuite pour organiser une collecte adaptée pour votre entreprise.</p>
@@ -352,73 +273,37 @@ function updateCardsIndex() {
           </div>
 
           <div id="prendre-rdv-form" class="min-w-0 scroll-mt-24 lg:scroll-mt-28">
-<<<<<<< HEAD
-            <form @submit.prevent="submit" class="bg-form-bg rounded-xl p-3 ring-1 ring-violet-900/30">
-=======
             <form @submit.prevent="submit" novalidate class="bg-form-bg rounded-xl p-3 ring-1 ring-violet-900/30">
->>>>>>> develop
               <h3 class="text-h3 font-bold text-violet-900 text-center mb-4">Prendre <br class="lg:hidden" />rendez-vous</h3>
 
               <div class="grid grid-cols-2 gap-3 mb-3">
                 <div class="flex flex-col gap-1">
-<<<<<<< HEAD
-                  <label class="font-sans text-small font-medium text-violet-800">Nom de l'entreprise</label>
-                  <input required v-model="form.company_name" type="text" placeholder="Nom de l'entreprise" class="w-full min-w-0 h-[50px] lg:h-[43px] rounded-lg bg-white px-3 text-small text-texte-primary-dark shadow-[0_0_4px_rgba(0,0,0,0.25)] placeholder:text-texte-primary-dark/70" />
-                </div>
-                <div class="flex flex-col gap-1">
-                  <label class="font-sans text-small font-medium text-violet-800">Nombre d'employés</label>
-                  <input required min="1" v-model="form.employees_count" type="number" placeholder="ex. 1200" class="w-full min-w-0 h-[50px] lg:h-[43px] rounded-lg bg-white px-3 text-small text-texte-primary-dark shadow-[0_0_4px_rgba(0,0,0,0.25)] placeholder:text-texte-primary-dark/70" />
-=======
                   <label class="font-sans text-small font-medium text-violet-800">Nom de l'entreprise <span class="text-rouge-500">*</span></label>
                   <input required v-model="form.company_name" type="text" placeholder="Nom de l'entreprise" class="w-full min-w-0 h-[50px] lg:h-[43px] rounded-lg bg-white px-3 text-small text-texte-primary-dark shadow-[0_0_4px_rgba(0,0,0,0.25)] placeholder:text-texte-primary-dark/70" :class="{ 'ring-1 ring-rouge-500': formErrors.company_name }" />
                 </div>
                 <div class="flex flex-col gap-1">
                   <label class="font-sans text-small font-medium text-violet-800">Nombre d'employés <span class="text-rouge-500">*</span></label>
                   <input required min="1" v-model="form.employees_count" type="number" placeholder="ex. 1200" class="w-full min-w-0 h-[50px] lg:h-[43px] rounded-lg bg-white px-3 text-small text-texte-primary-dark shadow-[0_0_4px_rgba(0,0,0,0.25)] placeholder:text-texte-primary-dark/70" :class="{ 'ring-1 ring-rouge-500': formErrors.employees_count }" />
->>>>>>> develop
                 </div>
               </div>
 
               <div class="flex flex-col gap-1 mb-3">
-<<<<<<< HEAD
-                <label class="font-sans text-small font-medium text-violet-800">Adresse</label>
-                <input required v-model="form.street" type="text" placeholder="Rue n°" class="w-full min-w-0 h-[50px] lg:h-[43px] rounded-lg bg-white px-3 text-small text-texte-primary-dark shadow-[0_0_4px_rgba(0,0,0,0.25)] placeholder:text-texte-primary-dark/70" />
-=======
                 <label class="font-sans text-small font-medium text-violet-800">Adresse <span class="text-rouge-500">*</span></label>
                 <input required v-model="form.street" type="text" placeholder="Rue n°" class="w-full min-w-0 h-[50px] lg:h-[43px] rounded-lg bg-white px-3 text-small text-texte-primary-dark shadow-[0_0_4px_rgba(0,0,0,0.25)] placeholder:text-texte-primary-dark/70" :class="{ 'ring-1 ring-rouge-500': formErrors.street }" />
->>>>>>> develop
               </div>
 
               <div class="flex gap-3 mb-3">
                 <div class="flex flex-col gap-1">
-<<<<<<< HEAD
-                  <label class="font-sans text-small font-medium text-violet-800">NPA</label>
-                  <input required v-model="form.postal_code" type="text" placeholder="1200" class="w-24 min-w-0 h-[50px] lg:h-[43px] rounded-lg bg-white px-3 text-small text-texte-primary-dark shadow-[0_0_4px_rgba(0,0,0,0.25)] placeholder:text-texte-primary-dark/70" />
-                </div>
-                <div class="flex flex-col gap-1 flex-grow">
-                  <label class="font-sans text-small font-medium text-violet-800">Ville</label>
-                  <input required v-model="form.city" type="text" placeholder="Genève" class="flex-grow min-w-0 h-[50px] lg:h-[43px] rounded-lg bg-white px-3 text-small text-texte-primary-dark shadow-[0_0_4px_rgba(0,0,0,0.25)] placeholder:text-texte-primary-dark/70" />
-=======
                   <label class="font-sans text-small font-medium text-violet-800">NPA <span class="text-rouge-500">*</span></label>
                   <input required v-model="form.postal_code" type="text" placeholder="1200" class="w-24 min-w-0 h-[50px] lg:h-[43px] rounded-lg bg-white px-3 text-small text-texte-primary-dark shadow-[0_0_4px_rgba(0,0,0,0.25)] placeholder:text-texte-primary-dark/70" :class="{ 'ring-1 ring-rouge-500': formErrors.postal_code }" />
                 </div>
                 <div class="flex flex-col gap-1 flex-grow min-w-0">
                   <label class="font-sans text-small font-medium text-violet-800">Ville <span class="text-rouge-500">*</span></label>
                   <input required v-model="form.city" type="text" placeholder="Genève" class="w-full min-w-0 h-[50px] lg:h-[43px] rounded-lg bg-white px-3 text-small text-texte-primary-dark shadow-[0_0_4px_rgba(0,0,0,0.25)] placeholder:text-texte-primary-dark/70" :class="{ 'ring-1 ring-rouge-500': formErrors.city }" />
->>>>>>> develop
                 </div>
               </div>
 
               <div class="flex flex-col gap-1 mb-3">
-<<<<<<< HEAD
-                <label class="font-sans text-small font-medium text-violet-800">Adresse e-mail</label>
-                <input required v-model="form.email" type="email" placeholder="contact@entreprise.ch" class="w-full min-w-0 h-[50px] lg:h-[43px] rounded-lg bg-white px-3 text-small text-texte-primary-dark shadow-[0_0_4px_rgba(0,0,0,0.25)] placeholder:text-texte-primary-dark/70" />
-              </div>
-
-              <div class="flex flex-col gap-1 mb-4">
-                <label class="font-sans text-small font-medium text-violet-800">Téléphone</label>
-                <input v-model="form.phone" type="tel" placeholder="+41 22 000 00 00" class="w-full min-w-0 h-[50px] lg:h-[43px] rounded-lg bg-white px-3 text-small text-texte-primary-dark shadow-[0_0_4px_rgba(0,0,0,0.25)] placeholder:text-texte-primary-dark/70" />
-=======
                 <label class="font-sans text-small font-medium text-violet-800">Adresse e-mail <span class="text-rouge-500">*</span></label>
                 <input required v-model="form.email" type="email" placeholder="contact@entreprise.ch" class="w-full min-w-0 h-[50px] lg:h-[43px] rounded-lg bg-white px-3 text-small text-texte-primary-dark shadow-[0_0_4px_rgba(0,0,0,0.25)] placeholder:text-texte-primary-dark/70" :class="{ 'ring-1 ring-rouge-500': formErrors.email }" />
               </div>
@@ -426,7 +311,6 @@ function updateCardsIndex() {
               <div class="flex flex-col gap-1 mb-4">
                 <label class="font-sans text-small font-medium text-violet-800">Téléphone <span class="text-rouge-500">*</span></label>
                 <input required v-model="form.phone" type="tel" placeholder="+41 22 000 00 00" class="w-full min-w-0 h-[50px] lg:h-[43px] rounded-lg bg-white px-3 text-small text-texte-primary-dark shadow-[0_0_4px_rgba(0,0,0,0.25)] placeholder:text-texte-primary-dark/70" :class="{ 'ring-1 ring-rouge-500': formErrors.phone }" />
->>>>>>> develop
               </div>
 
               <div v-if="showPmeMessage" class="mb-4 rounded-lg bg-white p-4 text-small text-texte-primary-dark ring-1 ring-violet-900/30">
@@ -436,15 +320,6 @@ function updateCardsIndex() {
               <div v-if="status.type === 'success'" class="mb-4 rounded-lg bg-green-50 p-4 text-small text-green-800 ring-1 ring-green-300">
                 {{ status.message }}
               </div>
-<<<<<<< HEAD
-              <div v-if="status.type === 'error'" class="mb-4 rounded-lg bg-red-50 p-4 text-small text-red-800 ring-1 ring-red-300">
-                {{ status.message }}
-              </div>
-
-              <p class="text-xs text-gray-500">Vos données sont transmises au CTS et utilisées uniquement dans le cadre de l'organisation de votre collecte de sang.</p>
-              <button type="submit" class="w-full rounded-full lg:rounded-2xl bg-button-primary py-4 text-regular text-white shadow">
-                Envoyer
-=======
               <div v-if="aDesErreurs || globalError" class="mb-4 flex items-start gap-3 rounded-xl border border-rouge-500 bg-rouge-500/10 p-4">
                 <svg xmlns="http://www.w3.org/2000/svg" class="mt-0.5 h-5 w-5 shrink-0 text-rouge-600" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
                   <circle cx="12" cy="12" r="10" /><line x1="12" y1="8" x2="12" y2="13" /><line x1="12" y1="16" x2="12.01" y2="16" />
@@ -461,7 +336,6 @@ function updateCardsIndex() {
               <p class="mb-4 text-xs text-gray-500">Vos données sont transmises au CTS et utilisées uniquement dans le cadre de l'organisation de votre collecte de sang.</p>
               <button type="submit" :disabled="submitting" class="w-full rounded-full lg:rounded-2xl bg-button-primary py-4 text-regular text-white shadow transition-colors hover:bg-[#410E3F] disabled:opacity-60">
                 {{ submitting ? 'Envoi…' : 'Envoyer' }}
->>>>>>> develop
               </button>
             </form>
           </div>
@@ -472,11 +346,7 @@ function updateCardsIndex() {
 
   <!-- Three info cards -->
   <section class="py-10 pb-20">
-<<<<<<< HEAD
-    <div class="max-w-[1632px] mx-auto px-4 lg:px-[60px]">
-=======
     <div class="px-4 lg:px-[60px]">
->>>>>>> develop
       <div
         ref="cardsScroll"
         @scroll.passive="updateCardsIndex"
@@ -484,31 +354,19 @@ function updateCardsIndex() {
                lg:mx-0 lg:px-0 lg:grid lg:grid-cols-3 lg:gap-6 lg:overflow-visible"
       >
         <div class="snap-center shrink-0 w-[calc(100vw-2rem)] lg:w-auto bg-violet-50 rounded-3xl p-10 flex flex-col items-center text-center">
-<<<<<<< HEAD
-          <img :src="'/images/trophey.png'" class="h-52 w-auto" alt="Trophée" />
-=======
           <img :src="'/images/classement/trophy.png'" class="h-52 w-auto" alt="Trophée" />
->>>>>>> develop
           <h3 class="text-h3 font-bold text-violet-900 mt-6 min-h-[5rem]">Trophée de la générosité</h3>
           <p class="text-regular text-violet-900 mt-6 flex-1">Découvrez les entreprises reconnues pour leur engagement autour du don du sang</p>
           <a href="#/trophee" class="mt-6 inline-flex items-center justify-center rounded-full px-8 py-2 text-small underline underline-offset-2 w-full lg:w-56 bg-white text-violet-900 lg:bg-button-primary lg:text-beige-50 lg:ring-2 lg:ring-violet-50">En savoir plus</a>
         </div>
         <div class="snap-center shrink-0 w-[calc(100vw-2rem)] lg:w-auto bg-violet-50 rounded-3xl p-10 flex flex-col items-center text-center gap-6">
-<<<<<<< HEAD
-          <img :src="'/images/infos.png'" class="h-52 w-auto" alt="Mascotte goutte de sang qui se pose des questions" />
-=======
           <img :src="'/images/illustrations/infos.png'" class="h-52 w-auto" alt="Mascotte goutte de sang qui se pose des questions" />
->>>>>>> develop
           <h3 class="text-h3 font-bold text-violet-900">Comment se déroule une collecte ?</h3>
           <p class="text-regular text-violet-900">Organisation, logistique, communication, déroulement du jour J : retrouvez les informations pratiques pour accueillir une collecte en entreprise</p>
           <a href="#/informations" class="inline-flex items-center justify-center rounded-full px-8 py-2 text-small underline underline-offset-2 w-full lg:w-56 bg-white text-violet-900 lg:bg-button-primary lg:text-beige-50 lg:ring-2 lg:ring-violet-50">En savoir plus</a>
         </div>
         <div class="snap-center shrink-0 w-[calc(100vw-2rem)] lg:w-auto bg-violet-50 rounded-3xl p-10 flex flex-col items-center text-center">
-<<<<<<< HEAD
-          <img :src="'/images/label.png'" class="h-52 w-auto" alt="Label CTS" />
-=======
           <img :src="'/images/classement/label.png'" class="h-52 w-auto" alt="Label CTS" />
->>>>>>> develop
           <h3 class="text-h3 font-bold text-violet-900 mt-6 min-h-[5rem]">Label CTS</h3>
           <p class="text-regular text-violet-900 mt-6 flex-1">Mettre en lumière les entreprises engagées dans la promotion du don du sang</p>
           <a href="#/label" class="mt-6 inline-flex items-center justify-center rounded-full px-8 py-2 text-small underline underline-offset-2 w-full lg:w-56 bg-white text-violet-900 lg:bg-button-primary lg:text-beige-50 lg:ring-2 lg:ring-violet-50">En savoir plus</a>

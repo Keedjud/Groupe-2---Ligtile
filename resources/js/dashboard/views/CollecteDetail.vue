@@ -1,13 +1,6 @@
-<<<<<<< HEAD
-<!-- Vue détail d'une collecte + flux de questions 1→4
-     Le bouton Modifier est bloqué tant que les 4 étapes du QuestionFlow ne sont pas terminées -->
-<script setup>
-import { computed, ref } from 'vue'
-=======
 <!-- CollecteDetail -->
 <script setup>
 import { computed, ref, onMounted } from 'vue'
->>>>>>> develop
 import DashboardLayout from '../layouts/DashboardLayout.vue'
 import QuestionFlow    from '../components/QuestionFlow.vue'
 import { useCollectes }  from '../composables/useCollectes.js'
@@ -17,16 +10,6 @@ const props = defineProps({
   allerVers:  { type: Function, required: true },
 })
 
-<<<<<<< HEAD
-const { trouverParId, supprimerCollecte, chargement } = useCollectes()
-
-const collecte = computed(() => trouverParId(props.idCollecte))
-
-// Confirmation de suppression (double clic)
-const confirmeSuppression = ref(false)
-
-// Le flow de questions est terminé (émis par QuestionFlow)
-=======
 const { listeCollectes, trouverParId, chargerCollectes, supprimerCollecte, chargement } = useCollectes()
 
 const collecte = computed(() => trouverParId(props.idCollecte))
@@ -38,7 +21,6 @@ onMounted(() => {
 // Confirmation suppression
 const confirmeSuppression = ref(false)
 
->>>>>>> develop
 const questionsTerminees = ref(false)
 
 function surFlowTermine(val) {
@@ -54,19 +36,12 @@ async function gererSuppression() {
   props.allerVers('#/collectes')
 }
 
-<<<<<<< HEAD
-function formaterDate(dateStr) {
-  if (!dateStr) return ''
-  const d = new Date(dateStr)
-  return d.toLocaleDateString('fr-CH', { day: '2-digit', month: '2-digit', year: '2-digit' })
-=======
 // Format suisse
 function formaterDate(dateStr) {
   if (!dateStr) return ''
   return new Date(dateStr).toLocaleDateString('fr-CH', {
     day: '2-digit', month: '2-digit', year: 'numeric',
   })
->>>>>>> develop
 }
 
 const dureesJours = computed(() => {
@@ -168,18 +143,6 @@ const dureesJours = computed(() => {
             {{ confirmeSuppression ? 'Confirmer la suppression' : 'Supprimer' }}
           </button>
 
-<<<<<<< HEAD
-          <div class="flex gap-4">
-            <!-- Modifier (actif uniquement si le flow est fini) -->
-            <button
-              @click="allerVers('#/collectes/' + collecte.id + '/edit')"
-              class="rounded-[40px] px-5 py-2.5 font-sans text-regular text-white transition-opacity"
-              :class="questionsTerminees
-                ? 'bg-violet-900 hover:opacity-90 cursor-pointer'
-                : 'bg-violet-900/40 cursor-not-allowed'"
-              :disabled="!questionsTerminees"
-              :title="!questionsTerminees ? 'Répondez à toutes les questions avant de modifier' : 'Modifier la collecte'"
-=======
           <div class="flex flex-wrap gap-4">
             <!-- Analytics de l'entreprise -->
             <button
@@ -191,7 +154,6 @@ const dureesJours = computed(() => {
             <button
               @click="allerVers('#/collectes/' + collecte.id + '/edit')"
               class="rounded-[40px] bg-violet-900 px-5 py-2.5 font-sans text-regular text-white transition-opacity hover:opacity-90"
->>>>>>> develop
             >Modifier</button>
             <!-- Fermer -->
             <button

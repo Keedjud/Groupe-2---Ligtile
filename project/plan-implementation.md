@@ -12,40 +12,14 @@
 
 | Développeur | Rôle dans la suite |
 |-------------|-------------------|
-<<<<<<< HEAD
-| **Loïc** | Dashboard complet : UI, backend (auth Sanctum, CRUD collectes, métriques) et connexion au vrai back — déjà commencé en local |
-| **Elia** | Fix et finitions du site public |
-| **Inoé** | Cobrand complet (endpoint back + App.vue + Accueil + Quiz + Redirect + tracking), reviews, coordination |
-=======
 | **Loïc** | Maquettes — en pause sur le code. Reprend sur `cobrand/views/Prevention.vue` (Phase 7C) quand disponible. |
 | **Elia** | Fix et finitions du site public uniquement — ne touche pas au dashboard pour éviter les conflits |
 | **Inoé** | Tous les fixes dashboard (Phase 4B), cobrand complet (Phases 6 + 7), coordination |
->>>>>>> develop
 
 **Règle d'or :** Avant d'ouvrir une PR, faire `git merge develop` sur sa branche et résoudre ses propres conflits. Un reviewer ne résout jamais les conflits d'une autre personne.
 
 ---
 
-<<<<<<< HEAD
-## Bugs identifiés en production
-
-| Priorité | Bug | Responsable |
-|----------|-----|-------------|
-| 🔴 Urgent | Page Trophées cassée — `ApiTropheeController` utilise `nb_registered` supprimé de la DB | Inoé |
-| 🟡 Normal | Navigation : lien actif non mis en évidence (aucune page n'est surlignée dans le header) | Elia |
-| 🟡 Normal | Footer : lien "Accessibilité" affiché à gauche avec les icônes sociales au lieu de la droite avec les liens légaux | Elia |
-| 🟡 Normal | Email PME cassé — `contactPme.blade.php` passe un objet `Illuminate\Mail\Message` là où une string est attendue (`htmlspecialchars` crash) | Elia |
-
----
-
-## État actuel (2 juin 2026)
-
-| Développeur | En cours |
-|-------------|---------|
-| **Loïc** | Backend dashboard + connexion API — déjà commencé en local (`feature/dashboard` ou branche dédiée) |
-| **Elia** | Fix et finitions site public (`fix/public-site`) |
-| **Inoé** | Phase 5B terminée — démarre Phase 7 (cobrand frontend, branche `feature/cobrand-app`) |
-=======
 ## Bugs ouverts
 
 | Priorité | Bug | Responsable |
@@ -54,7 +28,6 @@
 | 🟡 Normal | Navigation : lien actif non mis en évidence dans le header | Elia |
 | 🟡 Normal | Footer : lien "Accessibilité" mal positionné | Elia |
 | 🟡 Normal | Email confirmation PME : crash `$message->embed()` dans `contactPme-confirmation.blade.php` | Elia |
->>>>>>> develop
 
 ---
 

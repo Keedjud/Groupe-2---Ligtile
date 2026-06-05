@@ -1,10 +1,6 @@
 <!-- Sélecteur de couleur stylé (input[type=color] habillé) -->
 <script setup>
-<<<<<<< HEAD
-const props = defineProps({
-=======
 defineProps({
->>>>>>> develop
   label:     { type: String, required: true },
   modelValue:{ type: String, default: '#681764' },
 })
@@ -13,11 +9,7 @@ const emit = defineEmits(['update:modelValue'])
 
 <template>
   <div class="flex flex-col items-start gap-1">
-<<<<<<< HEAD
-    <span class="font-sans text-regular">{{ label }}</span>
-=======
     <span class="font-sans text-small font-medium text-violet-800">{{ label }}</span>
->>>>>>> develop
     <!-- Carré couleur cliquable qui ouvre le color picker natif -->
     <label class="cursor-pointer">
       <div

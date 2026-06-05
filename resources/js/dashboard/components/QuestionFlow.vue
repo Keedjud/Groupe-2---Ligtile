@@ -1,15 +1,9 @@
-<<<<<<< HEAD
-<!-- Flux de questions (étapes 1 a 4) -->
-<script setup>
-import { ref, computed, watch } from 'vue'
-=======
 <!-- Flux de questions (étapes 1 à 3) -->
 <script setup>
 import { ref, computed, watch } from 'vue'
 import { useFetchApi } from '@/composables/api/useFetchApi'
 
 const { fetchApi } = useFetchApi()
->>>>>>> develop
 
 const props = defineProps({
   collecte:  { type: Object, required: true },
@@ -18,11 +12,7 @@ const props = defineProps({
 
 const emit = defineEmits(['flow-termine'])
 
-<<<<<<< HEAD
-// Étape révélée (1 = seule étape 1 visible, 2 = étapes 1+2, etc.)
-=======
 // Étape révélée
->>>>>>> develop
 const etapeRevele = ref(1)
 
 // Overlay pour corriger les infos
@@ -30,23 +20,6 @@ const overlayNonVisible = ref(false)
 
 // États des actions
 const lienGenere     = ref(false)
-<<<<<<< HEAD
-const kitGenere      = ref(false)
-const mailEnvoye     = ref(false)
-const pressePapierOk = ref(false)
-
-// Etats de chargement
-const generationLienEnCours = ref(false)
-const generationKitEnCours  = ref(false)
-const envoiMailEnCours      = ref(false)
-
-const lienCoBrande = ref('')
-
-// Le flow est terminé quand les 4 étapes sont validées
-const flowTermine = computed(() => mailEnvoye.value === true)
-
-// Émet l'événement à chaque changement
-=======
 const mailEnvoye     = ref(false)
 const pressePapierOk = ref(false)
 const envoiMailEnCours = ref(false)
@@ -56,35 +29,17 @@ const erreurEnvoi  = ref('')
 
 const flowTermine = computed(() => mailEnvoye.value === true)
 
->>>>>>> develop
 watch(flowTermine, (val) => {
   emit('flow-termine', val)
 })
 
 // Vérifications des infos de la collecte
-<<<<<<< HEAD
-// Liste des vérifications sur les infos de la collecte
-=======
->>>>>>> develop
 const verificationsInfos = computed(() => {
   if (!props.collecte) return []
   const problemes = []
   const e = props.collecte.entreprise
   const a = props.collecte.adresse
 
-<<<<<<< HEAD
-  if (!e?.nom || e.nom.trim() === '')
-    problemes.push({ champ: "Nom de l'entreprise", message: 'Le nom est manquant.' })
-  if (!e?.email || !e.email.includes('@'))
-    problemes.push({ champ: 'Adresse e-mail', message: "L'adresse e-mail est invalide ou manquante." })
-  if (!e?.telephone || e.telephone.trim() === '')
-    problemes.push({ champ: 'Téléphone', message: 'Le numéro de téléphone est manquant.' })
-  if (!a?.rue || a.rue.trim() === '')
-    problemes.push({ champ: 'Adresse', message: "La rue de l'adresse est manquante." })
-  if (!a?.npa || a.npa.trim() === '')
-    problemes.push({ champ: 'NPA', message: 'Le code postal est manquant.' })
-  if (!a?.ville || a.ville.trim() === '')
-=======
   if (!String(e?.nom ?? '').trim())
     problemes.push({ champ: "Nom de l'entreprise", message: 'Le nom est manquant.' })
   if (!String(e?.email ?? '').includes('@'))
@@ -96,7 +51,6 @@ const verificationsInfos = computed(() => {
   if (!String(a?.npa ?? '').trim())
     problemes.push({ champ: 'NPA', message: 'Le code postal est manquant.' })
   if (!String(a?.ville ?? '').trim())
->>>>>>> develop
     problemes.push({ champ: 'Ville', message: 'La ville est manquante.' })
 
   // Vérif dates
@@ -113,13 +67,7 @@ const verificationsInfos = computed(() => {
 })
 
 function repondreOui() {
-<<<<<<< HEAD
-  // Vérifie d'abord si les infos sont correctes
   if (verificationsInfos.value.length > 0) {
-    // Il y a des problèmes → afficher l'overlay avec les détails
-=======
-  if (verificationsInfos.value.length > 0) {
->>>>>>> develop
     overlayNonVisible.value = true
     return
   }
@@ -127,10 +75,6 @@ function repondreOui() {
 }
 
 function repondreNon() {
-<<<<<<< HEAD
-  // Affiche l'overlay avec les champs à corriger
-=======
->>>>>>> develop
   overlayNonVisible.value = true
 }
 
@@ -143,22 +87,10 @@ function fermerOverlay() {
   overlayNonVisible.value = false
 }
 
-<<<<<<< HEAD
-// Étape 2 : génération du lien
-async function genererLien() {
-  generationLienEnCours.value = true
-  // Simule un appel API
-  await new Promise(r => setTimeout(r, 800))
-  lienCoBrande.value = window.location.origin + '/' + props.collecte.jeton_public
-  lienGenere.value = true
-  generationLienEnCours.value = false
-  // Déverrouille l'étape suivante uniquement après la "génération"
-=======
 // Étape 2 : génération du lien (calcul instantané depuis jeton_public)
 function genererLien() {
   lienCoBrande.value = window.location.origin + '/' + props.collecte.jeton_public
   lienGenere.value = true
->>>>>>> develop
   etapeRevele.value = 3
 }
 
@@ -172,24 +104,6 @@ async function sauvegarderLienMemoire() {
   }
 }
 
-<<<<<<< HEAD
-// Étape 3 : kit de communication
-async function genererKit() {
-  generationKitEnCours.value = true
-  await new Promise(r => setTimeout(r, 1000))
-  kitGenere.value = true
-  generationKitEnCours.value = false
-  // Déverrouille l'étape 4
-  etapeRevele.value = 4
-}
-
-// Étape 4 : envoi par mail
-async function envoyerMail() {
-  envoiMailEnCours.value = true
-  await new Promise(r => setTimeout(r, 800))
-  mailEnvoye.value = true
-  envoiMailEnCours.value = false
-=======
 // Étape 3 : envoi du kit par mail à l'entreprise partenaire
 async function envoyerMail() {
   envoiMailEnCours.value = true
@@ -207,16 +121,11 @@ async function envoyerMail() {
   } finally {
     envoiMailEnCours.value = false
   }
->>>>>>> develop
 }
 </script>
 
 <template>
   <div class="relative">
-<<<<<<< HEAD
-    <!-- Bloc questions (fond beige semi-transparent, coins arrondis 20px) -->
-=======
->>>>>>> develop
     <div class="rounded-[20px] bg-beige-50/60 p-3 flex flex-col gap-9">
 
       <!-- Étape 1 : Informations correctes ? -->
@@ -229,18 +138,12 @@ async function envoyerMail() {
           <span class="font-sans text-h5">Les informations sont-elles correctes ?</span>
           <div v-if="etapeRevele === 1" class="flex gap-4">
             <button
-<<<<<<< HEAD
-=======
               type="button"
->>>>>>> develop
               @click="repondreNon"
               class="rounded-[40px] bg-rouge-600 px-6 py-2.5 font-sans text-regular text-white transition-opacity hover:opacity-90"
             >Non</button>
             <button
-<<<<<<< HEAD
-=======
               type="button"
->>>>>>> develop
               @click="repondreOui"
               class="rounded-[40px] bg-vert-400 px-6 py-2.5 font-sans text-regular text-white transition-opacity hover:opacity-90"
             >Oui</button>
@@ -265,28 +168,11 @@ async function envoyerMail() {
             <div class="flex items-center gap-4">
               <span class="font-sans text-h5">Générer le lien du site</span>
               <button
-<<<<<<< HEAD
-                v-if="!lienGenere"
-                @click="genererLien"
-                :disabled="generationLienEnCours"
-                class="rounded-[40px] bg-violet-900 px-5 py-2 font-sans text-small text-white transition-opacity hover:opacity-90 disabled:opacity-60"
-              >
-                <span v-if="generationLienEnCours" class="flex items-center gap-2">
-                  <svg class="h-4 w-4 animate-spin" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
-                    <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4" />
-                    <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.4 0 0 5.4 0 12h4z" />
-                  </svg>
-                  Génération…
-                </span>
-                <span v-else>Générer</span>
-              </button>
-=======
                 type="button"
                 v-if="!lienGenere"
                 @click="genererLien"
                 class="rounded-[40px] bg-violet-900 px-5 py-2 font-sans text-small text-white transition-opacity hover:opacity-90"
               >Générer</button>
->>>>>>> develop
               <span v-else class="inline-flex items-center gap-2 rounded-[40px] bg-vert-400 px-5 py-2 font-sans text-small text-white">
                 <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="3">
                   <path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7" />
@@ -300,10 +186,7 @@ async function envoyerMail() {
               <div class="flex items-center gap-2 rounded-lg bg-white px-3 py-2 shadow-[0_0_4px_rgba(0,0,0,0.15)]">
                 <span class="select-all font-sans text-small text-violet-900 break-all">{{ lienCoBrande }}</span>
                 <button
-<<<<<<< HEAD
-=======
                   type="button"
->>>>>>> develop
                   @click="sauvegarderLienMemoire"
                   class="flex h-10 w-10 shrink-0 items-center justify-center rounded-lg bg-white text-violet-700 shadow-[0_0_4px_rgba(0,0,0,0.25)] transition-colors hover:bg-violet-50"
                   :title="pressePapierOk ? 'Copié !' : 'Copier le lien'"
@@ -322,74 +205,12 @@ async function envoyerMail() {
         </div>
       </Transition>
 
-<<<<<<< HEAD
-      <!-- Étape 3 : Kit de communication -->
-=======
       <!-- Étape 3 : Envoyer le kit -->
->>>>>>> develop
       <Transition name="glisser">
         <div v-if="etapeRevele >= 3" class="flex items-start gap-7">
           <div class="flex h-9 w-9 shrink-0 items-center justify-center rounded-full bg-violet-500 font-sans text-regular text-black">
             3
           </div>
-<<<<<<< HEAD
-          <div class="flex items-center gap-4">
-            <span class="font-sans text-h5">Générer le kit de communication</span>
-            <button
-              v-if="!kitGenere"
-              @click="genererKit"
-              :disabled="generationKitEnCours"
-              class="rounded-[40px] bg-violet-900 px-5 py-2 font-sans text-small text-white transition-opacity hover:opacity-90 disabled:opacity-60"
-            >
-              <span v-if="generationKitEnCours" class="flex items-center gap-2">
-                <svg class="h-4 w-4 animate-spin" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
-                  <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4" />
-                  <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.4 0 0 5.4 0 12h4z" />
-                </svg>
-                Génération…
-              </span>
-              <span v-else>Générer</span>
-            </button>
-            <span v-else class="inline-flex items-center gap-2 rounded-[40px] bg-vert-400 px-5 py-2 font-sans text-small text-white">
-              <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="3">
-                <path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7" />
-              </svg>
-              Kit généré
-            </span>
-          </div>
-        </div>
-      </Transition>
-
-      <!-- Étape 4 : Envoyer le kit -->
-      <Transition name="glisser">
-        <div v-if="etapeRevele >= 4" class="flex items-start gap-7">
-          <div class="flex h-9 w-9 shrink-0 items-center justify-center rounded-full bg-violet-500 font-sans text-regular text-black">
-            4
-          </div>
-          <div class="flex items-center gap-4">
-            <span class="font-sans text-h5">Envoyer le kit par mail</span>
-            <button
-              v-if="!mailEnvoye"
-              @click="envoyerMail"
-              :disabled="envoiMailEnCours"
-              class="rounded-[40px] bg-violet-900 px-5 py-2 font-sans text-small text-white transition-opacity hover:opacity-90 disabled:opacity-60"
-            >
-              <span v-if="envoiMailEnCours" class="flex items-center gap-2">
-                <svg class="h-4 w-4 animate-spin" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
-                  <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4" />
-                  <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.4 0 0 5.4 0 12h4z" />
-                </svg>
-                Envoi…
-              </span>
-              <span v-else>Envoyer</span>
-            </button>
-            <span v-else class="inline-flex items-center gap-2 rounded-[40px] bg-vert-400 px-5 py-2 font-sans text-small text-white">
-              <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="3">
-                <path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7" />
-              </svg>
-              Envoyé
-            </span>
-=======
           <div class="flex flex-col gap-2">
             <div class="flex items-center gap-4">
               <span class="font-sans text-h5">Envoyer le kit par mail</span>
@@ -417,7 +238,6 @@ async function envoyerMail() {
               </span>
             </div>
             <p v-if="erreurEnvoi" class="font-sans text-small text-rouge-600">{{ erreurEnvoi }}</p>
->>>>>>> develop
           </div>
         </div>
       </Transition>
@@ -459,10 +279,6 @@ async function envoyerMail() {
               </ul>
             </div>
 
-<<<<<<< HEAD
-            <!-- Si pas de problème détecté automatiquement (clic "Non" manuel) -->
-=======
->>>>>>> develop
             <p v-else class="mb-6 text-center font-sans text-regular text-violet-800">
               Veuillez vérifier et corriger les informations de la collecte avant de continuer.
             </p>
@@ -470,20 +286,14 @@ async function envoyerMail() {
             <!-- Actions -->
             <div class="flex justify-center gap-4">
               <button
-<<<<<<< HEAD
-=======
                 type="button"
->>>>>>> develop
                 @click="fermerOverlay"
                 class="rounded-[40px] bg-white px-6 py-3 font-sans text-regular text-texte-secondary shadow-[0_0_4px_rgba(0,0,0,0.15)] transition-opacity hover:opacity-80"
               >
                 Annuler
               </button>
               <button
-<<<<<<< HEAD
-=======
                 type="button"
->>>>>>> develop
                 @click="fermerOverlayEtEditer"
                 class="rounded-[40px] bg-violet-900 px-8 py-3 font-sans text-regular text-white hover:opacity-90 transition-opacity"
               >
