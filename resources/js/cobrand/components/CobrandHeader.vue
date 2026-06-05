@@ -5,7 +5,6 @@ defineProps({
 })
 
 const links = [
-  { key: 'accueil',     label: 'Accueil',    href: '#/accueil' },
   { key: 'inscription', label: 'Formulaire', href: '#/inscription' },
   { key: 'prevention',  label: 'Prévention', href: '#/prevention' },
 ]
@@ -17,7 +16,7 @@ const links = [
 
       <div class="flex items-center gap-[22px]">
         <a href="#/accueil" class="shrink-0">
-          <img :src="logo" alt="HUG — Hôpitaux Universitaires de Genève" class="h-7 w-auto" />
+          <img :src="logo" alt="logo HUG" class="h-7 w-auto" />
         </a>
         <span class="h-[35px] w-px bg-gris-50" aria-hidden="true"></span>
         <!-- Logo entreprise co-brandée (placeholder Migros). -->

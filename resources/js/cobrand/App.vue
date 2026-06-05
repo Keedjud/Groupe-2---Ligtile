@@ -30,7 +30,7 @@ const { currentComponent, currentRoute } = useHashRoute(routes)
 <template>
   <div class="min-h-screen bg-beige-50 text-violet-900">
     <CobrandHeader :current="currentRoute.key" />
-    <main class="mx-auto max-w-[1200px] px-6 py-10 lg:px-10">
+    <main class="mx-auto max-w-[1300px] px-6 py-10 lg:px-0">
       <component :is="currentComponent" :collection="collection" />
     </main>
   </div>
