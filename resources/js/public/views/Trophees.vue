@@ -4,6 +4,7 @@ import { useTrophees } from '../composables/useTrophees'
 import { useDisclosure } from '@/composables/useDisclosure'
 import { companyForRank } from '../composables/usePodiumLogos'
 import PodiumDisplay from '../components/PodiumDisplay.vue'
+import Trophy3dModal from '../components/Trophy3dModal.vue'
 
 const { podium, history, loading, error, fetchNow } = useTrophees()
 const { isOpen: showCriteria, toggle: toggleCriteria } = useDisclosure()
@@ -33,6 +34,9 @@ function trapFocus(event) {
     if (document.activeElement === last) { event.preventDefault(); first.focus() }
   }
 }
+// Aperçu 3D du trophée (modèle .glb dans public/images/3D)
+const { isOpen: show3d, toggle: toggle3d } = useDisclosure()
+const trophyModelSrc = '/images/3D/Untitled.glb'
 </script>
 
 <template>
@@ -77,9 +81,13 @@ function trapFocus(event) {
             class="hidden md:block w-[178px] h-auto object-contain"
           />
           <!--Image purement décorative, pas besoin d'alt, bonne pratique-->
-          <div class="flex h-[45px] w-[250px] cursor-pointer items-center justify-center gap-2 rounded-[40px] bg-texte-primary-light px-3 py-2 shadow-[0_0_4px_rgba(0,0,0,0.25)] transition-shadow hover:shadow-md">
+          <button
+            type="button"
+            @click="toggle3d"
+            class="flex h-[45px] w-[250px] cursor-pointer items-center justify-center gap-2 rounded-[40px] bg-texte-primary-light px-3 py-2 shadow-[0_0_4px_rgba(0,0,0,0.25)] transition-shadow hover:shadow-md"
+          >
             <span class="font-sans text-regular text-texte-secondary">Découvrir le trophée →</span>
-          </div>
+          </button>
         </div>
       </div>
     </section>
@@ -228,6 +236,9 @@ function trapFocus(event) {
         </div>
       </div>
     </Transition>
+
+    <!-- Aperçu 3D du trophée -->
+    <Trophy3dModal v-model="show3d" :src="trophyModelSrc" />
 
     <!-- ===== Section D : Tableau des lauréats ===== -->
     <section class="bg-violet-100 px-4 py-10 lg:px-[60px] lg:py-[40px]">

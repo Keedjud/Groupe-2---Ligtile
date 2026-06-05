@@ -26,7 +26,14 @@ export default defineConfig({
             ],
         }),
         tailwindcss(),
-        vue(),
+        vue({
+            template: {
+                compilerOptions: {
+                    // <model-viewer> est un web component (Google), pas un composant Vue
+                    isCustomElement: (tag) => tag === 'model-viewer',
+                },
+            },
+        }),
     ],
     server: {
         proxy: {
