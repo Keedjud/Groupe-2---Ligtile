@@ -12,12 +12,14 @@ defineProps({
     <div
         class="relative flex min-h-screen flex-col bg-beige-50 font-sans text-light-primary antialiased"
     >
-        <div
-            class="pointer-events-none absolute inset-0 z-0 bg-[url('/images/cobrand/quizz/motif-tuile-blanc.png')] bg-repeat opacity-50"
-            aria-hidden="true"
-        ></div>
+        <template v-if="!['accueil', 'prevention'].includes(current)">
+            <div
+                class="pointer-events-none absolute inset-0 z-0 bg-[url('/images/cobrand/quizz/motif-tuile-blanc.png')] bg-repeat opacity-50"
+                aria-hidden="true"
+            ></div>
 
-        <BackgroundMotifs />
+            <BackgroundMotifs />
+        </template>
 
         <FictifBanner class="relative z-30" />
 
