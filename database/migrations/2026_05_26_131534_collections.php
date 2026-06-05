@@ -15,7 +15,12 @@ return new class extends Migration
             $table->id();
             $table->foreignId('company_id')->constrained()->restrictOnDelete();
             $table->foreignId('user_id')->nullable()->constrained()->nullOnDelete();
-            $table->foreignId('address_id')->constrained()->restrictOnDelete();
+            $table->string('contact_email', 100);
+            $table->string('contact_phone', 50)->nullable();
+            $table->string('venue_street', 255);
+            $table->string('venue_number', 20);
+            $table->string('venue_postal_code', 10);
+            $table->string('venue_city', 100);
             $table->datetime('start_date');
             $table->datetime('end_date');
             $table->integer('capacity');
