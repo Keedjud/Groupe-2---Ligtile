@@ -73,7 +73,7 @@ La saisie correcte des dates est entièrement sous la responsabilité du CTS. Au
 
 **Disponibilité du site cobrandé :**
 - **Date de début de disponibilité** — automatique : correspond à la date d'ajout de la collecte en base de données.
-- **Date de fin de disponibilité** — automatique : 3 jours après la date de fin de collecte saisie.
+- **Date de fin de disponibilité** — automatique : 7 jours après la date de fin de collecte saisie.
 
 ---
 

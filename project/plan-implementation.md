@@ -1,6 +1,6 @@
 # Plan d'implémentation — Fin de projet
 
-> Mis à jour le 5 juin 2026 (dernière màj : page labels publique + Phase 2B terminée). Ce document définit ce qui reste à faire pour finir le projet.
+> Mis à jour le 5 juin 2026 (dernière màj : Phase 4F terminée — gestion trophées dashboard ; prochaine branche : cobrand Accueil.vue + Prevention.vue). Ce document définit ce qui reste à faire pour finir le projet.
 
 ---
 
@@ -18,7 +18,7 @@
 
 | Priorité | Bug | Fichier(s) |
 |----------|-----|-----------|
-| 🟡 Normal | `CollecteForm.vue` + `CollecteDetail.vue` : aperçu co-branding en temps réel + warning contraste WCAG | `CollecteForm.vue`, `useColorContrast.js` (Phase 4C — en attente maquettes) |
+| 🟡 Normal | Aperçu co-branding en temps réel + warning contraste WCAG | `CollecteForm.vue`, `useColorContrast.js` (Phase 4C — en attente maquettes) |
 
 ---
 
@@ -32,22 +32,26 @@ Les pages publiques (Trophées, Labels) ne font **pas de cache** : chaque charge
 
 ### Frontend dashboard
 
-- [ ] **URGENT** Adapter `CollecteForm.vue` aux nouveaux champs backend — `venue_*`, `contact_email`, `contact_phone` (Phase 4D)
-- [ ] **URGENT** Adapter `CollecteDetail.vue` à l'affichage des nouveaux champs (Phase 4D)
-- [ ] Gestion des entreprises — nouvelle vue listant les entreprises et leurs contacts, avec édition (Phase 4E)
-- [ ] Gestion des trophées — nouvel onglet + formulaire pour saisir les lauréats d'une nouvelle année (Phase 4F)
+- [x] Adapter `CollecteForm.vue` aux nouveaux champs backend — `venue_*`, `contact_email`, `contact_phone` (Phase 4D)
+- [x] Adapter `CollecteDetail.vue` à l'affichage des nouveaux champs (Phase 4D)
+- [x] Gestion des entreprises — nouvelle vue listant les entreprises et leurs contacts, avec édition (Phase 4E)
+- [x] Gestion des trophées — nouvel onglet + formulaire pour saisir les lauréats d'une nouvelle année (Phase 4F)
 - [ ] Aperçu co-branding + warning contraste WCAG — `CollecteForm.vue`, `useColorContrast.js` (Phase 4C — en attente maquettes)
 - [ ] Aperçu couleurs primaire + secondaire en lecture — `CollecteDetail.vue` (Phase 4C — en attente maquettes)
 
 ### Frontend cobrand
 
-- [ ] `cobrand/App.vue` — routage hash, co-branding CSS, fenêtre de disponibilité
-- [ ] `cobrand/views/Accueil.vue`
-- [ ] `cobrand/views/Prevention.vue` — scrollytelling
-- [ ] `cobrand/views/Quiz.vue` — P1 + P2 + tracking
-- [ ] `cobrand/views/Redirect.vue` — page Onedoc + tracking
-- [ ] `cobrand/composables/useQuizStore.js`
-- [ ] `cobrand/constants/quizQuestions.js` — slugs stables P1 + P2
+- [x] `cobrand/App.vue` — routage hash, co-branding CSS (fenêtre de disponibilité côté frontend à finaliser avec le backend)
+- [ ] `cobrand/views/Accueil.vue` — placeholder actuel, à implémenter (Phase 7B)
+- [ ] `cobrand/views/Prevention.vue` — placeholder actuel, scrollytelling à implémenter (Phase 7C)
+- [x] `cobrand/views/Quiz.vue` — P1 + P2 + tracking
+- [x] `cobrand/views/Redirect.vue` — page Onedoc + tracking
+- [x] `cobrand/composables/useQuizStore.js`
+- [x] `cobrand/constants/quizQuestions.js` — slugs stables P1 + P2
+
+### Backend cobrand
+
+- [ ] `ApiCobrandController::show()` — ajouter vérification fenêtre de disponibilité (404 si avant `created_at` ou après `end_date + 7j`)
 
 ---
 
@@ -117,58 +121,28 @@ Namespace, migrations, modèles, routes réorganisées, seeder, vie privée.
 
 ---
 
-### Phase 4D — Adaptation frontend dashboard au nouveau modèle de données ← URGENT
+### ✅ Phase 4D — Adaptation frontend dashboard au nouveau modèle de données — TERMINÉE
 
-Suite du refactoring Phase 5B : le backend a changé mais le frontend n'a pas encore suivi.
-
-**`CollecteForm.vue`** — renommer les champs envoyés à l'API :
-
-| Ancien (cassé) | Nouveau |
-|----------------|---------|
-| `adresse.rue` | `venue_street` |
-| `adresse.numero` | `venue_number` |
-| `adresse.npa` | `venue_postal_code` |
-| `adresse.ville` | `venue_city` |
-| `entreprise.email` | `contact_email` |
-| `entreprise.telephone` | `contact_phone` |
-
-Aussi mettre à jour le pré-remplissage en mode édition (lecture depuis `collecte.venue_street` etc. au lieu de `collecte.adresse.rue`).
-
-**`CollecteDetail.vue`** — mettre à jour l'affichage :
-
-| Ancien (cassé) | Nouveau |
-|----------------|---------|
-| `collecte.adresse.rue` / `.numero` | `collecte.venue_street` / `.venue_number` |
-| `collecte.adresse.npa` | `collecte.venue_postal_code` |
-| `collecte.adresse.ville` | `collecte.venue_city` |
-| `collecte.entreprise.email` | `collecte.contact_email` |
-| `collecte.entreprise.telephone` | `collecte.contact_phone` |
+Correction centralisée dans `useCollectes.js` (adaptateurs `adapterDeApi` / `adapterVersApi`) :
+- `adapterDeApi` lit désormais `c.venue_street`, `c.contact_email`, etc. depuis la réponse API
+- `adapterVersApi` envoie `venue_street`, `contact_email`, etc. à la racine du payload
+- `CollecteForm.vue` (mode édition), `CollecteDetail.vue` et `QuestionFlow.vue` mis à jour pour lire `collecte.contact_email` / `collecte.contact_phone` au lieu de `collecte.entreprise.email/telephone`
+- `ManageCollectionController.update()` corrigé pour retourner `nb_inscrits` (loadCount manquant)
 
 ---
 
-### Phase 4E — Gestion des entreprises dans le dashboard
+### ✅ Phase 4E — Gestion des entreprises dans le dashboard — TERMINÉE
 
-Nouvelle vue dédiée permettant de lister les entreprises et d'éditer leurs informations (nom, nb_employés, adresse du siège, contact référent).
-
-**Backend à créer :**
-
-| Route | Controller | Action |
-|-------|-----------|--------|
-| `GET /api/v1/companies` | `ManageCompanyController` | Liste paginée |
-| `GET /api/v1/companies/{company}` | `ManageCompanyController` | Détail |
-| `PUT /api/v1/companies/{company}` | `ManageCompanyController` | Mise à jour |
-
-> Pas de `POST` ni `DELETE` — une entreprise est créée automatiquement lors de la création d'une collecte, et ne doit pas être supprimée indépendamment (cascade sur les collectes).
-
-**Frontend à créer :**
-
-- `dashboard/views/Companies.vue` — liste des entreprises avec recherche
-- `dashboard/views/CompanyDetail.vue` — fiche entreprise (infos + contact + liste de ses collectes)
-- Ajouter l'entrée dans `SidebarNav.vue`
+- `ManageCompanyController` : `index` (GET + ?search=), `show`, `update`
+- Routes `GET/PUT /api/v1/companies` et `/companies/{company}` dans `dashboard.php`
+- `useCompanies.js` : composable avec `chargerEntreprises`, `chargerEntreprise`, `mettreAJourEntreprise`
+- `Companies.vue` : tableau avec recherche debounce, clic → fiche
+- `CompanyDetail.vue` : fiche lecture + édition inline (nom, nb_employés, adresse siège, contact)
+- `SidebarNav.vue` + `App.vue` : entrée "Entreprises" + routes `#/entreprises` et `#/entreprises/:id`
 
 ---
 
-### Phase 4F — Gestion des trophées dans le dashboard
+### ✅ Phase 4F — Gestion des trophées dans le dashboard — TERMINÉE
 
 Nouvel onglet permettant au CTS de saisir les lauréats d'une nouvelle année en sélectionnant des entreprises déjà en base.
 
@@ -238,6 +212,18 @@ Endpoints :
 
 **Prérequis :** Phase 5B ✅, Phase 6 ✅
 
+#### ✅ Phase 7A — `cobrand/App.vue` — TERMINÉE
+
+Routage hash, injection des couleurs cobrand en CSS vars, gestion de `initSession`.
+
+---
+
+#### ✅ Phase 7D — Quiz + Redirect — TERMINÉE
+
+`quizQuestions.js` (8 questions P1 obligatoires + 10 questions P2 optionnelles avec slugs stables), `useQuizStore.js` (logique complète P1/P2 + tracking), `Quiz.vue`, `Redirect.vue` (tracking `quiz_completed` + `onedoc_clicked`).
+
+---
+
 #### Fenêtre de disponibilité du site cobrand
 
 Les dates de collecte (`start_date` / `end_date`) sont les dates réelles de l'événement. La disponibilité du site cobrand suit une logique différente :
@@ -262,19 +248,13 @@ Les dates de collecte (`start_date` / `end_date`) sont les dates réelles de l'�
 }
 ```
 
-> À compléter dans `ApiCobrandController` : ajouter le compte d'inscrits (`onedoc_clicked`) pour l'affichage sur `Accueil.vue`.
+> `nb_inscrits`, `places_restantes` et `taux_remplissage` sont déjà calculés et retournés par `ApiCobrandController` — prêts à l'emploi dans `Accueil.vue`.
 
 ---
 
-**7A — `cobrand/App.vue`**
+**7B — `cobrand/views/Accueil.vue`** ← PROCHAINE TÂCHE
 
-Routage hash, injection des couleurs cobrand en CSS vars, gestion de la fenêtre de disponibilité (`created_at` → `end_date + 7j`).
-
----
-
-**7B — `cobrand/views/Accueil.vue`**
-
-- Fetch collection via `useQuizStore`
+- Données disponibles via `useCobrandSession` : `companyName`, `logoUrl`, `startDate`, `endDate`, `capacity`, `nbInscrits`, `placesRestantes`, `tauxRemplissage`, `venue`
 - Affichage : nom entreprise, logo, lieu, dates, compteur inscrits / capacité
 - CTA → Prevention
 
@@ -286,17 +266,7 @@ Scrollytelling. Émet `prevention_entered` / `prevention_exited` (avec `engaged`
 
 ---
 
-**7D — Quiz + Redirect**
-
-Ordre de développement conseillé :
-1. `cobrand/constants/quizQuestions.js` — définir P1 + P2 avec slugs stables (`age`, `poids`, `sante-generale`, `medicaments`, `voyages` pour P1)
-2. `useQuizStore.js` — fetch API, navigation entre vues, UUID `session_id`, helpers `sendQuizEvent()` / `sendPageEvent()`
-3. `Redirect.vue` — message intermédiaire, track `onedoc_clicked` au clic, ouvrir `onedoc_url`
-4. `Quiz.vue` — P1 éliminatoire + P2 informative/skippable
-
-**Règle critique slugs :** ne jamais modifier un slug en prod sans migrer les données historiques (`UPDATE quiz_events SET question_slug = 'nouveau' WHERE question_slug = 'ancien'`).
-
-**Après 7D :**
+**Après 7B + 7C :**
 - Aligner les slugs hardcodés dans `DashboardMetricsController::performanceParQuestion()` avec ceux définis dans `quizQuestions.js`
 - Renommer `participant_count` → `companies_count` dans `ApiTropheeController` (représente des entreprises, pas des participants)
 
@@ -322,13 +292,16 @@ Phase 1 ✅
   ├── Phase 4 ✅      (dashboard UI)
   │     ├── Phase 4B ✅   (fix post-audit)
   │     ├── Phase 4C      (co-branding)          ← en attente maquettes
-  │     ├── Phase 4D      (adaptation new model) ← URGENT
-  │     ├── Phase 4E      (gestion entreprises)
-  │     └── Phase 4F      (gestion trophées)
+  │     ├── Phase 4D ✅   (adaptation new model)
+  │     ├── Phase 4E ✅   (gestion entreprises)
+  │     └── Phase 4F ✅   (gestion trophées)
   └── Phase 5 ✅      (backend dashboard)
         └── Phase 5B ✅   (backend cobrand + refactoring)
               └── Phase 6 ✅   (tracking)
-                    └── Phase 7A→D   (cobrand)            ← en cours
-                          └── Phase 8C  (renommage)       ← après 7D
+                    └── Phase 7A ✅  (App.vue cobrand)
+                          └── Phase 7D ✅  (quiz + redirect)
+                                └── Phase 7B    (Accueil.vue)    ← PROCHAINE TÂCHE
+                                      └── Phase 7C  (Prevention.vue)
+                                            └── Phase 8C  (renommage)
 Phase 8A+8B ✅  (cleanup)
 ```

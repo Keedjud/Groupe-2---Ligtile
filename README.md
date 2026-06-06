@@ -119,7 +119,7 @@ window.addEventListener('hashchange', () => {
 | Espace | Exemples d'URLs |
 |--------|----------------|
 | Site public | `hug-collecte.ch/#trophees`, `hug-collecte.ch/#label` |
-| Dashboard | `hug-collecte.ch/dashboard#collectes`, `hug-collecte.ch/dashboard#collecte/42` |
+| Dashboard | `hug-collecte.ch/dashboard#/collectes`, `hug-collecte.ch/dashboard#/collectes/42` |
 | Site cobrandé | `hug-collecte.ch/abc123#prevention`, `hug-collecte.ch/abc123#quiz` |
 
 ### État partagé — composable module-level
@@ -322,7 +322,7 @@ php artisan config:cache && php artisan route:cache && php artisan view:cache
 
 ## KPIs du dashboard
 
-Accessibles depuis l'onglet `#metriques` du dashboard CTS.
+Accessibles depuis l'onglet `#/analytics` du dashboard CTS.
 
 ### Vue d'ensemble opérationnelle
 

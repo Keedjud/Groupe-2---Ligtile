@@ -19,15 +19,15 @@ export function useCollectes() {
         id: c.company?.id ?? c.company_id ?? null,
         nom: c.company?.name || '',
         nb_employes: c.company?.nb_employee || 0,
-        email: c.company?.email || '',
-        telephone: c.company?.phone_number || ''
       },
       adresse: {
-        rue: c.address?.street || '',
-        numero: c.address?.number != null ? String(c.address.number) : '',
-        npa: c.address?.postal_code != null ? String(c.address.postal_code) : '',
-        ville: c.address?.city || ''
+        rue: c.venue_street || '',
+        numero: c.venue_number != null ? String(c.venue_number) : '',
+        npa: c.venue_postal_code != null ? String(c.venue_postal_code) : '',
+        ville: c.venue_city || '',
       },
+      contact_email: c.contact_email || '',
+      contact_phone: c.contact_phone || '',
       date_debut: c.start_date,
       date_fin: c.end_date,
       couleur_principale: c.primary_color,
@@ -43,28 +43,25 @@ export function useCollectes() {
 
   // Front → API
   function adapterVersApi(donnees) {
-    return {
-      company: {
-        name: donnees.entreprise.nom,
-        nb_employee: donnees.entreprise.nb_employes,
-        email: donnees.entreprise.email,
-        phone_number: donnees.entreprise.telephone
-      },
-      address: {
-        street: donnees.adresse.rue,
-        number: donnees.adresse.numero,
-        postal_code: donnees.adresse.npa,
-        city: donnees.adresse.ville
-      },
-      start_date: donnees.date_debut,
-      end_date: donnees.date_fin,
-      capacity: donnees.capacity,
-      primary_color: donnees.couleur_principale,
-      secondary_color: donnees.couleur_secondaire,
-      logo_url: donnees.logo_url,
-      onedoc_url: donnees.onedoc_url,
-      kit_url: donnees.kit_url,
+    const payload = {
+      contact_email:     donnees.contact_email,
+      contact_phone:     donnees.contact_phone,
+      venue_street:      donnees.adresse.rue,
+      venue_number:      donnees.adresse.numero,
+      venue_postal_code: donnees.adresse.npa,
+      venue_city:        donnees.adresse.ville,
+      start_date:        donnees.date_debut,
+      end_date:          donnees.date_fin,
+      capacity:          donnees.capacity,
+      primary_color:     donnees.couleur_principale,
+      secondary_color:   donnees.couleur_secondaire,
+      logo_url:          donnees.logo_url,
+      onedoc_url:        donnees.onedoc_url,
+      kit_url:           donnees.kit_url,
     }
+    // company_id présent uniquement en création (jamais en édition)
+    if (donnees.company_id) payload.company_id = donnees.company_id
+    return payload
   }
 
   function trouverParId(id) {
