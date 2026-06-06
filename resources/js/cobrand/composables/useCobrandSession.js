@@ -94,7 +94,7 @@ async function trackQuiz({ event_type, part = null, question_slug = null, answer
     }
 }
 
-async function trackPage({ event_type, time_on_page = null }) {
+async function trackPage({ event_type, engaged = null, time_on_page = null }) {
     await initPromise;
     if (!collectionId.value || !sessionId.value) return;
 
@@ -106,6 +106,7 @@ async function trackPage({ event_type, time_on_page = null }) {
                 collection_id: collectionId.value,
                 session_id:    sessionId.value,
                 event_type,
+                engaged,
                 time_on_page,
             },
         });
