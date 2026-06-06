@@ -6,6 +6,10 @@ function normalizeHash(hash) {
   return routePart ? `#${routePart}` : '#';
 }
 
+function hasHashFragment(hash) {
+  return hash.startsWith('#') && hash.split('#').length > 2;
+}
+
 export function useHashRoute(routes) {
   const defaultRoute = routes[0];
   const currentRoute = shallowRef(defaultRoute);
@@ -15,7 +19,9 @@ export function useHashRoute(routes) {
     const matched = routes.find(route => route.hash === routeHash);
     if (matched) {
       currentRoute.value = matched;
-      if (!matched.scrollTo) window.scrollTo(0, 0);
+      if (!matched.scrollTo && !hasHashFragment(window.location.hash)) {
+        window.scrollTo(0, 0);
+      }
     } else {
       currentRoute.value = defaultRoute;
     }
