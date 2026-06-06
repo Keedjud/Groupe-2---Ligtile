@@ -22,6 +22,11 @@ const {
     canSkip,
 } = useQuizStore();
 
+const firstMandatoryNegativeSlug = computed(() =>
+    questions.find((question, index) => question.mandatory && statuses.value[index] === "sad")
+        ?.preventionSlug ?? null,
+);
+
 onMounted(() => {
     reset();
     start();
@@ -291,6 +296,7 @@ function skip() {
     <EligibilityOverlay
         :show="showOverlay"
         :mobile="isMobile"
+        :prevention-slug="firstMandatoryNegativeSlug"
         @close="showOverlay = false"
     />
 </template>
