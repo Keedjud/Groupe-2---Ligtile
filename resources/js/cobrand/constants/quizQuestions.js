@@ -58,7 +58,7 @@ export const quizQuestions = [
     },
     {
         slug: "drogues-injectables",
-        preventionSlug: null,
+        preventionSlug: "drogues-injectables",
         text: "Avez-vous déjà consommé des drogues par injection ?",
         goodAnswer: "non",
         mandatory: true,

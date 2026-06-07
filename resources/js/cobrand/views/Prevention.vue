@@ -18,8 +18,6 @@ const figures = {
     apres: `${ART}/ByeBye.png`,
 };
 
-// Chaque personnage est ancré sur un point du tube (en % de la bande, repère 0–100).
-// originX / originY = le point de l'image qui doit tomber pile sur le tracé.
 const cableFigures = [
     {
         src: figures.impact,
@@ -59,8 +57,6 @@ const cableFigures = [
     },
 ];
 
-// Tube tracé à travers les centres des personnages : départ au milieu de « hi »,
-// passage par chaque goutte, raccord sur l'embout de la poche, puis sortie de page.
 const cablePath =
     "M80 9 C80 22 73 22 73 34 C73 47 78 47 78 59 C78 72 72 72 72 84 L72 92 C72 96 50 98 -12 98";
 
@@ -131,7 +127,15 @@ function figureStyle(fig) {
 
 const topicsTrack = ref(null);
 
+const prefersReducedMotion =
+    window.matchMedia?.("(prefers-reduced-motion: reduce)").matches ?? false;
+
+function scrollBehavior() {
+    return prefersReducedMotion ? "auto" : "smooth";
+}
+
 let topicScrollTimer = null;
+let programmaticScrolling = false;
 
 function clearTopicScrollTimer() {
     if (topicScrollTimer) {
@@ -148,6 +152,7 @@ function scrollToTopicFromHash() {
 
     const topicSlug = parts[2];
     let attempts = 0;
+    programmaticScrolling = true;
 
     topicScrollTimer = setInterval(() => {
         const card = document.getElementById('topic-' + topicSlug);
@@ -157,7 +162,7 @@ function scrollToTopicFromHash() {
             const targetY = trackRect.top + scrollTop - 100;
 
             if (Math.abs(scrollTop - targetY) > 50) {
-                window.scrollTo({ top: targetY, behavior: 'smooth' });
+                window.scrollTo({ top: targetY, behavior: scrollBehavior() });
             }
 
             const cardRect = card.getBoundingClientRect();
@@ -169,14 +174,37 @@ function scrollToTopicFromHash() {
                 (cardRect.width / 2);
 
             if (Math.abs(topicsTrack.value.scrollLeft - scrollLeft) > 10) {
-                topicsTrack.value.scrollTo({ left: scrollLeft, behavior: 'smooth' });
+                topicsTrack.value.scrollTo({ left: scrollLeft, behavior: scrollBehavior() });
             }
         }
 
         attempts++;
-        if (attempts > 8) clearTopicScrollTimer();
+        if (attempts > 8) {
+            clearTopicScrollTimer();
+            setTimeout(() => { programmaticScrolling = false; }, prefersReducedMotion ? 0 : 600);
+        }
     }, 100);
 }
+
+function scrollTopics(direction) {
+    const track = topicsTrack.value;
+    if (!track) return;
+    const card = track.querySelector("article");
+    const amount = card ? card.getBoundingClientRect().width + 24 : track.clientWidth * 0.8;
+    track.scrollBy({ left: direction * amount, behavior: scrollBehavior() });
+}
+
+function onTopicsKeydown(event) {
+    if (event.key === "ArrowRight") {
+        event.preventDefault();
+        scrollTopics(1);
+    } else if (event.key === "ArrowLeft") {
+        event.preventDefault();
+        scrollTopics(-1);
+    }
+}
+
+const WHEEL_SCROLL_FACTOR = 0.5;
 
 function redirectWheel(event) {
     const track = topicsTrack.value;
@@ -188,32 +216,57 @@ function redirectWheel(event) {
     const atStart = track.scrollLeft <= 0;
     const atEnd = track.scrollLeft + track.clientWidth >= track.scrollWidth - 1;
 
-    // Aux extrémités, on rend la molette à la page pour qu'elle continue de défiler.
     if ((delta < 0 && atStart) || (delta > 0 && atEnd)) return;
 
     event.preventDefault();
-    track.scrollBy({ left: delta, behavior: 'auto' });
+    track.scrollBy({ left: delta * WHEEL_SCROLL_FACTOR, behavior: "auto" });
 }
 
-const { trackPage } = useCobrandSession();
+const { trackPage, trackPageBeacon } = useCobrandSession();
 
 const engaged = ref(false);
 let startTime = 0;
+let exitSent = false;
 
 function markEngaged() {
     engaged.value = true;
 }
 
+function onUserScroll() {
+    if (programmaticScrolling) return;
+    engaged.value = true;
+    window.removeEventListener("scroll", onUserScroll);
+}
+
+function sendExit() {
+    if (exitSent) return;
+    exitSent = true;
+
+    const durationSeconds = Math.round((Date.now() - startTime) / 1000);
+    trackPageBeacon({
+        event_type: "prevention_exited",
+        engaged: engaged.value,
+        time_on_page: durationSeconds,
+    });
+}
+
+function onVisibilityChange() {
+    if (document.visibilityState === "hidden") sendExit();
+}
+
 onMounted(() => {
     startTime = Date.now();
     trackPage({ event_type: "prevention_entered" });
-    
+
     topicsTrack.value?.addEventListener("wheel", redirectWheel, {
         passive: false,
     });
-    
-    window.addEventListener("scroll", markEngaged, { once: true, passive: true });
+
+    window.addEventListener("scroll", onUserScroll, { passive: true });
     window.addEventListener("click", markEngaged, { once: true, passive: true });
+
+    window.addEventListener("pagehide", sendExit);
+    document.addEventListener("visibilitychange", onVisibilityChange);
 
     nextTick(() => {
         scrollToTopicFromHash();
@@ -225,16 +278,13 @@ onMounted(() => {
 onUnmounted(() => {
     clearTopicScrollTimer();
     topicsTrack.value?.removeEventListener("wheel", redirectWheel);
-    window.removeEventListener("scroll", markEngaged);
+    window.removeEventListener("scroll", onUserScroll);
     window.removeEventListener("click", markEngaged);
+    window.removeEventListener("pagehide", sendExit);
+    document.removeEventListener("visibilitychange", onVisibilityChange);
     window.removeEventListener('hashchange', scrollToTopicFromHash);
-    
-    const durationSeconds = Math.round((Date.now() - startTime) / 1000);
-    trackPage({ 
-        event_type: "prevention_exited", 
-        engaged: engaged.value, 
-        time_on_page: durationSeconds 
-    });
+
+    sendExit();
 });
 </script>
 
@@ -246,6 +296,7 @@ onUnmounted(() => {
         <BackgroundMotifs />
 
         <div class="relative z-10">
+            <h1 class="sr-only">Prévention — informations sur le don du sang</h1>
             <div class="relative">
                 <section
                     class="relative z-10 flex flex-col bg-beige-50/40 pt-16 pb-16 lg:min-h-[820px] lg:pt-[140px] lg:pb-20"
@@ -470,7 +521,11 @@ onUnmounted(() => {
 
                 <div
                     ref="topicsTrack"
-                    class="topics-scroll mt-20 flex snap-x snap-mandatory gap-6 overflow-x-auto scroll-px-4 px-4 pb-6 lg:mt-28 lg:scroll-px-[60px] lg:px-[60px]"
+                    role="region"
+                    tabindex="0"
+                    aria-label="Raisons de non-éligibilité — utilisez les flèches gauche et droite pour faire défiler"
+                    @keydown="onTopicsKeydown"
+                    class="topics-scroll mt-20 flex gap-6 overflow-x-auto px-4 pb-6 lg:mt-28 lg:px-[60px]"
                 >
                     <PreventionCard
                         v-for="topic in preventionTopics"

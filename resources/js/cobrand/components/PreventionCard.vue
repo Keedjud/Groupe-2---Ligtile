@@ -7,7 +7,7 @@ defineProps({
 <template>
     <article
         :id="'topic-' + topic.slug"
-        class="flex w-[calc(100vw-2rem)] shrink-0 snap-start flex-col rounded-3xl border border-black/5 bg-beige-100 p-4 shadow-[0_4px_12px_rgba(0,0,0,0.06)] sm:w-[420px] lg:w-[470px] lg:p-5"
+        class="flex w-[calc(100vw-2rem)] shrink-0 flex-col rounded-3xl border border-black/5 bg-beige-100 p-4 shadow-[0_4px_12px_rgba(0,0,0,0.06)] sm:w-[420px] lg:w-[470px] lg:p-5"
     >
         <h3
             class="flex h-[48px] items-start justify-center text-center text-h5 font-semibold leading-tight text-[color:var(--prevention-accent)] sm:h-[64px] sm:text-h4 lg:h-[72px] lg:text-h3"

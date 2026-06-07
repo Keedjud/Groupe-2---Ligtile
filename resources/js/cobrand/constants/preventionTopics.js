@@ -102,6 +102,14 @@ En cas de doute sur votre situation, contactez le CTS.`,
         body: `Certains comportements sexuels augmentent le risque de contracter des maladies infectieuses transmissibles par le sang. Un délai d'attente est alors nécessaire avant de pouvoir donner, afin de garantir la sécurité du receveur.`,
     },
     {
+        slug: "drogues-injectables",
+        title: "Drogues injectables",
+        illustration: `${ART}/seringue.png`,
+        body: `La consommation de drogues par injection constitue une contre-indication permanente au don de sang. Le partage de seringues ou de matériel d'injection expose à des virus qui se transmettent par le sang, comme le VIH ou les hépatites, et qui peuvent rester indétectables pendant un certain temps.
+
+En cas de doute sur votre situation, contactez le CTS.`,
+    },
+    {
         slug: "gastro-coloscopie",
         title: "Gastroscopie ou coloscopie récente",
         illustration: `${ART}/gastroscopie.png`,
