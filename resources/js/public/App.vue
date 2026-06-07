@@ -1,4 +1,5 @@
 <script setup>
+import { ref } from 'vue'
 import PublicDefaultLayout from './layouts/PublicDefaultLayout.vue'
 import { useHashRoute } from '@/composables/router'
 
@@ -17,11 +18,13 @@ const routes = [
 ]
 
 const { currentComponent, currentRoute } = useHashRoute(routes)
+
+const splashVisible = ref(sessionStorage.getItem('splash_seen') !== 'true')
 </script>
 
 <template>
-  <SplashScreen />
-  <PublicDefaultLayout :current="currentRoute.key">
+  <SplashScreen v-model:visible="splashVisible" />
+  <PublicDefaultLayout v-if="!splashVisible" :current="currentRoute.key">
     <component :is="currentComponent" />
   </PublicDefaultLayout>
 </template>

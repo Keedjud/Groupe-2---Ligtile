@@ -99,7 +99,7 @@ async function handleSubmit() {
         <div class="flex flex-1 flex-col gap-[54px] lg:max-w-[737px]">
           <!-- Badge -->
           <div class="inline-flex items-center gap-5 rounded-[40px] bg-white px-6 py-3 w-fit">
-            <img :src="'/images/icons/building.png'" class="h-[29px] w-[30px] shrink-0 object-contain" />
+            <img :src="'/images/icons/building.png'" loading="lazy" decoding="async" class="h-[29px] w-[30px] shrink-0 object-contain" />
             <span class="font-sans text-h3 font-bold text-texte-primary-dark">
               Pour les entreprises de plus de 1 000 collaborateurs
             </span>
@@ -143,6 +143,8 @@ async function handleSubmit() {
 
         <img
           :src="'/images/illustrations/composition-petites-gouttes.png'"
+          loading="lazy"
+          decoding="async"
           alt=""
           class="w-full lg:w-[700px] h-auto object-contain shrink-0"
         />
@@ -180,7 +182,7 @@ async function handleSubmit() {
         <div class="flex flex-1 flex-col gap-9 lg:max-w-[850px]">
           <!-- Badge -->
           <div class="inline-flex items-center gap-5 rounded-[40px] bg-white px-6 py-3 w-fit">
-            <img :src="'/images/icons/building.png'" class="h-[29px] w-[30px] shrink-0 object-contain" />
+            <img :src="'/images/icons/building.png'" loading="lazy" decoding="async" class="h-[29px] w-[30px] shrink-0 object-contain" />
             <span class="font-sans text-h3 font-bold text-texte-primary-dark">
               Pour toutes les entreprises
             </span>
@@ -206,6 +208,8 @@ async function handleSubmit() {
 
         <img
           :src="'/images/illustrations/fournis.png'"
+          loading="lazy"
+          decoding="async"
           alt=""
           class="w-full lg:max-w-[500px] lg:max-h-[380px] h-auto rounded-[100px] object-contain"
         />

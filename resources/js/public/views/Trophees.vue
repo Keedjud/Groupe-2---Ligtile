@@ -77,6 +77,8 @@ const trophyModelSrc = '/images/3D/Untitled.glb'
         <div class="flex flex-col items-center justify-center gap-10 lg:w-[480px] w-full lg:flex-shrink-0">
           <img
             :src="'/images/classement/trophy-top.png'"
+            loading="lazy"
+            decoding="async"
             alt=""
             class="hidden md:block w-[178px] h-auto object-contain"
           />
@@ -178,6 +180,8 @@ const trophyModelSrc = '/images/3D/Untitled.glb'
             </h3>
             <img
               :src="'/images/illustrations/infos.png'"
+              loading="lazy"
+              decoding="async"
               alt="Mascotte goutte de sang qui se pose des questions"
               class="hidden md:block absolute right-[126px] top-[24px] w-[117px] h-[174px] object-contain"
             />
@@ -188,7 +192,7 @@ const trophyModelSrc = '/images/3D/Untitled.glb'
             <!-- Régularité -->
             <div class="flex items-center gap-6">
               <div class="flex h-[50px] w-[50px] md:h-[60px] md:w-[60px] flex-shrink-0 items-center justify-center rounded-full bg-[#E5F5F0]">
-                <img :src="'/images/icons/regularite.png'" alt="" class="h-[28px] w-[28px] md:h-[36px] md:w-[36px] object-contain" />
+                <img :src="'/images/icons/regularite.png'" loading="lazy" decoding="async" alt="" class="h-[28px] w-[28px] md:h-[36px] md:w-[36px] object-contain" />
               </div>
               <!--Image purement décorative, pas besoin d'alt, bonne pratique-->
               <div>
@@ -200,7 +204,7 @@ const trophyModelSrc = '/images/3D/Untitled.glb'
             <!-- Nombre d'inscrits -->
             <div class="flex items-center gap-6">
               <div class="flex h-[50px] w-[50px] md:h-[60px] md:w-[60px] flex-shrink-0 items-center justify-center rounded-full bg-[#E5F5F0]">
-                <img :src="'/images/icons/inscrit.png'" alt="" class="h-[28px] w-[28px] md:h-[36px] md:w-[36px] object-contain" />
+                <img :src="'/images/icons/inscrit.png'" loading="lazy" decoding="async" alt="" class="h-[28px] w-[28px] md:h-[36px] md:w-[36px] object-contain" />
               </div>
               <!--Image purement décorative, pas besoin d'alt, bonne pratique-->
               <div>
@@ -212,7 +216,7 @@ const trophyModelSrc = '/images/3D/Untitled.glb'
             <!-- Taux d'engagement -->
             <div class="flex items-center gap-6">
               <div class="flex h-[50px] w-[50px] md:h-[60px] md:w-[60px] flex-shrink-0 items-center justify-center rounded-full bg-[#E5F5F0]">
-                <img :src="'/images/icons/engagement.png'" alt="" class="h-[28px] w-[28px] md:h-[36px] md:w-[36px] object-contain" />
+                <img :src="'/images/icons/engagement.png'" loading="lazy" decoding="async" alt="" class="h-[28px] w-[28px] md:h-[36px] md:w-[36px] object-contain" />
               </div>
               <!--Image purement décorative, pas besoin d'alt, bonne pratique-->
               <div>
@@ -224,7 +228,7 @@ const trophyModelSrc = '/images/3D/Untitled.glb'
             <!-- Appréciation du jury -->
             <div class="flex items-center gap-6">
               <div class="flex h-[50px] w-[50px] md:h-[60px] md:w-[60px] flex-shrink-0 items-center justify-center rounded-full bg-[#E5F5F0]">
-                <img :src="'/images/icons/appreciation.png'" alt="" class="h-[28px] w-[28px] md:h-[36px] md:w-[36px] object-contain" />
+                <img :src="'/images/icons/appreciation.png'" loading="lazy" decoding="async" alt="" class="h-[28px] w-[28px] md:h-[36px] md:w-[36px] object-contain" />
               </div>
               <!--Image purement décorative, pas besoin d'alt, bonne pratique-->
               <div>
