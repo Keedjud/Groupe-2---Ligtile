@@ -16,72 +16,72 @@
 
 ## Bugs ouverts
 
-### Site public — Home (Elia / Inoé)
+### Site public — Home
 
-| Priorité | Bug | Responsable |
-|----------|-----|-------------|
-| 🔴 Critique | `POST /api/v1/contact` retourne 500 — impossible d'envoyer le formulaire de contact grande entreprise | Inoé (backend) |
-| 🟡 Normal | Lien du formulaire "inscription collecte" (segment employés < 1000) ne renvoie pas vers la bonne page | Elia |
-| 🟡 Normal | Bouton "Comment se déroule une collecte ?" ne renvoie pas vers la bonne section de la page | Elia |
-| 🟡 Normal | Section "Pourquoi accueillir une collecte" : icônes médicaments → remplacer par les bonnes icônes | Elia |
-| 🟡 Normal | Traits de connexion entre les icônes manquants (câble / ligne verticale entre les étapes) | Elia |
-| 🟢 Faible | Aligner horizontalement les 3 boutons "En savoir plus" de la section d'intro | Elia |
+| Priorité | Bug |
+|----------|-----|
+| 🔴 Critique | `POST /api/v1/contact` retourne 500 — impossible d'envoyer le formulaire de contact grande entreprise |
+| 🟡 Normal | Lien du formulaire "inscription collecte" (segment employés < 1000) ne renvoie pas vers la bonne page |
+| 🟡 Normal | Bouton "Comment se déroule une collecte ?" ne renvoie pas vers la bonne section de la page |
+| 🟡 Normal | Section "Pourquoi accueillir une collecte" : icônes médicaments → remplacer par les bonnes icônes |
+| 🟡 Normal | Traits de connexion entre les icônes manquants (câble / ligne verticale entre les étapes) |
+| 🟢 Faible | Aligner horizontalement les 3 boutons "En savoir plus" de la section d'intro |
 
-### Site public — Trophées (Elia)
+### Site public — Trophées
 
-| Priorité | Bug | Responsable |
-|----------|-----|-------------|
-| 🟡 Normal | Modèle 3D du trophée pas à jour — dernière version non intégrée dans `public/images/3D/` | Elia |
-| 🟢 Faible | Trophée affiché trop petit — agrandir légèrement | Elia |
+| Priorité | Bug |
+|----------|-----|
+| 🟡 Normal | Modèle 3D du trophée pas à jour — dernière version non intégrée dans `public/images/3D/` |
+| 🟢 Faible | Trophée affiché trop petit — agrandir légèrement |
 
-### Site public — Informations (Elia)
+### Site public — Informations
 
-| Priorité | Bug | Responsable |
-|----------|-----|-------------|
-| 🟡 Normal | Image "goutte" dans la page Informations → remplacer par la poche de sang | Elia |
+| Priorité | Bug |
+|----------|-----|
+| 🟡 Normal | Image "goutte" dans la page Informations → remplacer par la poche de sang |
 
-### Site cobrandé — Général (Loïc)
+### Site cobrandé — Général
 
-| Priorité | Bug | Responsable |
-|----------|-----|-------------|
-| 🔴 Critique | `Accueil.vue` — CTA "Faire le test d'éligibilité" pointe vers `#/inscription` au lieu de `#/quiz` | Loïc |
-| 🔴 Critique | Header cobrand : couleur de fond ne reprend pas la couleur primaire de l'entreprise | Loïc |
-| 🔴 Critique | Header cobrand : logo de l'entreprise partenaire absent | Loïc |
-| 🟡 Normal | `cobrand/App.vue` — aucune gestion de `sessionError` : token invalide/expiré = page blanche | Loïc |
-| 🟡 Normal | Hover des liens header et footer en couleurs du site de base — doit reprendre `var(--cobrand-primary)` | Loïc |
-| 🟡 Normal | `Accueil.vue` — "à Genève" hardcodé au lieu de `{{ venue?.city }}` | Loïc |
-| 🟡 Normal | `Accueil.vue` — asset section "Pourquoi donner son sang ?" trop petit, agrandir selon maquette | Loïc |
-| 🟡 Normal | `Accueil.vue` — lien baromètre HUG non fonctionnel (bouton sans href) | Loïc |
-| 🟡 Normal | `Accueil.vue` — bordures de développement visibles (`border border-[var(--color-violet-100)]`) | Loïc |
+| Priorité | Bug |
+|----------|-----|
+| 🔴 Critique | `Accueil.vue` — CTA "Faire le test d'éligibilité" pointe vers `#/inscription` au lieu de `#/quiz` |
+| 🔴 Critique | Header cobrand : couleur de fond ne reprend pas la couleur primaire de l'entreprise |
+| 🔴 Critique | Header cobrand : logo de l'entreprise partenaire absent |
+| 🟡 Normal | `cobrand/App.vue` — aucune gestion de `sessionError` : token invalide/expiré = page blanche |
+| 🟡 Normal | Hover des liens header et footer en couleurs du site de base — doit reprendre `var(--cobrand-primary)` |
+| 🟡 Normal | `Accueil.vue` — "à Genève" hardcodé au lieu de `{{ venue?.city }}` |
+| 🟡 Normal | `Accueil.vue` — asset section "Pourquoi donner son sang ?" trop petit, agrandir selon maquette |
+| 🟡 Normal | `Accueil.vue` — lien baromètre HUG non fonctionnel (bouton sans href) |
+| 🟡 Normal | `Accueil.vue` — bordures de développement visibles (`border border-[var(--color-violet-100)]`) |
 
-### Site cobrandé — Quiz / Formulaire (Loïc)
+### Site cobrandé — Quiz
 
-| Priorité | Bug | Responsable |
-|----------|-----|-------------|
-| 🔴 Critique | Bouton "S'inscrire" (Redirect.vue) rouge — couleur primaire cobrand non reprise | Loïc |
-| 🟡 Normal | Phrase "Vous êtes toujours éligible" apparaît en permanence, même sans avoir passé le quiz | Loïc |
-| 🟡 Normal | Phrase "Bonne nouvelle ! Votre situation vous permet de vous inscrire." affichée même après clic "Passer" | Loïc |
-| 🟡 Normal | Question passée (skip P2) reste cliquable et non grisée — l'utilisateur peut encore y répondre | Loïc |
+| Priorité | Bug |
+|----------|-----|
+| 🔴 Critique | Bouton "S'inscrire" (`Redirect.vue`) rouge — couleur primaire cobrand non reprise |
+| 🟡 Normal | Phrase "Vous êtes toujours éligible" apparaît en permanence, même sans avoir passé le quiz |
+| 🟡 Normal | Phrase "Bonne nouvelle ! Votre situation vous permet de vous inscrire." affichée même après clic "Passer" |
+| 🟡 Normal | Question passée (skip P2) reste cliquable et non grisée — l'utilisateur peut encore y répondre |
 
-### Site cobrandé — Prévention (Loïc)
+### Site cobrandé — Prévention
 
-| Priorité | Bug | Responsable |
-|----------|-----|-------------|
-| 🟡 Normal | Couleur des icônes de la section "Pourquoi ne suis-je pas éligible ?" différente de celle de "J'ai peur de la piqûre" — harmoniser | Loïc |
-| 🟡 Normal | Section 1 — retour à la ligne après "vies" pour améliorer la lisibilité | Loïc |
-| 🟢 Faible | Ajouter un lien vers le travelcheck suisse sur le mot "voyage" dans la carte correspondante | Loïc |
+| Priorité | Bug |
+|----------|-----|
+| 🟡 Normal | Couleur des icônes "Pourquoi ne suis-je pas éligible ?" différente de celle de "J'ai peur de la piqûre" — harmoniser |
+| 🟡 Normal | Section 1 — retour à la ligne après "vies" pour améliorer la lisibilité |
+| 🟢 Faible | Ajouter un lien vers le travelcheck suisse sur le mot "voyage" dans la carte correspondante |
 
-### Dashboard (Inoé)
+### Dashboard
 
-| Priorité | Bug | Responsable |
-|----------|-----|-------------|
-| 🟡 Normal | Color pickers ne se ferment pas en cliquant en dehors | Inoé |
-| 🟡 Normal | Logo non affiché dans le composant `LogoUpload` après upload — pas de prévisualisation | Inoé |
-| 🟡 Normal | Faute de frappe : "diffère" → "diffèrent" dans la note de pré-remplissage du formulaire collecte | Inoé |
-| 🟡 Normal | Validation date : possible de créer une collecte avec une date de début dans le passé | Inoé |
-| 🟢 Faible | Ajouter une confirmation (modale ou toast) avant suppression définitive d'une collecte | Inoé |
+| Priorité | Bug |
+|----------|-----|
+| 🟡 Normal | Color pickers ne se ferment pas en cliquant en dehors |
+| 🟡 Normal | Logo non affiché dans `LogoUpload` après upload — pas de prévisualisation |
+| 🟡 Normal | Faute de frappe : "diffère" → "diffèrent" dans la note de pré-remplissage du formulaire collecte |
+| 🟡 Normal | Validation date : possible de créer une collecte avec une date de début dans le passé |
+| 🟢 Faible | Ajouter une confirmation (modale ou toast) avant suppression définitive d'une collecte |
 
-### Technique — Backend / Perf (Inoé)
+### Technique — Backend / Perf
 
 | Priorité | Bug | Fichier(s) |
 |----------|-----|-----------|
@@ -99,7 +99,7 @@ Les pages publiques (Trophées, Labels) ne font **pas de cache** : chaque charge
 
 ## Ce qui reste à faire
 
-### Loïc — Site cobrandé
+### Site cobrandé
 
 - [ ] **[CRITIQUE]** Fix lien "Faire le test d'éligibilité" → `#/quiz` (actuellement `#/inscription`)
 - [ ] **[CRITIQUE]** Header cobrand : appliquer `var(--cobrand-primary)` en couleur de fond + afficher logo entreprise
@@ -117,7 +117,7 @@ Les pages publiques (Trophées, Labels) ne font **pas de cache** : chaque charge
 - [ ] Prévention — retour à la ligne après "vies" dans la section 1 (lisibilité)
 - [ ] Prévention — ajouter un lien vers travelcheck.ch sur le mot "voyage" dans la carte correspondante
 
-### Elia — Site public
+### Site public
 
 - [ ] Intégrer le nouveau modèle 3D du trophée dans `public/images/3D/`
 - [ ] Section "Pourquoi accueillir une collecte" : remplacer icônes médicaments par les bonnes icônes
@@ -128,7 +128,7 @@ Les pages publiques (Trophées, Labels) ne font **pas de cache** : chaque charge
 - [ ] Aligner horizontalement les 3 boutons "En savoir plus" de la section intro
 - [ ] Trophées : légèrement agrandir le trophée affiché
 
-### Inoé — Backend + Dashboard
+### Backend + Dashboard
 
 - [ ] **[CRITIQUE]** `POST /api/v1/contact` retourne 500 — investiguer et corriger `ApiContactController`
 - [ ] **[CRITIQUE]** `ApiCobrandController::show()` — vérification fenêtre de disponibilité (404 si hors fenêtre)
@@ -140,24 +140,6 @@ Les pages publiques (Trophées, Labels) ne font **pas de cache** : chaque charge
 - [ ] Nouvelle migration : index composite `(collection_id, event_type, session_id)` sur `quiz_events`
 - [ ] `app/Models/Address.php` — supprimer la relation morte `collections()`
 - [ ] `ApiTropheeController` — renommer `participant_count` → `companies_count` (Phase 8C)
-
-### Frontend cobrand — vues (état actuel)
-
-- [x] `cobrand/App.vue` — routage hash, co-branding CSS
-- [x] `cobrand/views/Accueil.vue` — implémentée (Phase 7B)
-- [x] `cobrand/views/Prevention.vue` — scrollytelling complet avec tracking (Phase 7C)
-- [x] `cobrand/views/Quiz.vue` — P1 + P2 + tracking
-- [x] `cobrand/views/Redirect.vue` — page Onedoc + tracking
-- [x] `cobrand/composables/useQuizStore.js`
-- [x] `cobrand/constants/quizQuestions.js` — slugs stables P1 + P2
-
-### Frontend dashboard (état actuel)
-
-- [x] Adapter `CollecteForm.vue` aux nouveaux champs backend (Phase 4D)
-- [x] Adapter `CollecteDetail.vue` à l'affichage des nouveaux champs (Phase 4D)
-- [x] Gestion des entreprises — liste, fiche, création, édition (Phase 4E)
-- [x] Gestion des trophées — podiums par année, création/édition/suppression (Phase 4F)
-- [x] Aperçu co-branding en temps réel + contraste WCAG (Phase 4C — branche `feature/phase-4c-cobrand-preview`)
 
 ---
 
