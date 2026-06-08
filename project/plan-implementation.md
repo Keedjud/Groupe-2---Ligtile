@@ -113,6 +113,10 @@ Les pages publiques (Trophées, Labels) ne font **pas de cache** : chaque charge
 - [ ] Nouvelle migration : index composite `(collection_id, event_type, session_id)` sur `quiz_events`
 - [ ] `app/Models/Address.php` — supprimer la relation morte `collections()`
 
+### Frontend — Dépendances
+
+- [ ] Supprimer DaisyUI (`package.json` + `@plugin "daisyui"` dans `app.css`) — installé mais aucune classe utilisée, CSS chargé inutilement
+
 ### Site cobrandé — `App.vue`
 
 - [ ] Afficher un écran "Collecte indisponible" si `sessionError` (token invalide ou hors fenêtre)
