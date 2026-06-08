@@ -40,54 +40,53 @@
 |----------|-----|
 | 🟡 Normal | Image "goutte" dans la page Informations → remplacer par la poche de sang |
 
-### Site cobrandé — Général
+### Site cobrandé — Header
 
 | Priorité | Bug |
 |----------|-----|
-| 🔴 Critique | `Accueil.vue` — CTA "Faire le test d'éligibilité" pointe vers `#/inscription` au lieu de `#/quiz` |
-| 🔴 Critique | Header cobrand : couleur de fond ne reprend pas la couleur primaire de l'entreprise |
-| 🔴 Critique | Header cobrand : logo de l'entreprise partenaire absent |
-| 🟡 Normal | `cobrand/App.vue` — aucune gestion de `sessionError` : token invalide/expiré = page blanche |
+| 🔴 Critique | Couleur de fond du header ne reprend pas la couleur primaire de l'entreprise |
+| 🔴 Critique | Logo de l'entreprise partenaire absent |
 | 🟡 Normal | Hover des liens header et footer en couleurs du site de base — doit reprendre `var(--cobrand-primary)` |
-| 🟡 Normal | `Accueil.vue` — "à Genève" hardcodé au lieu de `{{ venue?.city }}` |
-| 🟡 Normal | `Accueil.vue` — asset section "Pourquoi donner son sang ?" trop petit, agrandir selon maquette |
-| 🟡 Normal | `Accueil.vue` — lien baromètre HUG non fonctionnel (bouton sans href) |
-| 🟡 Normal | `Accueil.vue` — bordures de développement visibles (`border border-[var(--color-violet-100)]`) |
 
-### Site cobrandé — Quiz
+### Site cobrandé — `Accueil.vue`
 
 | Priorité | Bug |
 |----------|-----|
-| 🔴 Critique | Bouton "S'inscrire" (`Redirect.vue`) rouge — couleur primaire cobrand non reprise |
+| 🔴 Critique | CTA "Faire le test d'éligibilité" pointe vers `#/inscription` au lieu de `#/quiz` |
+| 🟡 Normal | "à Genève" hardcodé au lieu de `{{ venue?.city }}` |
+| 🟡 Normal | Asset section "Pourquoi donner son sang ?" trop petit — agrandir selon maquette |
+| 🟡 Normal | Lien baromètre HUG non fonctionnel (bouton sans href) |
+| 🟡 Normal | Bordures de développement visibles (`border border-[var(--color-violet-100)]`) |
+
+### Site cobrandé — `Quiz.vue`
+
+| Priorité | Bug |
+|----------|-----|
 | 🟡 Normal | Phrase "Vous êtes toujours éligible" apparaît en permanence, même sans avoir passé le quiz |
 | 🟡 Normal | Phrase "Bonne nouvelle ! Votre situation vous permet de vous inscrire." affichée même après clic "Passer" |
 | 🟡 Normal | Question passée (skip P2) reste cliquable et non grisée — l'utilisateur peut encore y répondre |
 
-### Site cobrandé — Prévention
+### Site cobrandé — `Redirect.vue`
+
+| Priorité | Bug |
+|----------|-----|
+| 🔴 Critique | Bouton "S'inscrire" rouge — couleur primaire cobrand non reprise |
+
+### Site cobrandé — `Prevention.vue`
 
 | Priorité | Bug |
 |----------|-----|
 | 🟡 Normal | Couleur des icônes "Pourquoi ne suis-je pas éligible ?" différente de celle de "J'ai peur de la piqûre" — harmoniser |
 | 🟡 Normal | Section 1 — retour à la ligne après "vies" pour améliorer la lisibilité |
-| 🟢 Faible | Ajouter un lien vers le travelcheck suisse sur le mot "voyage" dans la carte correspondante |
 
-### Dashboard
+### Dashboard — `CollecteForm.vue`
 
 | Priorité | Bug |
 |----------|-----|
 | 🟡 Normal | Color pickers ne se ferment pas en cliquant en dehors |
 | 🟡 Normal | Logo non affiché dans `LogoUpload` après upload — pas de prévisualisation |
-| 🟡 Normal | Faute de frappe : "diffère" → "diffèrent" dans la note de pré-remplissage du formulaire collecte |
+| 🟡 Normal | Faute de frappe : "diffère" → "diffèrent" dans la note de pré-remplissage |
 | 🟡 Normal | Validation date : possible de créer une collecte avec une date de début dans le passé |
-| 🟢 Faible | Ajouter une confirmation (modale ou toast) avant suppression définitive d'une collecte |
-
-### Technique — Backend / Perf
-
-| Priorité | Bug | Fichier(s) |
-|----------|-----|-----------|
-| 🔴 Critique | `ApiCobrandController::show()` — fenêtre de disponibilité non implémentée (404 hors fenêtre) | `ApiCobrandController.php` |
-| 🟢 Faible | Index composite manquant sur `quiz_events` — scan partiel sur `COUNT(DISTINCT session_id)` sans index sur `event_type` | Nouvelle migration : `$table->index(['collection_id', 'event_type', 'session_id'])` |
-| 🟢 Faible | `Address::collections()` — relation `HasMany` morte depuis la migration snapshot | `app/Models/Address.php` |
 
 ---
 
@@ -97,49 +96,34 @@ Les pages publiques (Trophées, Labels) ne font **pas de cache** : chaque charge
 
 ---
 
-## Ce qui reste à faire
+## Ce qui reste à implémenter
 
-### Site cobrandé
+> Fonctionnalités jamais codées, refactoring planifié et dette technique — distinct des bugs (voir section précédente).
 
-- [ ] **[CRITIQUE]** Fix lien "Faire le test d'éligibilité" → `#/quiz` (actuellement `#/inscription`)
-- [ ] **[CRITIQUE]** Header cobrand : appliquer `var(--cobrand-primary)` en couleur de fond + afficher logo entreprise
-- [ ] **[CRITIQUE]** `Redirect.vue` — bouton "S'inscrire" : appliquer couleur primaire cobrand
-- [ ] `cobrand/App.vue` — afficher un écran "Collecte indisponible" si `sessionError`
-- [ ] Hover header/footer : remplacer couleurs du site de base par `var(--cobrand-primary)`
-- [ ] `Accueil.vue` — remplacer `"à Genève"` hardcodé par `{{ venue?.city }}`
-- [ ] `Accueil.vue` — agrandir asset section "Pourquoi donner son sang ?" selon maquette
-- [ ] `Accueil.vue` — lien baromètre HUG (ajouter href ou supprimer le bouton)
-- [ ] `Accueil.vue` — supprimer bordures de dev visibles (`border border-[var(--color-violet-100)]`)
-- [ ] Quiz : phrase "Vous êtes toujours éligible" ne doit pas apparaître en permanence
-- [ ] Quiz : phrase "Bonne nouvelle ! Votre situation vous permet de vous inscrire." à masquer après clic "Passer"
-- [ ] Quiz P2 : question passée → griser et désactiver les boutons de réponse
-- [ ] Prévention — harmoniser la couleur des icônes "Pourquoi ne suis-je pas éligible ?" avec celle de "J'ai peur de la piqûre"
-- [ ] Prévention — retour à la ligne après "vies" dans la section 1 (lisibilité)
-- [ ] Prévention — ajouter un lien vers travelcheck.ch sur le mot "voyage" dans la carte correspondante
+### Backend — `ApiCobrandController`
 
-### Site public
+- [ ] Fenêtre de disponibilité : retourner 404 si avant `created_at` ou après `end_date + 7 jours`
 
-- [ ] Intégrer le nouveau modèle 3D du trophée dans `public/images/3D/`
-- [ ] Section "Pourquoi accueillir une collecte" : remplacer icônes médicaments par les bonnes icônes
-- [ ] Ajouter les traits de connexion (ligne verticale) entre les icônes de la section étapes
-- [ ] Fix lien du formulaire "inscription collecte" (segment employés < 1000) → bonne page cible
-- [ ] Fix bouton "Comment se déroule une collecte ?" → bonne ancre de page
-- [ ] Page Informations : remplacer l'image "goutte" par la poche de sang
-- [ ] Aligner horizontalement les 3 boutons "En savoir plus" de la section intro
-- [ ] Trophées : légèrement agrandir le trophée affiché
+### Backend — `ApiTropheeController` *(Phase 8C)*
 
-### Backend + Dashboard
+- [ ] Renommer `participant_count` → `companies_count` au niveau année
 
-- [ ] **[CRITIQUE]** `POST /api/v1/contact` retourne 500 — investiguer et corriger `ApiContactController`
-- [ ] **[CRITIQUE]** `ApiCobrandController::show()` — vérification fenêtre de disponibilité (404 si hors fenêtre)
-- [ ] Dashboard `CollecteForm` — color pickers : fermeture au clic en dehors
-- [ ] Dashboard `LogoUpload` — prévisualisation du logo après upload
-- [ ] Dashboard `CollecteForm` — faute de frappe : "diffère" → "diffèrent"
-- [ ] Dashboard `CollecteForm` — bloquer ou avertir si date de début dans le passé
-- [ ] Dashboard — confirmation (modale ou toast) avant suppression d'une collecte
+### Backend — Migrations & Cleanup
+
 - [ ] Nouvelle migration : index composite `(collection_id, event_type, session_id)` sur `quiz_events`
 - [ ] `app/Models/Address.php` — supprimer la relation morte `collections()`
-- [ ] `ApiTropheeController` — renommer `participant_count` → `companies_count` (Phase 8C)
+
+### Site cobrandé — `App.vue`
+
+- [ ] Afficher un écran "Collecte indisponible" si `sessionError` (token invalide ou hors fenêtre)
+
+### Site cobrandé — `Prevention.vue`
+
+- [ ] Ajouter un lien vers travelcheck.ch sur le mot "voyage" dans la carte correspondante
+
+### Dashboard — Gestion des collectes
+
+- [ ] Ajouter une confirmation (modale ou toast) avant suppression définitive d'une collecte
 
 ---
 
