@@ -228,7 +228,7 @@ const nomEntreprisePourPreview = computed(() =>
 
 <template>
   <DashboardLayout :vueCourante="'collectes'" :allerVers="allerVers">
-    <div class="mx-auto max-w-2xl rounded-[20px] bg-form-bg p-6 shadow-[0_4px_16px_rgba(104,23,100,0.10)]">
+    <div class="mx-auto max-w-2xl rounded-[20px] bg-form-bg p-4 shadow-[0_4px_16px_rgba(104,23,100,0.10)] sm:p-6">
 
       <h1 class="mb-6 text-center font-sans text-h3 font-bold text-violet-800">{{ titrePage }}</h1>
 
@@ -330,19 +330,19 @@ const nomEntreprisePourPreview = computed(() =>
           <!-- Adresse du lieu de collecte -->
           <div class="flex flex-col gap-1">
             <label class="font-sans text-small font-medium text-violet-800">Adresse du lieu de collecte (rue + n°)</label>
-            <div class="flex gap-2">
+            <div class="flex flex-col gap-2 sm:flex-row">
               <input v-model="champRue" type="text" placeholder="Rue"
                 class="flex-1 rounded-lg bg-white px-3 py-2.5 font-sans text-small text-violet-950 shadow-[0_0_4px_rgba(0,0,0,0.25)] outline-none focus:ring-2 focus:ring-violet-400"
                 :class="{ 'ring-rouge-500 ring-1': champsInvalides.rue }" />
               <input v-model="champNumero" type="text" placeholder="N°"
-                class="w-20 rounded-lg bg-white px-3 py-2.5 font-sans text-small text-violet-950 shadow-[0_0_4px_rgba(0,0,0,0.25)] outline-none focus:ring-2 focus:ring-violet-400"
+                class="w-full rounded-lg bg-white px-3 py-2.5 font-sans text-small text-violet-950 shadow-[0_0_4px_rgba(0,0,0,0.25)] outline-none focus:ring-2 focus:ring-violet-400 sm:w-20"
                 :class="{ 'ring-rouge-500 ring-1': champsInvalides.numero }" />
             </div>
           </div>
 
           <!-- NPA + Ville -->
-          <div class="flex items-start gap-3">
-            <div class="flex flex-col gap-1 w-28">
+          <div class="flex flex-col gap-3 sm:flex-row sm:items-start">
+            <div class="flex flex-col gap-1 sm:w-28">
               <label class="font-sans text-small font-medium text-violet-800">NPA</label>
               <input v-model="champNpa" type="text" inputmode="numeric" maxlength="4" placeholder="1200"
                 class="w-full rounded-lg bg-white px-3 py-2.5 font-sans text-small text-violet-950 shadow-[0_0_4px_rgba(0,0,0,0.25)] outline-none focus:ring-2 focus:ring-violet-400"

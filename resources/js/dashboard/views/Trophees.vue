@@ -270,8 +270,42 @@ function podiumParRang(podium, rang) {
       <p class="font-sans text-regular text-violet-400">Aucun podium enregistré. Créez le premier !</p>
     </div>
 
-    <!-- Tableau des podiums -->
-    <div v-else class="overflow-x-auto rounded-[20px] bg-white shadow-[0_0_8px_rgba(104,23,100,0.10)]">
+    <!-- Cartes mobile / tableau desktop -->
+    <template v-else>
+    <div class="grid gap-3 sm:hidden">
+      <div
+        v-for="podium in listePodiums"
+        :key="podium.year"
+        class="rounded-[20px] bg-white p-4 shadow-[0_0_8px_rgba(104,23,100,0.10)]"
+      >
+        <div class="flex items-start justify-between gap-3">
+          <div>
+            <p class="font-sans text-xs uppercase tracking-wide text-violet-400">Année</p>
+            <p class="mt-1 font-sans text-regular font-semibold text-violet-950">{{ podium.year }}</p>
+          </div>
+          <div class="flex flex-col items-end gap-2">
+            <button
+              @click="ouvrirEdition(podium)"
+              class="rounded-[40px] bg-white px-3 py-1.5 font-sans text-xs text-texte-secondary shadow-[0_0_4px_rgba(0,0,0,0.15)] hover:bg-violet-50 transition-colors"
+            >Modifier</button>
+            <button
+              @click="gererSuppression(podium.year)"
+              :disabled="chargement"
+              class="rounded-[40px] px-3 py-1.5 font-sans text-xs text-white transition-opacity hover:opacity-90 disabled:opacity-60"
+              :class="confirmeSuppression === podium.year ? 'bg-rouge-700' : 'bg-rouge-500'"
+            >{{ confirmeSuppression === podium.year ? 'Confirmer' : 'Supprimer' }}</button>
+          </div>
+        </div>
+        <div class="mt-3 grid grid-cols-1 gap-2 text-small text-violet-800">
+          <p><span class="font-semibold text-violet-500">Or:</span> {{ podiumParRang(podium, 1) }}</p>
+          <p><span class="font-semibold text-violet-500">Argent:</span> {{ podiumParRang(podium, 2) }}</p>
+          <p><span class="font-semibold text-violet-500">Bronze:</span> {{ podiumParRang(podium, 3) }}</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- Tableau desktop -->
+    <div class="hidden sm:block overflow-x-auto rounded-[20px] bg-white shadow-[0_0_8px_rgba(104,23,100,0.10)]">
       <table class="w-full font-sans text-small">
         <thead>
           <tr class="border-b border-violet-100 text-left text-violet-700">
@@ -311,6 +345,7 @@ function podiumParRang(podium, rang) {
         </tbody>
       </table>
     </div>
+    </template>
 
   </DashboardLayout>
 </template>

@@ -64,7 +64,7 @@ const dureesJours = computed(() => {
       <div class="mx-auto max-w-3xl rounded-[20px] bg-form-bg p-6 shadow-[0_4px_16px_rgba(104,23,100,0.10)]">
 
         <!-- En-tête : titre + logo -->
-        <div class="mb-4 flex items-center justify-between">
+        <div class="mb-4 flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
           <h1 class="font-sans text-h3 font-bold text-violet-800">Gestion de collecte</h1>
           <div class="h-[54px] w-[97px] overflow-hidden">
             <img
@@ -99,7 +99,7 @@ const dureesJours = computed(() => {
             </div>
           </div>
           <!-- Durée + inscrits -->
-          <div class="text-right font-sans text-h5">
+          <div class="text-left font-sans text-h5 sm:text-right">
             <p>Durée <strong>{{ dureesJours }}</strong> jours</p>
             <p>Nombre d'inscrit·es : <strong>{{ collecte.nb_inscrits }}</strong></p>
           </div>
@@ -110,8 +110,8 @@ const dureesJours = computed(() => {
           <!-- Colonne adresse -->
           <div class="flex flex-1 flex-col gap-3">
             <div class="rounded-lg bg-white px-3 py-2.5 font-sans text-small font-medium text-violet-950 shadow-[0_0_4px_rgba(0,0,0,0.25)]">{{ collecte.adresse.rue }} {{ collecte.adresse.numero }}</div>
-            <div class="flex gap-3">
-              <div class="w-28 rounded-lg bg-white px-3 py-2.5 font-sans text-small font-medium text-violet-950 shadow-[0_0_4px_rgba(0,0,0,0.25)]">{{ collecte.adresse.npa }}</div>
+            <div class="flex flex-col gap-3 sm:flex-row">
+              <div class="w-full rounded-lg bg-white px-3 py-2.5 font-sans text-small font-medium text-violet-950 shadow-[0_0_4px_rgba(0,0,0,0.25)] sm:w-28">{{ collecte.adresse.npa }}</div>
               <div class="flex-1 rounded-lg bg-white px-3 py-2.5 font-sans text-small font-medium text-violet-950 shadow-[0_0_4px_rgba(0,0,0,0.25)]">{{ collecte.adresse.ville }}</div>
             </div>
           </div>
@@ -132,7 +132,7 @@ const dureesJours = computed(() => {
         </div>
 
         <!-- Barre d'actions bas de carte -->
-        <div class="flex items-center justify-between">
+        <div class="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
           <!-- Supprimer -->
           <button
             @click="gererSuppression"
@@ -143,7 +143,7 @@ const dureesJours = computed(() => {
             {{ confirmeSuppression ? 'Confirmer la suppression' : 'Supprimer' }}
           </button>
 
-          <div class="flex flex-wrap gap-4">
+          <div class="flex flex-col gap-3 sm:flex-row sm:flex-wrap sm:justify-end">
             <!-- Analytics de l'entreprise -->
             <button
               v-if="collecte.entreprise.id"
