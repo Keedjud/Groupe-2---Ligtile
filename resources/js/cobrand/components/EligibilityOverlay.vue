@@ -28,7 +28,7 @@ function close() {
             >
                 <div v-if="mobile" class="relative w-full max-w-[360px]">
                     <img
-                        :src="'/images/cobrand/quizz/overlay_mobile.svg'"
+                        :src="'/images/cobrand/quizz/overlay-mobile.svg'"
                         alt=""
                         class="block w-full select-none drop-shadow-xl"
                     />

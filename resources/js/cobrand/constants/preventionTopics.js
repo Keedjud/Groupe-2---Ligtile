@@ -10,7 +10,7 @@ export const preventionTopics = [
     {
         slug: "vih-hepatite-syphilis",
         title: "VIH, hépatite B ou C, syphilis",
-        illustration: `${ART}/VIH.png`,
+        illustration: `${ART}/vih.png`,
         body: `Ces maladies sont transmissibles par le sang. Pour protéger les receveurs, toute personne ayant été testée positive à l'un de ces virus ne peut pas donner son sang. Dans certains cas spécifiques (hépatite B guérie ou syphilis traitée) un don de plasma peut être envisagé.
 
 En cas de doute sur votre situation, contactez le CTS.`,
@@ -26,7 +26,7 @@ En cas de doute sur votre situation, contactez le CTS.`,
     {
         slug: "hemochromatose",
         title: "Hémochromatose génétique",
-        illustration: `${ART}/Hémochromatose_génétique.png`,
+        illustration: `${ART}/hemochromatose-genetique.png`,
         body: `L'hémochromatose est une maladie génétique qui provoque une accumulation excessive de fer dans l'organisme. Dans ce cas, le don de sang est possible mais uniquement sur prescription médicale valide, datant de moins d'un an et précisant le diagnostic et la fréquence des dons.`,
     },
     {
@@ -52,19 +52,19 @@ En cas de doute sur votre situation, contactez le CTS.`,
     {
         slug: "don-recent",
         title: "Don trop récent",
-        illustration: `${ART}/don_recent.png`,
+        illustration: `${ART}/don-recent.png`,
         body: `Votre organisme a besoin de temps pour reconstituer ses réserves après un don. Un délai minimum est requis entre deux dons. Il varie selon le type de don effectué. Si ce délai n'est pas respecté, votre éligibilité sera simplement reportée.`,
     },
     {
         slug: "fievre-sante",
         title: "Fièvre / pas en bonne santé",
-        illustration: `${ART}/fievre_temperature.png`,
+        illustration: `${ART}/fievre-temperature.png`,
         body: `En cas de fièvre, d'infection ou de symptômes grippaux, le don doit être reporté. Votre organisme est mobilisé pour combattre l'infection. Donner dans cet état ne serait ni bon pour vous ni pour le receveur. Vous pourrez donner dès que vous vous sentirez pleinement rétabli.`,
     },
     {
         slug: "medicaments-vaccin",
         title: "Médicaments ou vaccin récents",
-        illustration: `${ART}/medicament_vaccin.png`,
+        illustration: `${ART}/medicament-vaccin.png`,
         body: `Certains médicaments et vaccins nécessitent un délai d'attente avant de pouvoir donner son sang. Ce délai varie selon le traitement concerné.
 
 En cas de doute sur votre situation, contactez le CTS.`,
@@ -72,13 +72,13 @@ En cas de doute sur votre situation, contactez le CTS.`,
     {
         slug: "traitement-dentaire",
         title: "Traitement dentaire récent",
-        illustration: `${ART}/traitement_dentaire.png`,
+        illustration: `${ART}/traitement-dentaire.png`,
         body: `Un détartrage ou un traitement dentaire peut provoquer de petites lésions par lesquelles des bactéries peuvent s'infiltrer dans le sang. Un délai d'attente est nécessaire pour s'assurer de l'absence de toute infection ou inflammation avant le don.`,
     },
     {
         slug: "plaie-operation",
         title: "Plaie ou opération récente",
-        illustration: `${ART}/plaie_operaation.png`,
+        illustration: `${ART}/plaie-operation.png`,
         body: `Une intervention chirurgicale ou une plaie récente nécessite un temps de cicatrisation et de récupération. Selon la nature de l'opération, le délai avant de pouvoir donner à nouveau peut varier.
 
 En cas de doute sur votre situation, contactez le CTS.`,
@@ -86,7 +86,7 @@ En cas de doute sur votre situation, contactez le CTS.`,
     {
         slug: "tatouage-piercing",
         title: "Tatouage ou piercing récent",
-        illustration: `${ART}/tatouage_piercing.png`,
+        illustration: `${ART}/tatouage-piercing.png`,
         body: `Un tatouage ou un piercing crée une effraction cutanée qui peut être une voie d'entrée pour certains agents infectieux. Un délai d'attente est requis pour s'assurer qu'aucune infection n'a été contractée lors de la procédure.`,
     },
     {
@@ -98,7 +98,7 @@ En cas de doute sur votre situation, contactez le CTS.`,
     {
         slug: "relations-sexuelles",
         title: "Relations sexuelles à risque",
-        illustration: `${ART}/relation_sexuelle.png`,
+        illustration: `${ART}/relation-sexuelle.png`,
         body: `Certains comportements sexuels augmentent le risque de contracter des maladies infectieuses transmissibles par le sang. Un délai d'attente est alors nécessaire avant de pouvoir donner, afin de garantir la sécurité du receveur.`,
     },
     {
@@ -126,7 +126,7 @@ Consultez le travelcheck du CTS pour connaître votre situation.`,
     {
         slug: "transfusion-greffe",
         title: "Transfusion sanguine ou greffe reçue",
-        illustration: `${ART}/transfusion_greffe.png`,
+        illustration: `${ART}/transfusion-greffe.png`,
         body: `Avoir reçu une transfusion sanguine, une greffe d'organe ou de tissu nécessite un délai d'attente avant de pouvoir donner à son tour. Cette mesure vise à écarter tout risque de transmission d'agents infectieux au receveur.`,
     },
 ];

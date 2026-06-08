@@ -22,11 +22,11 @@ const IMG = {
 };
 
 const IMG_MOBILE = {
-    sleeping: "/images/cobrand/quizz/sleeping_mobile.svg",
-    waiting: "/images/cobrand/quizz/waiting_mobile.svg",
-    skipped: "/images/cobrand/quizz/waiting_mobile.svg",
-    good: "/images/cobrand/quizz/good_mobile.svg",
-    sad: "/images/cobrand/quizz/sad_mobile.svg",
+    sleeping: "/images/cobrand/quizz/sleeping-mobile.svg",
+    waiting: "/images/cobrand/quizz/waiting-mobile.svg",
+    skipped: "/images/cobrand/quizz/waiting-mobile.svg",
+    good: "/images/cobrand/quizz/good-mobile.svg",
+    sad: "/images/cobrand/quizz/sad-mobile.svg",
 };
 
 const BAND_COLOR = {

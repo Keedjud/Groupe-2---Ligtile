@@ -11,11 +11,11 @@ const ART = "/images/cobrand/prevention";
 
 const figures = {
     impact: `${ART}/hi.png`,
-    peur: `${ART}/Calque_2.png`,
-    pendant: `${ART}/Doctor%201.png`,
-    devient: `${ART}/image%2050.svg`,
-    eligible: `${ART}/why_ineligible.png`,
-    apres: `${ART}/ByeBye.png`,
+    peur: `${ART}/peur-seringue.png`,
+    pendant: `${ART}/doctor-1.png`,
+    devient: `${ART}/poche-sang.svg`,
+    eligible: `${ART}/why-ineligible.png`,
+    apres: `${ART}/bye-bye.png`,
 };
 
 const cableFigures = [
@@ -96,11 +96,11 @@ Vos données personnelles sont protégées et restent confidentielles. La sécur
 
 const eligibilityNotes = [
     {
-        image: "/images/cobrand/prevention/icon.png",
+        image: "/images/cobrand/prevention/icon-fleche.png",
         text: "Certaines contre-indications sont permanentes, d'autres sont simplement temporaires, liées à un état de santé passager, un voyage récent ou un traitement en cours.",
     },
     {
-        image: "/images/cobrand/prevention/icon2.png",
+        image: "/images/cobrand/prevention/icon-sablier.png",
         text: "Découvrez les principales raisons qui peuvent empêcher un don, et comprenez pourquoi ces critères existent. Ils sont là pour protéger à la fois le donneur et le receveur.",
     },
 ];
