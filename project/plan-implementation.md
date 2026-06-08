@@ -1,6 +1,6 @@
 # Plan d'implémentation — Fin de projet
 
-> Mis à jour le 8 juin 2026 (Phase 7C ✅, Phase 4C ✅). Ce document définit ce qui reste à faire pour finir le projet.
+> Mis à jour le 8 juin 2026 (Phase 7C ✅, Phase 4C ✅ — bugs tests collègue ajoutés). Ce document définit ce qui reste à faire pour finir le projet.
 
 ---
 
@@ -16,16 +16,78 @@
 
 ## Bugs ouverts
 
+### Site public — Home (Elia / Inoé)
+
+| Priorité | Bug | Responsable |
+|----------|-----|-------------|
+| 🔴 Critique | `POST /api/v1/contact` retourne 500 — impossible d'envoyer le formulaire de contact grande entreprise | Inoé (backend) |
+| 🟡 Normal | Lien du formulaire "inscription collecte" (segment employés < 1000) ne renvoie pas vers la bonne page | Elia |
+| 🟡 Normal | Bouton "Comment se déroule une collecte ?" ne renvoie pas vers la bonne section de la page | Elia |
+| 🟡 Normal | Section "Pourquoi accueillir une collecte" : icônes médicaments → remplacer par les bonnes icônes | Elia |
+| 🟡 Normal | Traits de connexion entre les icônes manquants (câble / ligne verticale entre les étapes) | Elia |
+| 🟢 Faible | Aligner horizontalement les 3 boutons "En savoir plus" de la section d'intro | Elia |
+
+### Site public — Trophées (Elia)
+
+| Priorité | Bug | Responsable |
+|----------|-----|-------------|
+| 🟡 Normal | Modèle 3D du trophée pas à jour — dernière version non intégrée dans `public/images/3D/` | Elia |
+| 🟢 Faible | Trophée affiché trop petit — agrandir légèrement | Elia |
+
+### Site public — Informations (Elia)
+
+| Priorité | Bug | Responsable |
+|----------|-----|-------------|
+| 🟡 Normal | Image "goutte" dans la page Informations → remplacer par la poche de sang | Elia |
+
+### Site cobrandé — Général (Loïc)
+
+| Priorité | Bug | Responsable |
+|----------|-----|-------------|
+| 🔴 Critique | `Accueil.vue` — CTA "Faire le test d'éligibilité" pointe vers `#/inscription` au lieu de `#/quiz` | Loïc |
+| 🔴 Critique | Header cobrand : couleur de fond ne reprend pas la couleur primaire de l'entreprise | Loïc |
+| 🔴 Critique | Header cobrand : logo de l'entreprise partenaire absent | Loïc |
+| 🟡 Normal | `cobrand/App.vue` — aucune gestion de `sessionError` : token invalide/expiré = page blanche | Loïc |
+| 🟡 Normal | Hover des liens header et footer en couleurs du site de base — doit reprendre `var(--cobrand-primary)` | Loïc |
+| 🟡 Normal | `Accueil.vue` — "à Genève" hardcodé au lieu de `{{ venue?.city }}` | Loïc |
+| 🟡 Normal | `Accueil.vue` — asset section "Pourquoi donner son sang ?" trop petit, agrandir selon maquette | Loïc |
+| 🟡 Normal | `Accueil.vue` — lien baromètre HUG non fonctionnel (bouton sans href) | Loïc |
+| 🟡 Normal | `Accueil.vue` — bordures de développement visibles (`border border-[var(--color-violet-100)]`) | Loïc |
+
+### Site cobrandé — Quiz / Formulaire (Loïc)
+
+| Priorité | Bug | Responsable |
+|----------|-----|-------------|
+| 🔴 Critique | Bouton "S'inscrire" (Redirect.vue) rouge — couleur primaire cobrand non reprise | Loïc |
+| 🟡 Normal | Phrase "Vous êtes toujours éligible" apparaît en permanence, même sans avoir passé le quiz | Loïc |
+| 🟡 Normal | Phrase "Bonne nouvelle ! Votre situation vous permet de vous inscrire." affichée même après clic "Passer" | Loïc |
+| 🟡 Normal | Question passée (skip P2) reste cliquable et non grisée — l'utilisateur peut encore y répondre | Loïc |
+
+### Site cobrandé — Prévention (Loïc)
+
+| Priorité | Bug | Responsable |
+|----------|-----|-------------|
+| 🟡 Normal | Couleur des icônes de la section "Pourquoi ne suis-je pas éligible ?" différente de celle de "J'ai peur de la piqûre" — harmoniser | Loïc |
+| 🟡 Normal | Section 1 — retour à la ligne après "vies" pour améliorer la lisibilité | Loïc |
+| 🟢 Faible | Ajouter un lien vers le travelcheck suisse sur le mot "voyage" dans la carte correspondante | Loïc |
+
+### Dashboard (Inoé)
+
+| Priorité | Bug | Responsable |
+|----------|-----|-------------|
+| 🟡 Normal | Color pickers ne se ferment pas en cliquant en dehors | Inoé |
+| 🟡 Normal | Logo non affiché dans le composant `LogoUpload` après upload — pas de prévisualisation | Inoé |
+| 🟡 Normal | Faute de frappe : "diffère" → "diffèrent" dans la note de pré-remplissage du formulaire collecte | Inoé |
+| 🟡 Normal | Validation date : possible de créer une collecte avec une date de début dans le passé | Inoé |
+| 🟢 Faible | Ajouter une confirmation (modale ou toast) avant suppression définitive d'une collecte | Inoé |
+
+### Technique — Backend / Perf (Inoé)
+
 | Priorité | Bug | Fichier(s) |
 |----------|-----|-----------|
-| 🔴 Critique | `Accueil.vue` — "Faire le test d'éligibilité" pointe vers `#/inscription` au lieu de `#/quiz` | `cobrand/views/Accueil.vue` l.189 |
-| 🔴 Critique | `cobrand/App.vue` — aucune gestion de `sessionError` : token invalide/expiré = page blanche sans message | `cobrand/App.vue` |
 | 🔴 Critique | `ApiCobrandController::show()` — fenêtre de disponibilité non implémentée (404 hors fenêtre) | `ApiCobrandController.php` |
-| 🟡 Normal | `Accueil.vue` — "à Genève" hardcodé au lieu de `{{ venue?.city }}` (disponible dans `useCobrandSession`) | `cobrand/views/Accueil.vue` |
-| 🟡 Normal | `Accueil.vue` — bouton "Consulter le baromètre complet des HUG" sans lien ni action | `cobrand/views/Accueil.vue` |
-| 🟡 Normal | `Accueil.vue` — bordures de développement visibles (`border border-[var(--color-violet-100)]`) à supprimer | `cobrand/views/Accueil.vue` |
-| 🟢 Faible | Index composite manquant sur `quiz_events` — la requête `COUNT(DISTINCT session_id)` filtrée par `collection_id` + `event_type` fait un scan partiel sans index sur `event_type` | Nouvelle migration : `$table->index(['collection_id', 'event_type', 'session_id'])` |
-| 🟢 Faible | `Address::collections()` — relation `HasMany` morte depuis la migration snapshot (`collections` n'a plus de `address_id` FK) | `app/Models/Address.php` |
+| 🟢 Faible | Index composite manquant sur `quiz_events` — scan partiel sur `COUNT(DISTINCT session_id)` sans index sur `event_type` | Nouvelle migration : `$table->index(['collection_id', 'event_type', 'session_id'])` |
+| 🟢 Faible | `Address::collections()` — relation `HasMany` morte depuis la migration snapshot | `app/Models/Address.php` |
 
 ---
 
@@ -37,26 +99,49 @@ Les pages publiques (Trophées, Labels) ne font **pas de cache** : chaque charge
 
 ## Ce qui reste à faire
 
-### Frontend cobrand — bugs Accueil.vue (Loïc)
+### Loïc — Site cobrandé
 
-- [ ] Fix lien CTA "Faire le test d'éligibilité" → `#/quiz` (actuellement `#/inscription`) — **critique**
-- [ ] Remplacer `"à Genève"` hardcodé par `{{ venue?.city }}` dans la phrase d'intro
-- [ ] Bouton "Consulter le baromètre complet des HUG" — lier vers `https://www.hug.ch/don-de-sang` ou supprimer
-- [ ] Supprimer les bordures de développement visibles (`border border-[var(--color-violet-100)]`)
+- [ ] **[CRITIQUE]** Fix lien "Faire le test d'éligibilité" → `#/quiz` (actuellement `#/inscription`)
+- [ ] **[CRITIQUE]** Header cobrand : appliquer `var(--cobrand-primary)` en couleur de fond + afficher logo entreprise
+- [ ] **[CRITIQUE]** `Redirect.vue` — bouton "S'inscrire" : appliquer couleur primaire cobrand
+- [ ] `cobrand/App.vue` — afficher un écran "Collecte indisponible" si `sessionError`
+- [ ] Hover header/footer : remplacer couleurs du site de base par `var(--cobrand-primary)`
+- [ ] `Accueil.vue` — remplacer `"à Genève"` hardcodé par `{{ venue?.city }}`
+- [ ] `Accueil.vue` — agrandir asset section "Pourquoi donner son sang ?" selon maquette
+- [ ] `Accueil.vue` — lien baromètre HUG (ajouter href ou supprimer le bouton)
+- [ ] `Accueil.vue` — supprimer bordures de dev visibles (`border border-[var(--color-violet-100)]`)
+- [ ] Quiz : phrase "Vous êtes toujours éligible" ne doit pas apparaître en permanence
+- [ ] Quiz : phrase "Bonne nouvelle ! Votre situation vous permet de vous inscrire." à masquer après clic "Passer"
+- [ ] Quiz P2 : question passée → griser et désactiver les boutons de réponse
+- [ ] Prévention — harmoniser la couleur des icônes "Pourquoi ne suis-je pas éligible ?" avec celle de "J'ai peur de la piqûre"
+- [ ] Prévention — retour à la ligne après "vies" dans la section 1 (lisibilité)
+- [ ] Prévention — ajouter un lien vers travelcheck.ch sur le mot "voyage" dans la carte correspondante
 
-### Frontend cobrand — gestion erreur session (Loïc)
+### Elia — Site public
 
-- [ ] `cobrand/App.vue` — afficher un écran "Collecte indisponible" si `sessionError` (token inconnu ou hors fenêtre)
+- [ ] Intégrer le nouveau modèle 3D du trophée dans `public/images/3D/`
+- [ ] Section "Pourquoi accueillir une collecte" : remplacer icônes médicaments par les bonnes icônes
+- [ ] Ajouter les traits de connexion (ligne verticale) entre les icônes de la section étapes
+- [ ] Fix lien du formulaire "inscription collecte" (segment employés < 1000) → bonne page cible
+- [ ] Fix bouton "Comment se déroule une collecte ?" → bonne ancre de page
+- [ ] Page Informations : remplacer l'image "goutte" par la poche de sang
+- [ ] Aligner horizontalement les 3 boutons "En savoir plus" de la section intro
+- [ ] Trophées : légèrement agrandir le trophée affiché
 
-### Frontend dashboard
+### Inoé — Backend + Dashboard
 
-- [x] Adapter `CollecteForm.vue` aux nouveaux champs backend — `venue_*`, `contact_email`, `contact_phone` (Phase 4D)
-- [x] Adapter `CollecteDetail.vue` à l'affichage des nouveaux champs (Phase 4D)
-- [x] Gestion des entreprises — nouvelle vue listant les entreprises et leurs contacts, avec édition (Phase 4E)
-- [x] Gestion des trophées — nouvel onglet + formulaire pour saisir les lauréats d'une nouvelle année (Phase 4F)
-- [x] Aperçu co-branding en temps réel + calcul contraste WCAG — `CollecteForm.vue`, `CobrandPreviewModal.vue` (Phase 4C — branche `feature/phase-4c-cobrand-preview`)
+- [ ] **[CRITIQUE]** `POST /api/v1/contact` retourne 500 — investiguer et corriger `ApiContactController`
+- [ ] **[CRITIQUE]** `ApiCobrandController::show()` — vérification fenêtre de disponibilité (404 si hors fenêtre)
+- [ ] Dashboard `CollecteForm` — color pickers : fermeture au clic en dehors
+- [ ] Dashboard `LogoUpload` — prévisualisation du logo après upload
+- [ ] Dashboard `CollecteForm` — faute de frappe : "diffère" → "diffèrent"
+- [ ] Dashboard `CollecteForm` — bloquer ou avertir si date de début dans le passé
+- [ ] Dashboard — confirmation (modale ou toast) avant suppression d'une collecte
+- [ ] Nouvelle migration : index composite `(collection_id, event_type, session_id)` sur `quiz_events`
+- [ ] `app/Models/Address.php` — supprimer la relation morte `collections()`
+- [ ] `ApiTropheeController` — renommer `participant_count` → `companies_count` (Phase 8C)
 
-### Frontend cobrand — vues
+### Frontend cobrand — vues (état actuel)
 
 - [x] `cobrand/App.vue` — routage hash, co-branding CSS
 - [x] `cobrand/views/Accueil.vue` — implémentée (Phase 7B)
@@ -66,15 +151,13 @@ Les pages publiques (Trophées, Labels) ne font **pas de cache** : chaque charge
 - [x] `cobrand/composables/useQuizStore.js`
 - [x] `cobrand/constants/quizQuestions.js` — slugs stables P1 + P2
 
-### Backend cobrand (Inoé)
+### Frontend dashboard (état actuel)
 
-- [ ] `ApiCobrandController::show()` — ajouter vérification fenêtre de disponibilité (404 si avant `created_at` ou après `end_date + 7j`) — **critique**
-- [ ] Nouvelle migration : index composite `(collection_id, event_type, session_id)` sur `quiz_events` (performance `COUNT(DISTINCT session_id)`)
-
-### Nettoyage code (Inoé)
-
-- [ ] `app/Models/Address.php` — supprimer la relation `collections()` devenue morte depuis la migration snapshot
-- [ ] `ApiTropheeController` — renommer `participant_count` → `companies_count` au niveau année (Phase 8C)
+- [x] Adapter `CollecteForm.vue` aux nouveaux champs backend (Phase 4D)
+- [x] Adapter `CollecteDetail.vue` à l'affichage des nouveaux champs (Phase 4D)
+- [x] Gestion des entreprises — liste, fiche, création, édition (Phase 4E)
+- [x] Gestion des trophées — podiums par année, création/édition/suppression (Phase 4F)
+- [x] Aperçu co-branding en temps réel + contraste WCAG (Phase 4C — branche `feature/phase-4c-cobrand-preview`)
 
 ---
 
