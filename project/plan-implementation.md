@@ -19,6 +19,7 @@
 | Priorité | Bug | Fichier(s) |
 |----------|-----|-----------|
 | 🟡 Normal | Aperçu co-branding en temps réel + warning contraste WCAG | `CollecteForm.vue`, `useColorContrast.js` (Phase 4C — en attente maquettes) |
+| 🟢 Faible | Index composite manquant sur `quiz_events` — la requête `COUNT(DISTINCT session_id)` filtrée par `collection_id` + `event_type` fait un scan partiel sans index sur `event_type` | Nouvelle migration : `$table->index(['collection_id', 'event_type', 'session_id'])` |
 
 ---
 
@@ -52,6 +53,7 @@ Les pages publiques (Trophées, Labels) ne font **pas de cache** : chaque charge
 ### Backend cobrand
 
 - [ ] `ApiCobrandController::show()` — ajouter vérification fenêtre de disponibilité (404 si avant `created_at` ou après `end_date + 7j`)
+- [ ] Nouvelle migration : index composite `(collection_id, event_type, session_id)` sur `quiz_events` (performance `COUNT(DISTINCT session_id)`)
 
 ---
 
