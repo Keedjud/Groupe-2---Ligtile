@@ -18,15 +18,15 @@ const {
 const mainImageSrc = computed(() => {
     const value = Number(tauxRemplissage.value ?? 0);
     if (value < 37.5) {
-        return "/images/goutte-sang-25.png";
+        return "/images/cobrand/home/goutte-sang-25.png";
     }
     if (value < 62.5) {
-        return "/images/goutte-sang-50.png";
+        return "/images/cobrand/home/goutte-sang-50.png";
     }
     if (value < 87.5) {
-        return "/images/goutte-sang-75.png";
+        return "/images/cobrand/home/goutte-sang-75.png";
     }
-    return "/images/goutte-sang-100.png";
+    return "/images/cobrand/home/goutte-sang-100.png";
 });
 
 const RING_RADIUS = 46;
@@ -60,14 +60,14 @@ const reserveLevels = [
 ];
 
 const bloodTypes = [
-    { label: 'O+',  value: 'O+',  img: '/images/sang-o-plus.png',  color: 'var(--color-light-palette-red)',    description: 'Dangereusement bas' },
-    { label: 'A+',  value: 'A+',  img: '/images/sang-a-plus.png',  color: 'var(--color-light-palette-orange)', description: 'Critique' },
-    { label: 'AB+', value: 'AB+', img: '/images/sang-ab-plus.png', color: 'var(--color-light-palette-orange)', description: 'Critique' },
-    { label: 'B+',  value: 'B+',  img: '/images/sang-b-plus.png',  color: 'var(--color-light-palette-yellow)', description: 'Bas' },
-    { label: 'O-',  value: 'O-',  img: '/images/sang-o-neg.png',   color: 'var(--color-light-palette-orange)', description: 'Critique' },
-    { label: 'A-',  value: 'A-',  img: '/images/sang-a-neg.png',   color: 'var(--color-light-palette-green)',  description: 'Élevé' },
-    { label: 'AB-', value: 'AB-', img: '/images/sang-ab-neg.png',  color: 'var(--color-vert-300)',             description: 'Normal' },
-    { label: 'B-',  value: 'B-',  img: '/images/sang-b-neg.png',   color: 'var(--color-light-palette-yellow)', description: 'Bas' },
+    { label: 'O+',  value: 'O+',  img: '/images/cobrand/home/sang-o-plus.png',  color: 'var(--color-light-palette-red)',    description: 'Dangereusement bas' },
+    { label: 'A+',  value: 'A+',  img: '/images/cobrand/home/sang-a-plus.png',  color: 'var(--color-light-palette-orange)', description: 'Critique' },
+    { label: 'AB+', value: 'AB+', img: '/images/cobrand/home/sang-ab-plus.png', color: 'var(--color-light-palette-orange)', description: 'Critique' },
+    { label: 'B+',  value: 'B+',  img: '/images/cobrand/home/sang-b-plus.png',  color: 'var(--color-light-palette-yellow)', description: 'Bas' },
+    { label: 'O-',  value: 'O-',  img: '/images/cobrand/home/sang-o-neg.png',   color: 'var(--color-light-palette-orange)', description: 'Critique' },
+    { label: 'A-',  value: 'A-',  img: '/images/cobrand/home/sang-a-neg.png',   color: 'var(--color-light-palette-green)',  description: 'Élevé' },
+    { label: 'AB-', value: 'AB-', img: '/images/cobrand/home/sang-ab-neg.png',  color: 'var(--color-vert-300)',             description: 'Normal' },
+    { label: 'B-',  value: 'B-',  img: '/images/cobrand/home/sang-b-neg.png',   color: 'var(--color-light-palette-yellow)', description: 'Bas' },
 ]
 
 </script>

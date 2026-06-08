@@ -205,7 +205,7 @@ function onKeydown(e) {
                                 <!-- Carte droite : goutte + % -->
                                 <div class="flex flex-col items-center rounded-2xl p-8">
                                     <img
-                                        :src="'/images/goutte-sang-25.png'"
+                                        :src="'/images/cobrand/home/goutte-sang-25.png'"
                                         alt=""
                                         class="mx-auto h-[220px] w-full max-w-[140px] select-none object-contain"
                                     />
