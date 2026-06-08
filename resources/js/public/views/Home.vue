@@ -143,36 +143,37 @@ function updateCardsIndex() {
   </section>
 
   <!-- Pourquoi accueillir une collecte -->
-  <section class="bg-violet-100 py-10">
+  <section class="bg-violet-100 pt-10 ">
     <div class="px-4 lg:px-[60px]">
-      <h2 class="text-h1 font-semibold text-center text-violet-900">Pourquoi accueillir une collecte ?</h2>
-      <p class="text-h4 text-violet-900 text-center mt-2">Un geste utile, directement sur votre lieu de travail.</p>
-      <div class="mx-auto mt-2 h-[3px] w-48 rounded-full bg-vert-300"></div>
+      <h2 class="text-h1 font-semibold pt-4 text-center text-violet-900">Pourquoi accueillir une collecte ?</h2>
+      <div class="mx-auto mt-4 h-[4px] w-48 rounded-full bg-vert-300"></div>
+      <p class="text-h4 text-violet-900 text-center mt-4">Un geste utile, directement sur votre lieu de travail.</p>
+
 
       <div
         ref="pourquoiScroll"
         @scroll.passive="updatePourquoiIndex"
-        class="-mx-4 flex overflow-x-auto snap-x snap-mandatory gap-4 px-4 mt-12
+        class="-mx-4 flex overflow-x-auto snap-x snap-mandatory gap-4 px-4
                lg:mx-0 lg:px-0 lg:grid lg:grid-cols-4 lg:gap-6 lg:overflow-visible"
       >
-        <div class="snap-center shrink-0 w-[calc(100vw-2rem)] lg:w-auto flex flex-col">
-          <img :src="'/images/illustrations/pillule.png'" loading="lazy" decoding="async" class="h-32 w-auto mx-auto" alt="Icône de médicament" />
-          <h3 class="text-h3 font-bold text-violet-900 text-center mt-4">Répondre à un besoin réel</h3>
+        <div class="snap-center py-18 shrink-0 w-[calc(100vw-2rem)] lg:w-auto flex flex-col">
+          <img :src="'/images/icons/croix.svg'" loading="lazy" decoding="async" class="h-16 w-auto mx-auto" alt="Icône de médicament" />
+          <h3 class="text-h3 font-bold text-violet-900 text-center mt-12">Répondre à un besoin réel</h3>
           <p class="text-regular text-violet-900 text-center mt-4">Les produits sanguins sont nécessaires chaque jour pour soigner de nombreux patients. Chaque collecte compte.</p>
         </div>
-        <div class="snap-center shrink-0 w-[calc(100vw-2rem)] lg:w-auto flex flex-col">
-          <img :src="'/images/illustrations/pillule2.png'" loading="lazy" decoding="async" class="h-32 w-auto mx-auto" alt="Icône de médicament" />
-          <h3 class="text-h3 font-bold text-violet-900 text-center mt-4">Faciliter l'engagement des collaborateurs</h3>
+        <div class="snap-center py-18  shrink-0 w-[calc(100vw-2rem)] lg:w-auto flex flex-col">
+          <img :src="'/images/icons/collaborateur.svg'" loading="lazy" decoding="async" class="h-16 w-auto mx-auto" alt="Icône de médicament" />
+          <h3 class="text-h3 font-bold text-violet-900 text-center mt-12">Faciliter l'engagement des collaborateurs</h3>
           <p class="text-regular text-violet-900 text-center mt-4">Organiser une collecte directement sur le lieu de travail réduit les contraintes et encourage la participation.</p>
         </div>
-        <div class="snap-center shrink-0 w-[calc(100vw-2rem)] lg:w-auto flex flex-col">
-          <img :src="'/images/illustrations/pillule.png'" loading="lazy" decoding="async" class="h-32 w-auto mx-auto" alt="Icône de médicament" />
-          <h3 class="text-h3 font-bold text-violet-900 text-center mt-4">Créer une dynamique collective</h3>
+        <div class="snap-center py-19  shrink-0 w-[calc(100vw-2rem)] lg:w-auto flex flex-col">
+          <img :src="'/images/icons/dynamique.svg'" loading="lazy" decoding="async" class="h-15 w-auto mx-auto" alt="Icône de médicament" />
+          <h3 class="text-h3 font-bold text-violet-900 text-center mt-12">Créer une dynamique collective</h3>
           <p class="text-regular text-violet-900 text-center mt-4">Une collecte peut devenir un moment fédérateur autour d'une action commune et porteuse de sens.</p>
         </div>
-        <div class="snap-center shrink-0 w-[calc(100vw-2rem)] lg:w-auto flex flex-col">
-          <img :src="'/images/illustrations/pillule2.png'" loading="lazy" decoding="async" class="h-32 w-auto mx-auto" alt="Icône de médicament" />
-          <h3 class="text-h3 font-bold text-violet-900 text-center mt-4">Valoriser l'engagement de l'entreprise</h3>
+        <div class="snap-center py-18  shrink-0 w-[calc(100vw-2rem)] lg:w-auto flex flex-col">
+          <img :src="'/images/icons/trophe-icon.svg'" loading="lazy" decoding="async" class="h-16 w-auto mx-auto" alt="Icône de médicament" />
+          <h3 class="text-h3 font-bold text-violet-900 text-center mt-12">Valoriser l'engagement de l'entreprise</h3>
           <p class="text-regular text-violet-900 text-center mt-4">Accueillir une collecte permet d'inscrire votre démarche sociétale dans une action visible, concrète et positive.</p>
         </div>
       </div>
