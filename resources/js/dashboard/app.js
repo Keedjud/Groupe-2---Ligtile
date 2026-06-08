@@ -13,5 +13,4 @@ function getXsrfToken() {
 const xsrf = getXsrfToken();
 if (xsrf) setDefaultHeaders({ 'X-XSRF-TOKEN': xsrf });
 
-
 createApp(App).mount('#app');
