@@ -22,9 +22,24 @@ watch(
     (t) => {
         if (!t) return;
         const style = document.documentElement.style;
-        Object.entries(t).forEach(([key, val]) => {
-            style.setProperty(`--cobrand-${key.replace(/_/g, "-")}`, val);
-        });
+        // Normalize keys: drop trailing _color or -color, convert underscores to hyphens
+        const normalize = (k) => {
+            let s = k.toString();
+            s = s.replace(/_color$/i, '');
+            s = s.replace(/-color$/i, '');
+            s = s.replace(/_+/g, '-');
+            return s;
+        };
+
+        if (typeof t === 'string') {
+            style.setProperty('--cobrand-primary', t);
+        } else {
+            Object.entries(t).forEach(([key, val]) => {
+                const nk = normalize(key);
+                if (val === null || val === undefined) return;
+                style.setProperty(`--cobrand-${nk}`, val);
+            });
+        }
     },
     { immediate: true },
 );
