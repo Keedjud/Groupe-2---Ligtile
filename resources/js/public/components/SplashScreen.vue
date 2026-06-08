@@ -1,7 +1,5 @@
 <script setup>
-import { ref } from 'vue'
-
-const visible = ref(sessionStorage.getItem('splash_seen') !== 'true')
+const visible = defineModel('visible', { type: Boolean, default: true })
 
 function enterSite() {
   sessionStorage.setItem('splash_seen', 'true')
