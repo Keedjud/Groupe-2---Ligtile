@@ -1,12 +1,13 @@
 <!-- CollecteForm -->
 <script setup>
 import { ref, computed, watch, onMounted } from 'vue'
-import DashboardLayout  from '../layouts/DashboardLayout.vue'
-import ColorField       from '../components/ColorField.vue'
-import LogoUpload       from '../components/LogoUpload.vue'
-import CalendrierPicker from '../components/CalendrierPicker.vue'
-import { useCollectes } from '../composables/useCollectes.js'
-import { useFetchApi }  from '@/composables/api/useFetchApi'
+import DashboardLayout      from '../layouts/DashboardLayout.vue'
+import ColorField           from '../components/ColorField.vue'
+import LogoUpload           from '../components/LogoUpload.vue'
+import CalendrierPicker     from '../components/CalendrierPicker.vue'
+import CobrandPreviewModal  from '../components/CobrandPreviewModal.vue'
+import { useCollectes }     from '../composables/useCollectes.js'
+import { useFetchApi }      from '@/composables/api/useFetchApi'
 
 const props = defineProps({
   mode:       { type: String, default: 'create' },  // 'create' | 'edit'
@@ -195,6 +196,34 @@ async function soumettre() {
 
 const titrePage  = computed(() => props.mode === 'edit' ? 'Modifier la collecte' : 'Nouvelle collecte')
 const libelleBtn = computed(() => props.mode === 'edit' ? 'Enregistrer' : 'Créer la collecte')
+
+// ─── Utilitaire contraste (pour la couleur du texte du bouton preview) ────────
+
+function isLightColor(hex) {
+  try {
+    const h = hex.replace('#', '')
+    const r = parseInt(h.slice(0, 2), 16) / 255
+    const g = parseInt(h.slice(2, 4), 16) / 255
+    const b = parseInt(h.slice(4, 6), 16) / 255
+    const f = c => c <= 0.03928 ? c / 12.92 : ((c + 0.055) / 1.055) ** 2.4
+    const lum = 0.2126 * f(r) + 0.7152 * f(g) + 0.0722 * f(b)
+    // contraste sur blanc < contraste sur noir → couleur claire
+    return (1.05 / (lum + 0.05)) < ((lum + 0.05) / 0.05)
+  } catch { return false }
+}
+
+// ─── Prévisualisation cobrand ─────────────────────────────────────────────────
+const showPreview = ref(false)
+
+// Bouton visible dès que le logo est uploadé (les couleurs ont toujours des valeurs par défaut)
+const peutPrevisualiser = computed(() => !!logoUrl.value)
+
+// Nom de l'entreprise à afficher dans la prévisualisation
+const nomEntreprisePourPreview = computed(() =>
+  props.mode === 'edit'
+    ? nomEntrepriseEdit.value
+    : (entrepriseSelectionnee.value?.name || 'Entreprise')
+)
 </script>
 
 <template>
@@ -350,6 +379,31 @@ const libelleBtn = computed(() => props.mode === 'edit' ? 'Enregistrer' : 'Crée
             <LogoUpload v-model="logoUrl" />
           </div>
 
+          <!-- Bouton prévisualisation cobrand -->
+          <Transition
+            enter-active-class="transition-all duration-300 ease-out"
+            enter-from-class="opacity-0 -translate-y-1"
+            enter-to-class="opacity-100 translate-y-0"
+            leave-active-class="transition-all duration-150 ease-in"
+            leave-from-class="opacity-100 translate-y-0"
+            leave-to-class="opacity-0 -translate-y-1"
+          >
+            <div v-if="peutPrevisualiser" class="flex items-center gap-3">
+              <button
+                type="button"
+                class="flex items-center gap-2 rounded-[40px] px-5 py-2.5 font-sans text-small font-semibold shadow-[0_2px_8px_rgba(0,0,0,0.18)] transition hover:opacity-90 active:scale-95"
+                :style="{ backgroundColor: couleurPrincipale, color: couleurPrincipale ? (isLightColor(couleurPrincipale) ? '#000000' : '#ffffff') : '#ffffff' }"
+                @click="showPreview = true"
+              >
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                  <path stroke-linecap="round" stroke-linejoin="round" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/>
+                  <path stroke-linecap="round" stroke-linejoin="round" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"/>
+                </svg>
+                Prévisualiser le site cobrandé
+              </button>
+            </div>
+          </Transition>
+
           <!-- Dates -->
           <div class="flex flex-col gap-4 sm:flex-row sm:items-start">
             <div class="flex flex-1 flex-col gap-1">
@@ -415,4 +469,13 @@ const libelleBtn = computed(() => props.mode === 'edit' ? 'Enregistrer' : 'Crée
       </form>
     </div>
   </DashboardLayout>
+
+  <!-- Modale prévisualisation cobrand -->
+  <CobrandPreviewModal
+    v-model="showPreview"
+    :primaryColor="couleurPrincipale"
+    :secondaryColor="couleurSecondaire"
+    :logoUrl="logoUrl || ''"
+    :companyName="nomEntreprisePourPreview"
+  />
 </template>
