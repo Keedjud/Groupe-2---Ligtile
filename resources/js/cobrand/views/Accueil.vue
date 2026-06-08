@@ -3,6 +3,7 @@
 import { computed } from "vue";
 import { useCobrandSession } from "../composables/useCobrandSession";
 import BackgroundMotifs from "../components/BackgroundMotifs.vue";
+import CoeurGouttes from "../components/CoeurGouttes.vue";
 
 
 const {
@@ -127,7 +128,7 @@ const bloodTypes = [
 
                 <div class="mt-10 flex flex-col gap-8 lg:flex-row lg:items-center lg:gap-12">
                     <div class="w-full lg:w-[820px] lg:shrink-0">
-                        <img :src="'/images/gouttes-ensemble-coeur.svg'" alt="" class="w-full object-contain" />
+                        <CoeurGouttes class="w-full object-contain" />
                     </div>
 
                     <div class="flex w-full flex-col gap-6">
