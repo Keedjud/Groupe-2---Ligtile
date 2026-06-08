@@ -1,6 +1,6 @@
 # Plan d'implémentation — Fin de projet
 
-> Mis à jour le 8 juin 2026 (Phase 7B — Accueil.vue implémentée). Ce document définit ce qui reste à faire pour finir le projet.
+> Mis à jour le 8 juin 2026 (Phase 7C ✅, Phase 4C ✅). Ce document définit ce qui reste à faire pour finir le projet.
 
 ---
 
@@ -18,8 +18,14 @@
 
 | Priorité | Bug | Fichier(s) |
 |----------|-----|-----------|
-| 🟡 Normal | Aperçu co-branding en temps réel + warning contraste WCAG | `CollecteForm.vue`, `useColorContrast.js` (Phase 4C — en attente maquettes) |
+| 🔴 Critique | `Accueil.vue` — "Faire le test d'éligibilité" pointe vers `#/inscription` au lieu de `#/quiz` | `cobrand/views/Accueil.vue` l.189 |
+| 🔴 Critique | `cobrand/App.vue` — aucune gestion de `sessionError` : token invalide/expiré = page blanche sans message | `cobrand/App.vue` |
+| 🔴 Critique | `ApiCobrandController::show()` — fenêtre de disponibilité non implémentée (404 hors fenêtre) | `ApiCobrandController.php` |
+| 🟡 Normal | `Accueil.vue` — "à Genève" hardcodé au lieu de `{{ venue?.city }}` (disponible dans `useCobrandSession`) | `cobrand/views/Accueil.vue` |
+| 🟡 Normal | `Accueil.vue` — bouton "Consulter le baromètre complet des HUG" sans lien ni action | `cobrand/views/Accueil.vue` |
+| 🟡 Normal | `Accueil.vue` — bordures de développement visibles (`border border-[var(--color-violet-100)]`) à supprimer | `cobrand/views/Accueil.vue` |
 | 🟢 Faible | Index composite manquant sur `quiz_events` — la requête `COUNT(DISTINCT session_id)` filtrée par `collection_id` + `event_type` fait un scan partiel sans index sur `event_type` | Nouvelle migration : `$table->index(['collection_id', 'event_type', 'session_id'])` |
+| 🟢 Faible | `Address::collections()` — relation `HasMany` morte depuis la migration snapshot (`collections` n'a plus de `address_id` FK) | `app/Models/Address.php` |
 
 ---
 
@@ -31,29 +37,44 @@ Les pages publiques (Trophées, Labels) ne font **pas de cache** : chaque charge
 
 ## Ce qui reste à faire
 
+### Frontend cobrand — bugs Accueil.vue (Loïc)
+
+- [ ] Fix lien CTA "Faire le test d'éligibilité" → `#/quiz` (actuellement `#/inscription`) — **critique**
+- [ ] Remplacer `"à Genève"` hardcodé par `{{ venue?.city }}` dans la phrase d'intro
+- [ ] Bouton "Consulter le baromètre complet des HUG" — lier vers `https://www.hug.ch/don-de-sang` ou supprimer
+- [ ] Supprimer les bordures de développement visibles (`border border-[var(--color-violet-100)]`)
+
+### Frontend cobrand — gestion erreur session (Loïc)
+
+- [ ] `cobrand/App.vue` — afficher un écran "Collecte indisponible" si `sessionError` (token inconnu ou hors fenêtre)
+
 ### Frontend dashboard
 
 - [x] Adapter `CollecteForm.vue` aux nouveaux champs backend — `venue_*`, `contact_email`, `contact_phone` (Phase 4D)
 - [x] Adapter `CollecteDetail.vue` à l'affichage des nouveaux champs (Phase 4D)
 - [x] Gestion des entreprises — nouvelle vue listant les entreprises et leurs contacts, avec édition (Phase 4E)
 - [x] Gestion des trophées — nouvel onglet + formulaire pour saisir les lauréats d'une nouvelle année (Phase 4F)
-- [ ] Aperçu co-branding + warning contraste WCAG — `CollecteForm.vue`, `useColorContrast.js` (Phase 4C — en attente maquettes)
-- [ ] Aperçu couleurs primaire + secondaire en lecture — `CollecteDetail.vue` (Phase 4C — en attente maquettes)
+- [x] Aperçu co-branding en temps réel + calcul contraste WCAG — `CollecteForm.vue`, `CobrandPreviewModal.vue` (Phase 4C — branche `feature/phase-4c-cobrand-preview`)
 
-### Frontend cobrand
+### Frontend cobrand — vues
 
-- [x] `cobrand/App.vue` — routage hash, co-branding CSS (fenêtre de disponibilité côté frontend à finaliser avec le backend)
+- [x] `cobrand/App.vue` — routage hash, co-branding CSS
 - [x] `cobrand/views/Accueil.vue` — implémentée (Phase 7B)
-- [ ] `cobrand/views/Prevention.vue` — placeholder actuel, scrollytelling à implémenter (Phase 7C)
+- [x] `cobrand/views/Prevention.vue` — scrollytelling complet avec tracking (Phase 7C)
 - [x] `cobrand/views/Quiz.vue` — P1 + P2 + tracking
 - [x] `cobrand/views/Redirect.vue` — page Onedoc + tracking
 - [x] `cobrand/composables/useQuizStore.js`
 - [x] `cobrand/constants/quizQuestions.js` — slugs stables P1 + P2
 
-### Backend cobrand
+### Backend cobrand (Inoé)
 
-- [ ] `ApiCobrandController::show()` — ajouter vérification fenêtre de disponibilité (404 si avant `created_at` ou après `end_date + 7j`)
+- [ ] `ApiCobrandController::show()` — ajouter vérification fenêtre de disponibilité (404 si avant `created_at` ou après `end_date + 7j`) — **critique**
 - [ ] Nouvelle migration : index composite `(collection_id, event_type, session_id)` sur `quiz_events` (performance `COUNT(DISTINCT session_id)`)
+
+### Nettoyage code (Inoé)
+
+- [ ] `app/Models/Address.php` — supprimer la relation `collections()` devenue morte depuis la migration snapshot
+- [ ] `ApiTropheeController` — renommer `participant_count` → `companies_count` au niveau année (Phase 8C)
 
 ---
 
@@ -114,12 +135,16 @@ Namespace, migrations, modèles, routes réorganisées, seeder, vie privée.
 
 ---
 
-### Phase 4C — Aperçu co-branding dashboard ← EN ATTENTE DES MAQUETTES
+### ✅ Phase 4C — Aperçu co-branding dashboard — TERMINÉE
+
+**Branche :** `feature/phase-4c-cobrand-preview` (en attente de merge dans `develop`)
 
 | Tâche | Fichier(s) |
 |-------|-----------|
-| Aperçu co-branding en temps réel + warning contraste WCAG | `CollecteForm.vue`, nouveau `composables/useColorContrast.js` |
-| Aperçu couleurs primaire + secondaire en lecture | `CollecteDetail.vue` |
+| ✅ Bouton "Prévisualiser le site cobrandé" dans `CollecteForm.vue` — visible dès que le logo est uploadé, couleur adaptive selon contraste WCAG | `CollecteForm.vue` |
+| ✅ Modale grande `CobrandPreviewModal.vue` — faux header cobrand + hero "État de la collecte" + section "Pourquoi donner" avec couleurs et logo injectés en temps réel | `dashboard/components/CobrandPreviewModal.vue` |
+
+> **Note :** l'aperçu calcul côté JS la couleur de texte accessible (blanc ou noir) via luminance WCAG — pas de dépendance à `useColorContrast.js`. L'aperçu des couleurs en lecture dans `CollecteDetail.vue` reste hors scope.
 
 ---
 
@@ -266,15 +291,15 @@ Les dates de collecte (`start_date` / `end_date`) sont les dates réelles de l'�
 
 ---
 
-**7C — `cobrand/views/Prevention.vue`** ← PROCHAINE TÂCHE
+#### ✅ Phase 7C — `cobrand/views/Prevention.vue` — TERMINÉE
 
-Scrollytelling. Émet `prevention_entered` / `prevention_exited` (avec `engaged` + `time_on_page`) via le store — ne pas appeler l'API directement depuis la vue.
+Scrollytelling complet : 6 sections narratives (impact, peur, pendant, devient, éligibilité, après), câble SVG animé desktop, carousel de topics avec navigation clavier et indicateur de page, tracking `prevention_entered` / `prevention_exited` (avec `engaged` + `time_on_page`) via `trackPage` / `trackPageBeacon`.
 
 ---
 
 **Après 7B + 7C :**
-- Aligner les slugs hardcodés dans `DashboardMetricsController::performanceParQuestion()` avec ceux définis dans `quizQuestions.js`
-- Renommer `participant_count` → `companies_count` dans `ApiTropheeController` (représente des entreprises, pas des participants)
+- ✅ Alignement slugs `DashboardMetricsController::performanceParQuestion()` ↔ `quizQuestions.js` — vérifié, tous les 18 slugs correspondent
+- [ ] Renommer `participant_count` → `companies_count` dans `ApiTropheeController` (représente des entreprises, pas des participants) — Phase 8C
 
 ---
 
@@ -297,7 +322,7 @@ Phase 1 ✅
   ├── Phase 3 ✅      (trophées)
   ├── Phase 4 ✅      (dashboard UI)
   │     ├── Phase 4B ✅   (fix post-audit)
-  │     ├── Phase 4C      (co-branding)          ← en attente maquettes
+  │     ├── Phase 4C ✅   (co-branding preview)   ← branche feature/phase-4c-cobrand-preview
   │     ├── Phase 4D ✅   (adaptation new model)
   │     ├── Phase 4E ✅   (gestion entreprises)
   │     └── Phase 4F ✅   (gestion trophées)
@@ -307,7 +332,7 @@ Phase 1 ✅
                     └── Phase 7A ✅  (App.vue cobrand)
                           └── Phase 7D ✅  (quiz + redirect)
                                 └── Phase 7B ✅  (Accueil.vue)
-                                      └── Phase 7C    (Prevention.vue)    ← PROCHAINE TÂCHE
-                                            └── Phase 8C  (renommage)
+                                      └── Phase 7C ✅  (Prevention.vue)
+                                            └── Phase 8C  (renommage participant_count)  ← à faire
 Phase 8A+8B ✅  (cleanup)
 ```
