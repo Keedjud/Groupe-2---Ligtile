@@ -61,6 +61,8 @@ async function handleSubmit() {
         <!-- Image mobile -->
         <img
           :src="'/images/illustrations/lungs.png'"
+          loading="lazy"
+          decoding="async"
           alt=""
           class="w-[280px] h-auto object-contain shrink-0 md:hidden"
         />
@@ -69,6 +71,8 @@ async function handleSubmit() {
         <!-- Image desktop -->
         <img
           :src="'/images/illustrations/hello.png'"
+          loading="lazy"
+          decoding="async"
           alt=""
           class="hidden md:block w-[180px] lg:w-[202px] h-auto object-contain shrink-0"
         />

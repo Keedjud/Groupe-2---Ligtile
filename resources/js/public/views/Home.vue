@@ -134,7 +134,7 @@ function updateCardsIndex() {
         </div>
         <div>
           <div class="rounded-3xl bg-gradient-to-r from-violet-100 to-vert-300 overflow-hidden h-[208px] lg:h-[523px] relative">
-            <img :src="'/images/illustrations/composition.png'" class="" />
+            <img :src="'/images/illustrations/composition.png'" loading="lazy" decoding="async" class="" />
             <!--Image purement décorative, pas besoin d'alt, bonne pratique-->
           </div>
         </div>

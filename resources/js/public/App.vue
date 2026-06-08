@@ -23,7 +23,7 @@ const splashVisible = ref(sessionStorage.getItem('splash_seen') !== 'true')
 </script>
 
 <template>
-  <SplashScreen v-model:visible="splashVisible" />
+  <SplashScreen v-if="splashVisible" v-model:visible="splashVisible" />
   <PublicDefaultLayout v-if="!splashVisible" :current="currentRoute.key">
     <component :is="currentComponent" />
   </PublicDefaultLayout>
