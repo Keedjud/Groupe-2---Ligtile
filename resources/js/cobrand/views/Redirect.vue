@@ -7,9 +7,11 @@ const { onedocUrl, trackQuiz } = useCobrandSession();
 const { eligible } = useQuizStore();
 
 onMounted(() => {
-    if (eligible.value) {
-        trackQuiz({ event_type: "quiz_completed" });
+    if (!eligible.value) {
+        window.location.hash = "#/quiz";
+        return;
     }
+    trackQuiz({ event_type: "quiz_completed" });
 });
 
 function trackOnedoc() {

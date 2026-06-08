@@ -9,6 +9,7 @@ use App\Models\ContactStat;
 use App\Models\PageEvent;
 use App\Models\QuizEvent;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 
 class DashboardMetricsController extends Controller
 {
@@ -27,7 +28,6 @@ class DashboardMetricsController extends Controller
 
         // Inscrits (onedoc_clicked) — filtrage par année côté PHP pour compatibilité SQLite + MariaDB
         $collections = Collection::with('company')
-            ->withCount(['quizEvents as inscrits' => fn ($q) => $q->where('event_type', 'onedoc_clicked')])
             ->when($companyId, fn ($q) => $q->where('company_id', $companyId))
             ->get()
             ->when(!empty($annees), fn ($col) => $col->filter(
@@ -35,6 +35,15 @@ class DashboardMetricsController extends Controller
             )->values());
 
         $ids = $collections->pluck('id');
+
+        // inscrits dédupliqués par session
+        $inscrits = QuizEvent::whereIn('collection_id', $ids)
+            ->where('event_type', 'onedoc_clicked')
+            ->groupBy('collection_id')
+            ->select('collection_id', DB::raw('COUNT(DISTINCT session_id) as aggregate'))
+            ->pluck('aggregate', 'collection_id');
+
+        $collections->each(fn ($c) => $c->inscrits = (int) ($inscrits[$c->id] ?? 0));
 
         return response()->json([
             'contexte' => [

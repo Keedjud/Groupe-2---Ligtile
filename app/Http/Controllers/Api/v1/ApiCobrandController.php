@@ -12,10 +12,13 @@ class ApiCobrandController extends Controller
     {
         $collection = Collection::where('public_token', $token)
             ->with('company')
-            ->withCount(['quizEvents as nb_inscrits' => fn ($q) => $q->where('event_type', 'onedoc_clicked')])
             ->firstOrFail();
 
-        $nbInscrits      = $collection->nb_inscrits;
+        $nbInscrits = $collection->quizEvents()
+            ->where('event_type', 'onedoc_clicked')
+            ->distinct()
+            ->count('session_id');
+
         $placesRestantes = max(0, $collection->capacity - $nbInscrits);
         $tauxRemplissage = $collection->capacity > 0
             ? round($nbInscrits / $collection->capacity * 100)

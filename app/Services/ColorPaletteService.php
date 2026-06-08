@@ -4,8 +4,14 @@ namespace App\Services;
 
 class ColorPaletteService
 {
-    public static function fromTwo(string $primary, string $secondary): array
+    private const FALLBACK_PRIMARY   = '#7c3aed';
+    private const FALLBACK_SECONDARY = '#ec4899';
+
+    public static function fromTwo(?string $primary, ?string $secondary): array
     {
+        $primary   = self::normalize($primary, self::FALLBACK_PRIMARY);
+        $secondary = self::normalize($secondary, self::FALLBACK_SECONDARY);
+
         return [
             'primary'         => $primary,
             'primary_light'   => self::lighten($primary, 60),
@@ -16,6 +22,17 @@ class ColorPaletteService
             'secondary_dark'  => self::darken($secondary, 25),
             'secondary_text'  => self::accessibleText($secondary),
         ];
+    }
+
+    private static function normalize(?string $hex, string $fallback): string
+    {
+        $hex = ltrim((string) $hex, '#');
+
+        if (preg_match('/^[0-9a-fA-F]{3}$/', $hex)) {
+            $hex = $hex[0] . $hex[0] . $hex[1] . $hex[1] . $hex[2] . $hex[2];
+        }
+
+        return preg_match('/^[0-9a-fA-F]{6}$/', $hex) ? '#' . strtolower($hex) : $fallback;
     }
 
     private static function hexToRgb(string $hex): array

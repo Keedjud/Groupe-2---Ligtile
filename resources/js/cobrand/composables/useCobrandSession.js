@@ -66,6 +66,7 @@ export function initSession(token) {
         })
         .catch((err) => {
             sessionError.value = err;
+            initPromise = null; // permet de réessayer
         });
 
     return initPromise;

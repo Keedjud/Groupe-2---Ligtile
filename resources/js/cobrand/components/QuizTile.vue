@@ -16,6 +16,7 @@ const emit = defineEmits(["answer", "skip"]);
 const IMG = {
     sleeping: "/images/cobrand/quizz/sleeping.svg",
     waiting: "/images/cobrand/quizz/waiting.svg",
+    skipped: "/images/cobrand/quizz/waiting.svg",
     good: "/images/cobrand/quizz/good.svg",
     sad: "/images/cobrand/quizz/sad.svg",
 };
@@ -23,6 +24,7 @@ const IMG = {
 const IMG_MOBILE = {
     sleeping: "/images/cobrand/quizz/sleeping_mobile.svg",
     waiting: "/images/cobrand/quizz/waiting_mobile.svg",
+    skipped: "/images/cobrand/quizz/waiting_mobile.svg",
     good: "/images/cobrand/quizz/good_mobile.svg",
     sad: "/images/cobrand/quizz/sad_mobile.svg",
 };
@@ -30,6 +32,7 @@ const IMG_MOBILE = {
 const BAND_COLOR = {
     sleeping: "#f2a09d",
     waiting: "#d41f1f",
+    skipped: "#d41f1f",
     good: "#d41f1f",
     sad: "#f2a09d",
 };
@@ -49,7 +52,7 @@ const sadNote = computed(() =>
 
 function btnState(variant) {
     if (props.status === "sleeping") return "disabled";
-    if (props.status === "waiting") return "active";
+    if (props.status === "waiting" || props.status === "skipped") return "active";
     return props.answer === variant ? "active" : "muted";
 }
 
