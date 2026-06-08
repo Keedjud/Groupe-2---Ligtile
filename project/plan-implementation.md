@@ -1,16 +1,16 @@
 # Plan d'implémentation — Fin de projet
 
-> Mis à jour le 8 juin 2026 (Phase 7C ✅, Phase 4C ✅ — bugs tests collègue ajoutés). Ce document définit ce qui reste à faire pour finir le projet.
+> Mis à jour le 8 juin 2026 (scan complet branche develop — toutes les phases 1–8B sont terminées, passage en mode bugfix + finitions). Ce document définit ce qui reste à faire pour finir le projet.
 
 ---
 
 ## L'équipe
 
-| Développeur | Rôle |
-|-------------|------|
-| **Loïc** | Frontend cobrand |
-| **Elia** | Frontend cobrand |
-| **Inoé** | Backend, coordination, fixes dashboard |
+| Développeur | Rôle actuel |
+|-------------|-------------|
+| **Loïc** | Bugs site cobrandé (header, Accueil, Quiz, Redirect) |
+| **Elia** | Bugs site cobrandé + site public |
+| **Inoé** | Finitions backend (fenêtre dispo, index DB), coordination |
 
 ---
 
@@ -20,7 +20,7 @@
 
 | Priorité | Bug |
 |----------|-----|
-| 🔴 Critique | `POST /api/v1/contact` retourne 500 — impossible d'envoyer le formulaire de contact grande entreprise |
+| 🔴 Critique | `POST /api/v1/contact` retourne 500 — `ApiContactController` envoie un mail à `contact@hug-collecte.ch` via `Mail::to()`, l'exception est catchée et retourne 500 ; vérifier la config SMTP (`.env` MAIL\_\*) sur Infomaniak |
 | 🟡 Normal | Lien du formulaire "inscription collecte" (segment employés < 1000) ne renvoie pas vers la bonne page |
 | 🟡 Normal | Bouton "Comment se déroule une collecte ?" ne renvoie pas vers la bonne section de la page |
 | 🟡 Normal | Section "Pourquoi accueillir une collecte" : icônes médicaments → remplacer par les bonnes icônes |
@@ -44,16 +44,16 @@
 
 | Priorité | Bug |
 |----------|-----|
-| 🔴 Critique | Couleur de fond du header ne reprend pas la couleur primaire de l'entreprise |
-| 🔴 Critique | Logo de l'entreprise partenaire absent |
-| 🟡 Normal | Hover des liens header et footer en couleurs du site de base — doit reprendre `var(--cobrand-primary)` |
+| 🔴 Critique | Couleur de fond du header ne reprend pas la couleur primaire de l'entreprise (`bg-form-bg` hardcodé dans `CobrandHeader.vue` au lieu de `var(--cobrand-primary)`) |
+| 🔴 Critique | Logo de l'entreprise partenaire absent (`v-if="logoUrl"` présent dans le code mais non visible — vérifier que la valeur remonte bien depuis l'API) |
+| 🟡 Normal | Hover des liens header et footer en couleurs du site de base — remplacer `hover:text-violet-500` par `var(--cobrand-primary)` dans `CobrandHeader.vue` |
 
 ### Site cobrandé — `Accueil.vue`
 
 | Priorité | Bug |
 |----------|-----|
-| 🔴 Critique | CTA "Faire le test d'éligibilité" pointe vers `#/inscription` au lieu de `#/quiz` |
-| 🟡 Normal | "à Genève" hardcodé au lieu de `{{ venue?.city }}` |
+| 🔴 Critique | CTA "Faire le test d'éligibilité" pointe vers `#/inscription` au lieu de `#/quiz` (plusieurs occurrences dans `Accueil.vue` — `Redirect.vue` contient un guard qui redirige vers `#/quiz` si non éligible, mais le lien doit pointer directement vers `#/quiz`) |
+| 🟡 Normal | "à Genève" hardcodé (deux occurrences dans `Accueil.vue`) — remplacer par `{{ venue?.city }}` |
 | 🟡 Normal | Asset section "Pourquoi donner son sang ?" trop petit — agrandir selon maquette |
 | 🟡 Normal | Lien baromètre HUG non fonctionnel (bouton sans href) |
 | 🟡 Normal | Bordures de développement visibles (`border border-[var(--color-violet-100)]`) |
@@ -70,7 +70,7 @@
 
 | Priorité | Bug |
 |----------|-----|
-| 🔴 Critique | Bouton "S'inscrire" rouge — couleur primaire cobrand non reprise |
+| 🔴 Critique | Bouton "Prendre rendez-vous sur Onedoc" en `bg-violet-900` hardcodé dans `Redirect.vue` — remplacer par `var(--cobrand-primary)` |
 
 ### Site cobrandé — `Prevention.vue`
 
@@ -110,12 +110,12 @@ Les pages publiques (Trophées, Labels) ne font **pas de cache** : chaque charge
 
 ### Backend — Migrations & Cleanup
 
-- [ ] Nouvelle migration : index composite `(collection_id, event_type, session_id)` sur `quiz_events`
-- [ ] `app/Models/Address.php` — supprimer la relation morte `collections()`
+- [ ] Ajouter l'index composite `(collection_id, event_type, session_id)` directement dans `database/migrations/2026_06_01_223000_create_quiz_events_table.php` (pas de nouvelle migration — pas de données prod, `migrate:fresh --seed` suffit)
+- [ ] `app/Models/Address.php` — supprimer la relation morte `collections()` (la FK `address_id` a été retirée de `collections` en Phase 5B ; la relation `companies()` reste valide)
 
 ### Frontend — Dépendances
 
-- [ ] Supprimer DaisyUI (`package.json` + `@plugin "daisyui"` dans `app.css`) — installé mais aucune classe utilisée, CSS chargé inutilement
+- [ ] Supprimer DaisyUI (`package.json` ligne `"daisyui": "^5.5.20"` + `@plugin "daisyui"` dans `resources/css/app.css`) — installé mais aucune classe utilisée, CSS chargé inutilement
 
 ### Site cobrandé — `App.vue`
 
@@ -190,7 +190,7 @@ Namespace, migrations, modèles, routes réorganisées, seeder, vie privée.
 
 ### ✅ Phase 4C — Aperçu co-branding dashboard — TERMINÉE
 
-**Branche :** `feature/phase-4c-cobrand-preview` (en attente de merge dans `develop`)
+**Branche :** `feature/phase-4c-cobrand-preview` (mergée dans `develop` — PR #137)
 
 | Tâche | Fichier(s) |
 |-------|-----------|
@@ -230,24 +230,21 @@ Nouvel onglet permettant au CTS de saisir les lauréats d'une nouvelle année en
 - La page **Trophées** du site public se met à jour automatiquement (pas de cache — voir note en haut du document)
 - Un seul podium par année — si une année existe déjà, l'interface propose de la modifier plutôt que d'en créer une nouvelle
 
-**Backend à créer :**
+**Backend livré (`ManageTropheeController`) :**
 
-| Route | Controller | Action |
-|-------|-----------|--------|
-| `GET /api/v1/manage-trophees` | `ManageTropheeController` | Liste des années existantes + lauréats |
-| `POST /api/v1/manage-trophees` | `ManageTropheeController` | Créer les trophées d'une nouvelle année (3 entreprises + rangs) |
-| `PUT /api/v1/manage-trophees/{year}` | `ManageTropheeController` | Modifier les lauréats d'une année existante |
-| `DELETE /api/v1/manage-trophees/{year}` | `ManageTropheeController` | Supprimer le podium d'une année |
+| Route | Action |
+|-------|--------|
+| `GET /api/v1/manage-trophees` | Liste des années + lauréats |
+| `POST /api/v1/manage-trophees` | Créer podium d'une nouvelle année (3 entreprises + rangs) |
+| `PUT /api/v1/manage-trophees/{year}` | Modifier les lauréats d'une année |
+| `DELETE /api/v1/manage-trophees/{year}` | Supprimer le podium d'une année |
 
-Le `store()` crée 3 `Trophee` (`Trophée Or/Argent/Bronze {année}`) et les attache aux entreprises via `company_trophee` avec leur rang.
+`store()` génère automatiquement les noms `'Trophée Or/Argent/Bronze {année}'` et attache les entreprises via `company_trophee` avec leur rang. Confirmation de suppression incluse dans le frontend.
 
-**Frontend à créer :**
+**Frontend livré :**
 
-- `dashboard/views/Trophees.vue` — liste des podiums par année (tableau) + bouton "Nouveau podium"
-- Formulaire intégré (ou modale) : sélecteur d'année + 3 champs "entreprise" avec autocomplete sur les entreprises en base
-- Ajouter l'entrée dans `SidebarNav.vue`
-
-> **Remarque :** les trophées du seeder utilisent des noms figés (`'Trophée Or 2021'`, etc.) — le controller devra générer ces noms automatiquement depuis l'année saisie pour rester cohérent.
+- `dashboard/views/Trophees.vue` — tableau des podiums par année + formulaire intégré création/édition avec autocomplete entreprises (filtrage côté client, 20 résultats max)
+- Entrée "Trophées" ajoutée dans `SidebarNav.vue`
 
 ---
 
@@ -294,7 +291,7 @@ Endpoints :
 
 #### ✅ Phase 7A — `cobrand/App.vue` — TERMINÉE
 
-Routage hash, injection des couleurs cobrand en CSS vars, gestion de `initSession`.
+Routage hash, injection des couleurs cobrand en CSS vars, gestion de `initSession`. `sessionError` est exposé par `useCobrandSession` mais l'affichage de l'écran "Collecte indisponible" en cas d'erreur n'est pas encore rendu dans `App.vue` — voir section "Ce qui reste à implémenter".
 
 ---
 
