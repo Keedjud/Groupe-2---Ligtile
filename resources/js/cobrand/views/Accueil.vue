@@ -17,26 +17,26 @@ const {
 const mainImageSrc = computed(() => {
     const value = Number(tauxRemplissage.value ?? 0);
     if (value < 25) {
-        return "/images/goute_sang_25.png";
+        return "/images/goutte-sang-25.png";
     }
     if (value < 50) {
-        return "/images/goute_sang_50.png";
+        return "/images/goutte-sang-50.png";
     }
     if (value < 75) {
-        return "/images/goute_sang_75.png";
+        return "/images/goutte-sang-75.png";
     }
-    return "/images/goute_sang_100.png";
+    return "/images/goutte-sang-100.png";
 });
 
 const bloodTypes = [
-    { label: 'O+',  value: 'O+',  img: '/images/sangOplus.png',  color: 'var(--color-light-palette-red)',    description: 'Dangereusement bas' },
-    { label: 'A+',  value: 'A+',  img: '/images/sangAplus.png',  color: 'var(--color-light-palette-orange)', description: 'Critique' },
-    { label: 'AB+', value: 'AB+', img: '/images/sangABplus.png', color: 'var(--color-light-palette-orange)', description: 'Critique' },
-    { label: 'B+',  value: 'B+',  img: '/images/sangBplus.png',  color: 'var(--color-light-palette-yellow)', description: 'Bas' },
-    { label: 'O-',  value: 'O-',  img: '/images/sangOneg.png',   color: 'var(--color-light-palette-orange)', description: 'Critique' },
-    { label: 'A-',  value: 'A-',  img: '/images/sangAneg.png',   color: 'var(--color-light-palette-green)',  description: 'Élevé' },
-    { label: 'AB-', value: 'AB-', img: '/images/sangABneg.png',  color: 'var(--color-vert-300)',             description: 'Normal' },
-    { label: 'B-',  value: 'B-',  img: '/images/sangBneg.png',   color: 'var(--color-light-palette-yellow)', description: 'Bas' },
+    { label: 'O+',  value: 'O+',  img: '/images/sang-o-plus.png',  color: 'var(--color-light-palette-red)',    description: 'Dangereusement bas' },
+    { label: 'A+',  value: 'A+',  img: '/images/sang-a-plus.png',  color: 'var(--color-light-palette-orange)', description: 'Critique' },
+    { label: 'AB+', value: 'AB+', img: '/images/sang-ab-plus.png', color: 'var(--color-light-palette-orange)', description: 'Critique' },
+    { label: 'B+',  value: 'B+',  img: '/images/sang-b-plus.png',  color: 'var(--color-light-palette-yellow)', description: 'Bas' },
+    { label: 'O-',  value: 'O-',  img: '/images/sang-o-neg.png',   color: 'var(--color-light-palette-orange)', description: 'Critique' },
+    { label: 'A-',  value: 'A-',  img: '/images/sang-a-neg.png',   color: 'var(--color-light-palette-green)',  description: 'Élevé' },
+    { label: 'AB-', value: 'AB-', img: '/images/sang-ab-neg.png',  color: 'var(--color-vert-300)',             description: 'Normal' },
+    { label: 'B-',  value: 'B-',  img: '/images/sang-b-neg.png',   color: 'var(--color-light-palette-yellow)', description: 'Bas' },
 ]
 
 </script>
@@ -81,7 +81,7 @@ const bloodTypes = [
 
                 <div class="mt-10 flex flex-col lg:flex-row lg:items-center">
                     <div class="w-full lg:w-[686px] lg:pr-10">
-                        <img :src="'/images/goutes_ensemble_coeur.svg'" alt="" class="w-full object-contain" />
+                        <img :src="'/images/gouttes-ensemble-coeur.svg'" alt="" class="w-full object-contain" />
                     </div>
 
                     <div class="flex w-full flex-col gap-6">
