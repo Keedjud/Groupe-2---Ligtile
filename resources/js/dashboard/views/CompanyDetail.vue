@@ -147,9 +147,9 @@ const aDesErreurs = computed(() => Object.keys(champsInvalides.value).length > 0
       <div class="mx-auto max-w-2xl rounded-[20px] bg-form-bg p-6 shadow-[0_4px_16px_rgba(104,23,100,0.10)]">
 
         <!-- En-tête -->
-        <div class="mb-5 flex items-start justify-between gap-3">
+        <div class="mb-5 flex flex-col gap-4 sm:flex-row sm:items-start sm:justify-between">
           <h1 class="font-sans text-h3 font-bold text-violet-800">{{ entreprise.nom }}</h1>
-          <div class="flex gap-3">
+          <div class="flex flex-wrap gap-3 sm:justify-end">
             <button
               v-if="!modeEdition"
               @click="allerVers('#/analytics?company_id=' + entreprise.id)"
@@ -230,17 +230,17 @@ const aDesErreurs = computed(() => Object.keys(champsInvalides.value).length > 0
             <!-- Adresse siège -->
             <div class="flex flex-col gap-1">
               <label class="font-sans text-small font-semibold text-violet-950">Adresse du siège</label>
-              <div class="flex gap-2">
+              <div class="flex flex-col gap-2 sm:flex-row">
                 <input v-model="champRue" type="text" placeholder="Rue"
                   class="flex-1 rounded-lg bg-white px-3 py-2.5 font-sans text-small text-violet-950 shadow-[0_0_4px_rgba(0,0,0,0.25)] outline-none focus:ring-2 focus:ring-violet-400"
                   :class="{ 'ring-rouge-500 ring-1': champsInvalides.rue }" />
                 <input v-model="champNumero" type="text" placeholder="N°"
-                  class="w-20 rounded-lg bg-white px-3 py-2.5 font-sans text-small text-violet-950 shadow-[0_0_4px_rgba(0,0,0,0.25)] outline-none focus:ring-2 focus:ring-violet-400"
+                    class="w-full rounded-lg bg-white px-3 py-2.5 font-sans text-small text-violet-950 shadow-[0_0_4px_rgba(0,0,0,0.25)] outline-none focus:ring-2 focus:ring-violet-400 sm:w-20"
                   :class="{ 'ring-rouge-500 ring-1': champsInvalides.numero }" />
               </div>
             </div>
-            <div class="flex items-start gap-3">
-              <div class="flex flex-col gap-1 w-28">
+              <div class="flex flex-col gap-3 sm:flex-row sm:items-start">
+                <div class="flex flex-col gap-1 sm:w-28">
                 <label class="font-sans text-small font-medium text-violet-800">NPA</label>
                 <input v-model="champNpa" type="text" inputmode="numeric" maxlength="4" placeholder="1200"
                   class="w-full rounded-lg bg-white px-3 py-2.5 font-sans text-small text-violet-950 shadow-[0_0_4px_rgba(0,0,0,0.25)] outline-none focus:ring-2 focus:ring-violet-400"
@@ -268,7 +268,7 @@ const aDesErreurs = computed(() => Object.keys(champsInvalides.value).length > 0
             </div>
 
             <!-- Actions -->
-            <div class="mt-2 flex justify-end gap-3">
+            <div class="mt-2 flex flex-col gap-3 sm:flex-row sm:justify-end">
               <button type="button" @click="annulerEdition"
                 class="rounded-[40px] bg-white px-6 py-2.5 font-sans text-regular text-texte-secondary shadow-[0_0_4px_rgba(0,0,0,0.15)] hover:bg-violet-50 transition-colors"
               >Annuler</button>
@@ -280,13 +280,13 @@ const aDesErreurs = computed(() => Object.keys(champsInvalides.value).length > 0
         </template>
 
         <!-- Barre d'actions bas -->
-        <div v-if="!modeEdition" class="mt-4 flex items-center justify-between gap-3">
+        <div v-if="!modeEdition" class="mt-4 flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
           <button
             @click="allerVers('#/entreprises')"
             class="rounded-[40px] bg-white px-5 py-2 font-sans text-small text-texte-secondary underline shadow-[0_0_4px_rgba(0,0,0,0.15)] hover:bg-violet-50 transition-colors"
           >← Retour</button>
 
-          <div class="flex flex-col items-end gap-1">
+          <div class="flex flex-col gap-1 sm:items-end">
             <button
               @click="gererSuppression"
               :disabled="chargement"
@@ -303,7 +303,37 @@ const aDesErreurs = computed(() => Object.keys(champsInvalides.value).length > 0
         <h2 class="mb-3 font-sans text-h5 font-semibold text-violet-900">
           Collectes ({{ entreprise.collectes.length }})
         </h2>
-        <table class="w-full font-sans text-small">
+        <div class="grid gap-3 sm:hidden">
+          <div
+            v-for="col in entreprise.collectes"
+            :key="col.id"
+            class="rounded-[18px] bg-violet-50/40 p-4 shadow-[0_0_4px_rgba(104,23,100,0.08)]"
+          >
+            <div class="flex items-start justify-between gap-3">
+              <div>
+                <p class="font-sans text-xs uppercase tracking-wide text-violet-400">Période</p>
+                <p class="mt-1 font-sans text-small font-semibold text-violet-950">{{ formaterDate(col.date_debut) }} - {{ formaterDate(col.date_fin) }}</p>
+              </div>
+              <span class="rounded-full px-2.5 py-1 font-sans text-xs font-medium" :class="statutCollecte(col).cls">
+                {{ statutCollecte(col).label }}
+              </span>
+            </div>
+            <div class="mt-3 grid grid-cols-2 gap-3 text-small text-violet-700">
+              <div>
+                <p class="font-sans text-xs uppercase tracking-wide text-violet-400">Capacité</p>
+                <p class="mt-1 font-medium text-violet-900">{{ col.capacity }}</p>
+              </div>
+              <div class="text-right">
+                <button
+                  @click="allerVers('#/collectes/' + col.id)"
+                  class="rounded-[40px] bg-white px-3 py-1 font-sans text-xs text-texte-secondary underline shadow-[0_0_4px_rgba(0,0,0,0.15)] hover:bg-violet-50 transition-colors"
+                >Voir</button>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="hidden sm:block overflow-x-auto">
+        <table class="w-full min-w-[480px] font-sans text-small">
           <thead>
             <tr class="border-b border-violet-100 text-left text-violet-700">
               <th class="pb-2 pr-4">Début</th>
@@ -337,6 +367,7 @@ const aDesErreurs = computed(() => Object.keys(champsInvalides.value).length > 0
             </tr>
           </tbody>
         </table>
+        </div>
       </div>
 
     </template>

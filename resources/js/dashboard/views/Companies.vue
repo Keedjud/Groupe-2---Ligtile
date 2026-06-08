@@ -28,7 +28,7 @@ onMounted(() => chargerEntreprises())
     <div class="mb-6 flex flex-wrap items-center justify-between gap-3">
       <h1 class="font-sans text-h2 font-bold text-texte-secondary">Entreprises</h1>
 
-      <div class="flex items-center gap-3">
+      <div class="flex w-full flex-wrap items-center gap-3 sm:w-auto">
         <!-- Bouton création -->
         <button
           @click="allerVers('#/entreprises/nouvelle')"
@@ -36,7 +36,7 @@ onMounted(() => chargerEntreprises())
         >+ Nouvelle entreprise</button>
 
         <!-- Recherche -->
-        <div class="relative">
+        <div class="relative w-full sm:w-auto">
           <svg xmlns="http://www.w3.org/2000/svg" class="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-violet-400" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
             <circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/>
           </svg>
@@ -45,7 +45,7 @@ onMounted(() => chargerEntreprises())
             @input="surRecherche"
             type="search"
             placeholder="Rechercher une entreprise…"
-            class="rounded-[40px] bg-white py-2 pl-9 pr-4 font-sans text-small text-violet-950 shadow-[0_0_4px_rgba(0,0,0,0.15)] outline-none focus:ring-2 focus:ring-violet-400 w-64"
+            class="w-full rounded-[40px] bg-white py-2 pl-9 pr-4 font-sans text-small text-violet-950 shadow-[0_0_4px_rgba(0,0,0,0.15)] outline-none focus:ring-2 focus:ring-violet-400 sm:w-64"
           />
         </div>
       </div>
@@ -68,11 +68,40 @@ onMounted(() => chargerEntreprises())
       </p>
     </div>
 
-    <!-- Tableau -->
-    <div v-else>
+    <!-- Cartes mobile / tableau desktop -->
+    <template v-else>
+    <div class="grid gap-3 sm:hidden">
+      <button
+        v-for="e in listeEntreprises"
+        :key="e.id"
+        @click="allerVers('#/entreprises/' + e.id)"
+        class="rounded-[20px] bg-white p-4 text-left shadow-[0_0_8px_rgba(104,23,100,0.10)] transition-colors hover:bg-violet-50/40"
+      >
+        <div class="flex items-start justify-between gap-3">
+          <div class="min-w-0 flex-1">
+            <p class="truncate font-sans text-regular font-semibold text-violet-950">{{ e.nom }}</p>
+            <p class="mt-1 break-words font-sans text-xs text-violet-500">{{ e.contact.email || '—' }}</p>
+          </div>
+          <span class="rounded-full bg-violet-100 px-2.5 py-1 font-sans text-xs font-semibold text-violet-800">{{ e.nb_collectes }} collectes</span>
+        </div>
+        <div class="mt-3 grid grid-cols-2 gap-3 text-xs text-violet-700">
+          <div>
+            <p class="uppercase tracking-wide text-violet-400">Taille</p>
+            <p class="mt-1 font-medium text-violet-900">{{ e.taille || '—' }}</p>
+          </div>
+          <div>
+            <p class="uppercase tracking-wide text-violet-400">Contact</p>
+            <p class="mt-1 break-words font-medium text-violet-900">{{ e.contact.telephone || '—' }}</p>
+          </div>
+        </div>
+      </button>
+    </div>
+
+    <!-- Tableau desktop -->
+    <div class="hidden sm:block">
       <p class="mb-2 font-sans text-small italic text-violet-400">Cliquez sur une ligne pour accéder au détail de l'entreprise.</p>
-      <div class="overflow-x-auto rounded-[20px] bg-white shadow-[0_0_8px_rgba(104,23,100,0.10)]">
-        <table class="w-full font-sans text-small">
+      <div class="overflow-hidden rounded-[20px] bg-white shadow-[0_0_8px_rgba(104,23,100,0.10)]">
+        <table class="w-full table-fixed font-sans text-small">
           <thead>
             <tr class="border-b border-violet-100 text-left text-violet-700">
               <th class="px-5 py-3 font-semibold">Entreprise</th>
@@ -89,15 +118,16 @@ onMounted(() => chargerEntreprises())
               :class="i % 2 === 0 ? '' : 'bg-violet-50/20'"
               @click="allerVers('#/entreprises/' + e.id)"
             >
-              <td class="px-5 py-3 font-medium text-violet-950">{{ e.nom }}</td>
+                <td class="px-5 py-3 font-medium text-violet-950 break-words">{{ e.nom }}</td>
               <td class="px-5 py-3 text-violet-600 hidden sm:table-cell">{{ e.taille }}</td>
               <td class="px-5 py-3 text-right text-violet-800 font-semibold">{{ e.nb_collectes }}</td>
-              <td class="px-5 py-3 text-violet-500 hidden md:table-cell">{{ e.contact.email || '—' }}</td>
+                <td class="px-5 py-3 text-violet-500 hidden md:table-cell break-words">{{ e.contact.email || '—' }}</td>
             </tr>
           </tbody>
         </table>
       </div>
     </div>
+    </template>
 
   </DashboardLayout>
 </template>
