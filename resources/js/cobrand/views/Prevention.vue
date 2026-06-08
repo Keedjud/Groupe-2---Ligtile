@@ -208,7 +208,7 @@ function scrollToTopicFromHash() {
 
 function updateTopicIndicator() {
     const track = topicsTrack.value;
-    if (!track) return;
+    if (!track || track.clientWidth === 0) return;
     const count = Math.max(1, Math.ceil(track.scrollWidth / track.clientWidth));
     topicPageCount.value = count;
     const maxScroll = track.scrollWidth - track.clientWidth;
@@ -243,6 +243,7 @@ function goToTopicPage(page) {
     const track = topicsTrack.value;
     if (!track) return;
     const clamped = Math.max(0, Math.min(topicPageCount.value - 1, page));
+    topicPage.value = clamped;
     const maxScroll = track.scrollWidth - track.clientWidth;
     const left =
         topicPageCount.value > 1
@@ -713,6 +714,10 @@ onUnmounted(() => {
 .slider-arrow:disabled {
     cursor: default;
     opacity: 0.3;
+}
+.slider-arrow:focus-visible {
+    outline: 2px solid var(--prevention-accent);
+    outline-offset: 2px;
 }
 .slider-arrow-icon {
     display: block;
