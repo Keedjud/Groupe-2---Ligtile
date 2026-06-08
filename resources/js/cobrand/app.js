@@ -7,4 +7,3 @@ const collecteId = el?.dataset?.collecteId ?? null;
 
 createApp(App, { collecteId }).mount(el);
 
-
