@@ -125,7 +125,27 @@ function figureStyle(fig) {
     };
 }
 
+const dropActive = `${ART}/goutte-rouge-slider.png`;
+const dropInactive = `${ART}/goutte-grise-slider.png`;
+const arrowIcon = `${ART}/icon-arrow-slider.svg`;
+
+function arrowMaskStyle(flip) {
+    return {
+        maskImage: `url(${arrowIcon})`,
+        WebkitMaskImage: `url(${arrowIcon})`,
+        maskRepeat: "no-repeat",
+        WebkitMaskRepeat: "no-repeat",
+        maskSize: "contain",
+        WebkitMaskSize: "contain",
+        maskPosition: "center",
+        WebkitMaskPosition: "center",
+        transform: flip ? "scaleX(-1)" : "none",
+    };
+}
+
 const topicsTrack = ref(null);
+const topicPage = ref(0);
+const topicPageCount = ref(1);
 
 const prefersReducedMotion =
     window.matchMedia?.("(prefers-reduced-motion: reduce)").matches ?? false;
@@ -186,25 +206,68 @@ function scrollToTopicFromHash() {
     }, 100);
 }
 
-function scrollTopics(direction) {
+function updateTopicIndicator() {
+    const track = topicsTrack.value;
+    if (!track || track.clientWidth === 0) return;
+    const count = Math.max(1, Math.ceil(track.scrollWidth / track.clientWidth));
+    topicPageCount.value = count;
+    const maxScroll = track.scrollWidth - track.clientWidth;
+    const page =
+        maxScroll > 0
+            ? Math.round((track.scrollLeft / maxScroll) * (count - 1))
+            : 0;
+    topicPage.value = Math.min(count - 1, Math.max(0, page));
+}
+
+const TOPIC_SCROLL_DURATION = 280;
+let topicScrollFrame = null;
+
+function animateTopicScroll(track, to) {
+    if (topicScrollFrame) cancelAnimationFrame(topicScrollFrame);
+
+    const from = track.scrollLeft;
+    const distance = to - from;
+    const start = performance.now();
+
+    function step(now) {
+        const t = Math.min(1, (now - start) / TOPIC_SCROLL_DURATION);
+        const eased = 1 - Math.pow(1 - t, 3);
+        track.scrollLeft = from + distance * eased;
+        if (t < 1) topicScrollFrame = requestAnimationFrame(step);
+    }
+
+    topicScrollFrame = requestAnimationFrame(step);
+}
+
+function goToTopicPage(page) {
     const track = topicsTrack.value;
     if (!track) return;
-    const card = track.querySelector("article");
-    const amount = card ? card.getBoundingClientRect().width + 24 : track.clientWidth * 0.8;
-    track.scrollBy({ left: direction * amount, behavior: scrollBehavior() });
+    const clamped = Math.max(0, Math.min(topicPageCount.value - 1, page));
+    topicPage.value = clamped;
+    const maxScroll = track.scrollWidth - track.clientWidth;
+    const left =
+        topicPageCount.value > 1
+            ? (clamped / (topicPageCount.value - 1)) * maxScroll
+            : 0;
+
+    if (prefersReducedMotion) {
+        track.scrollLeft = left;
+        return;
+    }
+    animateTopicScroll(track, left);
 }
 
 function onTopicsKeydown(event) {
     if (event.key === "ArrowRight") {
         event.preventDefault();
-        scrollTopics(1);
+        goToTopicPage(topicPage.value + 1);
     } else if (event.key === "ArrowLeft") {
         event.preventDefault();
-        scrollTopics(-1);
+        goToTopicPage(topicPage.value - 1);
     }
 }
 
-const WHEEL_SCROLL_FACTOR = 0.5;
+const WHEEL_SCROLL_FACTOR = 0.7;
 
 function redirectWheel(event) {
     const track = topicsTrack.value;
@@ -261,6 +324,10 @@ onMounted(() => {
     topicsTrack.value?.addEventListener("wheel", redirectWheel, {
         passive: false,
     });
+    topicsTrack.value?.addEventListener("scroll", updateTopicIndicator, {
+        passive: true,
+    });
+    window.addEventListener("resize", updateTopicIndicator);
 
     window.addEventListener("scroll", onUserScroll, { passive: true });
     window.addEventListener("click", markEngaged, { once: true, passive: true });
@@ -269,6 +336,7 @@ onMounted(() => {
     document.addEventListener("visibilitychange", onVisibilityChange);
 
     nextTick(() => {
+        updateTopicIndicator();
         scrollToTopicFromHash();
     });
 
@@ -277,7 +345,10 @@ onMounted(() => {
 
 onUnmounted(() => {
     clearTopicScrollTimer();
+    if (topicScrollFrame) cancelAnimationFrame(topicScrollFrame);
     topicsTrack.value?.removeEventListener("wheel", redirectWheel);
+    topicsTrack.value?.removeEventListener("scroll", updateTopicIndicator);
+    window.removeEventListener("resize", updateTopicIndicator);
     window.removeEventListener("scroll", onUserScroll);
     window.removeEventListener("click", markEngaged);
     window.removeEventListener("pagehide", sendExit);
@@ -291,7 +362,7 @@ onUnmounted(() => {
 <template>
     <div
         class="prevention relative overflow-hidden bg-beige-50 text-light-palette-black"
-        style="--prevention-accent: var(--cobrand-primary, #ff6600)"
+        style="--prevention-accent: var(--cobrand-primary-on-light, #ff6600)"
     >
         <BackgroundMotifs />
 
@@ -533,6 +604,61 @@ onUnmounted(() => {
                         :topic="topic"
                     />
                 </div>
+
+                <div
+                    v-if="topicPageCount > 1"
+                    class="mt-8 hidden items-center justify-center gap-4 px-4 lg:mt-10 lg:flex"
+                >
+                    <button
+                        type="button"
+                        class="slider-arrow"
+                        :disabled="topicPage === 0"
+                        aria-label="Cartes précédentes"
+                        @click="goToTopicPage(topicPage - 1)"
+                    >
+                        <span
+                            class="slider-arrow-icon"
+                            :style="arrowMaskStyle(true)"
+                        />
+                    </button>
+
+                    <div class="flex items-center gap-2">
+                        <button
+                            v-for="page in topicPageCount"
+                            :key="page"
+                            type="button"
+                            class="shrink-0"
+                            :aria-label="`Aller à la page ${page}`"
+                            :aria-current="
+                                topicPage === page - 1 ? 'true' : undefined
+                            "
+                            @click="goToTopicPage(page - 1)"
+                        >
+                            <img
+                                :src="
+                                    topicPage === page - 1
+                                        ? dropActive
+                                        : dropInactive
+                                "
+                                alt=""
+                                class="h-7 w-auto select-none"
+                            />
+                        </button>
+                    </div>
+
+                    <button
+                        type="button"
+                        class="slider-arrow"
+                        :disabled="topicPage === topicPageCount - 1"
+                        aria-label="Cartes suivantes"
+                        @click="goToTopicPage(topicPage + 1)"
+                    >
+                        <span
+                            class="slider-arrow-icon"
+                            :style="arrowMaskStyle(false)"
+                        />
+                    </button>
+                </div>
             </section>
 
             <section class="relative z-10 py-16 lg:py-20">
@@ -568,5 +694,35 @@ onUnmounted(() => {
 .topics-scroll::-webkit-scrollbar-thumb {
     border-radius: 9999px;
     background-color: color-mix(in srgb, var(--prevention-accent) 55%, white);
+}
+
+@media (min-width: 1024px) {
+    .topics-scroll {
+        scrollbar-width: none;
+        -ms-overflow-style: none;
+    }
+    .topics-scroll::-webkit-scrollbar {
+        display: none;
+    }
+}
+
+.slider-arrow {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+}
+.slider-arrow:disabled {
+    cursor: default;
+    opacity: 0.3;
+}
+.slider-arrow:focus-visible {
+    outline: 2px solid var(--prevention-accent);
+    outline-offset: 2px;
+}
+.slider-arrow-icon {
+    display: block;
+    height: 34px;
+    width: 34px;
+    background-color: var(--prevention-accent);
 }
 </style>
