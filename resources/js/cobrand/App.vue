@@ -3,6 +3,7 @@ import { watch } from "vue";
 import { useHashRoute } from "@/composables/router";
 import { initSession, useCobrandSession } from "./composables/useCobrandSession";
 
+import CobrandLayout from "./layouts/CobrandLayout.vue";
 import Accueil    from "./views/Accueil.vue";
 import Prevention from "./views/Prevention.vue";
 import Quiz       from "./views/Quiz.vue";
@@ -37,9 +38,11 @@ const routes = [
     { hash: "#/inscription", key: "inscription",  component: Redirect },
 ];
 
-const { currentComponent } = useHashRoute(routes);
+const { currentComponent, currentRoute } = useHashRoute(routes);
 </script>
 
 <template>
-    <component :is="currentComponent" />
+    <CobrandLayout :current="currentRoute.key">
+        <component :is="currentComponent" />
+    </CobrandLayout>
 </template>

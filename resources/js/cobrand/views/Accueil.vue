@@ -1,8 +1,6 @@
 <script setup>
 
 import { computed } from "vue";
-import FictifBanner from "../components/FictifBanner.vue";
-import CobrandHeader from "../components/CobrandHeader.vue";
 import { useCobrandSession } from "../composables/useCobrandSession";
 
 
@@ -41,12 +39,7 @@ const bloodTypes = [
 
 </script>
 <template>
-<FictifBanner />
-        <CobrandHeader />
-    <div class="min-h-screen text-[var(--cobrand-primary-text)]">
-
-
-        <main class="mx-auto max-w-[1300px] px-6 py-10 lg:px-[0px]">
+    <div class="mx-auto max-w-[1300px] px-6 py-10 lg:px-0">
             <section class="grid gap-8 lg:grid-cols-[1.15fr_0.85fr] lg:items-center">
                 <div class="space-y-6  border border-[var(--color-violet-100)]  p-8 ">
                     <h1 class="text-h1 font-semibold text-[var(--color-texte-primary-dark)]">État de la collecte</h1>
@@ -206,6 +199,5 @@ const bloodTypes = [
                     class="mt-6 inline-flex rounded-full bg-[var(--cobrand-primary)] px-10 py-3 text-regular font-semibold text-[var(--cobrand-primary-text)] transition hover:bg-[var(--cobrand-secondary)]">Réservez
                     votre place</a>
             </div>
-        </main>
     </div>
 </template>
