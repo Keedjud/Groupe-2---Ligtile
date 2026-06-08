@@ -27,6 +27,9 @@ const contactEmail    = ref(null);
 const contactPhone    = ref(null);
 const venue           = ref(null);
 
+// État de chargement
+const sessionError = ref(null);
+
 let initPromise = null;
 
 function ensureSessionId() {
@@ -61,7 +64,9 @@ export function initSession(token) {
             contactPhone.value    = data.contact_phone;
             venue.value           = data.venue;
         })
-        .catch(() => {});
+        .catch((err) => {
+            sessionError.value = err;
+        });
 
     return initPromise;
 }
@@ -131,6 +136,9 @@ export function useCobrandSession() {
         contactEmail,
         contactPhone,
         venue,
+
+        // État de chargement
+        sessionError,
 
         // Actions
         initSession,

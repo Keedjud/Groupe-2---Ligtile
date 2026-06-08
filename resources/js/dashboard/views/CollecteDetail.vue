@@ -117,8 +117,8 @@ const dureesJours = computed(() => {
           </div>
           <!-- Colonne contacts -->
           <div class="flex flex-1 flex-col gap-3">
-            <div class="rounded-lg bg-white px-3 py-2.5 font-sans text-small font-medium text-violet-950 shadow-[0_0_4px_rgba(0,0,0,0.25)]">{{ collecte.entreprise.email }}</div>
-            <div class="rounded-lg bg-white px-3 py-2.5 font-sans text-small font-medium text-violet-950 shadow-[0_0_4px_rgba(0,0,0,0.25)]">{{ collecte.entreprise.telephone }}</div>
+            <div class="rounded-lg bg-white px-3 py-2.5 font-sans text-small font-medium text-violet-950 shadow-[0_0_4px_rgba(0,0,0,0.25)]">{{ collecte.contact_email }}</div>
+            <div class="rounded-lg bg-white px-3 py-2.5 font-sans text-small font-medium text-violet-950 shadow-[0_0_4px_rgba(0,0,0,0.25)]">{{ collecte.contact_phone }}</div>
           </div>
         </div>
 
@@ -147,7 +147,7 @@ const dureesJours = computed(() => {
             <!-- Analytics de l'entreprise -->
             <button
               v-if="collecte.entreprise.id"
-              @click="allerVers('#/analytics/' + collecte.entreprise.id)"
+              @click="allerVers('#/analytics?company_id=' + collecte.entreprise.id)"
               class="rounded-[40px] bg-white px-5 py-2.5 font-sans text-regular text-texte-secondary underline shadow-[0_0_4px_rgba(0,0,0,0.25)] transition-colors hover:bg-violet-50"
             >Voir les analytics</button>
             <!-- Modifier -->

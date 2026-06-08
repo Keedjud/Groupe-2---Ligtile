@@ -9,6 +9,10 @@ import Collectes      from './views/Collectes.vue'
 import CollecteForm   from './views/CollecteForm.vue'
 import CollecteDetail from './views/CollecteDetail.vue'
 import Metriques      from './views/Metriques.vue'
+import Companies      from './views/Companies.vue'
+import CompanyDetail  from './views/CompanyDetail.vue'
+import CompanyForm    from './views/CompanyForm.vue'
+import Trophees      from './views/Trophees.vue'
 
 const { estConnecte, chargerUtilisateur } = useSessionAuth()
 
@@ -19,7 +23,10 @@ const tableauRoutes = [
   { pattern: '#/collectes/nouvelle',      cle: 'nouvelle',             component: CollecteForm   },
   { pattern: '#/collectes/:id/edit',      cle: 'edit',                 component: CollecteForm   },
   { pattern: '#/collectes/:id',           cle: 'detail',               component: CollecteDetail },
-  { pattern: '#/analytics/:idEntreprise', cle: 'analytics-entreprise', component: Metriques      },
+  { pattern: '#/entreprises/nouvelle',     cle: 'entreprise-nouvelle',  component: CompanyForm    },
+  { pattern: '#/entreprises/:id',         cle: 'entreprise-detail',    component: CompanyDetail  },
+  { pattern: '#/entreprises',             cle: 'entreprises',          component: Companies      },
+  { pattern: '#/trophees',                cle: 'trophees',             component: Trophees       },
   { pattern: '#/analytics',               cle: 'analytics',            component: Metriques      },
 ]
 
@@ -61,8 +68,8 @@ const propsComposant = computed(() => {
   if (routeActive.value?.cle === 'nouvelle') {
     return { ...base, mode: 'create' }
   }
-  if (routeActive.value?.cle === 'analytics-entreprise') {
-    return { ...base, idEntreprise: parametres.value.idEntreprise }
+  if (routeActive.value?.cle === 'entreprise-detail') {
+    return { ...base, idEntreprise: parametres.value.id }
   }
 
   return base

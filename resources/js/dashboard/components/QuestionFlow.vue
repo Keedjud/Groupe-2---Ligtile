@@ -42,9 +42,9 @@ const verificationsInfos = computed(() => {
 
   if (!String(e?.nom ?? '').trim())
     problemes.push({ champ: "Nom de l'entreprise", message: 'Le nom est manquant.' })
-  if (!String(e?.email ?? '').includes('@'))
+  if (!String(props.collecte?.contact_email ?? '').includes('@'))
     problemes.push({ champ: 'Adresse e-mail', message: "L'adresse e-mail est invalide ou manquante." })
-  if (!String(e?.telephone ?? '').trim())
+  if (!String(props.collecte?.contact_phone ?? '').trim())
     problemes.push({ champ: 'Téléphone', message: 'Le numéro de téléphone est manquant.' })
   if (!String(a?.rue ?? '').trim())
     problemes.push({ champ: 'Adresse', message: "La rue de l'adresse est manquante." })

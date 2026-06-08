@@ -2,7 +2,7 @@ import { ref, shallowRef } from 'vue'
 
 const defaultHeaders = {
   'Content-Type': 'application/json',
-  'X-Requested-With': 'XmlHttpRequest',
+  'X-Requested-With': 'XMLHttpRequest',
   'Accept': 'application/json',
 }
 

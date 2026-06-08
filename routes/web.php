@@ -10,5 +10,5 @@ Route::get('/', fn() => view('public'));
 Route::get('/dashboard', fn() => view('dashboard'));
 
 // Sites cobrandés — toutes les URLs restantes qui ne sont pas des routes réservées
-Route::get('/{collecteId}', fn(string $collecteId) => view('cobrand', ['collecteId' => $collecteId]))
-    ->where('collecteId', '[a-zA-Z0-9_\-]+');
+Route::get('/{cobrandToken}', fn(string $cobrandToken) => view('cobrand', ['cobrandToken' => $cobrandToken]))
+    ->where('cobrandToken', '[a-zA-Z0-9_\-]+');

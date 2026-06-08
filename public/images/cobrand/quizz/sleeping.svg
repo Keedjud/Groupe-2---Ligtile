@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg id="Calque_1" xmlns="http://www.w3.org/2000/svg" version="1.1" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 555.29 216.86">
+  <!-- Generator: Adobe Illustrator 30.5.1, SVG Export Plug-In . SVG Version: 2.1.4 Build 3)  -->
+  <defs>
+    <style>
+      .st0 {
+        font-size: 34px;
+      }
+
+      .st0, .st1 {
+        font-family: CaptainComic, 'Captain Comic';
+      }
+
+      .st0, .st1, .st2 {
+        isolation: isolate;
+      }
+
+      .st3 {
+        fill: url(#Dégradé_sans_nom);
+        stroke: #000;
+      }
+
+      .st3, .st4, .st5, .st6 {
+        stroke-miterlimit: 10;
+      }
+
+      .st3, .st6 {
+        stroke-width: 2px;
+      }
+
+      .st1 {
+        font-size: 27.99px;
+      }
+
+      .st4 {
+        fill: #efd2f4;
+        stroke: lime;
+        stroke-width: 5px;
+      }
+
+      .st5 {
+        fill: none;
+        stroke: #fff;
+        stroke-linecap: round;
+        stroke-width: 4px;
+      }
+
+      .st7 {
+        fill: #f7e8fb;
+      }
+
+      .st6 {
+        fill: #f8c5c4;
+        stroke: #f8c5c4;
+      }
+    </style>
+    <linearGradient id="Dégradé_sans_nom" data-name="Dégradé sans nom" x1="103.91" y1="99.77" x2="103.91" y2="52.65" gradientTransform="translate(0 217.9) scale(1 -1)" gradientUnits="userSpaceOnUse">
+      <stop offset="0" stop-color="#631100"/>
+      <stop offset="1" stop-color="#000"/>
+    </linearGradient>
+  </defs>
+  <path class="st7" d="M555.29,23.86v169.14c0,12.62-10.24,22.86-22.86,22.86H214.92c-5.8-50.59,19.93-74.43,4.75-122.39-15.89-50.24-55.19-59.1-52.95-87.33.13-1.67.41-3.39.85-5.14h364.86c12.62,0,22.86,10.23,22.86,22.86Z"/>
+  <path class="st6" d="M213.92,215.86H24.77c-13.13,0-23.77-10.64-23.77-23.77V24.77c0-13.13,10.64-23.77,23.77-23.77h141.67c.58,0,1,.54.88,1.11-.29,1.37-.49,2.72-.59,4.03-2.24,28.23,37.06,37.09,52.95,87.33,15.08,47.64-10.21,71.48-4.86,121.38.06.53-.36,1.01-.89,1.01h-.01Z"/>
+  <path class="st5" d="M7.1,25.26c1.07-10.37,7.86-17.57,17.9-19.62"/>
+  <path class="st5" d="M6.31,189.68c1.24,11.96,11.35,21.29,23.64,21.29"/>
+  <path d="M44.46,77.64c10.22,4.16,19.05,4.15,29.26-.07.35-.15.77.02.9.38.06.15.06.32,0,.46-1.03,3.01-3.32,5.53-6.09,7.22-5.52,3.47-13.32,3.54-18.83-.06-2.72-1.76-4.97-4.2-6.01-7.24-.16-.44.32-.89.75-.7h.02Z"/>
+  <path d="M131.82,74.36c10.22,4.16,19.05,4.15,29.26-.07.35-.15.77.02.9.38.06.15.06.32,0,.46-1.03,3.01-3.32,5.53-6.09,7.22-5.52,3.47-13.32,3.54-18.83-.06-2.72-1.76-4.97-4.2-6.01-7.24-.16-.44.32-.89.75-.7h.02Z"/>
+  <path class="st3" d="M103.85,118.13c-18.99.02-31.33,21.14-29.49,34.54.2,1.47.81,5.89,4.2,9.27,3.92,3.92,8.48,3.34,26.51,3.19,15.47-.14,20.05.72,24.07-3.19,3.15-3.06,3.93-6.96,4.19-8.31,2.45-13.08-9.89-35.52-29.48-35.5Z"/>
+  <g class="st2">
+    <text class="st1" transform="translate(146.52 140.9) rotate(-34.66)"><tspan x="0" y="0">Z</tspan></text>
+  </g>
+  <g class="st2">
+    <text class="st0" transform="translate(162.29 96.06) rotate(23.45)"><tspan x="0" y="0">Z</tspan></text>
+  </g>
+  <g class="st2">
+    <text class="st0" transform="translate(189.02 65.87) rotate(-18.18)"><tspan x="0" y="0">Z</tspan></text>
+  </g>
+  <path class="st4" d="M531.52,199.93"/>
+</svg>
