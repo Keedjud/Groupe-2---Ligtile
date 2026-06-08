@@ -1,6 +1,6 @@
 # Plan d'implémentation — Fin de projet
 
-> Mis à jour le 5 juin 2026 (dernière màj : Phase 4F terminée — gestion trophées dashboard ; prochaine branche : cobrand Accueil.vue + Prevention.vue). Ce document définit ce qui reste à faire pour finir le projet.
+> Mis à jour le 8 juin 2026 (Phase 7B — Accueil.vue implémentée). Ce document définit ce qui reste à faire pour finir le projet.
 
 ---
 
@@ -43,7 +43,7 @@ Les pages publiques (Trophées, Labels) ne font **pas de cache** : chaque charge
 ### Frontend cobrand
 
 - [x] `cobrand/App.vue` — routage hash, co-branding CSS (fenêtre de disponibilité côté frontend à finaliser avec le backend)
-- [ ] `cobrand/views/Accueil.vue` — placeholder actuel, à implémenter (Phase 7B)
+- [x] `cobrand/views/Accueil.vue` — implémentée (Phase 7B)
 - [ ] `cobrand/views/Prevention.vue` — placeholder actuel, scrollytelling à implémenter (Phase 7C)
 - [x] `cobrand/views/Quiz.vue` — P1 + P2 + tracking
 - [x] `cobrand/views/Redirect.vue` — page Onedoc + tracking
@@ -220,6 +220,18 @@ Routage hash, injection des couleurs cobrand en CSS vars, gestion de `initSessio
 
 ---
 
+#### ✅ Phase 7B — `cobrand/views/Accueil.vue` — TERMINÉE
+
+**Branche :** `feature/front-homepage-cobrand`
+
+Implémentation complète de la page d'accueil cobrand :
+- État de la collecte : nom entreprise, nb inscrits, places restantes, taux de remplissage avec image goutte adaptative
+- Section "Pourquoi donner son sang ?" (5 raisons)
+- Baromètre des réserves par groupe sanguin
+- Section éligibilité avec CTA vers le quiz
+
+---
+
 #### ✅ Phase 7D — Quiz + Redirect — TERMINÉE
 
 `quizQuestions.js` (8 questions P1 obligatoires + 10 questions P2 optionnelles avec slugs stables), `useQuizStore.js` (logique complète P1/P2 + tracking), `Quiz.vue`, `Redirect.vue` (tracking `quiz_completed` + `onedoc_clicked`).
@@ -254,15 +266,7 @@ Les dates de collecte (`start_date` / `end_date`) sont les dates réelles de l'�
 
 ---
 
-**7B — `cobrand/views/Accueil.vue`** ← PROCHAINE TÂCHE
-
-- Données disponibles via `useCobrandSession` : `companyName`, `logoUrl`, `startDate`, `endDate`, `capacity`, `nbInscrits`, `placesRestantes`, `tauxRemplissage`, `venue`
-- Affichage : nom entreprise, logo, lieu, dates, compteur inscrits / capacité
-- CTA → Prevention
-
----
-
-**7C — `cobrand/views/Prevention.vue`**
+**7C — `cobrand/views/Prevention.vue`** ← PROCHAINE TÂCHE
 
 Scrollytelling. Émet `prevention_entered` / `prevention_exited` (avec `engaged` + `time_on_page`) via le store — ne pas appeler l'API directement depuis la vue.
 
@@ -302,8 +306,8 @@ Phase 1 ✅
               └── Phase 6 ✅   (tracking)
                     └── Phase 7A ✅  (App.vue cobrand)
                           └── Phase 7D ✅  (quiz + redirect)
-                                └── Phase 7B    (Accueil.vue)    ← PROCHAINE TÂCHE
-                                      └── Phase 7C  (Prevention.vue)
+                                └── Phase 7B ✅  (Accueil.vue)
+                                      └── Phase 7C    (Prevention.vue)    ← PROCHAINE TÂCHE
                                             └── Phase 8C  (renommage)
 Phase 8A+8B ✅  (cleanup)
 ```

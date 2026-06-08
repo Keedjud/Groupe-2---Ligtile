@@ -4,17 +4,17 @@ import { useHashRoute } from "@/composables/router";
 import { initSession, useCobrandSession } from "./composables/useCobrandSession";
 
 import CobrandLayout from "./layouts/CobrandLayout.vue";
-import Accueil from "./views/Accueil.vue";
+import Accueil    from "./views/Accueil.vue";
 import Prevention from "./views/Prevention.vue";
-import Quiz from "./views/Quiz.vue";
-import Redirect from "./views/Redirect.vue";
+import Quiz       from "./views/Quiz.vue";
+import Redirect   from "./views/Redirect.vue";
 
 const props = defineProps({
-    cobrandToken: { type: String, required: true },
+    collecteId: { type: String, required: true },
 });
 
 const { theme } = useCobrandSession();
-initSession(props.cobrandToken);
+initSession(props.collecteId);
 
 watch(
     theme,
@@ -22,6 +22,7 @@ watch(
         if (!t) return;
         const style = document.documentElement.style;
         Object.entries(t).forEach(([key, val]) => {
+            if (val === null || val === undefined) return;
             style.setProperty(`--cobrand-${key.replace(/_/g, "-")}`, val);
         });
     },
@@ -29,10 +30,10 @@ watch(
 );
 
 const routes = [
-    { hash: "#/accueil", key: "accueil", component: Accueil },
-    { hash: "#/prevention", key: "prevention", component: Prevention },
-    { hash: "#/quiz", key: "quiz", component: Quiz },
-    { hash: "#/inscription", key: "inscription", component: Redirect },
+    { hash: "#/accueil",     key: "accueil",     component: Accueil },
+    { hash: "#/prevention",  key: "prevention",  component: Prevention },
+    { hash: "#/quiz",        key: "quiz",         component: Quiz },
+    { hash: "#/inscription", key: "inscription",  component: Redirect },
 ];
 
 const { currentComponent, currentRoute } = useHashRoute(routes);

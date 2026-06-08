@@ -10,7 +10,7 @@
 </head>
 
 <body>
-    <div id="app" data-cobrand-token="{{ $cobrandToken }}"></div>
+    <div id="app" data-collecte-id="{{ $cobrandToken }}"></div>
 </body>
 
 </html>
