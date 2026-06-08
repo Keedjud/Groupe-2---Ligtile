@@ -2,6 +2,7 @@
 defineProps({
     show: { type: Boolean, default: false },
     mobile: { type: Boolean, default: false },
+    preventionSlug: { type: String, default: null },
 });
 
 const emit = defineEmits(["close"]);
@@ -27,7 +28,7 @@ function close() {
             >
                 <div v-if="mobile" class="relative w-full max-w-[360px]">
                     <img
-                        :src="'/images/cobrand/quizz/overlay_mobile.svg'"
+                        :src="'/images/cobrand/quizz/overlay-mobile.svg'"
                         alt=""
                         class="block w-full select-none drop-shadow-xl"
                     />
@@ -61,7 +62,7 @@ function close() {
                         </h2>
 
                         <a
-                            href="#/prevention"
+                            :href="preventionSlug ? `#/prevention#${preventionSlug}` : '#/prevention'"
                             class="mt-5 rounded-full bg-white px-5 py-2.5 text-small font-semibold text-violet-900 shadow-sm transition-colors hover:bg-white/90"
                             @click="close"
                         >
@@ -156,7 +157,7 @@ function close() {
                         </h2>
 
                         <a
-                            href="#/prevention"
+                            :href="preventionSlug ? `#/prevention#${preventionSlug}` : '#/prevention'"
                             class="mt-5 rounded-full bg-white px-6 py-3 text-regular font-semibold text-violet-900 shadow-sm transition-colors hover:bg-white/90"
                             @click="close"
                         >

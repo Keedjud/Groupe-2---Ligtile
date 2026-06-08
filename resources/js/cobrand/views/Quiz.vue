@@ -22,6 +22,11 @@ const {
     canSkip,
 } = useQuizStore();
 
+const firstMandatoryNegativeSlug = computed(() =>
+    questions.find((question, index) => question.mandatory && statuses.value[index] === "sad")
+        ?.preventionSlug ?? null,
+);
+
 onMounted(() => {
     reset();
     start();
@@ -121,20 +126,20 @@ function skip() {
                         >
                             <img
                                 v-if="dropType(i) === 'unanswered'"
-                                :src="'/images/cobrand/quizz/goutte_rouge.svg'"
+                                :src="'/images/cobrand/quizz/goutte-rouge.svg'"
                                 class="h-9 w-auto"
                                 alt=""
                             />
                             <img
                                 v-else-if="dropType(i) === 'incorrect'"
-                                :src="'/images/cobrand/quizz/goutte_rouge.svg'"
+                                :src="'/images/cobrand/quizz/goutte-rouge.svg'"
                                 class="h-9 w-auto"
                                 style="filter: brightness(0)"
                                 alt=""
                             />
                             <img
                                 v-else
-                                :src="'/images/cobrand/quizz/goutte_rouge.svg'"
+                                :src="'/images/cobrand/quizz/goutte-rouge.svg'"
                                 class="drop-fall h-9 w-auto"
                                 alt=""
                             />
@@ -234,20 +239,20 @@ function skip() {
                         >
                             <img
                                 v-if="dropType(i) === 'unanswered'"
-                                :src="'/images/cobrand/quizz/goutte_rouge.svg'"
+                                :src="'/images/cobrand/quizz/goutte-rouge.svg'"
                                 class="h-12 w-auto"
                                 alt=""
                             />
                             <img
                                 v-else-if="dropType(i) === 'incorrect'"
-                                :src="'/images/cobrand/quizz/goutte_rouge.svg'"
+                                :src="'/images/cobrand/quizz/goutte-rouge.svg'"
                                 class="h-12 w-auto"
                                 style="filter: brightness(0)"
                                 alt=""
                             />
                             <img
                                 v-else
-                                :src="'/images/cobrand/quizz/goutte_rouge.svg'"
+                                :src="'/images/cobrand/quizz/goutte-rouge.svg'"
                                 class="drop-fall h-12 w-auto"
                                 alt=""
                             />
@@ -291,6 +296,7 @@ function skip() {
     <EligibilityOverlay
         :show="showOverlay"
         :mobile="isMobile"
+        :prevention-slug="firstMandatoryNegativeSlug"
         @close="showOverlay = false"
     />
 </template>

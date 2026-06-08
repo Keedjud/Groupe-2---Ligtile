@@ -22,11 +22,11 @@ const IMG = {
 };
 
 const IMG_MOBILE = {
-    sleeping: "/images/cobrand/quizz/sleeping_mobile.svg",
-    waiting: "/images/cobrand/quizz/waiting_mobile.svg",
-    skipped: "/images/cobrand/quizz/waiting_mobile.svg",
-    good: "/images/cobrand/quizz/good_mobile.svg",
-    sad: "/images/cobrand/quizz/sad_mobile.svg",
+    sleeping: "/images/cobrand/quizz/sleeping-mobile.svg",
+    waiting: "/images/cobrand/quizz/waiting-mobile.svg",
+    skipped: "/images/cobrand/quizz/waiting-mobile.svg",
+    good: "/images/cobrand/quizz/good-mobile.svg",
+    sad: "/images/cobrand/quizz/sad-mobile.svg",
 };
 
 const BAND_COLOR = {
@@ -121,7 +121,7 @@ function choose(variant) {
                     {{ sadNote }}
                 </p>
                 <a
-                    href="#/prevention"
+                    :href="question.preventionSlug ? `#/prevention#${question.preventionSlug}` : '#/prevention'"
                     class="mt-3 block rounded-full bg-white px-4 py-2.5 text-center text-[12px] font-semibold text-violet-950 shadow-sm transition-colors hover:bg-white/90"
                 >
                     En savoir plus
@@ -142,6 +142,7 @@ function choose(variant) {
             v-if="status === 'sad'"
             :reason="question.reason"
             :mandatory="question.mandatory"
+            :prevention-slug="question.preventionSlug"
             :side="side"
             class="absolute bottom-full z-20 mb-1"
             :class="side === 'right' ? 'right-[90px]' : 'left-[90px]'"

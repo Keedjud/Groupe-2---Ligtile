@@ -16,8 +16,6 @@ const props = defineProps({
 const { theme } = useCobrandSession();
 initSession(props.cobrandToken);
 
-// Injection des couleurs de l'entreprise comme variables CSS sur :root.
-// Toutes les vues cobrand peuvent ensuite utiliser var(--cobrand-primary) etc.
 watch(
     theme,
     (t) => {
