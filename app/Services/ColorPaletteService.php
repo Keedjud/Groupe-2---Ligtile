@@ -4,18 +4,40 @@ namespace App\Services;
 
 class ColorPaletteService
 {
-    public static function fromTwo(string $primary, string $secondary): array
+    private const FALLBACK_PRIMARY   = '#7c3aed';
+    private const FALLBACK_SECONDARY = '#ec4899';
+
+    private const LIGHT_BG        = '#efe7d9';
+    private const CONTRAST_TARGET = 3.0;
+
+    public static function fromTwo(?string $primary, ?string $secondary): array
     {
+        $primary   = self::normalize($primary, self::FALLBACK_PRIMARY);
+        $secondary = self::normalize($secondary, self::FALLBACK_SECONDARY);
+
         return [
-            'primary'         => $primary,
-            'primary_light'   => self::lighten($primary, 60),
-            'primary_dark'    => self::darken($primary, 25),
-            'primary_text'    => self::accessibleText($primary),
-            'secondary'       => $secondary,
-            'secondary_light' => self::lighten($secondary, 60),
-            'secondary_dark'  => self::darken($secondary, 25),
-            'secondary_text'  => self::accessibleText($secondary),
+            'primary'           => $primary,
+            'primary_light'     => self::lighten($primary, 60),
+            'primary_dark'      => self::darken($primary, 25),
+            'primary_text'      => self::accessibleText($primary),
+            'primary_on_light'  => self::readableOn($primary, self::LIGHT_BG, self::CONTRAST_TARGET),
+            'secondary'         => $secondary,
+            'secondary_light'   => self::lighten($secondary, 60),
+            'secondary_dark'    => self::darken($secondary, 25),
+            'secondary_text'    => self::accessibleText($secondary),
+            'secondary_on_light'=> self::readableOn($secondary, self::LIGHT_BG, self::CONTRAST_TARGET),
         ];
+    }
+
+    private static function normalize(?string $hex, string $fallback): string
+    {
+        $hex = ltrim((string) $hex, '#');
+
+        if (preg_match('/^[0-9a-fA-F]{3}$/', $hex)) {
+            $hex = $hex[0] . $hex[0] . $hex[1] . $hex[1] . $hex[2] . $hex[2];
+        }
+
+        return preg_match('/^[0-9a-fA-F]{6}$/', $hex) ? '#' . strtolower($hex) : $fallback;
     }
 
     private static function hexToRgb(string $hex): array
@@ -56,6 +78,27 @@ class ColorPaletteService
         $onBlack = self::contrastRatio(0.0, $lum);
 
         return $onWhite >= $onBlack ? '#ffffff' : '#000000';
+    }
+
+    private static function readableOn(string $hex, string $background, float $target): string
+    {
+        $bgLum = self::luminance(self::hexToRgb($background));
+        [$r, $g, $b] = self::hexToRgb($hex);
+
+        if (self::contrastRatio(self::luminance([$r, $g, $b]), $bgLum) >= $target) {
+            return $hex;
+        }
+
+        for ($i = 1; $i <= 100; $i++) {
+            $factor = 1 - $i / 100;
+            $shade = [(int) ($r * $factor), (int) ($g * $factor), (int) ($b * $factor)];
+
+            if (self::contrastRatio(self::luminance($shade), $bgLum) >= $target) {
+                return sprintf('#%02x%02x%02x', $shade[0], $shade[1], $shade[2]);
+            }
+        }
+
+        return '#000000';
     }
 
     private static function lighten(string $hex, int $percent): string

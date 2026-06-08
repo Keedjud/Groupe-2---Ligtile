@@ -66,6 +66,7 @@ export function initSession(token) {
         })
         .catch((err) => {
             sessionError.value = err;
+            initPromise = null;
         });
 
     return initPromise;
@@ -75,57 +76,75 @@ async function trackQuiz({ event_type, part = null, question_slug = null, answer
     await initPromise;
     if (!collectionId.value || !sessionId.value) return;
 
-    try {
-        await fetchApi({
-            url: "/quiz/event",
-            method: "POST",
-            data: {
-                collection_id: collectionId.value,
-                session_id:    sessionId.value,
-                event_type,
-                part,
-                question_slug,
-                answer_result,
-            },
-        });
-    } catch {
-        // Silencieux : le tracking ne doit jamais bloquer l'UX
-    }
+    await fetchApi({
+        url: "/quiz/event",
+        method: "POST",
+        data: {
+            collection_id: collectionId.value,
+            session_id:    sessionId.value,
+            event_type,
+            part,
+            question_slug,
+            answer_result,
+        },
+    }).catch(() => {});
 }
 
-async function trackPage({ event_type, time_on_page = null }) {
+async function trackPage({ event_type, engaged = null, time_on_page = null }) {
     await initPromise;
     if (!collectionId.value || !sessionId.value) return;
 
-    try {
-        await fetchApi({
-            url: "/page/event",
-            method: "POST",
-            data: {
-                collection_id: collectionId.value,
-                session_id:    sessionId.value,
-                event_type,
-                time_on_page,
-            },
-        });
-    } catch {
-        // Silencieux
+    await fetchApi({
+        url: "/page/event",
+        method: "POST",
+        data: {
+            collection_id: collectionId.value,
+            session_id:    sessionId.value,
+            event_type,
+            engaged,
+            time_on_page,
+        },
+    }).catch(() => {});
+}
+
+function trackPageBeacon({ event_type, engaged = null, time_on_page = null }) {
+    if (!collectionId.value || !sessionId.value) return;
+
+    const url = "/api/v1/page/event";
+    const payload = JSON.stringify({
+        collection_id: collectionId.value,
+        session_id:    sessionId.value,
+        event_type,
+        engaged,
+        time_on_page,
+    });
+
+    if (navigator.sendBeacon) {
+        navigator.sendBeacon(url, new Blob([payload], { type: "application/json" }));
+        return;
     }
+
+    fetch(url, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: payload,
+        keepalive: true,
+    }).catch(() => {});
 }
 
 export function useCobrandSession() {
     return {
-        // Tracking interne (pas besoin d'y toucher dans les vues)
+        // Tracking
         collectionId,
         sessionId,
 
-        // Branding — utiliser pour le header et le thème CSS
+        // Branding
         companyName,
         nbEmployee,
         logoUrl,
         theme,
 
-        // Données de la collecte — utiliser dans les vues
+        // Données de la collecte
         startDate,
         endDate,
         capacity,
@@ -144,5 +163,6 @@ export function useCobrandSession() {
         initSession,
         trackQuiz,
         trackPage,
+        trackPageBeacon,
     };
 }

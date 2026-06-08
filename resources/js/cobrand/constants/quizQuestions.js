@@ -2,6 +2,7 @@ export const quizQuestions = [
     // Questions obligatoires
     {
         slug: "poids-minimum",
+        preventionSlug: "poids-minimum",
         text: "Pesez-vous au moins 50 kg ?",
         goodAnswer: "oui",
         mandatory: true,
@@ -9,6 +10,7 @@ export const quizQuestions = [
     },
     {
         slug: "test-positif-ist",
+        preventionSlug: "vih-hepatite-syphilis",
         text: "Avez-vous déjà été testé.e positif.ve au VIH, à l’hépatite B, à l’hépatite C ou à la syphilis ?",
         goodAnswer: "non",
         mandatory: true,
@@ -16,6 +18,7 @@ export const quizQuestions = [
     },
     {
         slug: "antecedent-cancer",
+        preventionSlug: "cancer",
         text: "Avez-vous déjà eu un cancer au cours de votre vie ?",
         goodAnswer: "non",
         mandatory: true,
@@ -23,6 +26,7 @@ export const quizQuestions = [
     },
     {
         slug: "hemochromatose",
+        preventionSlug: "hemochromatose",
         text: "Êtes-vous porteur.se d’une hémochromatose génétique ?",
         goodAnswer: "non",
         mandatory: true,
@@ -30,6 +34,7 @@ export const quizQuestions = [
     },
     {
         slug: "maladie-cardiaque",
+        preventionSlug: "cardiovasculaire",
         text: "Souffrez-vous d’une maladie cardiaque ou avez-vous déjà fait un infarctus ?",
         goodAnswer: "non",
         mandatory: true,
@@ -37,6 +42,7 @@ export const quizQuestions = [
     },
     {
         slug: "diabete-insuline",
+        preventionSlug: "diabete",
         text: "Êtes-vous diabétique et traité.e par insuline ?",
         goodAnswer: "non",
         mandatory: true,
@@ -44,6 +50,7 @@ export const quizQuestions = [
     },
     {
         slug: "transfusion-recue",
+        preventionSlug: "transfusion-greffe",
         text: "Avez-vous déjà reçu une transfusion de sang ?",
         goodAnswer: "non",
         mandatory: true,
@@ -51,6 +58,7 @@ export const quizQuestions = [
     },
     {
         slug: "drogues-injectables",
+        preventionSlug: "drogues-injectables",
         text: "Avez-vous déjà consommé des drogues par injection ?",
         goodAnswer: "non",
         mandatory: true,
@@ -60,6 +68,7 @@ export const quizQuestions = [
     // Questions optionnelles
     {
         slug: "partenaires-recents",
+        preventionSlug: "relations-sexuelles",
         text: "Au cours des 4 derniers mois, avez-vous eu un nouveau partenaire sexuel ou plusieurs partenaires sexuels ?",
         goodAnswer: "non",
         mandatory: false,
@@ -67,6 +76,7 @@ export const quizQuestions = [
     },
     {
         slug: "tatouage-piercing",
+        preventionSlug: "tatouage-piercing",
         text: "Vous êtes-vous fait tatouer ou percer au cours des 4 derniers mois ?",
         goodAnswer: "non",
         mandatory: false,
@@ -74,6 +84,7 @@ export const quizQuestions = [
     },
     {
         slug: "gastro-coloscopie",
+        preventionSlug: "gastro-coloscopie",
         text: "Avez-vous subi une gastroscopie ou une coloscopie au cours des 4 derniers mois ?",
         goodAnswer: "non",
         mandatory: false,
@@ -81,6 +92,7 @@ export const quizQuestions = [
     },
     {
         slug: "voyage-hors-europe",
+        preventionSlug: "voyage-recent",
         text: "Avez-vous voyagé hors d’Europe au cours des 4 derniers mois ?",
         goodAnswer: "non",
         mandatory: false,
@@ -88,6 +100,7 @@ export const quizQuestions = [
     },
     {
         slug: "antibiotiques",
+        preventionSlug: "medicaments-vaccin",
         text: "Avez-vous pris des antibiotiques au cours des 7 derniers jours ?",
         goodAnswer: "non",
         mandatory: false,
@@ -95,6 +108,7 @@ export const quizQuestions = [
     },
     {
         slug: "grossesse-recente",
+        preventionSlug: "grossesse-allaitement",
         text: "Avez-vous accouché au cours des 6 derniers mois ?",
         goodAnswer: "non",
         mandatory: false,
@@ -102,6 +116,7 @@ export const quizQuestions = [
     },
     {
         slug: "chirurgie-recente",
+        preventionSlug: "plaie-operation",
         text: "Avez-vous subi une intervention chirurgicale au cours des 4 derniers mois ?",
         goodAnswer: "non",
         mandatory: false,
@@ -109,6 +124,7 @@ export const quizQuestions = [
     },
     {
         slug: "vaccin-recent",
+        preventionSlug: "medicaments-vaccin",
         text: "Avez-vous été vacciné.e au cours des 4 dernières semaines ?",
         goodAnswer: "non",
         mandatory: false,
@@ -116,6 +132,7 @@ export const quizQuestions = [
     },
     {
         slug: "fievre-infection",
+        preventionSlug: "fievre-sante",
         text: "Avez-vous eu de la fièvre ou une infection au cours des 2 dernières semaines ?",
         goodAnswer: "non",
         mandatory: false,
@@ -123,6 +140,7 @@ export const quizQuestions = [
     },
     {
         slug: "bonne-sante",
+        preventionSlug: null,
         text: "Vous sentez-vous en bonne santé aujourd’hui ?",
         goodAnswer: "oui",
         mandatory: false,

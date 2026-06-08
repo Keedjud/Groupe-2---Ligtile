@@ -4,6 +4,7 @@ import { computed } from "vue";
 const props = defineProps({
     reason: { type: String, required: true },
     mandatory: { type: Boolean, default: false },
+    preventionSlug: { type: String, default: null },
     side: { type: String, default: "left" },
 });
 
@@ -30,7 +31,7 @@ const note = computed(() =>
                 {{ note }}
             </p>
             <a
-                href="#/prevention"
+                :href="preventionSlug ? `#/prevention#${preventionSlug}` : '#/prevention'"
                 class="mt-3 inline-block rounded-full bg-violet-900 px-5 py-2 text-small text-white transition-colors hover:bg-violet-800"
             >
                 En savoir +

@@ -43,6 +43,7 @@ export function useQuizStore() {
 
     function answer(index, value) {
         if (statuses.value[index] === "sleeping") return;
+        if (answers.value[index] === value) return;
 
         const question = quizQuestions[index];
         const isGood = value === question.goodAnswer;
@@ -87,7 +88,7 @@ export function useQuizStore() {
         if (next < quizQuestions.length && statuses.value[next] === "sleeping") {
             statuses.value[next] = "waiting";
         }
-        statuses.value[index] = "sleeping";
+        statuses.value[index] = "skipped";
 
         checkProgress();
     }
