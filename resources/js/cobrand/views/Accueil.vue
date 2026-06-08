@@ -29,27 +29,27 @@ const mainImageSrc = computed(() => {
 });
 
 const bloodTypes = [
-    { label: 'O+', value: 'O+', color: 'var(--color-light-palette-red)', description: 'Dangereusement bas' },
-    { label: 'A+', value: 'A+', color: 'var(--color-light-palette-orange)', description: 'Critique' },
-    { label: 'AB+', value: 'AB+', color: 'var(--color-light-palette-orange)', description: 'Critique' },
-    { label: 'B+', value: 'B+', color: 'var(--color-light-palette-yellow)', description: 'Bas' },
-    { label: 'O-', value: 'O-', color: 'var(--color-light-palette-orange)', description: 'Critique' },
-    { label: 'A-', value: 'A-', color: 'var(--color-light-palette-green)', description: 'Élevé' },
-    { label: 'AB-', value: 'AB-', color: 'var(--color-vert-300)', description: 'Normal' },
-    { label: 'B-', value: 'B-', color: 'var(--color-light-palette-yellow)', description: 'Bas' },
+    { label: 'O+',  value: 'O+',  img: '/images/sangOplus.png',  color: 'var(--color-light-palette-red)',    description: 'Dangereusement bas' },
+    { label: 'A+',  value: 'A+',  img: '/images/sangAplus.png',  color: 'var(--color-light-palette-orange)', description: 'Critique' },
+    { label: 'AB+', value: 'AB+', img: '/images/sangABplus.png', color: 'var(--color-light-palette-orange)', description: 'Critique' },
+    { label: 'B+',  value: 'B+',  img: '/images/sangBplus.png',  color: 'var(--color-light-palette-yellow)', description: 'Bas' },
+    { label: 'O-',  value: 'O-',  img: '/images/sangOneg.png',   color: 'var(--color-light-palette-orange)', description: 'Critique' },
+    { label: 'A-',  value: 'A-',  img: '/images/sangAneg.png',   color: 'var(--color-light-palette-green)',  description: 'Élevé' },
+    { label: 'AB-', value: 'AB-', img: '/images/sangABneg.png',  color: 'var(--color-vert-300)',             description: 'Normal' },
+    { label: 'B-',  value: 'B-',  img: '/images/sangBneg.png',   color: 'var(--color-light-palette-yellow)', description: 'Bas' },
 ]
 
 </script>
 <template>
 <FictifBanner />
         <CobrandHeader />
-    <div class="min-h-screen text-[var(var(--cobrand-primary-text)]">
+    <div class="min-h-screen text-[var(--cobrand-primary-text)]">
 
 
         <main class="mx-auto max-w-[1300px] px-6 py-10 lg:px-[0px]">
             <section class="grid gap-8 lg:grid-cols-[1.15fr_0.85fr] lg:items-center">
                 <div class="space-y-6  border border-[var(--color-violet-100)]  p-8 ">
-                    <h1 class="text-h1 font-semibold text-[var(---color-texte-primary-dark)]">État de la collecte</h1>
+                    <h1 class="text-h1 font-semibold text-[var(--color-texte-primary-dark)]">État de la collecte</h1>
 
                     <div class="space-y-4 ">
                         <p class="text-h2  text-[var(--color-light-palette-black)]">L’équipe {{ companyName }}
@@ -60,7 +60,7 @@ const bloodTypes = [
                         <p class="text-h2 text-[var(--color-light-palette-black)]">Il reste {{ placesRestantes }} places</p>
 
                         <a href="#/inscription"
-                            class="inline-flex w-max items-center justify-center rounded-full bg-[var(--cobrand-primary)]; px-8 py-3 text-regular text-[var(--cobrand-primary-text)] shadow transition hover:bg-[var(--cobrand-secondary)]">Réservez
+                            class="inline-flex w-max items-center justify-center rounded-full bg-[var(--cobrand-primary)] px-8 py-3 text-regular text-[var(--cobrand-primary-text)] shadow transition hover:bg-[var(--cobrand-secondary)]">Réservez
                             votre place</a>
                     </div>
                 </div>
@@ -87,30 +87,30 @@ const bloodTypes = [
                     <div class="flex w-full flex-col gap-6">
                         <div>
                             <p class="text-h2  text-[var(--color-violet-950)]"><span class="text-[var(--cobrand-primary)]">1.</span> Sauver des vies</p>
-                            <p class="mt-2 text-regular text-[var(---color-texte-primary-dark)]">Chaque don peut aider
+                            <p class="mt-2 text-regular text-[var(--color-texte-primary-dark)]">Chaque don peut aider
                                 jusqu'à trois personnes</p>
                         </div>
                         <div>
                             <p class="text-h2  text-[var(--color-violet-950)]"><span class="text-[var(--cobrand-primary)]">2.</span> Les réserves sont basses
                             </p>
-                            <p class="mt-2 text-regular text-[var(---color-texte-primary-dark)]">En donnant, vous aidez à
+                            <p class="mt-2 text-regular text-[var(--color-texte-primary-dark)]">En donnant, vous aidez à
                                 maintenir des réserves suffisantes pour faire face aux urgences</p>
                         </div>
                         <div>
                             <p class="text-h2  text-[var(--color-violet-950)]"><span class="text-[var(--cobrand-primary)]">3.</span> Un acte de solidarité</p>
-                            <p class="mt-2 text-regular text-[var(---color-texte-primary-dark)]">C'est un acte simple
+                            <p class="mt-2 text-regular text-[var(--color-texte-primary-dark)]">C'est un acte simple
                                 mais puissant. Une manière de montrer que vous vous souciez des autres.</p>
                         </div>
                         <div>
                             <p class="text-h2  text-[var(--color-violet-950)]"><span class="text-[var(--cobrand-primary)]">4.</span> C'est rapide et facile
                             </p>
-                            <p class="mt-2 text-regular text-[var(---color-texte-primary-dark)]">Le CTS se déplace sur
+                            <p class="mt-2 text-regular text-[var(--color-texte-primary-dark)]">Le CTS se déplace sur
                                 votre lieu de travail pour réduire encore plus vos désagréments.</p>
                         </div>
                         <div>
                             <p class="text-h2 text-[var(--color-violet-950)]"><span class="text-[var(--cobrand-primary)]">5.</span> Vous vous sentirez bien
                             </p>
-                            <p class="mt-2 text-regular text-[var(---color-texte-primary-dark)]">Une bonne action procure
+                            <p class="mt-2 text-regular text-[var(--color-texte-primary-dark)]">Une bonne action procure
                                 un sentiment de satisfaction et de bien-être.</p>
                         </div>
                     </div>
@@ -118,9 +118,9 @@ const bloodTypes = [
             </section>
             <section class="mt-16 p-8 lg:p-10">
                 <div>
-                    <h2 class="text-h1 font-semibold text-[var(---color-texte-primary-dark)]">État actuel des réserves de
+                    <h2 class="text-h1 font-semibold text-[var(--color-texte-primary-dark)]">État actuel des réserves de
                         sang à Genève</h2>
-                    <p class="mt-3 text-regular text-[var(---color-texte-primary-dark)]">Aujourd'hui, certains groupes
+                    <p class="mt-3 text-regular text-[var(--color-texte-primary-dark)]">Aujourd'hui, certains groupes
                         sanguins nécessitent une attention particulière.</p>
                 </div>
 
@@ -132,7 +132,7 @@ const bloodTypes = [
                             <span class="h-6 w-6 rounded-full" :style="{ backgroundColor: type.color }"></span>
                         </div>
 
-                        <img :src="'/images/sangOplus.png'" :alt="'Groupe sanguin ' + type.label"
+                        <img :src="type.img" :alt="'Groupe sanguin ' + type.label"
                             class="h-28 w-28 object-contain" />
 
 
@@ -143,31 +143,31 @@ const bloodTypes = [
                     <div class="flex flex-col gap-3">
                         <div class="flex items-center gap-3">
                             <span class="h-6 w-6 rounded-full bg-[var(--color-light-palette-green)]"></span>
-                            <span class="text-h3 text-[var(---color-texte-primary-dark)]">Élevé</span>
-                                <span class="text-h5 text-[var(---color-texte-primary-dark)]">Les stocks sont bien alimentés</span>
+                            <span class="text-h3 text-[var(--color-texte-primary-dark)]">Élevé</span>
+                                <span class="text-h5 text-[var(--color-texte-primary-dark)]">Les stocks sont bien alimentés</span>
                         </div>
                         <div class="flex items-center gap-3">
                             <span class="h-6 w-6 rounded-full bg-[var(--color-vert-300)]"></span>
-                            <span class="text-h3 text-[var(---color-texte-primary-dark)]">Normal</span>
-                                <span class="text-h5 text-[var(---color-texte-primary-dark)]"> Les stocks suffisent pour plusieurs
+                            <span class="text-h3 text-[var(--color-texte-primary-dark)]">Normal</span>
+                                <span class="text-h5 text-[var(--color-texte-primary-dark)]"> Les stocks suffisent pour plusieurs
                                 jours</span>
                         </div>
                         <div class="flex items-center gap-3">
                             <span class="h-6 w-6 rounded-full bg-[var(--color-light-palette-yellow)]"></span>
-                            <span class="text-h3 text-[var(---color-texte-primary-dark)]">Bas</span>
-                                <span class="text-h5 text-[var(---color-texte-primary-dark)]">Les stocks diminuent, les dons sont
+                            <span class="text-h3 text-[var(--color-texte-primary-dark)]">Bas</span>
+                                <span class="text-h5 text-[var(--color-texte-primary-dark)]">Les stocks diminuent, les dons sont
                                 bienvenus</span>
                         </div>
                         <div class="flex items-center gap-3">
                             <span class="h-6 w-6 rounded-full bg-[var(--color-light-palette-orange)]"></span>
-                            <span class="text-h3 text-[var(---color-texte-primary-dark)]">Critique</span>
-                                <span class="text-h5 text-[var(---color-texte-primary-dark)]"> Les stocks sont très limités, chaque don
+                            <span class="text-h3 text-[var(--color-texte-primary-dark)]">Critique</span>
+                                <span class="text-h5 text-[var(--color-texte-primary-dark)]"> Les stocks sont très limités, chaque don
                                 compte</span>
                         </div>
                         <div class="flex items-center gap-3">
                             <span class="h-6 w-6 rounded-full bg-[var(--color-light-palette-red)]"></span>
-                            <span class="text-h3 text-[var(---color-texte-primary-dark)]">Dangereusement bas</span>
-                                <span class="text-h5 text-[var(---color-texte-primary-dark)]">Les réserves sont
+                            <span class="text-h3 text-[var(--color-texte-primary-dark)]">Dangereusement bas</span>
+                                <span class="text-h5 text-[var(--color-texte-primary-dark)]">Les réserves sont
                                 insuffisantes, les besoins sont urgents</span>
                         </div>
                     </div>
@@ -189,8 +189,8 @@ const bloodTypes = [
                             class="w-full rounded-[24px] object-contain" />
                     </div>
                     <div>
-                        <h3 class="text-h3 font-semibold text-[var(---color-texte-primary-dark)]">Qui peut donner son sang ?</h3>
-                        <p class="mt-4 text-h4 text-[var(---color-texte-primary-dark)]">Âge, santé, voyages récents,
+                        <h3 class="text-h3 font-semibold text-[var(--color-texte-primary-dark)]">Qui peut donner son sang ?</h3>
+                        <p class="mt-4 text-h4 text-[var(--color-texte-primary-dark)]">Âge, santé, voyages récents,
                             traitements… quelques critères peuvent influencer votre éligibilité. Faites une vérification
                             rapide avant votre inscription.</p>
                         <a href="#/inscription"
