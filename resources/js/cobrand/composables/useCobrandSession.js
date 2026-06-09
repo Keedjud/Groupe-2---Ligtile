@@ -28,7 +28,8 @@ const contactPhone    = ref(null);
 const venue           = ref(null);
 
 // État de chargement
-const sessionError = ref(null);
+const sessionLoading = ref(false);
+const sessionError   = ref(null);
 
 let initPromise = null;
 
@@ -45,6 +46,7 @@ export function initSession(token) {
     if (initPromise) return initPromise;
 
     ensureSessionId();
+    sessionLoading.value = true;
 
     initPromise = fetchApi({ url: `/cobrand/${token}` })
         .then((data) => {
@@ -67,6 +69,9 @@ export function initSession(token) {
         .catch((err) => {
             sessionError.value = err;
             initPromise = null;
+        })
+        .finally(() => {
+            sessionLoading.value = false;
         });
 
     return initPromise;
@@ -157,6 +162,7 @@ export function useCobrandSession() {
         venue,
 
         // État de chargement
+        sessionLoading,
         sessionError,
 
         // Actions

@@ -3,17 +3,18 @@ import { watch } from "vue";
 import { useHashRoute } from "@/composables/router";
 import { initSession, useCobrandSession } from "./composables/useCobrandSession";
 
-import CobrandLayout from "./layouts/CobrandLayout.vue";
-import Accueil    from "./views/Accueil.vue";
-import Prevention from "./views/Prevention.vue";
-import Quiz       from "./views/Quiz.vue";
-import Redirect   from "./views/Redirect.vue";
+import CobrandLayout        from "./layouts/CobrandLayout.vue";
+import Accueil              from "./views/Accueil.vue";
+import Prevention           from "./views/Prevention.vue";
+import Quiz                 from "./views/Quiz.vue";
+import Redirect             from "./views/Redirect.vue";
+import CollecteIndisponible from "./views/CollecteIndisponible.vue";
 
 const props = defineProps({
     collecteId: { type: String, required: true },
 });
 
-const { theme } = useCobrandSession();
+const { theme, sessionLoading, sessionError } = useCobrandSession();
 initSession(props.collecteId);
 
 watch(
@@ -40,7 +41,12 @@ const { currentComponent, currentRoute } = useHashRoute(routes);
 </script>
 
 <template>
-    <CobrandLayout :current="currentRoute.key">
+    <div aria-live="polite" aria-atomic="true" class="sr-only">
+        <span v-if="sessionLoading">Chargement en cours…</span>
+    </div>
+
+    <CollecteIndisponible v-if="sessionError" />
+    <CobrandLayout v-else-if="!sessionLoading" :current="currentRoute.key">
         <component :is="currentComponent" />
     </CobrandLayout>
 </template>
