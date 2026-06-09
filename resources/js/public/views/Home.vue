@@ -143,7 +143,7 @@ function updateCardsIndex() {
   </section>
 
   <!-- Pourquoi accueillir une collecte -->
-  <section class="bg-violet-100 pt-10 ">
+  <section class="bg-violet-100 pt-10 pb-6">
     <div class="px-4 lg:px-[60px]">
       <h2 class="text-h1 font-semibold pt-4 text-center text-violet-900">Pourquoi accueillir une collecte ?</h2>
       <div class="mx-auto mt-4 h-[4px] w-48 rounded-full bg-vert-300"></div>
@@ -153,7 +153,7 @@ function updateCardsIndex() {
       <div
         ref="pourquoiScroll"
         @scroll.passive="updatePourquoiIndex"
-        class="-mx-4 flex overflow-x-auto snap-x snap-mandatory gap-4 px-4
+        class="-mx-4 flex overflow-x-auto no-scrollbar snap-x snap-mandatory gap-4 px-4
                lg:mx-0 lg:px-0 lg:grid lg:grid-cols-4 lg:gap-6 lg:overflow-visible"
       >
         <div class="snap-center py-18 shrink-0 w-[calc(100vw-2rem)] lg:w-auto flex flex-col">
@@ -177,7 +177,7 @@ function updateCardsIndex() {
           <p class="text-regular text-violet-900 text-center mt-4">Accueillir une collecte permet d'inscrire votre démarche sociétale dans une action visible, concrète et positive.</p>
         </div>
       </div>
-      <div class="flex justify-center gap-2 mt-6 lg:hidden">
+      <div class="flex justify-center gap-2 mt-2 lg:hidden">
         <span v-for="i in 4" :key="i"
               :class="['h-2 w-2 rounded-full', pourquoiIndex === i - 1 ? 'bg-black' : 'bg-black/30']" />
       </div>
@@ -350,7 +350,7 @@ function updateCardsIndex() {
       <div
         ref="cardsScroll"
         @scroll.passive="updateCardsIndex"
-        class="-mx-4 flex overflow-x-auto snap-x snap-mandatory gap-4 px-4
+        class="-mx-4 flex overflow-x-auto no-scrollbar snap-x snap-mandatory gap-4 px-4
                lg:mx-0 lg:px-0 lg:grid lg:grid-cols-3 lg:gap-6 lg:overflow-visible"
       >
         <div class="snap-center shrink-0 w-[calc(100vw-2rem)] lg:w-auto bg-violet-50 rounded-3xl p-10 flex flex-col items-center text-center">
