@@ -17,13 +17,13 @@ const {
 
 const mainImageSrc = computed(() => {
     const value = Number(tauxRemplissage.value ?? 0);
-    if (value < 37.5) {
+    if (value < 25) {
         return "/images/cobrand/home/goutte-sang-25.png";
     }
-    if (value < 62.5) {
+    if (value < 51) {
         return "/images/cobrand/home/goutte-sang-50.png";
     }
-    if (value < 87.5) {
+    if (value < 76) {
         return "/images/cobrand/home/goutte-sang-75.png";
     }
     return "/images/cobrand/home/goutte-sang-100.png";
