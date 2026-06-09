@@ -8,6 +8,7 @@ use App\Mail\ContactPmeMail;
 use App\Mail\ContactPmeConfirmationMail;
 use App\Http\Controllers\Controller;
 use App\Models\ContactStat;
+use Illuminate\Support\Facades\Log;
 
 class ApiPmeContactController extends Controller
 {
@@ -29,6 +30,7 @@ class ApiPmeContactController extends Controller
                 'message' => 'Your message has been sent successfully.',
             ], 200);
         } catch (\Exception $e) {
+            Log::error('ContactPmeMail failed: ' . $e->getMessage());
             return response()->json([
                 'success' => false,
                 'message' => 'Failed to send message. Please try again later.',

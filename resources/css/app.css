@@ -9,10 +9,6 @@ html {
 @source '../**/*.blade.php';
 @source '../**/*.js';
 
-@plugin "daisyui" {
-    themes: light --default, dark --prefersdark;
-}
-
 @theme {
   --font-sans: "DM Sans", sans-serif;
 
@@ -126,6 +122,11 @@ html {
 
   --color-gris-50: rgba(210, 206, 206, 1);
   --color-form-bg: rgba(251, 250, 248, 1);
+}
+
+@utility no-scrollbar {
+  scrollbar-width: none;
+  &::-webkit-scrollbar { display: none; }
 }
 
 /* Cobrand — palette générée dynamiquement par JS selon l'entreprise.

@@ -143,7 +143,7 @@ function updateCardsIndex() {
   </section>
 
   <!-- Pourquoi accueillir une collecte -->
-  <section class="bg-violet-100 pt-10 ">
+  <section class="bg-violet-100 pt-10 pb-6">
     <div class="px-4 lg:px-[60px]">
       <h2 class="text-h1 font-semibold pt-4 text-center text-violet-900">Pourquoi accueillir une collecte ?</h2>
       <div class="mx-auto mt-4 h-[4px] w-48 rounded-full bg-vert-300"></div>
@@ -153,7 +153,7 @@ function updateCardsIndex() {
       <div
         ref="pourquoiScroll"
         @scroll.passive="updatePourquoiIndex"
-        class="-mx-4 flex overflow-x-auto snap-x snap-mandatory gap-4 px-4
+        class="-mx-4 flex overflow-x-auto no-scrollbar snap-x snap-mandatory gap-4 px-4
                lg:mx-0 lg:px-0 lg:grid lg:grid-cols-4 lg:gap-6 lg:overflow-visible"
       >
         <div class="snap-center py-18 shrink-0 w-[calc(100vw-2rem)] lg:w-auto flex flex-col">
@@ -177,7 +177,7 @@ function updateCardsIndex() {
           <p class="text-regular text-violet-900 text-center mt-4">Accueillir une collecte permet d'inscrire votre démarche sociétale dans une action visible, concrète et positive.</p>
         </div>
       </div>
-      <div class="flex justify-center gap-2 mt-6 lg:hidden">
+      <div class="flex justify-center gap-2 mt-2 lg:hidden">
         <span v-for="i in 4" :key="i"
               :class="['h-2 w-2 rounded-full', pourquoiIndex === i - 1 ? 'bg-black' : 'bg-black/30']" />
       </div>
@@ -197,7 +197,7 @@ function updateCardsIndex() {
         <div>
           <ul class="space-y-0 flex flex-col items-center lg:items-stretch">
             <li class="flex flex-col items-center text-center gap-4 lg:flex-row lg:items-stretch lg:text-left lg:gap-4 max-w-[369px] lg:max-w-none">
-              <div class="flex flex-col items-center shrink-0">
+              <div class="flex flex-col items-center shrink-0 lg:min-h-[97px]">
                 <span class="grid h-[101px] w-[101px] lg:h-[61px] lg:w-[61px] place-items-center rounded-full bg-violet-200 ring-1 ring-white shrink-0">
                   <img :src="'/images/icons/chat.png'" loading="lazy" decoding="async" alt="Icône de discussion" class="h-12 w-12 lg:h-7 lg:w-7" />
                 </span>
@@ -210,7 +210,7 @@ function updateCardsIndex() {
             </li>
             <span class="block h-16 w-[3px] bg-violet-400 mx-auto my-[13px] rounded-full lg:hidden"></span>
             <li class="flex flex-col items-center text-center gap-4 lg:flex-row lg:items-stretch lg:text-left lg:gap-4 max-w-[369px] lg:max-w-none">
-              <div class="flex flex-col items-center shrink-0">
+              <div class="flex flex-col items-center shrink-0 lg:min-h-[97px]">
                 <span class="grid h-[101px] w-[101px] lg:h-[61px] lg:w-[61px] place-items-center rounded-full bg-violet-200 ring-1 ring-white shrink-0">
                   <img :src="'/images/icons/calendar-check.png'" loading="lazy" decoding="async" alt="Icône de calendrier" class="h-12 w-12 lg:h-7 lg:w-7" />
                 </span>
@@ -223,7 +223,7 @@ function updateCardsIndex() {
             </li>
             <span class="block h-16 w-[3px] bg-violet-400 mx-auto my-[13px] rounded-full lg:hidden"></span>
             <li class="flex flex-col items-center text-center gap-4 lg:flex-row lg:items-stretch lg:text-left lg:gap-4 max-w-[369px] lg:max-w-none">
-              <div class="flex flex-col items-center shrink-0">
+              <div class="flex flex-col items-center shrink-0 lg:min-h-[97px]">
                 <span class="grid h-[101px] w-[101px] lg:h-[61px] lg:w-[61px] place-items-center rounded-full bg-violet-200 ring-1 ring-white shrink-0">
                   <img :src="'/images/icons/campaign.png'" loading="lazy" decoding="async" alt="Icône d'haut-parleur" class="h-12 w-12 lg:h-7 lg:w-7" />
                 </span>
@@ -350,7 +350,7 @@ function updateCardsIndex() {
       <div
         ref="cardsScroll"
         @scroll.passive="updateCardsIndex"
-        class="-mx-4 flex overflow-x-auto snap-x snap-mandatory gap-4 px-4
+        class="-mx-4 flex overflow-x-auto no-scrollbar snap-x snap-mandatory gap-4 px-4
                lg:mx-0 lg:px-0 lg:grid lg:grid-cols-3 lg:gap-6 lg:overflow-visible"
       >
         <div class="snap-center shrink-0 w-[calc(100vw-2rem)] lg:w-auto bg-violet-50 rounded-3xl p-10 flex flex-col items-center text-center">
@@ -359,11 +359,11 @@ function updateCardsIndex() {
           <p class="text-regular text-violet-900 mt-6 flex-1">Découvrez les entreprises reconnues pour leur engagement autour du don du sang</p>
           <a href="#/trophee" class="mt-6 inline-flex items-center justify-center rounded-full px-8 py-2 text-small underline underline-offset-2 w-full lg:w-56 bg-white text-violet-900 lg:bg-button-primary lg:text-beige-50 lg:ring-2 lg:ring-violet-50">En savoir plus</a>
         </div>
-        <div class="snap-center shrink-0 w-[calc(100vw-2rem)] lg:w-auto bg-violet-50 rounded-3xl p-10 flex flex-col items-center text-center gap-6">
+        <div class="snap-center shrink-0 w-[calc(100vw-2rem)] lg:w-auto bg-violet-50 rounded-3xl p-10 flex flex-col items-center text-center">
           <img :src="'/images/illustrations/infos.png'" loading="lazy" decoding="async" class="h-52 w-auto" alt="Mascotte goutte de sang qui se pose des questions" />
-          <h3 class="text-h3 font-bold text-violet-900">Comment se déroule une collecte ?</h3>
-          <p class="text-regular text-violet-900">Organisation, logistique, communication, déroulement du jour J : retrouvez les informations pratiques pour accueillir une collecte en entreprise</p>
-          <a href="#/informations#deroulement" class="inline-flex items-center justify-center rounded-full px-8 py-2 text-small underline underline-offset-2 w-full lg:w-56 bg-white text-violet-900 lg:bg-button-primary lg:text-beige-50 lg:ring-2 lg:ring-violet-50">En savoir plus</a>
+        <h3 class="text-h3 font-bold text-violet-900 mt-6 min-h-[5rem]">Comment se déroule une collecte ?</h3>
+          <p class="text-regular text-violet-900 mt-6 flex-1">Organisation, logistique, communication, déroulement du jour J : retrouvez les informations pratiques pour accueillir une collecte en entreprise</p>
+          <a href="#/informations#deroulement" class="mt-6 inline-flex items-center justify-center rounded-full px-8 py-2 text-small underline underline-offset-2 w-full lg:w-56 bg-white text-violet-900 lg:bg-button-primary lg:text-beige-50 lg:ring-2 lg:ring-violet-50">En savoir plus</a>
         </div>
         <div class="snap-center shrink-0 w-[calc(100vw-2rem)] lg:w-auto bg-violet-50 rounded-3xl p-10 flex flex-col items-center text-center">
           <img :src="'/images/classement/label.png'" loading="lazy" decoding="async" class="h-52 w-auto" alt="Label CTS" />
