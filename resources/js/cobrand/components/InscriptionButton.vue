@@ -16,8 +16,8 @@ const emit = defineEmits(["click"]);
         class="relative h-[58px] w-full max-w-[344px] overflow-hidden rounded-full border border-black text-h5 font-medium transition-colors lg:w-[344px]"
         :style="{
             backgroundColor: enabled
-                ? 'var(--color-violet-900)'
-                : 'var(--color-violet-200)',
+                ? 'var(--cobrand-primary-on-light, var(--color-violet-900))'
+                : 'color-mix(in srgb, var(--cobrand-primary-on-light, var(--color-violet-900)) 35%, white)',
         }"
         :class="enabled ? 'cursor-pointer' : 'cursor-not-allowed'"
     >
@@ -37,7 +37,8 @@ const emit = defineEmits(["click"]);
         </span>
 
         <span
-            class="absolute inset-0 z-10 flex items-center justify-center text-white"
+            class="absolute inset-0 z-10 flex items-center justify-center"
+            :style="{ color: enabled ? 'var(--cobrand-primary-text, #ffffff)' : '#ffffff' }"
             >{{ label }}</span
         >
     </button>
