@@ -119,9 +119,7 @@ En cas de doute sur votre situation, contactez le CTS.`,
         slug: "voyage-recent",
         title: "Voyage récent",
         illustration: `${ART}/voyage.png`,
-        body: `Selon votre destination de voyage, un délai d'attente peut être requis avant de donner votre sang. Certaines régions du monde présentent un risque accru de maladies infectieuses transmissibles par le sang, paludisme, dengue, Zika, entre autres.
-
-Consultez le travelcheck du CTS pour connaître votre situation.`,
+        body: `Selon votre destination de voyage, un délai d'attente peut être requis avant de donner votre sang. Certaines régions du monde présentent un risque accru de maladies infectieuses transmissibles par le sang, paludisme, dengue, Zika, entre autres.\n\nConsultez le <a href="https://www.hug.ch/travelcheck" target="_blank" rel="noopener noreferrer" class="underline hover:opacity-80">travelcheck</a> du CTS pour connaître votre situation.`,
     },
     {
         slug: "transfusion-greffe",
