@@ -1,6 +1,7 @@
 <script setup>
-import FictifBanner from '../components/FictifBanner.vue'
-import SidebarNav   from '../components/SidebarNav.vue'
+import FictifBanner       from '../components/FictifBanner.vue'
+import SidebarNav         from '../components/SidebarNav.vue'
+import OverlayNotification from '../components/OverlayNotification.vue'
 
 defineProps({
   vueCourante: { type: String, default: 'collectes' },
@@ -36,5 +37,6 @@ defineProps({
       Ce site est la réalisation d'un projet d'étudiant·es de la HEIG-VD en collaboration avec les HUG.
     </footer>
 
+    <OverlayNotification />
   </div>
 </template>
