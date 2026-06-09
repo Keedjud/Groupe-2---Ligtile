@@ -8,6 +8,7 @@ use App\Mail\ContactMail;
 use App\Mail\ContactConfirmationMail;
 use App\Http\Controllers\Controller;
 use App\Models\ContactStat;
+use Illuminate\Support\Facades\Log;
 
 class ApiContactController extends Controller
 {
@@ -33,6 +34,7 @@ class ApiContactController extends Controller
                 'message' => 'Your message has been sent successfully.',
             ], 200);
         } catch (\Exception $e) {
+            Log::error('ContactMail failed: ' . $e->getMessage());
             return response()->json([
                 'success' => false,
                 'message' => 'Failed to send message. Please try again later.',

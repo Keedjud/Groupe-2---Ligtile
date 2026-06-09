@@ -1,11 +1,42 @@
 <script setup>
+import { ref, watch, nextTick } from 'vue'
 import { useTrophees } from '../composables/useTrophees'
 import { useDisclosure } from '@/composables/useDisclosure'
 import { companyForRank } from '../composables/usePodiumLogos'
 import PodiumDisplay from '../components/PodiumDisplay.vue'
+import Trophy3dModal from '../components/Trophy3dModal.vue'
 
 const { podium, history, loading, error, fetchNow } = useTrophees()
 const { isOpen: showCriteria, toggle: toggleCriteria } = useDisclosure()
+
+const modalRef = ref(null)
+
+// Focus le bouton de fermeture dès l'ouverture de la modale.
+watch(showCriteria, async (ouvert) => {
+  if (ouvert) {
+    await nextTick()
+    modalRef.value?.querySelector('button')?.focus()
+  }
+})
+
+function trapFocus(event) {
+  const modal = modalRef.value
+  if (!modal) return
+  const focusables = Array.from(
+    modal.querySelectorAll('button, [href], input, select, textarea, [tabindex]:not([tabindex="-1"])')
+  ).filter(el => !el.disabled)
+  if (!focusables.length) return
+  const first = focusables[0]
+  const last = focusables[focusables.length - 1]
+  if (event.shiftKey) {
+    if (document.activeElement === first) { event.preventDefault(); last.focus() }
+  } else {
+    if (document.activeElement === last) { event.preventDefault(); first.focus() }
+  }
+}
+// Aperçu 3D du trophée (modèle .glb dans public/images/3D)
+const { isOpen: show3d, toggle: toggle3d } = useDisclosure()
+const trophyModelSrc = '/images/3D/Untitled.glb'
 </script>
 
 <template>
@@ -43,16 +74,22 @@ const { isOpen: showCriteria, toggle: toggleCriteria } = useDisclosure()
         </div>
 
         <!-- Colonne droite : Image + bouton -->
-        <div class="flex flex-col items-center justify-center gap-10 lg:w-[480px] w-full lg:flex-shrink-0">
+        <div class="flex flex-col items-center justify-center gap-10 lg:w-[480px] w-full lg:flex-shrink-0 lg:items-end">
           <img
             :src="'/images/classement/trophy-top.png'"
+            loading="lazy"
+            decoding="async"
             alt=""
-            class="hidden md:block w-[178px] h-auto object-contain"
+            class="hidden md:block w-[260px] h-auto object-contain"
           />
           <!--Image purement décorative, pas besoin d'alt, bonne pratique-->
-          <div class="flex h-[45px] w-[250px] cursor-pointer items-center justify-center gap-2 rounded-[40px] bg-texte-primary-light px-3 py-2 shadow-[0_0_4px_rgba(0,0,0,0.25)] transition-shadow hover:shadow-md">
+          <button
+            type="button"
+            @click="toggle3d"
+            class="flex h-[45px] w-[260px] cursor-pointer items-center justify-center gap-2 rounded-[40px] bg-texte-primary-light px-3 py-2 shadow-[0_0_4px_rgba(0,0,0,0.25)] transition-shadow hover:shadow-md"
+          >
             <span class="font-sans text-regular text-texte-secondary">Découvrir le trophée →</span>
-          </div>
+          </button>
         </div>
       </div>
     </section>
@@ -118,8 +155,16 @@ const { isOpen: showCriteria, toggle: toggleCriteria } = useDisclosure()
         v-if="showCriteria"
         class="fixed inset-0 z-50 flex items-center justify-center bg-black/40 backdrop-blur-sm p-4"
         @click.self="toggleCriteria"
+        @keydown.esc="toggleCriteria"
+        @keydown.tab="trapFocus"
       >
-        <div class="relative w-full max-w-[857px] md:h-[595px] rounded-[25px] bg-form-bg p-6 md:p-[47px] flex flex-col justify-between overflow-y-auto md:overflow-hidden">
+        <div
+          ref="modalRef"
+          class="relative w-full max-w-[857px] md:h-[595px] rounded-[25px] bg-form-bg p-6 md:p-[47px] flex flex-col justify-between overflow-y-auto md:overflow-hidden"
+          role="dialog"
+          aria-modal="true"
+          aria-labelledby="criteria-title"
+        >
           <!-- Bouton fermer -->
           <button
             @click="toggleCriteria"
@@ -130,11 +175,13 @@ const { isOpen: showCriteria, toggle: toggleCriteria } = useDisclosure()
 
           <!-- Top part: Title + Personnage absolute -->
           <div class="relative w-full">
-            <h3 class="max-w-[516px] font-sans text-[24px] md:text-[32px] font-semibold leading-tight text-texte-primary-dark md:mt-[32px]">
+            <h3 id="criteria-title" class="pr-10 md:pr-0 max-w-[516px] font-sans text-[24px] md:text-[32px] font-semibold leading-tight text-texte-primary-dark md:mt-[32px]">
               Quels sont les critères pour remporter un trophée ?
             </h3>
             <img
               :src="'/images/illustrations/infos.png'"
+              loading="lazy"
+              decoding="async"
               alt="Mascotte goutte de sang qui se pose des questions"
               class="hidden md:block absolute right-[126px] top-[24px] w-[117px] h-[174px] object-contain"
             />
@@ -145,7 +192,7 @@ const { isOpen: showCriteria, toggle: toggleCriteria } = useDisclosure()
             <!-- Régularité -->
             <div class="flex items-center gap-6">
               <div class="flex h-[50px] w-[50px] md:h-[60px] md:w-[60px] flex-shrink-0 items-center justify-center rounded-full bg-[#E5F5F0]">
-                <img :src="'/images/icons/regularite.png'" alt="" class="h-[28px] w-[28px] md:h-[36px] md:w-[36px] object-contain" />
+                <img :src="'/images/icons/regularite.png'" loading="lazy" decoding="async" alt="" class="h-[28px] w-[28px] md:h-[36px] md:w-[36px] object-contain" />
               </div>
               <!--Image purement décorative, pas besoin d'alt, bonne pratique-->
               <div>
@@ -157,7 +204,7 @@ const { isOpen: showCriteria, toggle: toggleCriteria } = useDisclosure()
             <!-- Nombre d'inscrits -->
             <div class="flex items-center gap-6">
               <div class="flex h-[50px] w-[50px] md:h-[60px] md:w-[60px] flex-shrink-0 items-center justify-center rounded-full bg-[#E5F5F0]">
-                <img :src="'/images/icons/inscrit.png'" alt="" class="h-[28px] w-[28px] md:h-[36px] md:w-[36px] object-contain" />
+                <img :src="'/images/icons/inscrit.png'" loading="lazy" decoding="async" alt="" class="h-[28px] w-[28px] md:h-[36px] md:w-[36px] object-contain" />
               </div>
               <!--Image purement décorative, pas besoin d'alt, bonne pratique-->
               <div>
@@ -169,7 +216,7 @@ const { isOpen: showCriteria, toggle: toggleCriteria } = useDisclosure()
             <!-- Taux d'engagement -->
             <div class="flex items-center gap-6">
               <div class="flex h-[50px] w-[50px] md:h-[60px] md:w-[60px] flex-shrink-0 items-center justify-center rounded-full bg-[#E5F5F0]">
-                <img :src="'/images/icons/engagement.png'" alt="" class="h-[28px] w-[28px] md:h-[36px] md:w-[36px] object-contain" />
+                <img :src="'/images/icons/engagement.png'" loading="lazy" decoding="async" alt="" class="h-[28px] w-[28px] md:h-[36px] md:w-[36px] object-contain" />
               </div>
               <!--Image purement décorative, pas besoin d'alt, bonne pratique-->
               <div>
@@ -181,7 +228,7 @@ const { isOpen: showCriteria, toggle: toggleCriteria } = useDisclosure()
             <!-- Appréciation du jury -->
             <div class="flex items-center gap-6">
               <div class="flex h-[50px] w-[50px] md:h-[60px] md:w-[60px] flex-shrink-0 items-center justify-center rounded-full bg-[#E5F5F0]">
-                <img :src="'/images/icons/appreciation.png'" alt="" class="h-[28px] w-[28px] md:h-[36px] md:w-[36px] object-contain" />
+                <img :src="'/images/icons/appreciation.png'" loading="lazy" decoding="async" alt="" class="h-[28px] w-[28px] md:h-[36px] md:w-[36px] object-contain" />
               </div>
               <!--Image purement décorative, pas besoin d'alt, bonne pratique-->
               <div>
@@ -193,6 +240,9 @@ const { isOpen: showCriteria, toggle: toggleCriteria } = useDisclosure()
         </div>
       </div>
     </Transition>
+
+    <!-- Aperçu 3D du trophée -->
+    <Trophy3dModal v-model="show3d" :src="trophyModelSrc" />
 
     <!-- ===== Section D : Tableau des lauréats ===== -->
     <section class="bg-violet-100 px-4 py-10 lg:px-[60px] lg:py-[40px]">
@@ -283,11 +333,11 @@ const { isOpen: showCriteria, toggle: toggleCriteria } = useDisclosure()
         </div>
 
         <!-- Mobile Version (Cards) -->
-        <div class="md:hidden flex flex-row gap-6 overflow-x-auto pb-4 w-full snap-x snap-mandatory px-[51px] scroll-smooth">
+        <div class="md:hidden flex flex-row gap-4 overflow-x-auto pb-4 w-full snap-x snap-mandatory scroll-smooth">
           <div
             v-for="item in history"
             :key="item.year"
-            class="w-[290px] flex-shrink-0 p-3 bg-[#EFD2F4] rounded-[26px] flex flex-col items-center gap-2 snap-center"
+            class="w-full flex-shrink-0 p-3 bg-[#EFD2F4] rounded-[26px] flex flex-col items-center gap-2 snap-start"
           >
             <!-- Year Header -->
             <div class="w-full py-1 px-1 flex justify-start items-center">

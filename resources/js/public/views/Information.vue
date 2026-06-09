@@ -12,7 +12,6 @@ const submitted = ref(false)
 const { formErrors, globalError, submitting, validate, submit: submitPme } = usePmeContactForm()
 const aDesErreurs = computed(() => Object.keys(formErrors.value).length > 0)
 
-// Re-validation live dès qu'une erreur existe (patron du cours).
 watch(form, () => {
   if (Object.keys(formErrors.value).length > 0) validate(form.value)
 }, { deep: true })
@@ -58,18 +57,22 @@ async function handleSubmit() {
   <div>
     <!-- ===== Section 1 : Hero — Pourquoi donner son sang ? ===== -->
     <section class="flex items-center px-4 py-10 lg:px-[60px] lg:py-[70px] min-h-[385px]">
-      <div class="flex w-full flex-col items-center gap-8 md:flex-row md:gap-16 lg:gap-[249px]">
+      <div class="flex w-full flex-col items-center gap-8 md:flex-row md:gap-16 lg:gap-[120px]">
         <!-- Image mobile -->
         <img
-          :src="'/images/illustrations/lungs.png'"
+          :src="'/images/illustrations/poche-sang.svg'"
+          loading="lazy"
+          decoding="async"
           alt=""
-          class="w-[280px] h-auto object-contain shrink-0 md:hidden"
+          class="w-[180px] h-auto object-contain shrink-0 md:hidden"
         />
         <!--Image purement décorative, pas besoin d'alt, bonne pratique-->
 
         <!-- Image desktop -->
         <img
-          :src="'/images/illustrations/hello.png'"
+          :src="'/images/illustrations/poche-sang.svg'"
+          loading="lazy"
+          decoding="async"
           alt=""
           class="hidden md:block w-[180px] lg:w-[202px] h-auto object-contain shrink-0"
         />
@@ -94,13 +97,13 @@ async function handleSubmit() {
     </section>
 
     <!-- ===== Section 2 : Comment se déroule une collecte ? (+ prévoir sur mobile) ===== -->
-    <section class="bg-violet-100 px-4 py-12 lg:px-[60px] lg:py-[60px]">
+    <section id="deroulement" class="bg-violet-100 px-4 py-12 lg:px-[60px] lg:py-[60px]">
       <div class="flex flex-col gap-8 lg:flex-row lg:gap-[87px]">
         <!-- Colonne gauche -->
         <div class="flex flex-1 flex-col gap-[54px] lg:max-w-[737px]">
           <!-- Badge -->
           <div class="inline-flex items-center gap-5 rounded-[40px] bg-white px-6 py-3 w-fit">
-            <img :src="'/images/icons/building.png'" class="h-[29px] w-[30px] shrink-0 object-contain" />
+            <img :src="'/images/icons/building.png'" loading="lazy" decoding="async" class="h-[29px] w-[30px] shrink-0 object-contain" />
             <span class="font-sans text-h3 font-bold text-texte-primary-dark">
               Pour les entreprises de plus de 1 000 collaborateurs
             </span>
@@ -144,6 +147,8 @@ async function handleSubmit() {
 
         <img
           :src="'/images/illustrations/composition-petites-gouttes.png'"
+          loading="lazy"
+          decoding="async"
           alt=""
           class="w-full lg:w-[700px] h-auto object-contain shrink-0"
         />
@@ -181,7 +186,7 @@ async function handleSubmit() {
         <div class="flex flex-1 flex-col gap-9 lg:max-w-[850px]">
           <!-- Badge -->
           <div class="inline-flex items-center gap-5 rounded-[40px] bg-white px-6 py-3 w-fit">
-            <img :src="'/images/icons/building.png'" class="h-[29px] w-[30px] shrink-0 object-contain" />
+            <img :src="'/images/icons/building.png'" loading="lazy" decoding="async" class="h-[29px] w-[30px] shrink-0 object-contain" />
             <span class="font-sans text-h3 font-bold text-texte-primary-dark">
               Pour toutes les entreprises
             </span>
@@ -207,6 +212,8 @@ async function handleSubmit() {
 
         <img
           :src="'/images/illustrations/fournis.png'"
+          loading="lazy"
+          decoding="async"
           alt=""
           class="w-full lg:max-w-[500px] lg:max-h-[380px] h-auto rounded-[100px] object-contain"
         />
@@ -243,8 +250,9 @@ async function handleSubmit() {
           <!-- Formulaire ou confirmation -->
           <template v-if="!submitted">
             <div class="w-full max-w-[450px]">
-              <label class="font-sans text-small font-medium text-violet-800">Nom de l'entreprise <span class="text-rouge-500">*</span></label>
+              <label for="pme-company" class="font-sans text-small font-medium text-violet-800">Nom de l'entreprise <span class="text-rouge-500">*</span></label>
               <input
+                id="pme-company"
                 required
                 v-model="form.company_name"
                 type="text"
@@ -255,8 +263,9 @@ async function handleSubmit() {
             </div>
 
             <div class="w-full max-w-[450px]">
-              <label class="font-sans text-small font-medium text-violet-800">Adresse Mail <span class="text-rouge-500">*</span></label>
+              <label for="pme-email" class="font-sans text-small font-medium text-violet-800">Adresse e-mail <span class="text-rouge-500">*</span></label>
               <input
+                id="pme-email"
                 required
                 v-model="form.email"
                 type="email"
@@ -267,8 +276,9 @@ async function handleSubmit() {
             </div>
 
             <div class="w-full max-w-[450px]">
-              <label class="font-sans text-small font-medium text-violet-800">Message <span class="text-rouge-500">*</span></label>
+              <label for="pme-message" class="font-sans text-small font-medium text-violet-800">Message <span class="text-rouge-500">*</span></label>
               <textarea
+                id="pme-message"
                 required
                 v-model="form.message"
                 placeholder="Message"

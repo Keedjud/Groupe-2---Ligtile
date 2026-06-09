@@ -8,13 +8,20 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 
 #[Fillable([
-    'company_id', 'user_id', 'address_id',
+    'company_id', 'user_id',
+    'contact_email', 'contact_phone',
+    'venue_street', 'venue_number', 'venue_postal_code', 'venue_city',
     'start_date', 'end_date', 'capacity',
     'primary_color', 'secondary_color',
     'logo_url', 'onedoc_url', 'kit_url', 'public_token',
 ])]
 class Collection extends Model
 {
+    protected $casts = [
+        'start_date' => 'date',
+        'end_date'   => 'date',
+    ];
+
     public function company(): BelongsTo
     {
         return $this->belongsTo(Company::class);
@@ -23,11 +30,6 @@ class Collection extends Model
     public function user(): BelongsTo
     {
         return $this->belongsTo(User::class);
-    }
-
-    public function address(): BelongsTo
-    {
-        return $this->belongsTo(Address::class);
     }
 
     public function quizEvents(): HasMany

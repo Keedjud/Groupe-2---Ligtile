@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg id="Calque_1" xmlns="http://www.w3.org/2000/svg" version="1.1" viewBox="0 0 14.27 13.8">
+  <!-- Generator: Adobe Illustrator 30.4.0, SVG Export Plug-In . SVG Version: 2.1.4 Build 226)  -->
+  <defs>
+    <style>
+      .st0, .st1, .st2, .st3, .st4 {
+        stroke: #fff;
+        stroke-miterlimit: 10;
+      }
+
+      .st0, .st3 {
+        fill: #d41f1f;
+      }
+
+      .st1 {
+        fill: #fff;
+      }
+
+      .st2 {
+        fill: none;
+      }
+
+      .st3 {
+        stroke-linecap: round;
+      }
+    </style>
+  </defs>
+  <line class="st3" y1="13.8" x2="2.56" y2="11.4"/>
+  <path class="st0" d="M3.18,9.73"/>
+  <path class="st2" d="M2.4,10.03h1.47v1.02c0,.32-.26.57-.57.57h-.32c-.32,0-.57-.26-.57-.57v-1.01h0Z" transform="translate(8.57 .96) rotate(45)"/>
+  <path class="st2" d="M4.43,3.33h4.26v6.46c0,.92-.74,1.66-1.66,1.66h-.94c-.92,0-1.66-.74-1.66-1.66V3.33h0Z" transform="translate(7.15 -2.48) rotate(45)"/>
+  <path class="st1" d="M6.76,4.24h5.6c.28,0,.51.23.51.51v.15h-6.62v-.15c0-.28.23-.51.51-.51Z" transform="translate(6.03 -5.42) rotate(45)"/>
+  <rect class="st2" x="9.63" y="1.83" width="2.37" height="2.91" transform="translate(5.49 -6.69) rotate(45)"/>
+  <rect class="st1" x="9.19" y="1.84" width="5.78" height=".75" rx=".29" ry=".29" transform="translate(5.11 -7.89) rotate(45)"/>
+  <path class="st4" d="M8,6.78h1.26c.07,0,.12.05.12.12v.07c0,.07-.05.12-.12.12h-1.26v-.3h0Z" transform="translate(9.93 17.99) rotate(-135)"/>
+  <path class="st4" d="M6.86,7.93h1.26c.07,0,.12.05.12.12v.07c0,.07-.05.12-.12.12h-1.26v-.3h0Z" transform="translate(7.16 19.14) rotate(-135)"/>
+  <path class="st4" d="M5.67,9.12h1.26c.07,0,.12.05.12.12v.07c0,.07-.05.12-.12.12h-1.26v-.3h0Z" transform="translate(4.3 20.32) rotate(-135)"/>
+</svg>

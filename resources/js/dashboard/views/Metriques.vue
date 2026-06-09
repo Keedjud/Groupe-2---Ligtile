@@ -5,19 +5,16 @@ import DashboardLayout from "../layouts/DashboardLayout.vue";
 import { useCollectes } from "../composables/useCollectes.js";
 import { useFetchApi } from "@/composables/api/useFetchApi";
 
-const props = defineProps({
+defineProps({
     allerVers: { type: Function, required: true },
-    idEntreprise: { type: [String, Number], default: null },
 });
 
 const { listeCollectes, chargerCollectes } = useCollectes();
 const { fetchApi } = useFetchApi();
 
 // Filtres
-const anneesSelectionnees = ref([]); // [] = toutes les années
-const entrepriseFiltre = ref(
-    props.idEntreprise ? Number(props.idEntreprise) : "",
-);
+const anneesSelectionnees = ref([]);
+const entrepriseFiltre = ref("");
 
 const anneesDisponibles = computed(() => {
     const set = new Set();
@@ -108,22 +105,34 @@ async function chargerStats() {
     }
 }
 
+function parseFiltersFromHash() {
+    const qi = window.location.hash.indexOf("?");
+    if (qi === -1) return;
+    const params = new URLSearchParams(window.location.hash.slice(qi + 1));
+    const cid = params.get("company_id");
+    if (cid) entrepriseFiltre.value = Number(cid);
+    const years = params.getAll("years[]");
+    if (years.length) anneesSelectionnees.value = years;
+}
+
+function syncHashFilters() {
+    const params = new URLSearchParams();
+    if (entrepriseFiltre.value) params.set("company_id", String(entrepriseFiltre.value));
+    for (const y of anneesSelectionnees.value) params.append("years[]", y);
+    const qs = params.toString();
+    window.history.replaceState(null, "", qs ? `#/analytics?${qs}` : "#/analytics");
+}
+
 onMounted(async () => {
+    parseFiltersFromHash();
     if (!listeCollectes.value.length) {
         await chargerCollectes();
     }
     await chargerStats();
 });
 
-watch(entrepriseFiltre, chargerStats);
-watch(anneesSelectionnees, chargerStats);
-
-watch(
-    () => props.idEntreprise,
-    (v) => {
-        entrepriseFiltre.value = v ? Number(v) : "";
-    },
-);
+watch(entrepriseFiltre, () => { syncHashFilters(); chargerStats(); });
+watch(anneesSelectionnees, () => { syncHashFilters(); chargerStats(); });
 
 // Graphique barres SVG
 const graphiqueH = 180;
@@ -283,9 +292,9 @@ const barres = computed(() =>
                 </div>
                 <svg
                     v-else
-                    :width="graphiqueW"
-                    :height="graphiqueH"
-                    class="block"
+                    :viewBox="`0 0 ${graphiqueW} ${graphiqueH}`"
+                    preserveAspectRatio="xMidYMid meet"
+                    class="block h-auto w-full max-w-[640px]"
                     role="img"
                     aria-label="Graphique évolution inscrits"
                 >
@@ -406,16 +415,40 @@ const barres = computed(() =>
                 </div>
             </div>
 
-            <!-- Top entreprises (tableau) -->
-            <div
-                class="overflow-x-auto rounded-[20px] bg-white p-4 shadow-[0_0_8px_rgba(104,23,100,0.10)]"
-            >
+            <!-- Top entreprises -->
+            <div class="rounded-[20px] bg-white p-4 shadow-[0_0_8px_rgba(104,23,100,0.10)]">
                 <h3
                     class="mb-3 font-sans text-regular font-semibold text-violet-800"
                 >
                     Top entreprises contributrices
                 </h3>
-                <table class="w-full font-sans text-small">
+                <div class="grid gap-3 sm:hidden">
+                    <div
+                        v-for="(e, i) in topEntreprises"
+                        :key="e.nom"
+                        class="rounded-[18px] bg-violet-50/40 p-4"
+                    >
+                        <div class="flex items-start justify-between gap-3">
+                            <p class="min-w-0 flex-1 font-medium text-violet-950">
+                                {{ e.nom }}
+                            </p>
+                            <span class="rounded-full bg-white px-2.5 py-1 text-xs font-semibold text-violet-800 shadow-[0_0_4px_rgba(0,0,0,0.08)]">
+                                #{{ i + 1 }}
+                            </span>
+                        </div>
+                        <div class="mt-3 grid grid-cols-2 gap-3 text-small">
+                            <div>
+                                <p class="text-xs uppercase tracking-wide text-violet-400">Collectes</p>
+                                <p class="mt-1 font-semibold text-violet-900">{{ e.collectes }}</p>
+                            </div>
+                            <div>
+                                <p class="text-xs uppercase tracking-wide text-violet-400">Inscrits</p>
+                                <p class="mt-1 font-semibold text-violet-900">{{ e.inscrits.toLocaleString("fr-CH") }}</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <table class="hidden w-full font-sans text-small sm:table">
                     <thead>
                         <tr
                             class="border-b border-violet-100 text-left text-violet-700"
@@ -505,9 +538,7 @@ const barres = computed(() =>
                 Données de test, a brancher quand le suivi du quiz sera en
                 place.
             </p>
-            <div
-                class="mb-3 rounded-[20px] bg-white p-4 shadow-[0_0_8px_rgba(104,23,100,0.10)]"
-            >
+            <div class="mb-3 rounded-[20px] bg-white p-4 shadow-[0_0_8px_rgba(104,23,100,0.10)]">
                 <p
                     class="mb-3 font-sans text-small font-semibold text-violet-700"
                 >
@@ -516,7 +547,30 @@ const barres = computed(() =>
                         questionPrincipaleNonEligibilite.mauvaises
                     }}&nbsp;% mauvaises réponses)
                 </p>
-                <table class="w-full font-sans text-small">
+                <div class="grid gap-3 sm:hidden">
+                    <div
+                        v-for="q in questionsQuiz"
+                        :key="q.label"
+                        class="rounded-[18px] bg-violet-50/40 p-4"
+                    >
+                        <p class="font-medium text-violet-950">{{ q.label }}</p>
+                        <div class="mt-3 grid grid-cols-3 gap-2 text-small">
+                            <div>
+                                <p class="text-xs uppercase tracking-wide text-vert-500">Bonnes</p>
+                                <p class="mt-1 font-semibold text-vert-700">{{ q.bonnes }}%</p>
+                            </div>
+                            <div>
+                                <p class="text-xs uppercase tracking-wide text-rouge-500">Mauvaises</p>
+                                <p class="mt-1 font-semibold text-rouge-600">{{ q.mauvaises }}%</p>
+                            </div>
+                            <div class="text-right">
+                                <p class="text-xs uppercase tracking-wide text-violet-400">Skip</p>
+                                <p class="mt-1 font-semibold text-violet-700">{{ q.skip }}%</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <table class="hidden w-full font-sans text-small sm:table">
                     <thead>
                         <tr
                             class="border-b border-violet-100 text-left text-violet-700"

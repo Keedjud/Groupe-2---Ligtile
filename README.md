@@ -26,7 +26,7 @@ Plateforme multi-sites Laravel + Vue 3 destinée à faciliter l'organisation de 
 | Back-end | Laravel 13, PHP 8.4 |
 | Authentification | Sanctum (mode cookie — pas token Bearer) |
 | Front-end | Vue 3 (Composition API), Vite |
-| Styling | Tailwind CSS 4 + DaisyUI 5 |
+| Styling | Tailwind CSS 4 |
 | Base de données | SQLite (local) / MariaDB (production) |
 | Versioning / CI | GitHub + GitHub Actions |
 | Hébergement | Infomaniak (SSH) |
@@ -39,7 +39,7 @@ Plateforme multi-sites Laravel + Vue 3 destinée à faciliter l'organisation de 
 | Auth | Sanctum cookie (httpOnly, résistant XSS, même domaine) | Token Bearer en localStorage = mauvaise pratique |
 | Navigation | Hash-based sans Vue Router | Pattern maîtrisé, zéro librairie supplémentaire |
 | État partagé | Composable module-level (ref singleton) | Pas besoin de Pinia pour la taille du projet |
-| Co-branding | Theming DaisyUI via variables CSS dynamiques | Injecté dans le HTML, pas de CSS dupliqué par collecte |
+| Co-branding | Variables CSS custom (`--cobrand-primary/secondary/*`) injectées sur `<html>` | Générées par `ColorPaletteService::fromTwo()` (PHP) + répliquées en JS, pas de CSS dupliqué par collecte |
 | Déploiement | GitHub Actions → push SSH → bare repo + hook | Logique de déploiement centralisée côté serveur |
 | DB locale | SQLite | Aucun serveur à installer, onboarding immédiat |
 | Questions quiz | Hard-codées dans `cobrand/constants/quizQuestions.js` | CTS n'a pas besoin d'éditer les questions via le dashboard |
@@ -119,7 +119,7 @@ window.addEventListener('hashchange', () => {
 | Espace | Exemples d'URLs |
 |--------|----------------|
 | Site public | `hug-collecte.ch/#trophees`, `hug-collecte.ch/#label` |
-| Dashboard | `hug-collecte.ch/dashboard#collectes`, `hug-collecte.ch/dashboard#collecte/42` |
+| Dashboard | `hug-collecte.ch/dashboard#/collectes`, `hug-collecte.ch/dashboard#/collectes/42` |
 | Site cobrandé | `hug-collecte.ch/abc123#prevention`, `hug-collecte.ch/abc123#quiz` |
 
 ### État partagé — composable module-level
@@ -322,7 +322,7 @@ php artisan config:cache && php artisan route:cache && php artisan view:cache
 
 ## KPIs du dashboard
 
-Accessibles depuis l'onglet `#metriques` du dashboard CTS.
+Accessibles depuis l'onglet `#/analytics` du dashboard CTS.
 
 ### Vue d'ensemble opérationnelle
 

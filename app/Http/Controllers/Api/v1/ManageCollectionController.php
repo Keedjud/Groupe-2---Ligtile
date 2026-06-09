@@ -3,45 +3,31 @@
 namespace App\Http\Controllers\Api\v1;
 
 use App\Http\Controllers\Controller;
-use App\Models\Address;
 use App\Models\Collection;
 use App\Models\Company;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Str;
 
 class ManageCollectionController extends Controller
 {
-    /** Règles de validation. */
+    /** Règles communes création + édition (snapshot uniquement, sans données entreprise). */
     private function reglesValidation(): array
     {
         return [
-            // Entreprise
-            'company' => ['required', 'array'],
-            'company.name' => ['required', 'string', 'max:255'],
-            'company.nb_employee' => ['required', 'integer', 'min:1'],
-            'company.email' => ['required', 'email', 'max:255'],
-            'company.phone_number' => ['required', 'string', 'max:50', 'regex:/^[+\d][\d\s()\/.\-]{5,}$/'],
-
-            // Adresse
-            'address' => ['required', 'array'],
-            'address.street' => ['required', 'string', 'max:255'],
-            'address.number' => ['required', 'string', 'max:20', 'regex:/^\d+[a-zA-Z]?$/'],
-            'address.postal_code' => ['required', 'digits:4'],
-            'address.city' => ['required', 'string', 'max:255'],
-
-            // Collecte
-            'start_date' => ['required', 'date'],
-            'end_date' => ['required', 'date', 'after:start_date'],
-            'capacity' => ['required', 'integer', 'min:1'],
-            'primary_color' => ['required', 'string', 'max:10'],
-            'secondary_color' => ['required', 'string', 'max:10'],
-            // Logo obligatoire : chemin /storage/logos/… retourné par POST /api/v1/logos/upload.
-            'logo_url' => ['required', 'string', 'max:255'],
-            // Lien Onedoc : créé manuellement par le CTS sur la plateforme Onedoc.
-            'onedoc_url' => ['required', 'url', 'max:255'],
-            // Lien KDrive du dossier kit de communication — obligatoire, nécessaire pour l'envoi de l'email de kit.
-            'kit_url' => ['required', 'url', 'max:255'],
+            'contact_email'     => ['required', 'email', 'max:100'],
+            'contact_phone'     => ['required', 'string', 'max:50', 'regex:/^[+\d][\d\s()\/.\-]{5,}$/'],
+            'venue_street'      => ['required', 'string', 'max:255'],
+            'venue_number'      => ['required', 'string', 'max:20', 'regex:/^\d+[a-zA-Z]?$/'],
+            'venue_postal_code' => ['required', 'digits:4'],
+            'venue_city'        => ['required', 'string', 'max:255'],
+            'start_date'        => ['required', 'date'],
+            'end_date'          => ['required', 'date', 'after:start_date'],
+            'capacity'          => ['required', 'integer', 'min:1'],
+            'primary_color'     => ['required', 'string', 'max:10'],
+            'secondary_color'   => ['required', 'string', 'max:10'],
+            'logo_url'          => ['required', 'string', 'max:255'],
+            'onedoc_url'        => ['required', 'url', 'max:255'],
+            'kit_url'           => ['required', 'url', 'max:255'],
         ];
     }
 
@@ -53,7 +39,7 @@ class ManageCollectionController extends Controller
 
     public function index()
     {
-        $collectes = Collection::with(['company', 'address'])
+        $collectes = Collection::with('company')
             ->withCount($this->comptageInscrits())
             ->orderBy('created_at', 'desc')
             ->get();
@@ -64,41 +50,41 @@ class ManageCollectionController extends Controller
     public function show(Collection $collecte)
     {
         return response()->json(
-            $collecte->load(['company', 'address'])->loadCount($this->comptageInscrits())
+            $collecte->load('company')->loadCount($this->comptageInscrits())
         );
     }
 
     public function store(Request $request)
     {
-        $valide = $request->validate($this->reglesValidation(), [
+        $rules               = $this->reglesValidation();
+        $rules['company_id'] = ['required', 'integer', 'exists:companies,id'];
+
+        $valide = $request->validate($rules, [
             'end_date.after' => 'La date de fin doit être postérieure à la date de début.',
         ]);
 
-        $collecte = DB::transaction(function () use ($valide, $request) {
-            $adresse = Address::create($valide['address']);
-
-            $entreprise = Company::create(array_merge($valide['company'], [
-                'address_id' => $adresse->id,
-            ]));
-
-            return Collection::create([
-                'company_id' => $entreprise->id,
-                'user_id' => $request->user()->id,
-                'address_id' => $adresse->id,
-                'start_date' => $valide['start_date'],
-                'end_date' => $valide['end_date'],
-                'capacity' => $valide['capacity'],
-                'primary_color' => $valide['primary_color'],
-                'secondary_color' => $valide['secondary_color'],
-                'logo_url' => $valide['logo_url'],
-                'onedoc_url' => $valide['onedoc_url'],
-                'kit_url' => $valide['kit_url'],
-                'public_token' => Str::random(32),
-            ]);
-        });
+        $collecte = Collection::create([
+            'company_id'        => $valide['company_id'],
+            'user_id'           => $request->user()->id,
+            'contact_email'     => $valide['contact_email'],
+            'contact_phone'     => $valide['contact_phone'],
+            'venue_street'      => $valide['venue_street'],
+            'venue_number'      => $valide['venue_number'],
+            'venue_postal_code' => $valide['venue_postal_code'],
+            'venue_city'        => $valide['venue_city'],
+            'start_date'        => $valide['start_date'],
+            'end_date'          => $valide['end_date'],
+            'capacity'          => $valide['capacity'],
+            'primary_color'     => $valide['primary_color'],
+            'secondary_color'   => $valide['secondary_color'],
+            'logo_url'          => $valide['logo_url'],
+            'onedoc_url'        => $valide['onedoc_url'],
+            'kit_url'           => $valide['kit_url'],
+            'public_token'      => Str::random(32),
+        ]);
 
         return response()->json(
-            $collecte->load(['company', 'address'])->loadCount($this->comptageInscrits()),
+            $collecte->load('company')->loadCount($this->comptageInscrits()),
             201
         );
     }
@@ -109,34 +95,26 @@ class ManageCollectionController extends Controller
             'end_date.after' => 'La date de fin doit être postérieure à la date de début.',
         ]);
 
-        DB::transaction(function () use ($valide, $collecte) {
-            if ($collecte->address) {
-                $collecte->address->update($valide['address']);
-            } else {
-                $adresse = Address::create($valide['address']);
-                $collecte->address_id = $adresse->id;
-            }
+        $collecte->update([
+            'contact_email'     => $valide['contact_email'],
+            'contact_phone'     => $valide['contact_phone'],
+            'venue_street'      => $valide['venue_street'],
+            'venue_number'      => $valide['venue_number'],
+            'venue_postal_code' => $valide['venue_postal_code'],
+            'venue_city'        => $valide['venue_city'],
+            'start_date'        => $valide['start_date'],
+            'end_date'          => $valide['end_date'],
+            'capacity'          => $valide['capacity'],
+            'onedoc_url'        => $valide['onedoc_url'],
+            'kit_url'           => $valide['kit_url'],
+            'primary_color'     => $valide['primary_color'],
+            'secondary_color'   => $valide['secondary_color'],
+            'logo_url'          => $valide['logo_url'],
+        ]);
 
-            if ($collecte->company) {
-                $collecte->company->update($valide['company']);
-            }
-
-            $donnees = [
-                'start_date' => $valide['start_date'],
-                'end_date' => $valide['end_date'],
-                'capacity' => $valide['capacity'],
-                'onedoc_url' => $valide['onedoc_url'],
-                'kit_url' => $valide['kit_url'],
-                'primary_color' => $valide['primary_color'],
-                'secondary_color' => $valide['secondary_color'],
-            ];
-
-            $donnees['logo_url'] = $valide['logo_url'];
-
-            $collecte->update($donnees);
-        });
-
-        return response()->json($collecte->load(['company', 'address']));
+        return response()->json(
+            $collecte->load('company')->loadCount($this->comptageInscrits())
+        );
     }
 
     public function destroy(Collection $collecte)

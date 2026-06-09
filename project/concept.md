@@ -57,23 +57,18 @@ Page à part entière pour la création et la modification d'une collecte. Le m�
 
 **Aperçu co-branding et contraste des couleurs :**
 
-La saisie des couleurs est accompagnée d'un **aperçu en temps réel** reprenant plusieurs éléments visuels du site cobrandé (contenu exact défini par les maquettes). Cet aperçu permet au CTS de se rendre compte immédiatement du rendu avant de valider.
+Dès que le logo est uploadé, un bouton "Prévisualiser le site cobrandé" apparaît dans le formulaire, aux couleurs cobrand saisies. Il ouvre une grande modale (`CobrandPreviewModal.vue`) affichant un aperçu fidèle du haut de la page d'accueil cobrand : header avec logo HUG + logo entreprise, section "État de la collecte" avec le CTA principal, et section "Pourquoi donner son sang ?". Les couleurs et le logo sont injectés en temps réel via des variables CSS.
 
-En parallèle, un **calcul de lisibilité WCAG** (ratio de contraste) est effectué côté client sur chaque couleur saisie. Si le contraste est insuffisant (ratio < 4.5:1 pour le texte normal, seuil WCAG AA), un avertissement non bloquant est affiché sous le color picker concerné.
+Le calcul de lisibilité WCAG est effectué côté client (luminance relative WCAG 2.1) pour déterminer automatiquement si le texte sur les boutons cobrand doit être blanc ou noir. Ce calcul est intégré directement dans `CobrandPreviewModal.vue` et dans le bouton de prévisualisation lui-même.
 
-La correction des couleurs reste entièrement à la discrétion du CTS — aucun blocage technique n'est imposé sur le formulaire ni sur le site cobrandé. La responsabilité de choisir des couleurs lisibles incombe au CTS.
-
-**Implémentation prévue :**
-- Composant `ColorPreview.vue` (ou section intégrée dans `CollecteForm.vue`) : aperçu réactif aux deux `v-model` couleur + logo
-- Fonction utilitaire `getContrastRatio(hex)` dans `resources/js/composables/useColorContrast.js` — partageable entre `CollecteForm.vue` et tout futur composant en ayant besoin
-- Contenu exact de l'aperçu : **en attente de validation des maquettes**
+La correction des couleurs reste entièrement à la discrétion du CTS — aucun blocage technique n'est imposé. La responsabilité de choisir des couleurs lisibles incombe au CTS.
 
 **Responsabilité des dates :**
 La saisie correcte des dates est entièrement sous la responsabilité du CTS. Aucune contrainte d'intégrité n'est imposée côté base de données sur les dates (cohérence, chevauchement, etc.) — le CTS dispose déjà de ses propres processus internes pour valider ces informations lors de la prise de décision.
 
 **Disponibilité du site cobrandé :**
 - **Date de début de disponibilité** — automatique : correspond à la date d'ajout de la collecte en base de données.
-- **Date de fin de disponibilité** — automatique : 3 jours après la date de fin de collecte saisie.
+- **Date de fin de disponibilité** — automatique : 7 jours après la date de fin de collecte saisie.
 
 ---
 
@@ -278,8 +273,7 @@ Un changement de slug sans migration produit deux entrées distinctes pour la m�
 
 #### Modification de la table `collections`
 
-- **Colonnes ajoutées :** `capacity` (INT NOT NULL), `onedoc_url` (VARCHAR NOT NULL), `kit_url` (VARCHAR NOT NULL), `logo_url` migré en `LONGTEXT NOT NULL` — tous obligatoires, saisis dans le formulaire de création de collecte.
-- **Colonne supprimée :** `nb_registered` — le nombre d'inscrits est désormais calculé dynamiquement depuis `quiz_events` (`COUNT DISTINCT session_id WHERE event_type = 'onedoc_clicked'`).
+- **Colonnes ajoutées :** `capacity` (INT NOT NULL), `onedoc_url` (VARCHAR NOT NULL), `kit_url` (VARCHAR NOT NULL), `logo_url` (VARCHAR 255 — chemin de fichier via Laravel Storage, stockage physique dans `storage/app/public/`) — tous obligatoires, saisis dans le formulaire de création de collecte.
 - **Colonne supprimée :** `nb_registered` — le nombre d'inscrits est désormais calculé dynamiquement depuis `quiz_events` (`COUNT DISTINCT session_id WHERE event_type = 'onedoc_clicked'`).
 
 ---
