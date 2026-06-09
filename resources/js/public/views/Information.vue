@@ -57,20 +57,20 @@ async function handleSubmit() {
   <div>
     <!-- ===== Section 1 : Hero — Pourquoi donner son sang ? ===== -->
     <section class="flex items-center px-4 py-10 lg:px-[60px] lg:py-[70px] min-h-[385px]">
-      <div class="flex w-full flex-col items-center gap-8 md:flex-row md:gap-16 lg:gap-[249px]">
+      <div class="flex w-full flex-col items-center gap-8 md:flex-row md:gap-16 lg:gap-[120px]">
         <!-- Image mobile -->
         <img
-          :src="'/images/illustrations/lungs.png'"
+          :src="'/images/illustrations/poche-sang.svg'"
           loading="lazy"
           decoding="async"
           alt=""
-          class="w-[280px] h-auto object-contain shrink-0 md:hidden"
+          class="w-[180px] h-auto object-contain shrink-0 md:hidden"
         />
         <!--Image purement décorative, pas besoin d'alt, bonne pratique-->
 
         <!-- Image desktop -->
         <img
-          :src="'/images/illustrations/hello.png'"
+          :src="'/images/illustrations/poche-sang.svg'"
           loading="lazy"
           decoding="async"
           alt=""
