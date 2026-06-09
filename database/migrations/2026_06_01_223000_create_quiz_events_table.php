@@ -21,6 +21,7 @@ return new class extends Migration
             $table->string('question_slug')->nullable();
             $table->enum('answer_result', ['correct', 'incorrect'])->nullable();
             $table->timestamp('created_at')->useCurrent();
+            $table->index(['collection_id', 'event_type', 'session_id']);
         });
     }
 
