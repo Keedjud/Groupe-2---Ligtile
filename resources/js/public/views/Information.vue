@@ -97,7 +97,7 @@ async function handleSubmit() {
     </section>
 
     <!-- ===== Section 2 : Comment se déroule une collecte ? (+ prévoir sur mobile) ===== -->
-    <section class="bg-violet-100 px-4 py-12 lg:px-[60px] lg:py-[60px]">
+    <section id="deroulement" class="bg-violet-100 px-4 py-12 lg:px-[60px] lg:py-[60px]">
       <div class="flex flex-col gap-8 lg:flex-row lg:gap-[87px]">
         <!-- Colonne gauche -->
         <div class="flex flex-1 flex-col gap-[54px] lg:max-w-[737px]">
