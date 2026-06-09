@@ -26,9 +26,8 @@ defineProps({
         <div class="mt-2 flex-1 rounded-2xl bg-form-bg p-4 sm:mt-3 sm:p-5">
             <p
                 class="whitespace-pre-line text-center text-xs leading-relaxed text-violet-950 sm:text-small lg:text-regular"
-            >
-                {{ topic.body }}
-            </p>
+                v-html="topic.body"
+            />
         </div>
     </article>
 </template>
