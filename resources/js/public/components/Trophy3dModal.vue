@@ -37,7 +37,7 @@ function close() {
             ✕
           </button>
 
-          <h3 class="font-sans text-h2 font-semibold leading-tight text-texte-primary-dark">
+          <h3 class="pr-10 md:pr-0 font-sans text-h2 font-semibold leading-tight text-texte-primary-dark">
             Le Trophée de la Générosité en 3D
           </h3>
 
