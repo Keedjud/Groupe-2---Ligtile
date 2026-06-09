@@ -4,15 +4,16 @@ import { computed } from "vue";
 const props = defineProps({
     reason: { type: String, required: true },
     mandatory: { type: Boolean, default: false },
+    hasMandatoryNegative: { type: Boolean, default: false },
     preventionSlug: { type: String, default: null },
     side: { type: String, default: "left" },
 });
 
-const note = computed(() =>
-    props.mandatory
-        ? "Vous n'êtes pas éligible."
-        : "Vous êtes toujours éligible.",
-);
+const note = computed(() => {
+    if (props.mandatory) return "Vous n'êtes pas éligible."
+    if (!props.hasMandatoryNegative) return "Vous êtes toujours éligible."
+    return null
+});
 </script>
 
 <template>
@@ -25,6 +26,7 @@ const note = computed(() =>
         >
             <p class="text-small leading-snug text-violet-950">{{ reason }}</p>
             <p
+                v-if="note"
                 class="mt-2 text-small font-semibold leading-snug"
                 :class="mandatory ? 'text-rouge-600' : 'text-vert-600'"
             >

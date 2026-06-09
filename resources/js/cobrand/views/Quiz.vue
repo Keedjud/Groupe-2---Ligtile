@@ -2,6 +2,7 @@
 import { ref, computed, nextTick, onMounted, watch } from "vue";
 import { useMediaQuery } from "@/composables/useMediaQuery";
 import { useQuizStore } from "../composables/useQuizStore";
+import { useCobrandSession } from "../composables/useCobrandSession";
 import QuizTile from "../components/QuizTile.vue";
 import InscriptionButton from "../components/InscriptionButton.vue";
 import EligibilityOverlay from "../components/EligibilityOverlay.vue";
@@ -21,6 +22,8 @@ const {
     eligible,
     canSkip,
 } = useQuizStore();
+
+const { onedocUrl, trackQuiz } = useCobrandSession();
 
 const firstMandatoryNegativeSlug = computed(() =>
     questions.find((question, index) => question.mandatory && statuses.value[index] === "sad")
@@ -75,18 +78,27 @@ function dropType(i) {
     return "unanswered";
 }
 
+const hasOptionalNegative = computed(() =>
+    questions.some((q, i) => !q.mandatory && statuses.value[i] === "sad"),
+);
+
 const message = computed(() => {
+    if (hasMandatoryNegative.value) {
+        return "Désolé, vous n'êtes pas éligible.";
+    }
     if (!allMandatoryAnswered.value) {
         return "Répondez aux questions obligatoires pour pouvoir vous inscrire.";
     }
-    if (eligible.value) {
-        return "Bonne nouvelle ! Votre situation vous permet de vous inscrire.";
+    if (hasOptionalNegative.value) {
+        return "Vous pouvez vous inscrire mais votre situation n'est pas idéale. Veuillez idéalement contacter le CTS.";
     }
-    return "Votre situation pourrait influencer votre éligibilité. Consultez les informations CTS avant de réserver.";
+    return "Vous pouvez vous inscrire.";
 });
 
 function register() {
-    if (eligible.value) window.location.hash = "#/inscription";
+    if (!eligible.value || !onedocUrl.value) return;
+    trackQuiz({ event_type: "quiz_completed" });
+    window.open(onedocUrl.value, "_blank", "noopener,noreferrer");
 }
 
 function skip() {
@@ -118,7 +130,8 @@ function skip() {
                         class="relative"
                     >
                         <div
-                            class="absolute left-[18px] top-[53px] h-0 w-[34px] -translate-y-1/2 border-t-[3px] border-dashed border-black"
+                            class="absolute left-[18px] top-[53px] h-0 -translate-y-1/2 border-t-[3px] border-dashed border-black"
+                            style="width: calc(50% - 125px - 18px)"
                         ></div>
 
                         <div
@@ -145,17 +158,16 @@ function skip() {
                             />
                         </div>
 
-                        <div class="pl-[58px]">
-                            <div class="max-w-[250px]">
-                                <QuizTile
-                                    :question="q"
-                                    :status="statuses[i]"
-                                    :answer="answers[i]"
-                                    mobile
-                                    @answer="(v) => onAnswer(i, v)"
-                                    @skip="onSkip(i)"
-                                />
-                            </div>
+                        <div class="mx-auto max-w-[250px]">
+                            <QuizTile
+                                :question="q"
+                                :status="statuses[i]"
+                                :answer="answers[i]"
+                                :has-mandatory-negative="hasMandatoryNegative"
+                                mobile
+                                @answer="(v) => onAnswer(i, v)"
+                                @skip="onSkip(i)"
+                            />
                         </div>
                     </div>
                 </div>
@@ -220,6 +232,7 @@ function skip() {
                                 :status="statuses[i]"
                                 :answer="answers[i]"
                                 :side="side(i)"
+                                :has-mandatory-negative="hasMandatoryNegative"
                                 @answer="(v) => onAnswer(i, v)"
                                 @skip="onSkip(i)"
                             />
