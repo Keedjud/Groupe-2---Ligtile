@@ -182,7 +182,7 @@ function skip() {
                     type="button"
                     :disabled="!canSkip"
                     @click="skip"
-                    class="fixed bottom-5 right-4 z-50 rounded-full px-5 py-2.5 text-small shadow-lg transition-colors disabled:cursor-not-allowed"
+                    class="fixed bottom-72 right-4 z-50 rounded-full px-5 py-2.5 text-small shadow-lg transition-colors disabled:cursor-not-allowed"
                     :class="
                         canSkip
                             ? 'cursor-pointer bg-violet-900 text-white hover:bg-violet-800'
@@ -281,7 +281,7 @@ function skip() {
                 type="button"
                 :disabled="!canSkip"
                 @click="skip"
-                class="fixed bottom-8 right-8 z-40 rounded-full px-12 py-3 text-regular transition-colors disabled:cursor-not-allowed"
+                class="fixed bottom-28 right-8 z-40 rounded-full px-12 py-3 text-regular transition-colors disabled:cursor-not-allowed"
                 :class="
                     canSkip
                         ? 'cursor-pointer bg-violet-900 text-white hover:bg-violet-800'
