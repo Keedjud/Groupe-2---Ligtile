@@ -333,11 +333,11 @@ const trophyModelSrc = '/images/3D/Untitled.glb'
         </div>
 
         <!-- Mobile Version (Cards) -->
-        <div class="md:hidden flex flex-row gap-6 overflow-x-auto pb-4 w-full snap-x snap-mandatory px-[51px] scroll-smooth">
+        <div class="md:hidden flex flex-row gap-4 overflow-x-auto pb-4 w-full snap-x snap-mandatory scroll-smooth">
           <div
             v-for="item in history"
             :key="item.year"
-            class="w-[290px] flex-shrink-0 p-3 bg-[#EFD2F4] rounded-[26px] flex flex-col items-center gap-2 snap-center"
+            class="w-full flex-shrink-0 p-3 bg-[#EFD2F4] rounded-[26px] flex flex-col items-center gap-2 snap-start"
           >
             <!-- Year Header -->
             <div class="w-full py-1 px-1 flex justify-start items-center">
