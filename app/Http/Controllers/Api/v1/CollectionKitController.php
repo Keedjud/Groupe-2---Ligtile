@@ -14,7 +14,8 @@ class CollectionKitController extends Controller
     public function send(Collection $collecte)
     {
         $collecte->loadMissing('company');
-        $destinataire = $collecte->company?->email;
+        $destinataire = $collecte->contact_email
+            ?: $collecte->company?->contact?->email;
 
         if (! $destinataire) {
             return response()->json([
