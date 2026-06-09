@@ -247,7 +247,7 @@ function updateCardsIndex() {
               </div>
             </li>
           </ul>
-          <a href="#/informations" class="block w-fit mx-auto lg:mx-0 mt-10 rounded-full bg-white shadow text-violet-900 text-center py-3 px-10 text-regular underline underline-offset-2">En savoir plus<span class="hidden lg:inline"> sur l'organisation d'une collecte</span></a>
+          <a href="#/informations#deroulement" class="block w-fit mx-auto lg:mx-0 mt-10 rounded-full bg-white shadow text-violet-900 text-center py-3 px-10 text-regular underline underline-offset-2">En savoir plus<span class="hidden lg:inline"> sur l'organisation d'une collecte</span></a>
         </div>
       </div>
     </div>
@@ -363,7 +363,7 @@ function updateCardsIndex() {
           <img :src="'/images/illustrations/infos.png'" loading="lazy" decoding="async" class="h-52 w-auto" alt="Mascotte goutte de sang qui se pose des questions" />
           <h3 class="text-h3 font-bold text-violet-900">Comment se déroule une collecte ?</h3>
           <p class="text-regular text-violet-900">Organisation, logistique, communication, déroulement du jour J : retrouvez les informations pratiques pour accueillir une collecte en entreprise</p>
-          <a href="#/informations" class="inline-flex items-center justify-center rounded-full px-8 py-2 text-small underline underline-offset-2 w-full lg:w-56 bg-white text-violet-900 lg:bg-button-primary lg:text-beige-50 lg:ring-2 lg:ring-violet-50">En savoir plus</a>
+          <a href="#/informations#deroulement" class="inline-flex items-center justify-center rounded-full px-8 py-2 text-small underline underline-offset-2 w-full lg:w-56 bg-white text-violet-900 lg:bg-button-primary lg:text-beige-50 lg:ring-2 lg:ring-violet-50">En savoir plus</a>
         </div>
         <div class="snap-center shrink-0 w-[calc(100vw-2rem)] lg:w-auto bg-violet-50 rounded-3xl p-10 flex flex-col items-center text-center">
           <img :src="'/images/classement/label.png'" loading="lazy" decoding="async" class="h-52 w-auto" alt="Label CTS" />
