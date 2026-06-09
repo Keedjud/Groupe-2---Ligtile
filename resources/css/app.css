@@ -12,8 +12,8 @@ html {
 @theme {
   --font-sans: "DM Sans", sans-serif;
 
-  --text-small: 14px;
-  --text-regular: 16px;
+  --text-small: 16px;
+  --text-regular: 18px;
   --text-h5: 20px;
   --text-h4: 23px;
   --text-h3: 25px;
