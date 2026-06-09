@@ -79,9 +79,9 @@ class ApiTropheeController extends Controller
             usort($companies, fn($a, $b) => $a['rank'] <=> $b['rank']);
 
             $allYears[] = [
-                'year'              => (int) $year,
-                'companies'         => $companies,
-                'participant_count' => count($uniqueCompanyIds),
+                'year'            => (int) $year,
+                'companies'       => $companies,
+                'companies_count' => count($uniqueCompanyIds),
             ];
         }
 
