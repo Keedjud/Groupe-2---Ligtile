@@ -173,7 +173,7 @@ const bloodTypes = [
 
                 <div class="mt-8 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
                     <div v-for="type in bloodTypes" :key="type.value"
-                        class="rounded-[16px] bg-[var(--color-beige-25)] p-5 flex flex-col items-center transition hover:-translate-y-1 hover:shadow-md">
+                        class="rounded-[16px] bg-[var(--color-beige-25)] p-5 flex flex-col items-center">
 
                         <div class="w-full flex justify-start mb-3">
                             <span class="h-6 w-6 rounded-full" :style="{ backgroundColor: type.color }"></span>
