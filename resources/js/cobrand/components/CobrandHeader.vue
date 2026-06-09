@@ -18,7 +18,7 @@ const { isOpen, toggle, close } = useDisclosure();
 
 <template>
     <header
-        class="relative w-full bg-form-bg shadow-[0_4px_4px_rgba(0,0,0,0.10)]"
+        class="relative w-full bg--color-beige-50 shadow-[0_4px_4px_rgba(0,0,0,0.10)]"
     >
         <div
             class="flex h-[55px] w-full items-center justify-between px-4 py-1.5 lg:px-[60px]"
