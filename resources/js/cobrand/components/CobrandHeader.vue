@@ -18,7 +18,7 @@ const { isOpen, toggle, close } = useDisclosure();
 
 <template>
     <header
-        class="relative w-full bg-form-bg shadow-[0_4px_4px_rgba(0,0,0,0.10)]"
+        class="relative w-full bg-[var(--color-beige-50)] shadow-[0_4px_4px_rgba(0,0,0,0.10)]"
     >
         <div
             class="flex h-[55px] w-full items-center justify-between px-4 py-1.5 lg:px-[60px]"
@@ -44,7 +44,7 @@ const { isOpen, toggle, close } = useDisclosure();
                 <span
                     v-else-if="companyName"
                     class="truncate text-h5 font-bold tracking-wide lg:text-h4"
-                    :style="{ color: 'var(--cobrand-primary, var(--color-light-palette-orange))' }"
+                    :style="{ color: 'var(--cobrand-primary, var(--cobrand-secondary))' }"
                     >{{ companyName }}</span
                 >
                 <span
@@ -59,10 +59,10 @@ const { isOpen, toggle, close } = useDisclosure();
                     v-for="link in links"
                     :key="link.key"
                     :href="link.href"
-                    class="font-sans text-regular transition-colors hover:text-violet-500"
+                    class="font-sans text-regular transition-colors hover:text-[var(--cobrand-secondary)]"
                     :class="
                         current === link.key
-                            ? 'font-bold text-violet-900'
+                            ? 'font-bold text-[var(--cobrand-primary)]'
                             : 'text-texte-primary-dark'
                     "
                 >
