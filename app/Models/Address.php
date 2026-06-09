@@ -14,9 +14,4 @@ class Address extends Model
     {
         return $this->hasMany(Company::class);
     }
-
-    public function collections(): HasMany
-    {
-        return $this->hasMany(Collection::class);
-    }
 }
