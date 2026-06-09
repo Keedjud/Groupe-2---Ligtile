@@ -9,10 +9,6 @@ html {
 @source '../**/*.blade.php';
 @source '../**/*.js';
 
-@plugin "daisyui" {
-    themes: light --default, dark --prefersdark;
-}
-
 @theme {
   --font-sans: "DM Sans", sans-serif;
 
