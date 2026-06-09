@@ -33,7 +33,7 @@ defineProps({
             <slot />
         </main>
 
-        <SiteFooter />
-        <FictifNotice />
+        <SiteFooter class="relative z-10" />
+        <FictifNotice class="relative z-10" />
     </div>
 </template>

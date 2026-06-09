@@ -51,7 +51,7 @@ const motifs = buildMotifs();
                 width: m.size + 'px',
                 height: m.size + 'px',
                 transform: `rotate(${m.rot}deg)`,
-                opacity: 0.12,
+                opacity: 0.03,
                 backgroundColor: `var(--cobrand-primary, ${ORANGE})`,
                 maskImage: `url(${m.src})`,
                 WebkitMaskImage: `url(${m.src})`,
