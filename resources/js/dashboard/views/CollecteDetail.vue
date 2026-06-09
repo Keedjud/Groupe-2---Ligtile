@@ -4,6 +4,7 @@ import { computed, ref, onMounted } from 'vue'
 import DashboardLayout from '../layouts/DashboardLayout.vue'
 import QuestionFlow    from '../components/QuestionFlow.vue'
 import { useCollectes }  from '../composables/useCollectes.js'
+import { useOverlay }   from '../composables/useOverlay.js'
 
 const props = defineProps({
   idCollecte: { type: [String, Number], required: true },
@@ -11,6 +12,7 @@ const props = defineProps({
 })
 
 const { listeCollectes, trouverParId, chargerCollectes, supprimerCollecte, chargement } = useCollectes()
+const { show: showOverlay } = useOverlay()
 
 const collecte = computed(() => trouverParId(props.idCollecte))
 
@@ -33,6 +35,7 @@ async function gererSuppression() {
     return
   }
   await supprimerCollecte(props.idCollecte)
+  showOverlay('La collecte a bien été supprimée.')
   props.allerVers('#/collectes')
 }
 
