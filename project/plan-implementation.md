@@ -1,6 +1,6 @@
 # Plan d'implémentation — Fin de projet
 
-> Mis à jour le 8 juin 2026 (scan complet branche develop — toutes les phases 1–8B sont terminées, passage en mode bugfix + finitions). Ce document définit ce qui reste à faire pour finir le projet.
+> Mis à jour le 9 juin 2026 — toutes les finitions sont terminées, seuls les bugs restent ouverts.
 
 ---
 
@@ -96,38 +96,40 @@ Les pages publiques (Trophées, Labels) ne font **pas de cache** : chaque charge
 
 ---
 
-## Ce qui reste à implémenter
+## ✅ Ce qui restait à implémenter — TERMINÉ
 
-> Fonctionnalités jamais codées, refactoring planifié et dette technique — distinct des bugs (voir section précédente).
+> Toutes les finitions ont été implémentées le 9 juin 2026.
 
 ### Backend — `ApiCobrandController`
 
-- [ ] Fenêtre de disponibilité : retourner 404 si avant `created_at` ou après `end_date + 7 jours`
+- ✅ Fenêtre de disponibilité : retourner 404 si après `end_date + 7 jours` — `Collection` caste désormais `start_date` / `end_date` en `date`
 
 ### Backend — `ApiTropheeController` *(Phase 8C)*
 
-- [ ] Renommer `participant_count` → `companies_count` au niveau année
+- ✅ Renommer `participant_count` → `companies_count` au niveau année
 
 ### Backend — Migrations & Cleanup
 
-- [ ] Ajouter l'index composite `(collection_id, event_type, session_id)` directement dans `database/migrations/2026_06_01_223000_create_quiz_events_table.php` (pas de nouvelle migration — pas de données prod, `migrate:fresh --seed` suffit)
-- [ ] `app/Models/Address.php` — supprimer la relation morte `collections()` (la FK `address_id` a été retirée de `collections` en Phase 5B ; la relation `companies()` reste valide)
+- ✅ Index composite `(collection_id, event_type, session_id)` ajouté dans `2026_06_01_223000_create_quiz_events_table.php`
+- ✅ Relation morte `collections()` supprimée dans `app/Models/Address.php`
 
 ### Frontend — Dépendances
 
-- [ ] Supprimer DaisyUI (`package.json` ligne `"daisyui": "^5.5.20"` + `@plugin "daisyui"` dans `resources/css/app.css`) — installé mais aucune classe utilisée, CSS chargé inutilement
+- ✅ DaisyUI supprimé via `npm uninstall` — `package.json` et `resources/css/app.css` nettoyés
 
-### Site cobrandé — `App.vue`
+### Site cobrandé — `App.vue` + `CollecteIndisponible.vue`
 
-- [ ] Afficher un écran "Collecte indisponible" si `sessionError` (token invalide ou hors fenêtre)
+- ✅ Vue `CollecteIndisponible.vue` créée — affichée si `sessionError` (token invalide ou hors fenêtre)
+- ✅ État `sessionLoading` ajouté dans `useCobrandSession` — empêche tout flash du site cobrandé pendant la requête
+- ✅ Région `aria-live` ajoutée dans `App.vue` pour l'accessibilité lecteurs d'écran
 
 ### Site cobrandé — `Prevention.vue`
 
-- [ ] Ajouter un lien vers travelcheck.ch sur le mot "voyage" dans la carte correspondante
+- ✅ Lien vers `https://www.hug.ch/travelcheck` sur le mot "travelcheck" dans la carte "Voyage récent" — rendu via `v-html` dans `PreventionCard.vue`
 
 ### Dashboard — Gestion des collectes
 
-- [ ] Ajouter une confirmation (modale ou toast) avant suppression définitive d'une collecte
+- ✅ Confirmation déjà implémentée via double clic (pattern `confirmeSuppression`) dans `CollecteDetail.vue` — aucun travail supplémentaire nécessaire
 
 ---
 
@@ -349,7 +351,7 @@ Scrollytelling complet : 6 sections narratives (impact, peur, pendant, devient, 
 
 **Après 7B + 7C :**
 - ✅ Alignement slugs `DashboardMetricsController::performanceParQuestion()` ↔ `quizQuestions.js` — vérifié, tous les 18 slugs correspondent
-- [ ] Renommer `participant_count` → `companies_count` dans `ApiTropheeController` (représente des entreprises, pas des participants) — Phase 8C
+- ✅ Renommer `participant_count` → `companies_count` dans `ApiTropheeController` (représente des entreprises, pas des participants) — Phase 8C
 
 ---
 
@@ -357,7 +359,7 @@ Scrollytelling complet : 6 sections narratives (impact, peur, pendant, devient, 
 
 Suppression fichiers Blade inutilisés, modèles `ContactRequest` et `PmeContact`, migrations orphelines.
 
-### Phase 8C — Renommage `ApiTropheeController` *(après Phase 7D)*
+### ✅ Phase 8C — Renommage `ApiTropheeController` — TERMINÉE
 
 `participant_count` → `companies_count` au niveau année.
 
@@ -383,6 +385,6 @@ Phase 1 ✅
                           └── Phase 7D ✅  (quiz + redirect)
                                 └── Phase 7B ✅  (Accueil.vue)
                                       └── Phase 7C ✅  (Prevention.vue)
-                                            └── Phase 8C  (renommage participant_count)  ← à faire
+                                            └── Phase 8C ✅  (renommage participant_count)
 Phase 8A+8B ✅  (cleanup)
 ```
