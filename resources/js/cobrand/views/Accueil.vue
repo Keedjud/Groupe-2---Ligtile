@@ -207,8 +207,9 @@ const bloodTypes = [
                 </div>
 
                 <button
+
                     class="mt-6 block w-max mx-auto rounded-full border border-[var(--color-light-palette-gray)] bg-[var(--color-light-palette-white)] px-4 py-2 text-regular text-[color:var(--accent)] shadow-[0px_0px_4px_0px_rgba(0,0,0,0.25)] transition hover:-translate-y-0.5 hover:bg-[var(--color-beige-25)] hover:shadow-md sm:mx-0">
-                    Consulter le baromètre complet des HUG
+                    <a href="https://www.hug.ch/don-du-sang/barometre-don-du-sang-geneve">Consulter le baromètre complet des HUG</a>
                 </button>
             </section>
 
