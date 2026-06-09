@@ -182,7 +182,7 @@ async function envoyerMail() {
             </div>
             <!-- Champ lien co-brandé -->
             <div v-if="lienCoBrande" class="flex items-center gap-2">
-              <label class="font-sans text-small text-violet-950">Lien du site co-brandé :</label>
+              <label class="shrink-0 whitespace-nowrap font-sans text-small text-violet-950">Lien du site co-brandé :</label>
               <div class="flex items-center gap-2 rounded-lg bg-white px-3 py-2 shadow-[0_0_4px_rgba(0,0,0,0.15)]">
                 <span class="select-all font-sans text-small text-violet-900 break-all">{{ lienCoBrande }}</span>
                 <button
