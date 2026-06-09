@@ -74,19 +74,19 @@ const trophyModelSrc = '/images/3D/Untitled.glb'
         </div>
 
         <!-- Colonne droite : Image + bouton -->
-        <div class="flex flex-col items-center justify-center gap-10 lg:w-[480px] w-full lg:flex-shrink-0">
+        <div class="flex flex-col items-center justify-center gap-10 lg:w-[480px] w-full lg:flex-shrink-0 lg:items-end">
           <img
             :src="'/images/classement/trophy-top.png'"
             loading="lazy"
             decoding="async"
             alt=""
-            class="hidden md:block w-[178px] h-auto object-contain"
+            class="hidden md:block w-[260px] h-auto object-contain"
           />
           <!--Image purement décorative, pas besoin d'alt, bonne pratique-->
           <button
             type="button"
             @click="toggle3d"
-            class="flex h-[45px] w-[250px] cursor-pointer items-center justify-center gap-2 rounded-[40px] bg-texte-primary-light px-3 py-2 shadow-[0_0_4px_rgba(0,0,0,0.25)] transition-shadow hover:shadow-md"
+            class="flex h-[45px] w-[260px] cursor-pointer items-center justify-center gap-2 rounded-[40px] bg-texte-primary-light px-3 py-2 shadow-[0_0_4px_rgba(0,0,0,0.25)] transition-shadow hover:shadow-md"
           >
             <span class="font-sans text-regular text-texte-secondary">Découvrir le trophée →</span>
           </button>

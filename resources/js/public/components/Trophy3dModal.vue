@@ -26,7 +26,7 @@ function close() {
         class="fixed inset-0 z-50 flex items-center justify-center bg-black/40 backdrop-blur-sm p-4"
         @click.self="close"
       >
-        <div class="relative flex h-[80dvh] w-full max-w-[857px] flex-col overflow-hidden rounded-[25px] bg-form-bg p-6 md:h-[595px] md:p-[47px]">
+        <div class="relative flex h-[90dvh] w-full max-w-[1100px] flex-col overflow-hidden rounded-[25px] bg-form-bg p-6 md:h-[80dvh] md:p-[47px]">
           <!-- Bouton fermer -->
           <button
             type="button"
@@ -48,7 +48,7 @@ function close() {
             camera-controls
             touch-action="pan-y"
             auto-rotate
-            camera-orbit="-90deg 75deg auto"
+            camera-orbit="-90deg 75deg 92%"
             shadow-intensity="1"
             class="mt-4 h-full w-full flex-1"
           ></model-viewer>
