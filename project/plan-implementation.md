@@ -1,6 +1,6 @@
 # Plan d'implémentation — Fin de projet
 
-> Mis à jour le 9 juin 2026 — toutes les finitions sont terminées, seuls les bugs restent ouverts.
+> Mis à jour le 9 juin 2026 — toutes les finitions sont terminées. Bugs : scan complet après merge develop du 9 juin (5 commits — CobrandHeader + Accueil).
 
 ---
 
@@ -14,79 +14,84 @@
 
 ---
 
-## Bugs ouverts
+## Bugs
 
 ### Site public — Home
 
-| Priorité | Bug |
-|----------|-----|
-| 🔴 Critique | `POST /api/v1/contact` retourne 500 — `ApiContactController` envoie un mail à `contact@hug-collecte.ch` via `Mail::to()`, l'exception est catchée et retourne 500 ; vérifier la config SMTP (`.env` MAIL\_\*) sur Infomaniak |
-| 🟡 Normal | Lien du formulaire "inscription collecte" (segment employés < 1000) ne renvoie pas vers la bonne page |
-| 🟡 Normal | Bouton "Comment se déroule une collecte ?" ne renvoie pas vers la bonne section de la page |
-| 🟡 Normal | Section "Pourquoi accueillir une collecte" : icônes médicaments → remplacer par les bonnes icônes |
-| 🟡 Normal | Traits de connexion entre les icônes manquants (câble / ligne verticale entre les étapes) |
-| 🟢 Faible | Aligner horizontalement les 3 boutons "En savoir plus" de la section d'intro |
+| Statut | Bug |
+|--------|-----|
+| ✅ Fixé | `POST /api/v1/contact` retournait 500 — config SMTP Infomaniak corrigée |
+| ✅ Fixé | Lien formulaire "inscription collecte" (< 1000 employés) — n'était pas buggé, confirmé |
+| ✅ Fixé | Bouton "Comment se déroule une collecte ?" — renvoie désormais vers la bonne section |
+| ✅ Fixé | Section "Pourquoi accueillir une collecte" — bonnes icônes intégrées |
+| ✅ Fixé | Traits de connexion entre les icônes — ajoutés |
+| ✅ Fixé | 3 boutons "En savoir plus" — alignés horizontalement |
 
 ### Site public — Trophées
 
-| Priorité | Bug |
-|----------|-----|
-| 🟡 Normal | Modèle 3D du trophée pas à jour — dernière version non intégrée dans `public/images/3D/` |
-| 🟢 Faible | Trophée affiché trop petit — agrandir légèrement |
+| Statut | Bug |
+|--------|-----|
+| ✅ Fixé | Dernière version du modèle 3D intégrée dans `public/images/3D/` |
+| ✅ Fixé | Trophée agrandi |
 
 ### Site public — Informations
 
-| Priorité | Bug |
-|----------|-----|
-| 🟡 Normal | Image "goutte" dans la page Informations → remplacer par la poche de sang |
+| Statut | Bug |
+|--------|-----|
+| ✅ Fixé | Image goutte remplacée par la poche de sang |
 
 ### Site cobrandé — Header
 
-| Priorité | Bug |
-|----------|-----|
-| 🔴 Critique | Couleur de fond du header ne reprend pas la couleur primaire de l'entreprise (`bg-form-bg` hardcodé dans `CobrandHeader.vue` au lieu de `var(--cobrand-primary)`) |
-| 🔴 Critique | Logo de l'entreprise partenaire absent (`v-if="logoUrl"` présent dans le code mais non visible — vérifier que la valeur remonte bien depuis l'API) |
-| 🟡 Normal | Hover des liens header et footer en couleurs du site de base — remplacer `hover:text-violet-500` par `var(--cobrand-primary)` dans `CobrandHeader.vue` |
+| Statut | Bug |
+|--------|-----|
+| ✅ Fixé | Couleur fond header — `bg-form-bg` remplacé (`CobrandHeader.vue`) |
+| ✅ Fixé | Logo partenaire affiché, fallback sur le nom de l'entreprise si pas de logo |
+| ✅ Fixé | Hover liens — utilise désormais `var(--cobrand-secondary)` |
 
 ### Site cobrandé — `Accueil.vue`
 
-| Priorité | Bug |
-|----------|-----|
-| 🔴 Critique | CTA "Faire le test d'éligibilité" pointe vers `#/inscription` au lieu de `#/quiz` (plusieurs occurrences dans `Accueil.vue` — `Redirect.vue` contient un guard qui redirige vers `#/quiz` si non éligible, mais le lien doit pointer directement vers `#/quiz`) |
-| 🟡 Normal | "à Genève" hardcodé (deux occurrences dans `Accueil.vue`) — remplacer par `{{ venue?.city }}` |
-| 🟡 Normal | Asset section "Pourquoi donner son sang ?" trop petit — agrandir selon maquette |
-| 🟡 Normal | Lien baromètre HUG non fonctionnel (bouton sans href) |
-| 🟡 Normal | Bordures de développement visibles (`border border-[var(--color-violet-100)]`) |
+| Statut | Bug |
+|--------|-----|
+| ✅ Fixé | CTA "Faire le test d'éligibilité" pointe vers `#/quiz` |
+| ✅ Fixé | Asset section "Pourquoi donner son sang ?" agrandi |
+| ✅ Fixé | Lien baromètre HUG fonctionnel |
+| ✅ Fixé | Bordures de développement supprimées |
+| ✅ Fixé | Cadre autour de la partie texte supprimé |
+| ✅ Fixé | Couleur du gros cœur dans l'illustration reprise |
+| ✅ Fixé | Pattern background passait devant le header — corrigé |
+| 🟡 Ouvert | `"à Genève"` hardcodé — deux occurrences dans `Accueil.vue` (`ligne 86` et `ligne 169`) — remplacer par `{{ venue?.city }}` |
 
 ### Site cobrandé — `Quiz.vue`
 
-| Priorité | Bug |
-|----------|-----|
-| 🟡 Normal | Phrase "Vous êtes toujours éligible" apparaît en permanence, même sans avoir passé le quiz |
-| 🟡 Normal | Phrase "Bonne nouvelle ! Votre situation vous permet de vous inscrire." affichée même après clic "Passer" |
-| 🟡 Normal | Question passée (skip P2) reste cliquable et non grisée — l'utilisateur peut encore y répondre |
+| Statut | Bug |
+|--------|-----|
+| 🟡 Ouvert | Phrase "Vous êtes toujours éligible" apparaît en permanence même sans interaction |
+| 🟡 Ouvert | Phrase "Bonne nouvelle ! Votre situation vous permet de vous inscrire." affichée même après clic "Passer" |
+| 🟡 Ouvert | Question passée (skip P2) reste cliquable — `answerable = status !== "sleeping"` et `"skipped"` n'est pas `"sleeping"`, donc les boutons restent actifs |
+| 🟡 Ouvert | Bouton "S'inscrire" en bas du quiz — couleur principale non reprise |
 
 ### Site cobrandé — `Redirect.vue`
 
-| Priorité | Bug |
-|----------|-----|
-| 🔴 Critique | Bouton "Prendre rendez-vous sur Onedoc" en `bg-violet-900` hardcodé dans `Redirect.vue` — remplacer par `var(--cobrand-primary)` |
+| Statut | Bug |
+|--------|-----|
+| 🟡 Ouvert | Bouton "Prendre rendez-vous sur Onedoc" — `bg-violet-900` hardcodé dans `Redirect.vue` (ligne 37) — remplacer par `bg-[var(--cobrand-primary)]` |
 
 ### Site cobrandé — `Prevention.vue`
 
-| Priorité | Bug |
-|----------|-----|
-| 🟡 Normal | Couleur des icônes "Pourquoi ne suis-je pas éligible ?" différente de celle de "J'ai peur de la piqûre" — harmoniser |
-| 🟡 Normal | Section 1 — retour à la ligne après "vies" pour améliorer la lisibilité |
+| Statut | Bug |
+|--------|-----|
+| 🟡 Ouvert | Couleur des icônes "Pourquoi ne suis-je pas éligible ?" différente de "J'ai peur de la piqûre" — harmoniser |
+| 🟡 Ouvert | Section 1 — retour à la ligne après "vies" pour améliorer la lisibilité |
 
 ### Dashboard — `CollecteForm.vue`
 
-| Priorité | Bug |
-|----------|-----|
-| 🟡 Normal | Color pickers ne se ferment pas en cliquant en dehors |
-| 🟡 Normal | Logo non affiché dans `LogoUpload` après upload — pas de prévisualisation |
-| 🟡 Normal | Faute de frappe : "diffère" → "diffèrent" dans la note de pré-remplissage |
-| 🟡 Normal | Validation date : possible de créer une collecte avec une date de début dans le passé |
+| Statut | Bug |
+|--------|-----|
+| ✅ Fixé | Logo affiché dans `LogoUpload` après upload — prévisualisation via `apercuUrl` déjà implémentée |
+| ✅ Fixé | Confirmation suppression collecte — double clic déjà implémenté (`confirmeSuppression`) |
+| 🟡 Ouvert | Color pickers ne se ferment pas en cliquant en dehors — `<input type="color">` natif, fermeture externe non gérée |
+| 🟡 Ouvert | Faute de frappe : "diffère" → "diffèrent" — `CollecteForm.vue` ligne 327 |
+| 🟡 Ouvert | Validation date : possible de créer une collecte avec une date de début dans le passé — aucun `min` passé au `CalendrierPicker` de `champDateDebut` |
 
 ---
 
