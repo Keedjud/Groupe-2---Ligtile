@@ -3,12 +3,14 @@
 import { ref, computed } from 'vue'
 import DashboardLayout from '../layouts/DashboardLayout.vue'
 import { useCompanies } from '../composables/useCompanies.js'
+import { useOverlay }   from '../composables/useOverlay.js'
 
 const props = defineProps({
   allerVers: { type: Function, required: true },
 })
 
 const { chargement, creerEntreprise } = useCompanies()
+const { show: showOverlay } = useOverlay()
 
 const champNom        = ref('')
 const champNbEmployes = ref('')
@@ -57,6 +59,7 @@ async function soumettre() {
         telephone: champTelephone.value.trim(),
       },
     })
+    showOverlay("L'entreprise a bien été créée.")
     props.allerVers('#/entreprises/' + nouvelle.id)
   } catch (e) {
     erreurServeur.value = e?.data?.message || "Une erreur est survenue lors de la création."

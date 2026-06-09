@@ -7,6 +7,7 @@ import LogoUpload           from '../components/LogoUpload.vue'
 import CalendrierPicker     from '../components/CalendrierPicker.vue'
 import CobrandPreviewModal  from '../components/CobrandPreviewModal.vue'
 import { useCollectes }     from '../composables/useCollectes.js'
+import { useOverlay }       from '../composables/useOverlay.js'
 import { useFetchApi }      from '@/composables/api/useFetchApi'
 
 const props = defineProps({
@@ -16,6 +17,7 @@ const props = defineProps({
 })
 
 const { trouverParId, creerCollecte, mettreAJourCollecte, chargement } = useCollectes()
+const { show: showOverlay } = useOverlay()
 const { fetchApi } = useFetchApi()
 
 // ─── Champs du formulaire (snapshot collecte) ────────────────────────────────
@@ -191,6 +193,7 @@ async function soumettre() {
       props.allerVers('#/collectes/' + nouvelle.id)
     } else {
       await mettreAJourCollecte(props.idCollecte, donneesEnvoi)
+      showOverlay('La collecte a bien été modifiée.')
       props.allerVers('#/collectes/' + props.idCollecte)
     }
   } catch (e) {

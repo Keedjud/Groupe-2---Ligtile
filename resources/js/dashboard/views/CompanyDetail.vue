@@ -3,6 +3,7 @@
 import { ref, computed, onMounted } from 'vue'
 import DashboardLayout from '../layouts/DashboardLayout.vue'
 import { useCompanies } from '../composables/useCompanies.js'
+import { useOverlay }   from '../composables/useOverlay.js'
 
 const props = defineProps({
   idEntreprise: { type: [String, Number], required: true },
@@ -10,6 +11,7 @@ const props = defineProps({
 })
 
 const { chargement, chargerEntreprise, mettreAJourEntreprise, supprimerEntreprise } = useCompanies()
+const { show: showOverlay } = useOverlay()
 
 const entreprise = ref(null)
 const modeEdition = ref(false)
@@ -26,6 +28,7 @@ async function gererSuppression() {
   erreurSuppression.value = ''
   try {
     await supprimerEntreprise(props.idEntreprise)
+    showOverlay("L'entreprise a bien été supprimée.")
     props.allerVers('#/entreprises')
   } catch (e) {
     erreurSuppression.value = e?.data?.message || 'Erreur lors de la suppression.'
@@ -104,6 +107,7 @@ async function sauvegarder() {
       },
     })
     modeEdition.value = false
+    showOverlay("L'entreprise a bien été modifiée.")
   } catch (e) {
     erreurServeur.value = e?.data?.message || "Une erreur est survenue lors de l'enregistrement."
   }
