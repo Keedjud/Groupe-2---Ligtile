@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Api\v1;
 use App\Http\Controllers\Controller;
 use App\Mail\CollectionKitMail;
 use App\Models\Collection;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Mail;
 
 /** Envoi du kit de communication. */
@@ -30,6 +31,7 @@ class CollectionKitController extends Controller
                 'message' => 'Le kit de communication a été envoyé à ' . $destinataire . '.',
             ]);
         } catch (\Exception $e) {
+            Log::error('CollectionKitMail failed: ' . $e->getMessage());
             return response()->json([
                 'success' => false,
                 'message' => "L'envoi du kit a échoué. Veuillez réessayer plus tard.",
