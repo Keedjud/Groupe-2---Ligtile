@@ -43,7 +43,7 @@ export function useQuizStore() {
 
     function answer(index, value) {
         if (statuses.value[index] === "sleeping") return;
-        if (answers.value[index] === value) return;
+        if (answers.value[index] !== null) return;
 
         const question = quizQuestions[index];
         const isGood = value === question.goodAnswer;
