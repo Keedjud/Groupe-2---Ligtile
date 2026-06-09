@@ -83,8 +83,8 @@ function updateCardsIndex() {
       <div class="flex flex-col-reverse gap-8 lg:grid lg:grid-cols-2 lg:gap-10 lg:items-center">
         <div>
           <h1 class="text-h1 font-semibold text-texte-primary-dark leading-tight max-w-[260px] lg:max-w-none">
-            Jamais la goutte de trop. Juste la goutte
-            <span class="text-violet-500">qu'il faut</span>
+            L’engagement, nous l’avons dans
+            <span class="text-violet-500">le sang</span>.
           </h1>
           <p class="text-small lg:text-h4 text-texte-primary-dark mt-6">
             Organisez une collecte de sang dans votre entreprise genevoise. Le CTS vous accompagne de A à Z.
@@ -279,38 +279,38 @@ function updateCardsIndex() {
               <div class="grid grid-cols-2 gap-3 mb-3">
                 <div class="flex flex-col gap-1">
                   <label for="rdv-company" class="font-sans text-small font-medium text-violet-800">Nom de l'entreprise <span class="text-rouge-500">*</span></label>
-                  <input id="rdv-company" required v-model="form.company_name" type="text" placeholder="Nom de l'entreprise" class="w-full min-w-0 h-[50px] lg:h-[43px] rounded-lg bg-white px-3 text-small text-texte-primary-dark shadow-[0_0_4px_rgba(0,0,0,0.25)] placeholder:text-texte-primary-dark/70" :class="{ 'ring-1 ring-rouge-500': formErrors.company_name }" />
+                  <input id="rdv-company" required v-model="form.company_name" type="text" placeholder="Nom de l'entreprise" class="w-full min-w-0 h-[50px] lg:h-[43px] rounded-lg bg-white px-3 text-small text-texte-primary-dark shadow-[0_0_4px_rgba(0,0,0,0.25)] placeholder:text-texte-primary-dark/40" :class="{ 'ring-1 ring-rouge-500': formErrors.company_name }" />
                 </div>
                 <div class="flex flex-col gap-1">
                   <label for="rdv-employees" class="font-sans text-small font-medium text-violet-800">Nombre d'employés <span class="text-rouge-500">*</span></label>
-                  <input id="rdv-employees" required min="1" v-model="form.employees_count" type="number" placeholder="ex. 1200" class="w-full min-w-0 h-[50px] lg:h-[43px] rounded-lg bg-white px-3 text-small text-texte-primary-dark shadow-[0_0_4px_rgba(0,0,0,0.25)] placeholder:text-texte-primary-dark/70" :class="{ 'ring-1 ring-rouge-500': formErrors.employees_count }" />
+                  <input id="rdv-employees" required min="1" v-model="form.employees_count" type="number" placeholder="ex. 1200" class="w-full min-w-0 h-[50px] lg:h-[43px] rounded-lg bg-white px-3 text-small text-texte-primary-dark shadow-[0_0_4px_rgba(0,0,0,0.25)] placeholder:text-texte-primary-dark/40" :class="{ 'ring-1 ring-rouge-500': formErrors.employees_count }" />
                 </div>
               </div>
 
               <div class="flex flex-col gap-1 mb-3">
                 <label for="rdv-street" class="font-sans text-small font-medium text-violet-800">Adresse <span class="text-rouge-500">*</span></label>
-                <input id="rdv-street" required v-model="form.street" type="text" placeholder="Rue n°" class="w-full min-w-0 h-[50px] lg:h-[43px] rounded-lg bg-white px-3 text-small text-texte-primary-dark shadow-[0_0_4px_rgba(0,0,0,0.25)] placeholder:text-texte-primary-dark/70" :class="{ 'ring-1 ring-rouge-500': formErrors.street }" />
+                <input id="rdv-street" required v-model="form.street" type="text" placeholder="Rue n°" class="w-full min-w-0 h-[50px] lg:h-[43px] rounded-lg bg-white px-3 text-small text-texte-primary-dark shadow-[0_0_4px_rgba(0,0,0,0.25)] placeholder:text-texte-primary-dark/40" :class="{ 'ring-1 ring-rouge-500': formErrors.street }" />
               </div>
 
               <div class="flex gap-3 mb-3">
                 <div class="flex flex-col gap-1">
                   <label for="rdv-postal" class="font-sans text-small font-medium text-violet-800">NPA <span class="text-rouge-500">*</span></label>
-                  <input id="rdv-postal" required v-model="form.postal_code" type="text" placeholder="1200" class="w-24 min-w-0 h-[50px] lg:h-[43px] rounded-lg bg-white px-3 text-small text-texte-primary-dark shadow-[0_0_4px_rgba(0,0,0,0.25)] placeholder:text-texte-primary-dark/70" :class="{ 'ring-1 ring-rouge-500': formErrors.postal_code }" />
+                  <input id="rdv-postal" required v-model="form.postal_code" type="text" placeholder="1200" class="w-24 min-w-0 h-[50px] lg:h-[43px] rounded-lg bg-white px-3 text-small text-texte-primary-dark shadow-[0_0_4px_rgba(0,0,0,0.25)] placeholder:text-texte-primary-dark/40" :class="{ 'ring-1 ring-rouge-500': formErrors.postal_code }" />
                 </div>
                 <div class="flex flex-col gap-1 flex-grow min-w-0">
                   <label for="rdv-city" class="font-sans text-small font-medium text-violet-800">Ville <span class="text-rouge-500">*</span></label>
-                  <input id="rdv-city" required v-model="form.city" type="text" placeholder="Genève" class="w-full min-w-0 h-[50px] lg:h-[43px] rounded-lg bg-white px-3 text-small text-texte-primary-dark shadow-[0_0_4px_rgba(0,0,0,0.25)] placeholder:text-texte-primary-dark/70" :class="{ 'ring-1 ring-rouge-500': formErrors.city }" />
+                  <input id="rdv-city" required v-model="form.city" type="text" placeholder="Genève" class="w-full min-w-0 h-[50px] lg:h-[43px] rounded-lg bg-white px-3 text-small text-texte-primary-dark shadow-[0_0_4px_rgba(0,0,0,0.25)] placeholder:text-texte-primary-dark/40" :class="{ 'ring-1 ring-rouge-500': formErrors.city }" />
                 </div>
               </div>
 
               <div class="flex flex-col gap-1 mb-3">
                 <label for="rdv-email" class="font-sans text-small font-medium text-violet-800">Adresse e-mail <span class="text-rouge-500">*</span></label>
-                <input id="rdv-email" required v-model="form.email" type="email" placeholder="contact@entreprise.ch" class="w-full min-w-0 h-[50px] lg:h-[43px] rounded-lg bg-white px-3 text-small text-texte-primary-dark shadow-[0_0_4px_rgba(0,0,0,0.25)] placeholder:text-texte-primary-dark/70" :class="{ 'ring-1 ring-rouge-500': formErrors.email }" />
+                <input id="rdv-email" required v-model="form.email" type="email" placeholder="contact@entreprise.ch" class="w-full min-w-0 h-[50px] lg:h-[43px] rounded-lg bg-white px-3 text-small text-texte-primary-dark shadow-[0_0_4px_rgba(0,0,0,0.25)] placeholder:text-texte-primary-dark/40" :class="{ 'ring-1 ring-rouge-500': formErrors.email }" />
               </div>
 
               <div class="flex flex-col gap-1 mb-4">
                 <label for="rdv-phone" class="font-sans text-small font-medium text-violet-800">Téléphone <span class="text-rouge-500">*</span></label>
-                <input id="rdv-phone" required v-model="form.phone" type="tel" placeholder="+41 22 000 00 00" class="w-full min-w-0 h-[50px] lg:h-[43px] rounded-lg bg-white px-3 text-small text-texte-primary-dark shadow-[0_0_4px_rgba(0,0,0,0.25)] placeholder:text-texte-primary-dark/70" :class="{ 'ring-1 ring-rouge-500': formErrors.phone }" />
+                <input id="rdv-phone" required v-model="form.phone" type="tel" placeholder="+41 22 000 00 00" class="w-full min-w-0 h-[50px] lg:h-[43px] rounded-lg bg-white px-3 text-small text-texte-primary-dark shadow-[0_0_4px_rgba(0,0,0,0.25)] placeholder:text-texte-primary-dark/40" :class="{ 'ring-1 ring-rouge-500': formErrors.phone }" />
               </div>
 
               <div v-if="showPmeMessage" class="mb-4 rounded-lg bg-white p-4 text-small text-texte-primary-dark ring-1 ring-violet-900/30">
