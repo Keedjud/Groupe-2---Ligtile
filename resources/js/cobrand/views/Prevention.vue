@@ -400,7 +400,8 @@ onUnmounted(() => {
                                 class="text-h2 font-bold text-[color:var(--prevention-accent)] lg:text-[40px]"
                                 >3</span
                             >
-                            vies sans quitter votre lieu de travail.
+                            vies<br />
+                            sans quitter votre lieu de travail.
                         </p>
                     </div>
                 </section>
@@ -570,10 +571,23 @@ onUnmounted(() => {
                                     class="flex items-center gap-5"
                                 >
                                     <span
-                                        class="flex h-[75px] w-[75px] shrink-0 items-center justify-center rounded-full border border-black/40 text-[color:var(--prevention-accent)]"
+                                        class="flex h-[75px] w-[75px] shrink-0 items-center justify-center rounded-full border border-black/40"
                                         :style="peachCircle"
                                     >
-                                        <img :src="note.image" alt="" class="h-[40px] w-auto object-contain" />
+                                        <span
+                                            class="block h-[40px] w-[40px]"
+                                            :style="{
+                                                backgroundColor: 'var(--prevention-accent)',
+                                                maskImage: `url(${note.image})`,
+                                                WebkitMaskImage: `url(${note.image})`,
+                                                maskRepeat: 'no-repeat',
+                                                WebkitMaskRepeat: 'no-repeat',
+                                                maskSize: 'contain',
+                                                WebkitMaskSize: 'contain',
+                                                maskPosition: 'center',
+                                                WebkitMaskPosition: 'center',
+                                            }"
+                                        />
                                     </span>
                                     <span
                                         class="text-regular leading-relaxed lg:text-h4"
