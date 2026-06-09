@@ -175,7 +175,7 @@ const trophyModelSrc = '/images/3D/Untitled.glb'
 
           <!-- Top part: Title + Personnage absolute -->
           <div class="relative w-full">
-            <h3 id="criteria-title" class="max-w-[516px] font-sans text-[24px] md:text-[32px] font-semibold leading-tight text-texte-primary-dark md:mt-[32px]">
+            <h3 id="criteria-title" class="pr-10 md:pr-0 max-w-[516px] font-sans text-[24px] md:text-[32px] font-semibold leading-tight text-texte-primary-dark md:mt-[32px]">
               Quels sont les critères pour remporter un trophée ?
             </h3>
             <img
