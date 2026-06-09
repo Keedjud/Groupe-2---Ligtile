@@ -197,7 +197,7 @@ function updateCardsIndex() {
         <div>
           <ul class="space-y-0 flex flex-col items-center lg:items-stretch">
             <li class="flex flex-col items-center text-center gap-4 lg:flex-row lg:items-stretch lg:text-left lg:gap-4 max-w-[369px] lg:max-w-none">
-              <div class="flex flex-col items-center shrink-0">
+              <div class="flex flex-col items-center shrink-0 lg:min-h-[97px]">
                 <span class="grid h-[101px] w-[101px] lg:h-[61px] lg:w-[61px] place-items-center rounded-full bg-violet-200 ring-1 ring-white shrink-0">
                   <img :src="'/images/icons/chat.png'" loading="lazy" decoding="async" alt="Icône de discussion" class="h-12 w-12 lg:h-7 lg:w-7" />
                 </span>
@@ -210,7 +210,7 @@ function updateCardsIndex() {
             </li>
             <span class="block h-16 w-[3px] bg-violet-400 mx-auto my-[13px] rounded-full lg:hidden"></span>
             <li class="flex flex-col items-center text-center gap-4 lg:flex-row lg:items-stretch lg:text-left lg:gap-4 max-w-[369px] lg:max-w-none">
-              <div class="flex flex-col items-center shrink-0">
+              <div class="flex flex-col items-center shrink-0 lg:min-h-[97px]">
                 <span class="grid h-[101px] w-[101px] lg:h-[61px] lg:w-[61px] place-items-center rounded-full bg-violet-200 ring-1 ring-white shrink-0">
                   <img :src="'/images/icons/calendar-check.png'" loading="lazy" decoding="async" alt="Icône de calendrier" class="h-12 w-12 lg:h-7 lg:w-7" />
                 </span>
@@ -223,7 +223,7 @@ function updateCardsIndex() {
             </li>
             <span class="block h-16 w-[3px] bg-violet-400 mx-auto my-[13px] rounded-full lg:hidden"></span>
             <li class="flex flex-col items-center text-center gap-4 lg:flex-row lg:items-stretch lg:text-left lg:gap-4 max-w-[369px] lg:max-w-none">
-              <div class="flex flex-col items-center shrink-0">
+              <div class="flex flex-col items-center shrink-0 lg:min-h-[97px]">
                 <span class="grid h-[101px] w-[101px] lg:h-[61px] lg:w-[61px] place-items-center rounded-full bg-violet-200 ring-1 ring-white shrink-0">
                   <img :src="'/images/icons/campaign.png'" loading="lazy" decoding="async" alt="Icône d'haut-parleur" class="h-12 w-12 lg:h-7 lg:w-7" />
                 </span>
