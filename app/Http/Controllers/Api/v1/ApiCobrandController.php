@@ -14,6 +14,10 @@ class ApiCobrandController extends Controller
             ->with('company')
             ->firstOrFail();
 
+        if (now()->gt($collection->end_date->addDays(7)->endOfDay())) {
+            abort(404);
+        }
+
         $nbInscrits = $collection->quizEvents()
             ->where('event_type', 'onedoc_clicked')
             ->distinct()

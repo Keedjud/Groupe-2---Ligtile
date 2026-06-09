@@ -17,6 +17,11 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
 ])]
 class Collection extends Model
 {
+    protected $casts = [
+        'start_date' => 'date',
+        'end_date'   => 'date',
+    ];
+
     public function company(): BelongsTo
     {
         return $this->belongsTo(Company::class);
