@@ -87,7 +87,7 @@ function updateCardsIndex() {
             <span class="text-violet-500">le sang</span>.
           </h1>
           <p class="text-small lg:text-h4 text-texte-primary-dark mt-6">
-            Organisez une collecte de sang dans votre entreprise genevoise. Le CTS vous accompagne de A à Z.
+            Organisez une collecte de sang dans votre entreprise genevoise. Le centre de transfusion sanguine et de don du sang (CTS) vous accompagne de A à Z.
           </p>
           <ul class="mt-8 space-y-4">
             <li>
@@ -335,7 +335,7 @@ function updateCardsIndex() {
 
               <p class="mb-4 text-xs text-gray-500">Vos données sont transmises au CTS et utilisées uniquement dans le cadre de l'organisation de votre collecte de sang.</p>
               <button type="submit" :disabled="submitting" class="w-full rounded-full lg:rounded-2xl bg-button-primary py-4 text-regular text-white shadow transition-colors hover:bg-[#410E3F] disabled:opacity-60">
-                {{ submitting ? 'Envoi…' : 'Envoyer' }}
+                {{ submitting ? 'Envoi…' : 'Organiser une collecte' }}
               </button>
             </form>
           </div>
