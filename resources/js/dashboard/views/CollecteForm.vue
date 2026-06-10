@@ -7,6 +7,7 @@ import LogoUpload           from '../components/LogoUpload.vue'
 import CalendrierPicker     from '../components/CalendrierPicker.vue'
 import CobrandPreviewModal  from '../components/CobrandPreviewModal.vue'
 import { useCollectes }     from '../composables/useCollectes.js'
+import { useOverlay }       from '../composables/useOverlay.js'
 import { useFetchApi }      from '@/composables/api/useFetchApi'
 
 const props = defineProps({
@@ -16,6 +17,7 @@ const props = defineProps({
 })
 
 const { trouverParId, creerCollecte, mettreAJourCollecte, chargement } = useCollectes()
+const { show: showOverlay } = useOverlay()
 const { fetchApi } = useFetchApi()
 
 // ─── Champs du formulaire (snapshot collecte) ────────────────────────────────
@@ -130,6 +132,7 @@ const regexNumero = /^\d+[a-zA-Z]?$/
 const champsInvalides = ref({})
 const erreurServeur   = ref('')
 const aDesErreurs     = computed(() => Object.keys(champsInvalides.value).length > 0)
+const aujourdhui = new Date().toISOString().slice(0, 10)     // YYYY-MM-DD
 
 function valider() {
   const e = {}
@@ -150,6 +153,9 @@ function valider() {
   if (!champDateFin.value)                                          e.dateFin   = 'Date de fin requise.'
   if (champDateDebut.value && champDateFin.value && champDateFin.value <= champDateDebut.value) {
     e.dateFin = 'La date de fin doit être postérieure à la date de début.'
+  }
+  if(champDateDebut.value && new Date(champDateDebut.value) < aujourdhui) {
+    e.dateDebut = 'La date de début doit être aujourd\'hui ou dans le futur.'
   }
   champsInvalides.value = e
   return Object.keys(e).length === 0
@@ -187,6 +193,7 @@ async function soumettre() {
       props.allerVers('#/collectes/' + nouvelle.id)
     } else {
       await mettreAJourCollecte(props.idCollecte, donneesEnvoi)
+      showOverlay('La collecte a bien été modifiée.')
       props.allerVers('#/collectes/' + props.idCollecte)
     }
   } catch (e) {
@@ -324,7 +331,7 @@ const nomEntreprisePourPreview = computed(() =>
           <!-- Note pré-remplissage (création uniquement) -->
           <p v-if="mode === 'create' && entrepriseSelectionnee"
             class="font-sans text-small italic text-violet-400">
-            Les champs ci-dessous sont pré-remplis avec les données de l'entreprise. Modifiez-les si le lieu ou le contact de la collecte diffère.
+            Les champs ci-dessous sont pré-remplis avec les données de l'entreprise. Modifiez-les si le lieu ou le contact de la collecte diffèrent.
           </p>
 
           <!-- Adresse du lieu de collecte -->
@@ -410,6 +417,7 @@ const nomEntreprisePourPreview = computed(() =>
               <label class="font-sans text-small font-medium text-violet-800">Date de début</label>
               <CalendrierPicker
                 v-model="champDateDebut"
+                :min="aujourdhui"
                 placeholder="Choisir une date de début…"
                 :hasError="!!champsInvalides.dateDebut"
               />

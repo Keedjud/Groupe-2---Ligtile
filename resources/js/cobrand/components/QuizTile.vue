@@ -9,6 +9,7 @@ const props = defineProps({
     side: { type: String, default: "left" },
     answer: { type: String, default: null },
     mobile: { type: Boolean, default: false },
+    hasMandatoryNegative: { type: Boolean, default: false },
 });
 
 const emit = defineEmits(["answer", "skip"]);
@@ -38,22 +39,22 @@ const BAND_COLOR = {
 };
 const bandColor = computed(() => BAND_COLOR[props.status]);
 
-const answerable = computed(() => props.status !== "sleeping");
+const answerable = computed(() => props.status === "waiting" || props.status === "skipped");
 
 const canSkipQuestion = computed(
     () => !props.question.mandatory && props.status === "waiting",
 );
 
-const sadNote = computed(() =>
-    props.question.mandatory
-        ? "Vous n'êtes pas éligible."
-        : "Vous êtes toujours éligible.",
-);
+const sadNote = computed(() => {
+    if (props.question.mandatory) return "Vous n'êtes pas éligible."
+    if (!props.hasMandatoryNegative) return "Vous êtes toujours éligible."
+    return null
+});
 
 function btnState(variant) {
     if (props.status === "sleeping") return "disabled";
     if (props.status === "waiting" || props.status === "skipped") return "active";
-    return props.answer === variant ? "active" : "muted";
+    return props.answer === variant ? "active" : "disabled";
 }
 
 function choose(variant) {
@@ -116,6 +117,7 @@ function choose(variant) {
                     {{ question.reason }}
                 </p>
                 <p
+                    v-if="sadNote"
                     class="mt-1.5 text-[12px] font-semibold leading-snug text-violet-950"
                 >
                     {{ sadNote }}
@@ -142,6 +144,7 @@ function choose(variant) {
             v-if="status === 'sad'"
             :reason="question.reason"
             :mandatory="question.mandatory"
+            :has-mandatory-negative="hasMandatoryNegative"
             :prevention-slug="question.preventionSlug"
             :side="side"
             class="absolute bottom-full z-20 mb-1"

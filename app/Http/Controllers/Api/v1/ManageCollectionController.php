@@ -20,7 +20,7 @@ class ManageCollectionController extends Controller
             'venue_number'      => ['required', 'string', 'max:20', 'regex:/^\d+[a-zA-Z]?$/'],
             'venue_postal_code' => ['required', 'digits:4'],
             'venue_city'        => ['required', 'string', 'max:255'],
-            'start_date'        => ['required', 'date'],
+            'start_date'        => ['required', 'date',],
             'end_date'          => ['required', 'date', 'after:start_date'],
             'capacity'          => ['required', 'integer', 'min:1'],
             'primary_color'     => ['required', 'string', 'max:10'],

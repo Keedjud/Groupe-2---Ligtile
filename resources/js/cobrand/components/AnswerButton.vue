@@ -9,13 +9,9 @@ const emit = defineEmits(["click"]);
 
 function colorClass() {
     if (props.state === "active") {
-        return props.variant === "non"
-            ? "bg-rouge-400 text-white"
-            : "bg-vert-400 text-white";
+        return props.variant === "non" ? "bg-rouge-400 text-white" : "bg-vert-400 text-white";
     }
-    return props.variant === "non"
-        ? "bg-rouge-200 text-white/70"
-        : "bg-vert-200 text-white/70";
+    return props.variant === "non" ? "bg-rouge-200 text-white/70" : "bg-vert-200 text-white/70";
 }
 </script>
 

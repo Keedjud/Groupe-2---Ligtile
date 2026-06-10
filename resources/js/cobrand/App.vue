@@ -7,7 +7,6 @@ import CobrandLayout        from "./layouts/CobrandLayout.vue";
 import Accueil              from "./views/Accueil.vue";
 import Prevention           from "./views/Prevention.vue";
 import Quiz                 from "./views/Quiz.vue";
-import Redirect             from "./views/Redirect.vue";
 import CollecteIndisponible from "./views/CollecteIndisponible.vue";
 
 const props = defineProps({
@@ -31,10 +30,9 @@ watch(
 );
 
 const routes = [
-    { hash: "#/accueil",     key: "accueil",     component: Accueil },
-    { hash: "#/prevention",  key: "prevention",  component: Prevention },
-    { hash: "#/quiz",        key: "quiz",         component: Quiz },
-    { hash: "#/inscription", key: "inscription",  component: Redirect },
+    { hash: "#/accueil",    key: "accueil",    component: Accueil },
+    { hash: "#/prevention", key: "prevention", component: Prevention },
+    { hash: "#/quiz",       key: "quiz",       component: Quiz },
 ];
 
 const { currentComponent, currentRoute } = useHashRoute(routes);

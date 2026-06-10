@@ -257,7 +257,7 @@ async function handleSubmit() {
                 v-model="form.company_name"
                 type="text"
                 placeholder="Nom de l'entreprise"
-                class="h-[43px] w-full rounded-lg bg-white px-4 font-sans text-small text-black shadow-[0_0_4px_rgba(0,0,0,0.25)] outline-none placeholder:text-[#B8B8B8]"
+                class="h-[43px] w-full rounded-lg bg-white px-4 font-sans text-small text-black shadow-[0_0_4px_rgba(0,0,0,0.25)] outline-none placeholder:text-texte-primary-dark/40"
                 :class="{ 'ring-1 ring-rouge-500': formErrors.company_name }"
               />
             </div>
@@ -270,7 +270,7 @@ async function handleSubmit() {
                 v-model="form.email"
                 type="email"
                 placeholder="contact@entreprise.ch"
-                class="h-[43px] w-full rounded-lg bg-white px-4 font-sans text-small text-black shadow-[0_0_4px_rgba(0,0,0,0.25)] outline-none placeholder:text-[#B8B8B8]"
+                class="h-[43px] w-full rounded-lg bg-white px-4 font-sans text-small text-black shadow-[0_0_4px_rgba(0,0,0,0.25)] outline-none placeholder:text-texte-primary-dark/40"
                 :class="{ 'ring-1 ring-rouge-500': formErrors.email }"
               />
             </div>
@@ -283,7 +283,7 @@ async function handleSubmit() {
                 v-model="form.message"
                 placeholder="Message"
                 rows="4"
-                class="h-[148px] w-full resize-none rounded-lg bg-white px-4 py-3 font-sans text-small text-black shadow-[0_0_4px_rgba(0,0,0,0.25)] outline-none placeholder:text-[#B8B8B8]"
+                class="h-[148px] w-full resize-none rounded-lg bg-white px-4 py-3 font-sans text-small text-black shadow-[0_0_4px_rgba(0,0,0,0.25)] outline-none placeholder:text-texte-primary-dark/40"
                 :class="{ 'ring-1 ring-rouge-500': formErrors.message }"
               ></textarea>
             </div>
