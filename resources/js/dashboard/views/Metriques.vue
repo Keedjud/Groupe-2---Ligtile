@@ -169,7 +169,7 @@ const barres = computed(() =>
             </h1>
             <button
                 @click="allerVers('#/collectes')"
-                class="rounded-[40px] bg-white px-4 py-1.5 font-sans text-small text-texte-secondary underline shadow-[0_0_4px_rgba(0,0,0,0.25)] transition-colors hover:bg-violet-50"
+                class="rounded-[40px] bg-white px-4 py-1.5 font-sans text-small text-texte-secondary shadow-[0_0_4px_rgba(0,0,0,0.25)] transition-colors hover:bg-violet-50"
             >
                 ← Retour aux collectes
             </button>

@@ -34,6 +34,28 @@ const collecteTerminee = computed(() => {
   return new Date(props.collecte.date_fin) <= new Date()
 })
 
+watch(
+  () => props.collecte?.jeton_public,
+  (jeton) => {
+    if (collecteTerminee.value) {
+      lienCoBrande.value = ''
+      lienGenere.value = false
+      etapeRevele.value = 1
+      return
+    }
+
+    if (jeton) {
+      lienCoBrande.value = window.location.origin + '/' + jeton
+      lienGenere.value = true
+      etapeRevele.value = Math.max(etapeRevele.value, 2)
+    } else {
+      lienCoBrande.value = ''
+      lienGenere.value = false
+    }
+  },
+  { immediate: true }
+)
+
 watch(flowTermine, (val) => {
   emit('flow-termine', val)
 })
