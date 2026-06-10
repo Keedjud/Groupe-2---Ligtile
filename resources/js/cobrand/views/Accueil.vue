@@ -122,10 +122,10 @@ const bloodTypes = [
                             <a href="#/inscription"
                                 class="inline-flex w-max items-center justify-center rounded-full bg-[var(--cobrand-primary)] px-8 py-3 text-regular text-[var(--cobrand-primary-text)] shadow transition hover:-translate-y-0.5 hover:bg-[var(--cobrand-secondary)] hover:shadow-lg">Réservez
                                 votre place</a>
-                            <p v-if="prochaineCollecte" class="text-regular text-[var(--color-texte-primary-dark)]">
+                            <p v-if="prochaineCollecte" class="whitespace-nowrap text-regular text-[var(--color-texte-primary-dark)]">
                                 Prochaine collecte : <span class="font-semibold capitalize">{{ prochaineCollecte }}</span>
                             </p>
-                            <p v-if="collecteEnCours" class="text-regular text-[var(--color-texte-primary-dark)]">
+                            <p v-if="collecteEnCours" class=" whitespace-nowrap text-regular text-[var(--color-texte-primary-dark)]">
                                 Fin de la collecte : <span class="font-semibold capitalize">{{ collecteEnCours }}</span>
                             </p>
                         </div>
