@@ -204,6 +204,15 @@ async function soumettre() {
 const titrePage  = computed(() => props.mode === 'edit' ? 'Modifier la collecte' : 'Nouvelle collecte')
 const libelleBtn = computed(() => props.mode === 'edit' ? 'Enregistrer' : 'Créer la collecte')
 
+// ─── Annulation ──────────────────────────────────────────────────────────────
+function annuler() {
+  if (props.mode === 'edit' && props.idCollecte) {
+    props.allerVers('#/collectes/' + props.idCollecte)
+  } else {
+    props.allerVers('#/collectes')
+  }
+}
+
 // ─── Utilitaire contraste (pour la couleur du texte du bouton preview) ────────
 
 function isLightColor(hex) {
@@ -464,7 +473,12 @@ const nomEntreprisePourPreview = computed(() =>
           </div>
 
           <!-- Soumission -->
-          <div class="mt-2 flex justify-end">
+          <div class="mt-2 flex justify-end gap-3">
+            <button
+              type="button"
+              @click="annuler"
+              class="rounded-[40px] bg-white px-6 py-2.5 font-sans text-regular text-texte-secondary shadow-[0_0_4px_rgba(0,0,0,0.15)] transition-opacity hover:opacity-80"
+            >Annuler</button>
             <button
               type="submit"
               :disabled="chargement"

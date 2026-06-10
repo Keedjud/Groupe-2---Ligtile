@@ -29,7 +29,8 @@ Route::prefix('v1')->group(function () {
         Route::post('/logos/upload', [LogoUploadController::class, 'upload']);
 
         // Kit de communication
-        Route::post('/manage-collections/{collecte}/kit/send', [CollectionKitController::class, 'send']);
+        Route::post('/manage-collections/{collecte}/link/generate', [ManageCollectionController::class, 'generateLink']);
+        Route::post('/manage-collections/{collecte}/kit/send',      [CollectionKitController::class, 'send']);
 
         // Gestion des entreprises
         Route::get('/companies',              [ManageCompanyController::class, 'index']);
