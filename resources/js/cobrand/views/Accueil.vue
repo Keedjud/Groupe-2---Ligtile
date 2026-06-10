@@ -13,6 +13,7 @@ const {
     placesRestantes,
     tauxRemplissage,
     startDate,
+    endDate,
 } = useCobrandSession();
 
 const mainImageSrc = computed(() => {
@@ -36,6 +37,8 @@ const ringOffset = computed(() => {
     return ringCircumference * (1 - value / 100);
 });
 
+const aujourdhui = new Date().toISOString().slice(0,10); // Format YYYY-MM-DD pour comparaison avec start/end date
+
 const prochaineCollecte = computed(() => {
     if (!startDate.value) {
         return null;
@@ -44,12 +47,36 @@ const prochaineCollecte = computed(() => {
     if (Number.isNaN(date.getTime())) {
         return null;
     }
+    if (startDate.value > aujourdhui) {
     return new Intl.DateTimeFormat("fr-FR", {
         weekday: "short",
         day: "numeric",
         month: "long",
     }).format(date);
+}
+return null;
 });
+
+
+const collecteEnCours = computed(() => {
+    if (!endDate.value || !startDate.value) {
+        return null;
+    }
+    const date = new Date(endDate.value);
+    if (Number.isNaN(date.getTime())) {
+        return null;
+    }
+    if (endDate.value > aujourdhui && startDate.value <= aujourdhui) {
+    return new Intl.DateTimeFormat("fr-FR", {
+        weekday: "short",
+        day: "numeric",
+        month: "long",
+    }).format(date);
+}
+return null;
+});
+
+
 
 const reserveLevels = [
     { title: 'Dangereusement bas', color: 'var(--color-light-palette-red)',    description: 'Les réserves sont insuffisantes, les besoins sont urgents.' },
@@ -97,6 +124,9 @@ const bloodTypes = [
                                 votre place</a>
                             <p v-if="prochaineCollecte" class="text-regular text-[var(--color-texte-primary-dark)]">
                                 Prochaine collecte : <span class="font-semibold capitalize">{{ prochaineCollecte }}</span>
+                            </p>
+                            <p v-if="collecteEnCours" class="text-regular text-[var(--color-texte-primary-dark)]">
+                                Fin de la collecte : <span class="font-semibold capitalize">{{ collecteEnCours }}</span>
                             </p>
                         </div>
                     </div>
