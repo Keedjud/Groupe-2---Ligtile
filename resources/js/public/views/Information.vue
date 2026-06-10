@@ -250,7 +250,7 @@ async function handleSubmit() {
           <!-- Formulaire ou confirmation -->
           <template v-if="!submitted">
             <div class="w-full max-w-[450px]">
-              <label for="pme-company" class="font-sans text-small font-medium text-violet-800">Nom de l'entreprise <span class="text-rouge-500">*</span></label>
+              <label for="pme-company" class="font-sans text-small font-medium text-violet-800">Nom de l'entreprise <span class="text-rouge-500 whitespace-nowrap">*</span></label>
               <input
                 id="pme-company"
                 required
@@ -263,7 +263,7 @@ async function handleSubmit() {
             </div>
 
             <div class="w-full max-w-[450px]">
-              <label for="pme-email" class="font-sans text-small font-medium text-violet-800">Adresse e-mail <span class="text-rouge-500">*</span></label>
+              <label for="pme-email" class="font-sans text-small font-medium text-violet-800">Adresse e-mail <span class="text-rouge-500 whitespace-nowrap">*</span></label>
               <input
                 id="pme-email"
                 required
@@ -276,7 +276,7 @@ async function handleSubmit() {
             </div>
 
             <div class="w-full max-w-[450px]">
-              <label for="pme-message" class="font-sans text-small font-medium text-violet-800">Message <span class="text-rouge-500">*</span></label>
+              <label for="pme-message" class="font-sans text-small font-medium text-violet-800">Message <span class="text-rouge-500 whitespace-nowrap">*</span></label>
               <textarea
                 id="pme-message"
                 required
