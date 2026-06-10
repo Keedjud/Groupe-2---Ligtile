@@ -21,7 +21,7 @@ class DatabaseSeeder extends Seeder
             'first_name' => 'Admin',
             'last_name' => 'HUG',
             'email' => 'admin@hug.ch',
-            'password' => bcrypt(env('ADMIN_PASSWORD', 'password123')),
+            'password' => bcrypt(env('ADMIN_PASSWORD')),
         ]);
 
         // ===== ADDRESSES =====
