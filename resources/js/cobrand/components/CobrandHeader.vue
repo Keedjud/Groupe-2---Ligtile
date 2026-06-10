@@ -21,14 +21,14 @@ const { isOpen, toggle, close } = useDisclosure();
         class="relative w-full bg-[var(--color-beige-50)] shadow-[0_4px_4px_rgba(0,0,0,0.10)]"
     >
         <div
-            class="flex h-[55px] w-full items-center justify-between px-4 py-1.5 lg:px-[60px]"
+            class="flex h-[67px] w-full items-center justify-between px-4 py-1.5 lg:px-[60px]"
         >
             <div class="flex min-w-0 items-center gap-3 lg:gap-[22px]">
                 <a href="#/accueil" class="shrink-0">
                     <img
                         :src="'/images/logos/logo-hug.png'"
                         alt="HUG - Hôpitaux Universitaires de Genève"
-                        class="h-7 w-auto"
+                        class="h-12 w-auto"
                     />
                 </a>
                 <span
@@ -39,7 +39,7 @@ const { isOpen, toggle, close } = useDisclosure();
                     v-if="logoUrl"
                     :src="logoUrl"
                     :alt="companyName"
-                    class="h-7 w-auto shrink-0"
+                    class="h-10 w-auto shrink-0"
                 />
                 <span
                     v-else-if="companyName"
