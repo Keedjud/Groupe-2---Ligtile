@@ -29,6 +29,33 @@ const erreurEnvoi  = ref('')
 
 const flowTermine = computed(() => mailEnvoye.value === true)
 
+const collecteTerminee = computed(() => {
+  if (!props.collecte?.date_fin) return false
+  return new Date(props.collecte.date_fin) <= new Date()
+})
+
+watch(
+  () => props.collecte?.jeton_public,
+  (jeton) => {
+    if (collecteTerminee.value) {
+      lienCoBrande.value = ''
+      lienGenere.value = false
+      etapeRevele.value = 1
+      return
+    }
+
+    if (jeton) {
+      lienCoBrande.value = window.location.origin + '/' + jeton
+      lienGenere.value = true
+      etapeRevele.value = Math.max(etapeRevele.value, 2)
+    } else {
+      lienCoBrande.value = ''
+      lienGenere.value = false
+    }
+  },
+  { immediate: true }
+)
+
 watch(flowTermine, (val) => {
   emit('flow-termine', val)
 })
@@ -89,6 +116,7 @@ function fermerOverlay() {
 
 // Étape 2 : génération du lien (calcul instantané depuis jeton_public)
 function genererLien() {
+  if (collecteTerminee.value) return
   lienCoBrande.value = window.location.origin + '/' + props.collecte.jeton_public
   lienGenere.value = true
   etapeRevele.value = 3
@@ -126,10 +154,14 @@ async function envoyerMail() {
 
 <template>
   <div class="relative">
-    <div class="rounded-[20px] bg-beige-50/60 p-3 flex flex-col gap-9">
+    <div class="rounded-[20px] bg-beige-50/60 p-3">
+      <div v-if="collecteTerminee" class="rounded-[20px] bg-white p-6 text-center font-sans text-small text-violet-950 shadow-[0_0_4px_rgba(0,0,0,0.15)]">
+        Cette collecte est terminée. Le lien co-brandé ne peut plus être généré ni envoyé.
+      </div>
+      <div v-else class="flex flex-col gap-9">
 
-      <!-- Étape 1 : Informations correctes ? -->
-      <div class="flex items-start gap-7">
+        <!-- Étape 1 : Informations correctes ? -->
+        <div class="flex items-start gap-7">
         <!-- Pastille violette -->
         <div class="flex h-9 w-9 shrink-0 items-center justify-center rounded-full bg-violet-500 font-sans text-regular text-black">
           1
@@ -157,6 +189,7 @@ async function envoyerMail() {
           </span>
         </div>
       </div>
+    </div>
 
       <!-- Étape 2 : Générer le lien co-brandé (révélé après Oui à l'étape 1) -->
       <Transition name="glisser">

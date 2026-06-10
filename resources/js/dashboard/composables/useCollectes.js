@@ -68,12 +68,21 @@ export function useCollectes() {
     return listeCollectes.value.find(c => c.id === Number(id)) ?? null
   }
 
+  function trierCollectes() {
+    listeCollectes.value.sort((a, b) => {
+      const dateA = new Date(a.date_fin).getTime()
+      const dateB = new Date(b.date_fin).getTime()
+      return dateB - dateA
+    })
+  }
+
   async function chargerCollectes() {
     chargement.value = true
     erreur.value = null
     try {
       const reponse = await fetchApi({ url: '/manage-collections' })
       listeCollectes.value = reponse.map(adapterDeApi)
+      trierCollectes()
     } catch (err) {
       console.error(err)
       erreur.value = "Impossible de charger les collectes."
@@ -94,6 +103,7 @@ export function useCollectes() {
       })
       const nouvelle = adapterDeApi(reponse)
       listeCollectes.value.unshift(nouvelle)
+      trierCollectes()
       return nouvelle
     } catch (err) {
       console.error(err)
@@ -117,6 +127,7 @@ export function useCollectes() {
       const index = listeCollectes.value.findIndex(c => c.id === Number(id))
       if (index !== -1) {
         listeCollectes.value[index] = adapterDeApi(reponse)
+        trierCollectes()
       }
       return listeCollectes.value[index]
     } catch (err) {
