@@ -20,6 +20,12 @@ onMounted(() => { chargerCollectes() })
     <!-- En-tête de section -->
     <div class="mb-6 flex items-center justify-between">
       <h1 class="font-sans text-h2 font-bold text-texte-secondary">Collectes</h1>
+        <button
+            @click="allerVers('#/collectes/nouvelle')"
+            class="flex items-centered rounded-[40px] bg-violet-900 px-5 py-2 font-sans text-small text-white hover:opacity-90 transition-opacity"
+          >
+            + Créer une collecte
+          </button>
     </div>
 
     <!-- État chargement -->
@@ -50,19 +56,5 @@ onMounted(() => { chargerCollectes() })
         :allerVers="allerVers"
       />
     </div>
-
-    <!-- Bouton flottant "Ajouter une collecte" -->
-    <div class="fixed bottom-20 right-8 z-50">
-      <button
-        @click="allerVers('#/collectes/nouvelle')"
-        class="flex items-center gap-2 rounded-[40px] bg-violet-900 px-6 py-3 font-sans text-regular font-bold text-white shadow-[0_4px_16px_rgba(104,23,100,0.30)] transition-all hover:scale-105 hover:bg-violet-800"
-      >
-        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
-          <path stroke-linecap="round" stroke-linejoin="round" d="M12 4v16m8-8H4" />
-        </svg>
-        Créer une collecte
-      </button>
-    </div>
-
   </DashboardLayout>
 </template>
