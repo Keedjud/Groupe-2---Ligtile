@@ -92,7 +92,7 @@ const bloodTypes = [
                             <span class="font-semibold text-[color:var(--accent)]">{{ placesRestantes }}</span> places</p>
 
                         <div class="flex flex-col items-center gap-3 pt-8 text-center sm:flex-row sm:items-center sm:gap-6 sm:pt-2 sm:text-left lg:pt-4">
-                            <a href="#/inscription"
+                            <a href="#/quiz"
                                 class="inline-flex w-max items-center justify-center rounded-full bg-[var(--cobrand-primary)] px-8 py-3 text-regular text-[var(--cobrand-primary-text)] shadow transition hover:-translate-y-0.5 hover:bg-[var(--cobrand-secondary)] hover:shadow-lg">Réservez
                                 votre place</a>
                             <p v-if="prochaineCollecte" class="text-regular text-[var(--color-texte-primary-dark)]">
@@ -226,7 +226,7 @@ const bloodTypes = [
                         <p class="mt-4 text-h4 text-[var(--color-texte-primary-dark)]">Âge, santé, voyages récents,
                             traitements… quelques critères peuvent influencer votre éligibilité. Faites une vérification
                             rapide avant votre inscription.</p>
-                        <a href="#/inscription"
+                        <a href="#/quiz"
                             class="mt-6 inline-flex rounded-full border border-[var(--color-light-palette-gray)] bg-[var(--color-light-palette-white)] px-8 py-3 text-regular font-semibold text-[color:var(--accent)] shadow-[0px_0px_4px_0px_rgba(0,0,0,0.25)] transition hover:-translate-y-0.5 hover:bg-[var(--color-beige-25)] hover:shadow-md">Faire
                             le test d’éligibilité</a>
                     </div>
@@ -235,7 +235,7 @@ const bloodTypes = [
             <div class="mx-auto mt-4 h-1 w-[216px] rounded-full bg-[var(--cobrand-primary)]"></div>
             <div class="mt-16 py-8 text-center">
                 <p class="text-h1 font-semibold text-[var(--color-violet-900)]">Je veux donner mon sang</p>
-                <a href="#/inscription"
+                <a href="#/quiz"
                     class="mt-6 inline-flex rounded-full bg-[var(--cobrand-primary)] px-10 py-3 text-regular font-semibold text-[var(--cobrand-primary-text)] shadow transition hover:-translate-y-0.5 hover:bg-[var(--cobrand-secondary)] hover:shadow-lg">Réservez
                     votre place</a>
             </div>
