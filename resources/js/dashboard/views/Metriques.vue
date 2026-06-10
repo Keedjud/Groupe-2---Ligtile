@@ -214,16 +214,18 @@ const barres = computed(() =>
             </div>
 
             <!-- Filtre entreprise -->
-            <div class="flex flex-col gap-1">
+            <div class="flex flex-col w-30 gap-1">
                 <label
                     class="font-sans text-small font-semibold text-violet-950"
                     >Entreprise</label
                 >
+                <div class="relative">
                 <select
                     v-model="entrepriseFiltre"
-                    class="rounded-lg bg-white px-3 py-2 font-sans text-small shadow-[0_0_4px_rgba(0,0,0,0.15)] outline-none focus:ring-2 focus:ring-violet-400"
+                    class="w-full appearance-none rounded-lg bg-white px-3 py-2 font-sans text-small shadow-[0_0_4px_rgba(0,0,0,0.15)] outline-none focus:ring-2 focus:ring-violet-400"
                 >
                     <option value="">Toutes</option>
+
                     <option
                         v-for="e in entreprisesDisponibles"
                         :key="e.id"
@@ -232,6 +234,8 @@ const barres = computed(() =>
                         {{ e.nom }}
                     </option>
                 </select>
+                <svg width="16" height="16" viewBox="0 0 24 24"  class="rotate-180 right-3 top-1/2 -translate-y-1/2 absolute"><path fill="currentColor" fill-rule="evenodd" d="M12.248 8.237a.25.25 0 0 0-.354 0L5.53 14.601a.75.75 0 1 1-1.06-1.06l6.363-6.364a1.75 1.75 0 0 1 2.475 0l6.364 6.364a.75.75 0 0 1-1.06 1.06z" clip-rule="evenodd"/></svg>
+            </div>
             </div>
         </div>
 
