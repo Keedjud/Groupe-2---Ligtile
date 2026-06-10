@@ -196,7 +196,7 @@ function updateCardsIndex() {
           <img :src="'/images/illustrations/nombreforce.png'" loading="lazy" decoding="async" class="w-full max-w-[503px] mx-auto" alt="Des gouttes de sang portent un cœur pour signifier la force du nombre" />
         </div>
         <div>
-          <ul class="space-y-0 flex flex-col items-center lg:items-stretch">
+          <ul class="space-y-0 flex flex-col items-center lg:items-center">
             <li class="flex flex-col items-center text-center gap-4 lg:flex-row  lg:text-left lg:gap-4 max-w-[369px] lg:max-w-none">
               <div class="flex flex-col items-center shrink-0 lg:min-h-[97px]">
                 <span class="grid h-[101px] w-[101px] lg:h-[61px] lg:w-[61px] place-items-center rounded-full bg-violet-200 ring-1 ring-white shrink-0">
