@@ -209,7 +209,7 @@ const barres = computed(() =>
                 <span
                     class="font-sans text-xs italic text-violet-400"
                     :class="{ invisible: anneesSelectionnees.length }"
-                    >Toutes les années affichées</span
+                    >Toutes les années sont affichées</span
                 >
             </div>
 
@@ -489,10 +489,6 @@ const barres = computed(() =>
             <h2 class="mb-1 font-sans text-h4 font-bold text-violet-900">
                 C. Performance du quiz
             </h2>
-            <p class="mb-3 font-sans text-small text-violet-500 italic">
-                Données de test, a brancher quand le suivi du quiz sera en
-                place.
-            </p>
             <div class="grid grid-cols-1 gap-4 sm:grid-cols-3">
                 <div
                     class="flex flex-col items-start gap-1 rounded-[20px] bg-white p-5 shadow-[0_0_8px_rgba(104,23,100,0.10)]"
@@ -538,10 +534,6 @@ const barres = computed(() =>
             <h2 class="mb-1 font-sans text-h4 font-bold text-violet-900">
                 D. Performance par question
             </h2>
-            <p class="mb-3 font-sans text-small text-violet-500 italic">
-                Données de test, a brancher quand le suivi du quiz sera en
-                place.
-            </p>
             <div class="mb-3 rounded-[20px] bg-white p-4 shadow-[0_0_8px_rgba(104,23,100,0.10)]">
                 <p
                     class="mb-3 font-sans text-small font-semibold text-violet-700"
@@ -615,9 +607,6 @@ const barres = computed(() =>
             <h2 class="mb-1 font-sans text-h4 font-bold text-violet-900">
                 E. Engagement page prévention
             </h2>
-            <p class="mb-3 font-sans text-small text-violet-500 italic">
-                Données de test, a brancher quand le suivi sera en place.
-            </p>
             <div class="grid grid-cols-1 gap-4 sm:grid-cols-2">
                 <div
                     class="flex flex-col items-start gap-1 rounded-[20px] bg-white p-5 shadow-[0_0_8px_rgba(104,23,100,0.10)]"
