@@ -22,7 +22,7 @@ class ManageCompanyController extends Controller
             'address.postal_code' => ['required', 'digits:4'],
             'address.city'        => ['required', 'string', 'max:100'],
             'contact.email'       => ['required', 'email', 'max:100'],
-            'contact.phone'       => ['nullable', 'string', 'max:50'],
+            'contact.phone'       => ['required', 'string', 'max:50', 'regex:/^[+\d][\d\s()\/.\-]{5,}$/'],
         ];
     }
 
@@ -64,7 +64,7 @@ class ManageCompanyController extends Controller
             Contact::create([
                 'company_id' => $company->id,
                 'email'      => $validated['contact']['email'],
-                'phone'      => $validated['contact']['phone'] ?? null,
+                'phone'      => $validated['contact']['phone'],
             ]);
             return $company;
         });
@@ -92,7 +92,7 @@ class ManageCompanyController extends Controller
             if ($company->contact) {
                 $company->contact->update([
                     'email' => $validated['contact']['email'],
-                    'phone' => $validated['contact']['phone'] ?? null,
+                    'phone' => $validated['contact']['phone'],
                 ]);
             }
         });
