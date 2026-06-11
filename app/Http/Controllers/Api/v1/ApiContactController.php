@@ -18,7 +18,7 @@ class ApiContactController extends Controller
             'phone' => 'required|string|regex:/^[+0-9\s]{7,20}$/|max:20',
             'email' => 'required|email|max:100',
             'company_name' => 'required|string|min:3|max:255',
-            'employees_count' => 'required|integer|min:1000',
+            'employees_count' => 'required|integer|min:1',
             'street' => 'required|string|max:255|min:2',
             'postal_code' => 'required|string|min:1|max:255',
             'city' => 'required|string|min:3|max:255',
