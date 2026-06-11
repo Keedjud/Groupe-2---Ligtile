@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Api\v1;
 
 use App\Http\Controllers\Controller;
+use App\Models\Company;
 use App\Models\Trophee;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
@@ -10,6 +11,27 @@ use Illuminate\Support\Facades\DB;
 class ManageTropheeController extends Controller
 {
     private const RANG_NOMS = [1 => 'Or', 2 => 'Argent', 3 => 'Bronze'];
+
+    /**
+     * Vérifie que chaque entreprise sélectionnée participe aux trophées
+     * et possède au moins une collecte. Retourne un message d'erreur, ou null.
+     */
+    private function verifierEligibilite(array $ranks): ?string
+    {
+        $ids = array_column($ranks, 'company_id');
+        $companies = Company::withCount('collections')->findMany($ids);
+
+        foreach ($companies as $company) {
+            if (! $company->participe_trophee) {
+                return "L'entreprise « {$company->name} » ne participe pas aux trophées.";
+            }
+            if ($company->collections_count < 1) {
+                return "L'entreprise « {$company->name} » n'a aucune collecte et ne peut pas recevoir de trophée.";
+            }
+        }
+
+        return null;
+    }
 
     public function index()
     {
@@ -44,6 +66,10 @@ class ManageTropheeController extends Controller
             'ranks.*.company_id' => ['required', 'integer', 'exists:companies,id'],
         ]);
 
+        if ($erreur = $this->verifierEligibilite($validated['ranks'])) {
+            return response()->json(['message' => $erreur], 422);
+        }
+
         if (Trophee::where('year', $validated['year'])->exists()) {
             return response()->json([
                 'message' => "Un podium existe déjà pour l'année {$validated['year']}.",
@@ -68,6 +94,10 @@ class ManageTropheeController extends Controller
             'ranks.*.rank'       => ['required', 'integer', 'in:1,2,3'],
             'ranks.*.company_id' => ['required', 'integer', 'exists:companies,id'],
         ]);
+
+        if ($erreur = $this->verifierEligibilite($validated['ranks'])) {
+            return response()->json(['message' => $erreur], 422);
+        }
 
         $trophees = Trophee::where('year', $year)->get();
         if ($trophees->isEmpty()) {
