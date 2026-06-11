@@ -45,6 +45,14 @@ let debounceTimer = null
 // ─── Entreprise (édition) ───────────────────────────────────────────────────
 const nomEntrepriseEdit = ref('')  // lecture seule en mode édition
 
+// Effectif de l'entreprise — adapte les messages d'aide du formulaire.
+// Les entreprises de moins de 1000 employés n'ont pas de collecte dédiée :
+// le CTS leur réserve des créneaux dans une collecte publique existante.
+const nbEmployesEntreprise = ref(null)
+const estPetiteEntreprise = computed(
+  () => nbEmployesEntreprise.value != null && nbEmployesEntreprise.value < 1000,
+)
+
 async function surRechercheEntreprise() {
   resultatsEntreprise.value = []
   if (!rechercheEntreprise.value.trim()) return
@@ -61,6 +69,7 @@ async function surRechercheEntreprise() {
 
 function selectionnerEntreprise(e) {
   entrepriseSelectionnee.value = e
+  nbEmployesEntreprise.value   = e.nb_employee
   rechercheEntreprise.value    = ''
   resultatsEntreprise.value    = []
   // Pré-remplissage depuis les données de l'entreprise (modifiable par la suite)
@@ -74,6 +83,7 @@ function selectionnerEntreprise(e) {
 
 function deselectionnerEntreprise() {
   entrepriseSelectionnee.value = null
+  nbEmployesEntreprise.value   = null
   rechercheEntreprise.value    = ''
   champRue.value       = ''
   champNumero.value    = ''
@@ -104,7 +114,8 @@ onMounted(() => {
   if (props.mode === 'edit' && props.idCollecte) {
     const collecte = trouverParId(props.idCollecte)
     if (collecte) {
-      nomEntrepriseEdit.value = collecte.entreprise.nom
+      nomEntrepriseEdit.value    = collecte.entreprise.nom
+      nbEmployesEntreprise.value = collecte.entreprise.nb_employes
       champRue.value          = collecte.adresse.rue
       champNumero.value       = collecte.adresse.numero
       champNpa.value          = collecte.adresse.npa
@@ -447,17 +458,35 @@ const nomEntreprisePourPreview = computed(() =>
           <hr class="border-violet-100" />
 
           <!-- Capacité -->
-          <div class="flex flex-col gap-1 sm:w-48">
-            <label class="font-sans text-small font-semibold text-violet-950">Capacité (créneaux disponibles)</label>
-            <input v-model="champCapacity" type="number" min="1" placeholder="ex. 50"
-              class="w-full rounded-lg bg-white px-3 py-2.5 font-sans text-small text-violet-950 shadow-[0_0_4px_rgba(0,0,0,0.25)] outline-none focus:ring-2 focus:ring-violet-400"
-              :class="{ 'ring-rouge-500 ring-1': champsInvalides.capacity }" />
+          <div class="flex flex-col gap-2">
+            <!-- Aide < 1000 employés : créneaux réservés dans une collecte publique -->
+            <div v-if="estPetiteEntreprise"
+              class="flex gap-2 rounded-lg border border-violet-200 bg-violet-50 px-3 py-2.5 font-sans text-xs text-violet-700">
+              <svg xmlns="http://www.w3.org/2000/svg" class="mt-0.5 h-4 w-4 shrink-0 text-violet-400" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/>
+              </svg>
+              <span>Cette entreprise compte moins de 1000 employés : le CTS ne lui organise pas de collecte dédiée mais lui réserve des créneaux dans une <strong>collecte publique</strong>. Indiquez ici le <strong>nombre de créneaux réservés</strong> à l'entreprise, et renseignez plus haut les <strong>dates de ces créneaux</strong> au sein de la collecte publique.</span>
+            </div>
+            <div class="flex flex-col gap-1 sm:w-48">
+              <label class="font-sans text-small font-semibold text-violet-950">Capacité (créneaux disponibles)</label>
+              <input v-model="champCapacity" type="number" min="1" placeholder="ex. 50"
+                class="w-full rounded-lg bg-white px-3 py-2.5 font-sans text-small text-violet-950 shadow-[0_0_4px_rgba(0,0,0,0.25)] outline-none focus:ring-2 focus:ring-violet-400"
+                :class="{ 'ring-rouge-500 ring-1': champsInvalides.capacity }" />
+            </div>
           </div>
 
           <!-- Lien Onedoc -->
           <div class="flex flex-col gap-1">
             <label class="font-sans text-small font-semibold text-violet-950">Lien Onedoc</label>
             <p class="font-sans text-small text-violet-500">Créez la collecte sur Onedoc, puis copiez son URL ici.</p>
+            <!-- Aide < 1000 employés : lien de la collecte publique -->
+            <div v-if="estPetiteEntreprise"
+              class="flex gap-2 rounded-lg border border-violet-200 bg-violet-50 px-3 py-2.5 font-sans text-xs text-violet-700">
+              <svg xmlns="http://www.w3.org/2000/svg" class="mt-0.5 h-4 w-4 shrink-0 text-violet-400" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/>
+              </svg>
+              <span>Moins de 1000 employés : indiquez le lien Onedoc de la <strong>collecte publique</strong> du CTS dans laquelle les créneaux de cette entreprise sont réservés — et non un lien dédié.</span>
+            </div>
             <input v-model="champOnedocUrl" type="url" placeholder="https://onedoc.ch/…"
               class="w-full rounded-lg bg-white px-3 py-2.5 font-sans text-small text-violet-950 shadow-[0_0_4px_rgba(0,0,0,0.25)] outline-none focus:ring-2 focus:ring-violet-400"
               :class="{ 'ring-rouge-500 ring-1': champsInvalides.onedocUrl }" />
