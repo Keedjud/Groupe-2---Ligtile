@@ -11,7 +11,7 @@
             // Logo
             $logoSrc = $logoUrl ?: ($logoData ? $message->embedData($logoData, 'logo', $logoMime) : null);
         @endphp
-        <div style="background-color:{{ $couleurPrimaire }};border-radius:16px 16px 0 0;padding:28px 24px;text-align:center;">
+        <div style="background-color:#e6e0e8 ;border-radius:16px 16px 0 0;padding:28px 24px;text-align:center;">
             @if ($logoSrc)
                 <img src="{{ $logoSrc }}" alt="logo {{ $entreprise }}" style="max-height:56px;max-width:200px;margin-bottom:12px;display:inline-block;">
                 <br>
