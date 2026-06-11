@@ -27,9 +27,13 @@ class CollectionKitController extends Controller
         try {
             Mail::to($destinataire)->send(new CollectionKitMail($collecte));
 
+            $collecte->kit_sent_at = now();
+            $collecte->save();
+
             return response()->json([
-                'success' => true,
-                'message' => 'Le kit de communication a été envoyé à ' . $destinataire . '.',
+                'success'     => true,
+                'message'     => 'Le kit de communication a été envoyé à ' . $destinataire . '.',
+                'kit_sent_at' => $collecte->kit_sent_at,
             ]);
         } catch (\Exception $e) {
             Log::error('CollectionKitMail failed: ' . $e->getMessage());

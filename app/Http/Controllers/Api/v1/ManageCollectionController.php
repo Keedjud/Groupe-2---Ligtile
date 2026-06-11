@@ -117,6 +117,18 @@ class ManageCollectionController extends Controller
         );
     }
 
+    public function generateLink(Collection $collecte)
+    {
+        if (! $collecte->link_generated_at) {
+            $collecte->link_generated_at = now();
+            $collecte->save();
+        }
+
+        return response()->json([
+            'link_generated_at' => $collecte->link_generated_at,
+        ]);
+    }
+
     public function destroy(Collection $collecte)
     {
         $collecte->delete();

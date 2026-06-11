@@ -37,6 +37,8 @@ export function useCollectes() {
       kit_url: c.kit_url || '',
       capacity: c.capacity ?? null,
       jeton_public: c.public_token,
+      lien_genere_le: c.link_generated_at ?? null,
+      kit_envoye_le: c.kit_sent_at ?? null,
       nb_inscrits: c.nb_inscrits || 0,
     }
   }
