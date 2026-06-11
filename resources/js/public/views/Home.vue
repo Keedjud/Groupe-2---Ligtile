@@ -158,22 +158,22 @@ function updateCardsIndex() {
                lg:mx-0 lg:px-0 lg:grid lg:grid-cols-4 lg:gap-6 lg:overflow-visible"
       >
         <div class="snap-center py-18 shrink-0 w-[calc(100vw-2rem)] lg:w-auto flex flex-col">
-          <img :src="'/images/icons/croix.svg'" loading="lazy" decoding="async" class="lg:items-center h-10 w-auto mx-auto" alt="Icône de médicament" />
+          <img :src="'/images/icons/croix.svg'" loading="lazy" decoding="async" class="h-16 w-auto mx-auto" alt="" />
           <h3 class="text-h3 font-bold text-violet-900 text-center mt-12">Répondre à un besoin réel</h3>
           <p class="text-regular text-violet-900 text-center mt-4">Les produits sanguins sont nécessaires chaque jour pour soigner de nombreux patients. Chaque collecte compte.</p>
         </div>
         <div class="snap-center py-18  shrink-0 w-[calc(100vw-2rem)] lg:w-auto flex flex-col">
-          <img :src="'/images/icons/collaborateur.svg'" loading="lazy" decoding="async" class="lg:items-center h-10 w-auto mx-auto" alt="Icône de médicament" />
+          <img :src="'/images/icons/collaborateur.svg'" loading="lazy" decoding="async" class="h-16 w-auto mx-auto" alt="" />
           <h3 class="text-h3 font-bold text-violet-900 text-center mt-12">Faciliter l'engagement des collaborateurs</h3>
           <p class="text-regular text-violet-900 text-center mt-4">Organiser une collecte directement sur le lieu de travail réduit les contraintes et encourage la participation.</p>
         </div>
         <div class="snap-center py-19  shrink-0 w-[calc(100vw-2rem)] lg:w-auto flex flex-col">
-          <img :src="'/images/icons/dynamique.svg'" loading="lazy" decoding="async" class="lg:items-center h-10 w-auto mx-auto" alt="Icône de médicament" />
+          <img :src="'/images/icons/dynamique.svg'" loading="lazy" decoding="async" class="h-15 w-auto mx-auto" alt="" />
           <h3 class="text-h3 font-bold text-violet-900 text-center mt-12">Créer une dynamique collective</h3>
           <p class="text-regular text-violet-900 text-center mt-4">Une collecte peut devenir un moment fédérateur autour d'une action commune et porteuse de sens.</p>
         </div>
         <div class="snap-center py-18  shrink-0 w-[calc(100vw-2rem)] lg:w-auto flex flex-col">
-          <img :src="'/images/icons/trophe-icon.svg'" loading="lazy" decoding="async" class="lg:items-center h-10 w-auto mx-auto" alt="Icône de médicament" />
+          <img :src="'/images/icons/trophe-icon.svg'" loading="lazy" decoding="async" class="h-16 w-auto mx-auto" alt="" />
           <h3 class="text-h3 font-bold text-violet-900 text-center mt-12">Valoriser l'engagement de l'entreprise</h3>
           <p class="text-regular text-violet-900 text-center mt-4">Accueillir une collecte permet d'inscrire votre démarche sociétale dans une action visible, concrète et positive.</p>
         </div>
@@ -196,50 +196,50 @@ function updateCardsIndex() {
           <img :src="'/images/illustrations/nombreforce.png'" loading="lazy" decoding="async" class="w-full max-w-[503px] mx-auto" alt="Des gouttes de sang portent un cœur pour signifier la force du nombre" />
         </div>
         <div>
-          <ul class="space-y-8 flex flex-col items-center lg:items-stretch">
-            <li class="flex flex-col items-center text-center gap-4 lg:flex-row lg:items-center lg:text-left lg:gap-4 max-w-[369px] lg:max-w-none">
-              <div class="relative flex items-center shrink-0 lg:min-h-[61px]">
+          <ul class="space-y-0 flex flex-col items-center lg:items-stretch">
+            <li class="flex flex-col items-center text-center gap-4 lg:flex-row lg:items-stretch lg:text-left lg:gap-4 max-w-[369px] lg:max-w-none">
+              <div class="flex flex-col items-center shrink-0 lg:min-h-[97px]">
                 <span class="grid h-[101px] w-[101px] lg:h-[61px] lg:w-[61px] place-items-center rounded-full bg-violet-200 ring-1 ring-white shrink-0">
-                  <img :src="'/images/icons/chat.png'" loading="lazy" decoding="async" alt="Icône de discussion" class="h-12 w-12 lg:h-7 lg:w-7" />
+                  <img :src="'/images/icons/chat.png'" loading="lazy" decoding="async" alt="" class="h-12 w-12 lg:h-7 lg:w-7" />
                 </span>
-                <span class="hidden lg:block absolute left-1/2 top-full mt-2 h-20 w-[3px] -translate-x-1/2 rounded-full bg-violet-300 lg:mb-2"></span>
+                <span class="hidden lg:block lg:w-[3px] lg:flex-1 lg:bg-violet-300 lg:rounded-full lg:my-2"></span>
               </div>
               <div>
                 <h4 class="hidden lg:block text-h4 font-bold text-texte-primary-dark">On échange avec vous</h4>
                 <p class="text-h5 text-texte-primary-dark mt-1">Un interlocuteur dédié du CTS échange avec vous et comprend vos besoins</p>
               </div>
             </li>
-            <span class="block h-16 w-[3px] bg-violet-400 mx-auto my-[13px] rounded-full lg:hidden"></span>
-            <li class="flex flex-col items-center text-center gap-4 lg:flex-row lg:items-center lg:text-left lg:gap-4 max-w-[369px] lg:max-w-none">
-              <div class="relative flex items-center shrink-0 lg:min-h-[61px]">
+            <span class="block h-4 w-[3px] bg-violet-400 mx-auto my-[13px] rounded-full lg:hidden"></span>
+            <li class="flex flex-col items-center text-center gap-4 lg:flex-row lg:items-stretch lg:text-left lg:gap-4 max-w-[369px] lg:max-w-none">
+              <div class="flex flex-col items-center shrink-0 lg:min-h-[97px]">
                 <span class="grid h-[101px] w-[101px] lg:h-[61px] lg:w-[61px] place-items-center rounded-full bg-violet-200 ring-1 ring-white shrink-0">
-                  <img :src="'/images/icons/calendar-check.png'" loading="lazy" decoding="async" alt="Icône de calendrier" class="h-12 w-12 lg:h-7 lg:w-7" />
+                  <img :src="'/images/icons/calendar-check.png'" loading="lazy" decoding="async" alt="" class="h-12 w-12 lg:h-7 lg:w-7" />
                 </span>
-                <span class="hidden lg:block absolute left-1/2 top-full mt-2 h-20 w-[3px] -translate-x-1/2 rounded-full bg-violet-300 lg:mb-2"></span>
+                <span class="hidden lg:block lg:w-[3px] lg:flex-1 lg:bg-violet-300 lg:rounded-full lg:my-2"></span>
               </div>
               <div>
                 <h4 class="hidden lg:block text-h4 font-bold text-texte-primary-dark">On définit ensemble</h4>
                 <p class="text-h5 text-texte-primary-dark mt-1">Nous définissons ensemble les modalités de collecte (date, lieu, format, ...)</p>
               </div>
             </li>
-            <span class="mt-2 h-4 block h-16 w-[3px] bg-violet-400 mx-auto my-[13px] rounded-full lg:hidden"></span>
-            <li class="flex flex-col items-center text-center gap-4 lg:flex-row lg:items-center lg:text-left lg:gap-4 max-w-[369px] lg:max-w-none">
-              <div class="relative flex items-center shrink-0 lg:min-h-[61px]">
+            <span class="block h-4 w-[3px] bg-violet-400 mx-auto my-[13px] rounded-full lg:hidden"></span>
+            <li class="flex flex-col items-center text-center gap-4 lg:flex-row lg:items-stretch lg:text-left lg:gap-4 max-w-[369px] lg:max-w-none">
+              <div class="flex flex-col items-center shrink-0 lg:min-h-[97px]">
                 <span class="grid h-[101px] w-[101px] lg:h-[61px] lg:w-[61px] place-items-center rounded-full bg-violet-200 ring-1 ring-white shrink-0">
-                  <img :src="'/images/icons/campaign.png'" loading="lazy" decoding="async" alt="Icône d'haut-parleur" class="h-12 w-12 lg:h-7 lg:w-7" />
+                  <img :src="'/images/icons/campaign.png'" loading="lazy" decoding="async" alt="" class="h-12 w-12 lg:h-7 lg:w-7" />
                 </span>
-                <span class="hidden lg:block absolute left-1/2 top-full mt-2 h-20 w-[3px] -translate-x-1/2 rounded-full bg-violet-300 lg:mb-2"></span>
+                <span class="hidden lg:block lg:w-[3px] lg:flex-1 lg:bg-violet-300 lg:rounded-full lg:my-2"></span>
               </div>
               <div>
                 <h4 class="hidden lg:block text-h4 font-bold text-texte-primary-dark">On vous accompagne</h4>
                 <p class="text-h5 text-texte-primary-dark mt-1">Nous vous fournissons des supports et outils pour informer et mobiliser vos équipes</p>
               </div>
             </li>
-            <span class="block h-16 w-[3px] bg-violet-400 mx-auto my-[13px] rounded-full lg:hidden"></span>
-            <li class="flex flex-col items-center text-center gap-4 lg:flex-row lg:items-center lg:text-left lg:gap-4 max-w-[369px] lg:max-w-none">
-              <div class="relative flex items-center shrink-0 lg:min-h-[61px]">
+            <span class="block h-4 w-[3px] bg-violet-400 mx-auto my-[13px] rounded-full lg:hidden"></span>
+            <li class="flex flex-col items-center text-center gap-4 lg:flex-row lg:items-stretch lg:text-left lg:gap-4 max-w-[369px] lg:max-w-none">
+              <div class="flex flex-col items-center shrink-0">
                 <span class="grid h-[101px] w-[101px] lg:h-[61px] lg:w-[61px] place-items-center rounded-full bg-violet-200 ring-1 ring-white shrink-0">
-                  <img :src="'/images/icons/checklist.png'" loading="lazy" decoding="async" alt="Icône de checklist" class="h-12 w-12 lg:h-7 lg:w-7" />
+                  <img :src="'/images/icons/checklist.png'" loading="lazy" decoding="async" alt="" class="h-12 w-12 lg:h-7 lg:w-7" />
                 </span>
               </div>
               <div>
