@@ -314,8 +314,9 @@ function updateCardsIndex() {
               </div>
 
               <div v-if="showPmeMessage" class="mb-4 rounded-lg bg-white p-4 text-small text-texte-primary-dark ring-1 ring-violet-900/30">
-                Seul les entreprises de plus de 1000 employés peuvent accueillir une collecte de sang. Si vous êtes une PME vous pouvez vous rendre
-                <a href="#/informations#pme" class="underline text-violet-900">sur la page information</a> pour découvrir comment soutenir le don du sang autrement et faire la différence malgré votre taille !
+                Seul les entreprises de plus de 1000 employés peuvent accueillir une collecte de sang. Si vous êtes une PME votre collecte aura lieu dans un centre de collecte proche de votre entreprise. N'hésitez pas à consulter
+                <a href="#/informations#pme" class="underline text-violet-900">la page information</a> en cas de questions
+                pour découvrir comment soutenir le don du sang et faire la différence malgré votre taille !
               </div>
               <div v-if="status.type === 'success'" class="mb-4 rounded-lg bg-green-50 p-4 text-small text-green-800 ring-1 ring-green-300">
                 {{ status.message }}
