@@ -436,7 +436,7 @@ const nomEntreprisePourPreview = computed(() =>
               <CalendrierPicker
                 v-model="champDateFin"
                 placeholder="Choisir une date de fin…"
-                :min="champDateDebut"
+                :min="champDateDebut || aujourdhui"
                 :hasError="!!champsInvalides.dateFin"
               />
               <p v-if="champDateDebut && !champDateFin"
