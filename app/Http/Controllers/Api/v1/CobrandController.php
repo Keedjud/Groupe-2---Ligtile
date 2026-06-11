@@ -14,7 +14,9 @@ class CobrandController extends Controller
             ->with('company')
             ->firstOrFail();
 
-        if (now()->gt($collection->end_date->addDays(7)->endOfDay())) {
+        // Le site cobrandé est disponible dès la création de la collecte
+        // (la ligne existe en base) et jusqu'à la fin de la collecte incluse.
+        if (now()->gt($collection->end_date->endOfDay())) {
             abort(404);
         }
 
