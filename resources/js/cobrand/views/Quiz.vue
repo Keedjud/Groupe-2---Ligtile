@@ -1,5 +1,5 @@
 <script setup>
-import { ref, computed, nextTick, onMounted, watch } from "vue";
+import { ref, computed, nextTick, onMounted, onUnmounted, watch } from "vue";
 import { useMediaQuery } from "@/composables/useMediaQuery";
 import { useQuizStore } from "../composables/useQuizStore";
 import { useCobrandSession } from "../composables/useCobrandSession";
@@ -30,14 +30,31 @@ const firstMandatoryNegativeSlug = computed(() =>
         ?.preventionSlug ?? null,
 );
 
+let footerObserver = null;
+
 onMounted(() => {
     reset();
     start();
+    nextTick(() => {
+        const footer = document.querySelector("footer");
+        if (footer) {
+            footerObserver = new IntersectionObserver(
+                ([entry]) => { footerVisible.value = entry.isIntersecting; },
+                { threshold: 0 },
+            );
+            footerObserver.observe(footer);
+        }
+    });
+});
+
+onUnmounted(() => {
+    footerObserver?.disconnect();
 });
 
 const inscriptionRef = ref(null);
 const rowRefs = ref([]);
 const showOverlay = ref(false);
+const footerVisible = ref(false);
 
 const isMobile = useMediaQuery("(max-width: 1023px)");
 
@@ -191,10 +208,11 @@ function skip() {
 
             <Teleport to="body">
                 <button
+                    v-show="!footerVisible"
                     type="button"
                     :disabled="!canSkip"
                     @click="skip"
-                    class="fixed bottom-72 right-4 z-50 rounded-full px-5 py-2.5 text-small shadow-lg transition-colors disabled:cursor-not-allowed"
+                    class="fixed bottom-8 right-4 z-50 rounded-full px-5 py-2.5 text-small shadow-lg transition-colors disabled:cursor-not-allowed"
                     :class="
                         canSkip
                             ? 'cursor-pointer bg-violet-900 text-white hover:bg-violet-800'
@@ -291,10 +309,11 @@ function skip() {
             </div>
 
             <button
+                v-show="!footerVisible"
                 type="button"
                 :disabled="!canSkip"
                 @click="skip"
-                class="fixed bottom-28 right-8 z-40 rounded-full px-12 py-3 text-regular transition-colors disabled:cursor-not-allowed"
+                class="fixed bottom-8 right-8 z-40 rounded-full px-12 py-3 text-regular transition-colors disabled:cursor-not-allowed"
                 :class="
                     canSkip
                         ? 'cursor-pointer bg-violet-900 text-white hover:bg-violet-800'
