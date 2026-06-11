@@ -12,7 +12,7 @@ return new class extends Migration
             $table->id();
             $table->foreignId('company_id')->constrained()->cascadeOnDelete();
             $table->string('email', 100);
-            $table->string('phone', 50)->nullable();
+            $table->string('phone', 50);
             $table->timestamps();
         });
     }

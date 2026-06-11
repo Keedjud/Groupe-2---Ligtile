@@ -16,6 +16,7 @@ export function useCompanies() {
       nb_employes: c.nb_employee,
       taille: c.size_label || '',
       nb_collectes: c.collections_count ?? 0,
+      participe_trophee: c.participe_trophee ?? true,
       adresse: {
         rue:    c.address?.street      || '',
         numero: c.address?.number      || '',
@@ -62,6 +63,7 @@ export function useCompanies() {
       const payload = {
         name:        donnees.nom,
         nb_employee: Number(donnees.nb_employes),
+        participe_trophee: donnees.participe_trophee,
         address: {
           street:      donnees.adresse.rue,
           number:      donnees.adresse.numero,
@@ -70,7 +72,7 @@ export function useCompanies() {
         },
         contact: {
           email: donnees.contact.email,
-          phone: donnees.contact.telephone || null,
+          phone: donnees.contact.telephone,
         },
       }
       const reponse = await fetchApi({ url: '/companies', method: 'POST', data: payload })
@@ -109,6 +111,7 @@ export function useCompanies() {
       const payload = {
         name:        donnees.nom,
         nb_employee: Number(donnees.nb_employes),
+        participe_trophee: donnees.participe_trophee,
         address: {
           street:      donnees.adresse.rue,
           number:      donnees.adresse.numero,
@@ -117,7 +120,7 @@ export function useCompanies() {
         },
         contact: {
           email: donnees.contact.email,
-          phone: donnees.contact.telephone || null,
+          phone: donnees.contact.telephone,
         },
       }
       const reponse = await fetchApi({ url: `/companies/${id}`, method: 'PUT', data: payload })

@@ -155,6 +155,8 @@ function valider() {
   if (!regexTel.test(champTelephone.value.trim()))                  e.telephone = 'Téléphone invalide.'
   if (!logoUrl.value)                                               e.logo      = 'Logo requis.'
   if (!champCapacity.value || Number(champCapacity.value) < 1)      e.capacity  = 'Capacité requise (≥ 1 créneau).'
+  else if (nbEmployesEntreprise.value != null && Number(champCapacity.value) > nbEmployesEntreprise.value)
+                                                                   e.capacity  = `La capacité ne peut pas dépasser l'effectif de l'entreprise (${nbEmployesEntreprise.value}).`
   if (!champOnedocUrl.value.trim())                                 e.onedocUrl = 'Lien Onedoc requis.'
   if (!champKitUrl.value.trim())                                    e.kitUrl    = 'Lien KDrive requis.'
   if (!champDateDebut.value)                                        e.dateDebut = 'Date de début requise.'
@@ -168,6 +170,17 @@ function valider() {
   champsInvalides.value = e
   return Object.keys(e).length === 0
 }
+
+// Re-validation réactive : après une 1re tentative d'envoi (des erreurs sont affichées),
+// on rejoue la validation à chaque modification pour retirer le surlignage d'un champ corrigé.
+watch(
+  [
+    entrepriseSelectionnee, champRue, champNumero, champNpa, champVille,
+    champEmail, champTelephone, logoUrl, champCapacity, champOnedocUrl,
+    champKitUrl, champDateDebut, champDateFin,
+  ],
+  () => { if (Object.keys(champsInvalides.value).length > 0) valider() },
+)
 
 // ─── Envoi ───────────────────────────────────────────────────────────────────
 async function soumettre() {
@@ -473,9 +486,12 @@ const nomEntreprisePourPreview = computed(() =>
             </div>
             <div class="flex flex-col gap-1 sm:w-48">
               <label class="font-sans text-small font-semibold text-violet-950">Capacité (créneaux disponibles)</label>
-              <input v-model="champCapacity" type="number" min="1" placeholder="ex. 50"
+              <input v-model="champCapacity" type="number" min="1" :max="nbEmployesEntreprise || undefined" placeholder="ex. 50"
                 class="w-full rounded-lg bg-white px-3 py-2.5 font-sans text-small text-violet-950 shadow-[0_0_4px_rgba(0,0,0,0.25)] outline-none focus:ring-2 focus:ring-violet-400"
                 :class="{ 'ring-rouge-500 ring-1': champsInvalides.capacity }" />
+              <p v-if="nbEmployesEntreprise != null" class="font-sans text-xs text-violet-400">
+                Maximum {{ nbEmployesEntreprise }} (effectif de l'entreprise).
+              </p>
             </div>
           </div>
 

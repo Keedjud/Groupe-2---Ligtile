@@ -1,4 +1,4 @@
-<!-- Flux de questions (étapes 1 à 3) -->
+<!-- Flux de questions (étapes 1 à 4) -->
 <script setup>
 import { ref, computed, watch } from 'vue'
 import { useFetchApi } from '@/composables/api/useFetchApi'
@@ -24,6 +24,10 @@ const mailEnvoye     = ref(false)
 const pressePapierOk = ref(false)
 const envoiMailEnCours = ref(false)
 
+// Étape 3 : confirmation que le kit comm est prêt et chargé sur le KDrive
+const caseKitCochee = ref(false)
+const kitConfirme   = ref(false)
+
 const lienCoBrande = ref('')
 const erreurEnvoi  = ref('')
 
@@ -42,11 +46,16 @@ watch(
       lienCoBrande.value = window.location.origin + '/' + c.jeton_public
       lienGenere.value = true
       mailEnvoye.value = !!c.kit_envoye_le
-      etapeRevele.value = 3
+      // Si le kit a déjà été envoyé, sa confirmation a forcément été faite.
+      kitConfirme.value = !!c.kit_envoye_le
+      caseKitCochee.value = !!c.kit_envoye_le
+      etapeRevele.value = c?.kit_envoye_le ? 4 : 3
     } else {
       lienCoBrande.value = ''
       lienGenere.value = false
       mailEnvoye.value = false
+      kitConfirme.value = false
+      caseKitCochee.value = false
       etapeRevele.value = 1
     }
   },
@@ -135,7 +144,14 @@ async function sauvegarderLienMemoire() {
   }
 }
 
-// Étape 3 : envoi du kit par mail à l'entreprise partenaire
+// Étape 3 : confirmation que le kit de communication est réalisé et chargé sur le KDrive
+function confirmerKit() {
+  if (!caseKitCochee.value) return
+  kitConfirme.value = true
+  etapeRevele.value = 4
+}
+
+// Étape 4 : envoi du kit par mail à l'entreprise partenaire
 async function envoyerMail() {
   envoiMailEnCours.value = true
   erreurEnvoi.value = ''
@@ -198,8 +214,8 @@ async function envoyerMail() {
           <div class="flex h-9 w-9 shrink-0 items-center justify-center rounded-full bg-violet-500 font-sans text-regular text-black">
             2
           </div>
-          <div class="flex flex-col gap-9">
-            <div class="flex items-center gap-4">
+          <div class="flex flex-col gap-4">
+            <div class="flex flex-wrap items-center gap-4">
               <span class="font-sans text-h5">Générer le lien du site</span>
               <button
                 type="button"
@@ -215,9 +231,9 @@ async function envoyerMail() {
               </span>
             </div>
             <!-- Champ lien co-brandé -->
-            <div v-if="lienCoBrande" class="flex items-center gap-3">
+            <div v-if="lienCoBrande" class="flex flex-col gap-2 sm:flex-row sm:items-center sm:gap-3">
               <label class="shrink-0 whitespace-nowrap font-sans text-small text-violet-950">Lien du site co-brandé :</label>
-              <div class="flex items-center gap-4 rounded-lg bg-white px-4 py-3 shadow-[0_0_4px_rgba(0,0,0,0.15)]">
+              <div class="flex w-full max-w-xl items-center gap-4 rounded-lg bg-white px-4 py-3 shadow-[0_0_4px_rgba(0,0,0,0.15)] sm:w-auto">
                 <span class="select-all font-sans text-small text-violet-900 break-all">{{ lienCoBrande }}</span>
                 <button
                   type="button"
@@ -239,14 +255,56 @@ async function envoyerMail() {
         </div>
       </Transition>
 
-      <!-- Étape 3 : Envoyer le kit -->
+      <!-- Étape 3 : Confirmer que le kit comm est réalisé et chargé sur le KDrive -->
       <Transition name="glisser">
         <div v-if="etapeRevele >= 3" class="flex items-start gap-7">
           <div class="flex h-9 w-9 shrink-0 items-center justify-center rounded-full bg-violet-500 font-sans text-regular text-black">
             3
           </div>
+          <div class="flex flex-col gap-3">
+            <div class="flex flex-wrap items-center gap-4">
+              <span class="font-sans text-h5">Kit de communication prêt sur le KDrive</span>
+              <span v-if="kitConfirme" class="inline-flex items-center gap-2 rounded-[40px] bg-vert-400 px-5 py-2 font-sans text-small text-white">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="3">
+                  <path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7" />
+                </svg>
+                Confirmé
+              </span>
+            </div>
+            <template v-if="!kitConfirme">
+              <p class="font-sans text-small text-violet-700">
+                Vérifiez que le kit co-brandé a bien été réalisé et déposé dans le dossier KDrive ci-dessous. C'est ce lien qui sera transmis à l'entreprise à l'étape suivante.
+              </p>
+              <a
+                v-if="collecte.kit_url"
+                :href="collecte.kit_url"
+                target="_blank"
+                rel="noopener"
+                class="block w-full max-w-xl break-all rounded-lg bg-white px-4 py-3 font-sans text-small text-violet-900 underline shadow-[0_0_4px_rgba(0,0,0,0.15)]"
+              >{{ collecte.kit_url }}</a>
+              <label class="flex items-start gap-2 font-sans text-small text-violet-950">
+                <input type="checkbox" v-model="caseKitCochee" class="mt-1 shrink-0" />
+                <span>Je confirme que le kit de communication est réalisé et disponible à cette URL.</span>
+              </label>
+              <button
+                type="button"
+                :disabled="!caseKitCochee"
+                @click="confirmerKit"
+                class="w-max rounded-[40px] bg-violet-900 px-5 py-2 font-sans text-small text-white transition-opacity hover:opacity-90 disabled:cursor-not-allowed disabled:opacity-50"
+              >Confirmer</button>
+            </template>
+          </div>
+        </div>
+      </Transition>
+
+      <!-- Étape 4 : Envoyer le kit -->
+      <Transition name="glisser">
+        <div v-if="etapeRevele >= 4" class="flex items-start gap-7">
+          <div class="flex h-9 w-9 shrink-0 items-center justify-center rounded-full bg-violet-500 font-sans text-regular text-black">
+            4
+          </div>
           <div class="flex flex-col gap-2">
-            <div class="flex items-center gap-4">
+            <div class="flex flex-wrap items-center gap-4">
               <span class="font-sans text-h5">Envoyer le kit par mail</span>
               <button
                 type="button"

@@ -33,7 +33,7 @@ class TropheeController extends Controller
         foreach ($years as $year) {
             $trophees = Trophee::where('year', $year)
                 ->with(['companies' => function ($query) {
-                    $query->orderBy('rank');
+                    $query->where('participe_trophee', true)->orderBy('rank');
                 }])
                 ->get();
 

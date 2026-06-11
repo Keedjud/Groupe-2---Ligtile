@@ -16,6 +16,7 @@ return new class extends Migration
             $table->foreignId('address_id')->constrained()->restrictOnDelete();
             $table->string('name', 100)->unique();
             $table->integer('nb_employee');
+            $table->boolean('participe_trophee')->default(true);
             $table->timestamps();
         });
     }

@@ -1,6 +1,6 @@
 <!-- CompanyDetail — fiche entreprise avec édition inline -->
 <script setup>
-import { ref, computed, onMounted } from 'vue'
+import { ref, computed, onMounted, watch } from 'vue'
 import DashboardLayout from '../layouts/DashboardLayout.vue'
 import { useCompanies } from '../composables/useCompanies.js'
 import { useOverlay }   from '../composables/useOverlay.js'
@@ -45,6 +45,7 @@ const champNpa       = ref('')
 const champVille     = ref('')
 const champEmail     = ref('')
 const champTelephone = ref('')
+const champParticipeTrophee = ref(true)
 
 onMounted(async () => {
   entreprise.value = await chargerEntreprise(props.idEntreprise)
@@ -60,6 +61,7 @@ function ouvrirEdition() {
   champVille.value      = e.adresse.ville
   champEmail.value      = e.contact.email
   champTelephone.value  = e.contact.telephone
+  champParticipeTrophee.value = e.participe_trophee
   champsInvalides.value = {}
   erreurServeur.value   = ''
   modeEdition.value     = true
@@ -74,6 +76,7 @@ function annulerEdition() {
 const regexEmail   = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
 const regexNpa     = /^\d{4}$/
 const regexNumero  = /^\d+[a-zA-Z]?$/
+const regexTel     = /^[+\d][\d\s()/.-]{5,}$/
 
 function valider() {
   const e = {}
@@ -84,9 +87,16 @@ function valider() {
   if (!regexNpa.test(champNpa.value.trim()))                      e.npa        = 'NPA invalide (4 chiffres).'
   if (!champVille.value.trim())                                    e.ville      = 'Ville requise.'
   if (!regexEmail.test(champEmail.value.trim()))                   e.email      = 'E-mail invalide.'
+  if (!regexTel.test(champTelephone.value.trim()))                e.telephone  = 'Téléphone requis (format valide).'
   champsInvalides.value = e
   return Object.keys(e).length === 0
 }
+
+// Re-validation réactive après une 1re tentative : retire le surlignage d'un champ dès qu'il est corrigé.
+watch(
+  [champNom, champNbEmployes, champRue, champNumero, champNpa, champVille, champEmail, champTelephone],
+  () => { if (Object.keys(champsInvalides.value).length > 0) valider() },
+)
 
 async function sauvegarder() {
   erreurServeur.value = ''
@@ -95,6 +105,7 @@ async function sauvegarder() {
     entreprise.value = await mettreAJourEntreprise(props.idEntreprise, {
       nom:        champNom.value.trim(),
       nb_employes: Number(champNbEmployes.value),
+      participe_trophee: champParticipeTrophee.value,
       adresse: {
         rue:    champRue.value.trim(),
         numero: champNumero.value.trim(),
@@ -195,6 +206,11 @@ const aDesErreurs = computed(() => Object.keys(champsInvalides.value).length > 0
               <p class="font-sans text-xs font-semibold uppercase tracking-wide text-violet-400">Téléphone</p>
               <p class="font-sans text-small text-violet-950">{{ entreprise.contact.telephone || '—' }}</p>
             </div>
+            <!-- Participation trophées -->
+            <div class="flex flex-col gap-1">
+              <p class="font-sans text-xs font-semibold uppercase tracking-wide text-violet-400">Trophées</p>
+              <p class="font-sans text-small text-violet-950">{{ entreprise.participe_trophee ? 'Participe au classement' : 'Ne participe pas' }}</p>
+            </div>
           </div>
         </template>
 
@@ -266,10 +282,17 @@ const aDesErreurs = computed(() => Object.keys(champsInvalides.value).length > 0
                 :class="{ 'ring-rouge-500 ring-1': champsInvalides.email }" />
             </div>
             <div class="flex flex-col gap-1">
-              <label class="font-sans text-small font-medium text-violet-800">Téléphone (optionnel)</label>
+              <label class="font-sans text-small font-medium text-violet-800">Téléphone</label>
               <input v-model="champTelephone" type="tel"
-                class="w-full rounded-lg bg-white px-3 py-2.5 font-sans text-small text-violet-950 shadow-[0_0_4px_rgba(0,0,0,0.25)] outline-none focus:ring-2 focus:ring-violet-400" />
+                class="w-full rounded-lg bg-white px-3 py-2.5 font-sans text-small text-violet-950 shadow-[0_0_4px_rgba(0,0,0,0.25)] outline-none focus:ring-2 focus:ring-violet-400"
+                :class="{ 'ring-rouge-500 ring-1': champsInvalides.telephone }" />
             </div>
+
+            <!-- Participation aux trophées -->
+            <label class="flex items-center gap-2 font-sans text-small text-violet-950">
+              <input type="checkbox" v-model="champParticipeTrophee" class="shrink-0" />
+              <span>Cette entreprise participe au classement des trophées</span>
+            </label>
 
             <!-- Actions -->
             <div class="mt-2 flex flex-col gap-3 sm:flex-row sm:justify-end">

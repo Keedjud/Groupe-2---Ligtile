@@ -23,10 +23,16 @@ function scrollToHashFragment() {
     return;
   }
 
-  const target = document.getElementById(fragment);
-  if (target) {
-    target.scrollIntoView({ behavior: 'smooth' });
-  }
+  requestAnimationFrame(() => {
+    setTimeout(() => {
+      const target = document.getElementById(fragment);
+      if (target) {
+        const headerOffset = 80;
+        const elementPosition = target.getBoundingClientRect().top + window.scrollY;
+        window.scrollTo({ top: elementPosition - headerOffset, behavior: 'smooth' });
+      }
+    }, 100);
+  });
 }
 
 onMounted(() => {
@@ -97,7 +103,7 @@ async function handleSubmit() {
     </section>
 
     <!-- ===== Section 2 : Comment se déroule une collecte ? (+ prévoir sur mobile) ===== -->
-    <section id="deroulement" class="bg-violet-100 px-4 py-12 lg:px-[60px] lg:py-[60px]">
+    <section id="deroulement" class="bg-violet-100 px-4 py-12 lg:px-[60px] lg:py-[60px] scroll-mt-20 lg:scroll-mt-0">
       <div class="flex flex-col gap-8 lg:flex-row lg:gap-[87px]">
         <!-- Colonne gauche -->
         <div class="flex flex-1 flex-col gap-[54px] lg:max-w-[737px]">
@@ -244,7 +250,7 @@ async function handleSubmit() {
         <!-- Colonne droite : formulaire -->
         <div class="relative flex w-full max-w-[490px] flex-col items-center gap-5 rounded-lg border-2 border-violet-900/30 bg-form-bg px-8 py-8 shadow-[0_4px_4px_rgba(0,0,0,0.10)]">
           <h3 class="text-center font-sans text-h3 font-bold text-violet-900">
-            Une question ? <br />Organisons ensemble votre collecte.
+            Une question ?
           </h3>
 
           <!-- Formulaire ou confirmation -->

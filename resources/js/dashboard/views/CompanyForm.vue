@@ -1,6 +1,6 @@
 <!-- CompanyForm — création d'une nouvelle entreprise -->
 <script setup>
-import { ref, computed } from 'vue'
+import { ref, computed, watch } from 'vue'
 import DashboardLayout from '../layouts/DashboardLayout.vue'
 import { useCompanies } from '../composables/useCompanies.js'
 import { useOverlay }   from '../composables/useOverlay.js'
@@ -20,6 +20,7 @@ const champNpa        = ref('')
 const champVille      = ref('')
 const champEmail      = ref('')
 const champTelephone  = ref('')
+const champParticipeTrophee = ref(true)
 
 const champsInvalides = ref({})
 const erreurServeur   = ref('')
@@ -27,6 +28,7 @@ const erreurServeur   = ref('')
 const regexEmail  = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
 const regexNpa    = /^\d{4}$/
 const regexNumero = /^\d+[a-zA-Z]?$/
+const regexTel    = /^[+\d][\d\s()/.-]{5,}$/
 
 function valider() {
   const e = {}
@@ -37,9 +39,16 @@ function valider() {
   if (!regexNpa.test(champNpa.value.trim()))                        e.npa        = 'NPA invalide (4 chiffres).'
   if (!champVille.value.trim())                                     e.ville      = 'Ville requise.'
   if (!regexEmail.test(champEmail.value.trim()))                    e.email      = 'E-mail invalide.'
+  if (!regexTel.test(champTelephone.value.trim()))                  e.telephone  = 'Téléphone requis (format valide).'
   champsInvalides.value = e
   return Object.keys(e).length === 0
 }
+
+// Re-validation réactive après une 1re tentative : retire le surlignage d'un champ dès qu'il est corrigé.
+watch(
+  [champNom, champNbEmployes, champRue, champNumero, champNpa, champVille, champEmail, champTelephone],
+  () => { if (Object.keys(champsInvalides.value).length > 0) valider() },
+)
 
 async function soumettre() {
   erreurServeur.value = ''
@@ -48,6 +57,7 @@ async function soumettre() {
     const nouvelle = await creerEntreprise({
       nom:         champNom.value.trim(),
       nb_employes: Number(champNbEmployes.value),
+      participe_trophee: champParticipeTrophee.value,
       adresse: {
         rue:    champRue.value.trim(),
         numero: champNumero.value.trim(),
@@ -144,10 +154,17 @@ const aDesErreurs = computed(() => Object.keys(champsInvalides.value).length > 0
             :class="{ 'ring-rouge-500 ring-1': champsInvalides.email }" />
         </div>
         <div class="flex flex-col gap-1">
-          <label class="font-sans text-small font-medium text-violet-800">Téléphone (optionnel)</label>
+          <label class="font-sans text-small font-medium text-violet-800">Téléphone</label>
           <input v-model="champTelephone" type="tel" placeholder="+41 22 000 00 00"
-            class="w-full rounded-lg bg-white px-3 py-2.5 font-sans text-small text-violet-950 shadow-[0_0_4px_rgba(0,0,0,0.25)] outline-none focus:ring-2 focus:ring-violet-400" />
+            class="w-full rounded-lg bg-white px-3 py-2.5 font-sans text-small text-violet-950 shadow-[0_0_4px_rgba(0,0,0,0.25)] outline-none focus:ring-2 focus:ring-violet-400"
+            :class="{ 'ring-rouge-500 ring-1': champsInvalides.telephone }" />
         </div>
+
+        <!-- Participation aux trophées -->
+        <label class="flex items-center gap-2 font-sans text-small text-violet-950">
+          <input type="checkbox" v-model="champParticipeTrophee" class="shrink-0" />
+          <span>Cette entreprise participe au classement des trophées</span>
+        </label>
 
         <!-- Actions -->
         <div class="mt-2 flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">

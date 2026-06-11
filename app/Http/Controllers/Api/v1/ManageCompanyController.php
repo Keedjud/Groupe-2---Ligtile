@@ -22,7 +22,8 @@ class ManageCompanyController extends Controller
             'address.postal_code' => ['required', 'digits:4'],
             'address.city'        => ['required', 'string', 'max:100'],
             'contact.email'       => ['required', 'email', 'max:100'],
-            'contact.phone'       => ['nullable', 'string', 'max:50'],
+            'contact.phone'       => ['required', 'string', 'max:50', 'regex:/^[+\d][\d\s()\/.\-]{5,}$/'],
+            'participe_trophee'   => ['boolean'],
         ];
     }
 
@@ -57,14 +58,15 @@ class ManageCompanyController extends Controller
         $company = DB::transaction(function () use ($validated) {
             $address = Address::create($validated['address']);
             $company = Company::create([
-                'name'        => $validated['name'],
-                'nb_employee' => $validated['nb_employee'],
-                'address_id'  => $address->id,
+                'name'              => $validated['name'],
+                'nb_employee'       => $validated['nb_employee'],
+                'participe_trophee' => $validated['participe_trophee'] ?? true,
+                'address_id'        => $address->id,
             ]);
             Contact::create([
                 'company_id' => $company->id,
                 'email'      => $validated['contact']['email'],
-                'phone'      => $validated['contact']['phone'] ?? null,
+                'phone'      => $validated['contact']['phone'],
             ]);
             return $company;
         });
@@ -81,8 +83,9 @@ class ManageCompanyController extends Controller
 
         DB::transaction(function () use ($validated, $company) {
             $company->update([
-                'name'        => $validated['name'],
-                'nb_employee' => $validated['nb_employee'],
+                'name'              => $validated['name'],
+                'nb_employee'       => $validated['nb_employee'],
+                'participe_trophee' => $validated['participe_trophee'] ?? true,
             ]);
 
             if ($company->address) {
@@ -92,7 +95,7 @@ class ManageCompanyController extends Controller
             if ($company->contact) {
                 $company->contact->update([
                     'email' => $validated['contact']['email'],
-                    'phone' => $validated['contact']['phone'] ?? null,
+                    'phone' => $validated['contact']['phone'],
                 ]);
             }
         });

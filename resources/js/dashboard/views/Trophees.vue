@@ -1,6 +1,6 @@
 <!-- Trophees — liste des podiums par année + formulaire création/édition -->
 <script setup>
-import { ref, computed, onMounted } from 'vue'
+import { ref, computed, onMounted, watch } from 'vue'
 import DashboardLayout from '../layouts/DashboardLayout.vue'
 import { useTrophees } from '../composables/useTrophees.js'
 import { useCompanies } from '../composables/useCompanies.js'
@@ -36,11 +36,16 @@ onMounted(async () => {
 })
 
 // Autocomplete : filtre côté client, 20 résultats max
+// Seules les entreprises participant aux trophées ET ayant au moins une collecte sont éligibles.
+const entreprisesEligibles = computed(() =>
+  listeEntreprises.value.filter(e => e.participe_trophee && e.nb_collectes >= 1)
+)
+
 const suggestionsParRang = computed(() =>
   champsRangs.value.map(champ => {
     const q = champ.texte.trim().toLowerCase()
-    if (!q) return listeEntreprises.value.slice(0, 20)
-    return listeEntreprises.value.filter(e => e.nom.toLowerCase().includes(q)).slice(0, 20)
+    if (!q) return entreprisesEligibles.value.slice(0, 20)
+    return entreprisesEligibles.value.filter(e => e.nom.toLowerCase().includes(q)).slice(0, 20)
   })
 )
 
@@ -113,6 +118,12 @@ function valider() {
   erreurFormulaire.value = e
   return Object.keys(e).length === 0
 }
+
+// Re-validation réactive après une 1re tentative : retire le surlignage dès qu'un champ est corrigé.
+watch(
+  () => [champAnnee.value, ...champsRangs.value.map(c => c.idSelectionne)],
+  () => { if (Object.keys(erreurFormulaire.value).length > 0) valider() },
+)
 
 async function sauvegarder() {
   erreurServeur.value = ''

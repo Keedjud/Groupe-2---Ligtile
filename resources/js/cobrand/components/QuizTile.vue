@@ -101,13 +101,14 @@ function choose(variant) {
             </div>
 
             <button
-                v-if="canSkipQuestion"
-                type="button"
-                class="text-small text-violet-700 underline underline-offset-2 transition-colors hover:text-violet-900"
-                @click="emit('skip')"
-            >
-                Passer cette question
-            </button>
+    v-if="canSkipQuestion"
+    type="button"
+    class="text-[11px] -mt-1 text-violet-700 underline underline-offset-2 transition-colors hover:text-violet-900"
+    @click="emit('skip')"
+>
+    Passer cette question
+</button>
+
 
             <div
                 v-if="status === 'sad'"
