@@ -7,7 +7,7 @@ use App\Models\Company;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 
-class ApiLabelCompanyController extends Controller
+class LabelCompanyController extends Controller
 {
     /**
      * Retourne les entreprises labellisées avec filtres et pagination.
@@ -72,11 +72,12 @@ class ApiLabelCompanyController extends Controller
      */
     private function sizeRange(string $size): array
     {
+        // Seuils alignés sur Company::getSizeLabelAttribute()
         return match ($size) {
-            'grande'  => [250, 1_000_000],
-            'moyenne' => [50, 249],
-            'petite'  => [10, 49],
-            default   => [0, 9],
+            'grande'  => [1000, 1_000_000],
+            'moyenne' => [500, 999],
+            'petite'  => [100, 499],
+            default   => [0, 99],
         };
     }
 }

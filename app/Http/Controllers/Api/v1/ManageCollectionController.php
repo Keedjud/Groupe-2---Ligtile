@@ -4,12 +4,14 @@ namespace App\Http\Controllers\Api\v1;
 
 use App\Http\Controllers\Controller;
 use App\Models\Collection;
-use App\Models\Company;
+use App\Services\LabelService;
 use Illuminate\Http\Request;
 use Illuminate\Support\Str;
 
 class ManageCollectionController extends Controller
 {
+    public function __construct(private LabelService $labels) {}
+
     /** Règles communes création + édition (snapshot uniquement, sans données entreprise). */
     private function reglesValidation(): array
     {
@@ -24,7 +26,6 @@ class ManageCollectionController extends Controller
             'end_date'          => ['required', 'date', 'after:start_date'],
             'capacity'          => ['required', 'integer', 'min:1'],
             'primary_color'     => ['required', 'string', 'max:10'],
-            'secondary_color'   => ['required', 'string', 'max:10'],
             'logo_url'          => ['required', 'string', 'max:255'],
             'onedoc_url'        => ['required', 'url', 'max:255'],
             'kit_url'           => ['required', 'url', 'max:255'],
@@ -76,12 +77,13 @@ class ManageCollectionController extends Controller
             'end_date'          => $valide['end_date'],
             'capacity'          => $valide['capacity'],
             'primary_color'     => $valide['primary_color'],
-            'secondary_color'   => $valide['secondary_color'],
             'logo_url'          => $valide['logo_url'],
             'onedoc_url'        => $valide['onedoc_url'],
             'kit_url'           => $valide['kit_url'],
             'public_token'      => Str::random(32),
         ]);
+
+        $this->labels->synchronise($collecte->company);
 
         return response()->json(
             $collecte->load('company')->loadCount($this->comptageInscrits()),
@@ -108,18 +110,36 @@ class ManageCollectionController extends Controller
             'onedoc_url'        => $valide['onedoc_url'],
             'kit_url'           => $valide['kit_url'],
             'primary_color'     => $valide['primary_color'],
-            'secondary_color'   => $valide['secondary_color'],
             'logo_url'          => $valide['logo_url'],
         ]);
+
+        $this->labels->synchronise($collecte->company);
 
         return response()->json(
             $collecte->load('company')->loadCount($this->comptageInscrits())
         );
     }
 
+    public function generateLink(Collection $collecte)
+    {
+        if (! $collecte->link_generated_at) {
+            $collecte->link_generated_at = now();
+            $collecte->save();
+        }
+
+        return response()->json([
+            'link_generated_at' => $collecte->link_generated_at,
+        ]);
+    }
+
     public function destroy(Collection $collecte)
     {
+        $company = $collecte->company;
+
         $collecte->delete();
+
+        // Recalcule le label : la suppression peut raccourcir ou supprimer une période.
+        $this->labels->synchronise($company);
 
         return response()->noContent();
     }

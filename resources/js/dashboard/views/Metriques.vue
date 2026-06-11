@@ -169,7 +169,7 @@ const barres = computed(() =>
             </h1>
             <button
                 @click="allerVers('#/collectes')"
-                class="rounded-[40px] bg-white px-4 py-1.5 font-sans text-small text-texte-secondary underline shadow-[0_0_4px_rgba(0,0,0,0.25)] transition-colors hover:bg-violet-50"
+                class="rounded-[40px] bg-white px-4 py-1.5 font-sans text-small text-texte-secondary shadow-[0_0_4px_rgba(0,0,0,0.25)] transition-colors hover:bg-violet-50"
             >
                 ← Retour aux collectes
             </button>
@@ -209,21 +209,23 @@ const barres = computed(() =>
                 <span
                     class="font-sans text-xs italic text-violet-400"
                     :class="{ invisible: anneesSelectionnees.length }"
-                    >Toutes les années affichées</span
+                    >Toutes les années sont affichées</span
                 >
             </div>
 
             <!-- Filtre entreprise -->
-            <div class="flex flex-col gap-1">
+            <div class="flex flex-col w-30 gap-1">
                 <label
                     class="font-sans text-small font-semibold text-violet-950"
                     >Entreprise</label
                 >
+                <div class="relative">
                 <select
                     v-model="entrepriseFiltre"
-                    class="rounded-lg bg-white px-3 py-2 font-sans text-small shadow-[0_0_4px_rgba(0,0,0,0.15)] outline-none focus:ring-2 focus:ring-violet-400"
+                    class="w-full appearance-none rounded-lg bg-white px-3 py-2 font-sans text-small shadow-[0_0_4px_rgba(0,0,0,0.15)] outline-none focus:ring-2 focus:ring-violet-400"
                 >
                     <option value="">Toutes</option>
+
                     <option
                         v-for="e in entreprisesDisponibles"
                         :key="e.id"
@@ -232,6 +234,8 @@ const barres = computed(() =>
                         {{ e.nom }}
                     </option>
                 </select>
+                <svg width="16" height="16" viewBox="0 0 24 24"  class="rotate-180 right-3 top-1/2 -translate-y-1/2 absolute"><path fill="currentColor" fill-rule="evenodd" d="M12.248 8.237a.25.25 0 0 0-.354 0L5.53 14.601a.75.75 0 1 1-1.06-1.06l6.363-6.364a1.75 1.75 0 0 1 2.475 0l6.364 6.364a.75.75 0 0 1-1.06 1.06z" clip-rule="evenodd"/></svg>
+            </div>
             </div>
         </div>
 
@@ -485,10 +489,6 @@ const barres = computed(() =>
             <h2 class="mb-1 font-sans text-h4 font-bold text-violet-900">
                 C. Performance du quiz
             </h2>
-            <p class="mb-3 font-sans text-small text-violet-500 italic">
-                Données de test, a brancher quand le suivi du quiz sera en
-                place.
-            </p>
             <div class="grid grid-cols-1 gap-4 sm:grid-cols-3">
                 <div
                     class="flex flex-col items-start gap-1 rounded-[20px] bg-white p-5 shadow-[0_0_8px_rgba(104,23,100,0.10)]"
@@ -534,10 +534,6 @@ const barres = computed(() =>
             <h2 class="mb-1 font-sans text-h4 font-bold text-violet-900">
                 D. Performance par question
             </h2>
-            <p class="mb-3 font-sans text-small text-violet-500 italic">
-                Données de test, a brancher quand le suivi du quiz sera en
-                place.
-            </p>
             <div class="mb-3 rounded-[20px] bg-white p-4 shadow-[0_0_8px_rgba(104,23,100,0.10)]">
                 <p
                     class="mb-3 font-sans text-small font-semibold text-violet-700"
@@ -611,9 +607,6 @@ const barres = computed(() =>
             <h2 class="mb-1 font-sans text-h4 font-bold text-violet-900">
                 E. Engagement page prévention
             </h2>
-            <p class="mb-3 font-sans text-small text-violet-500 italic">
-                Données de test, a brancher quand le suivi sera en place.
-            </p>
             <div class="grid grid-cols-1 gap-4 sm:grid-cols-2">
                 <div
                     class="flex flex-col items-start gap-1 rounded-[20px] bg-white p-5 shadow-[0_0_8px_rgba(104,23,100,0.10)]"

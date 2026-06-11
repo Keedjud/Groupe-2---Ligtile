@@ -17,14 +17,17 @@ class Company extends Model
 
     /**
      * Catégorie de taille d'entreprise basée sur le nombre d'employés.
+     * Seuil clé : à partir de 1000 employés, le CTS organise une collecte
+     * dédiée sur place ; en dessous, l'entreprise se voit réserver des
+     * créneaux dans une collecte publique existante.
      */
     public function getSizeLabelAttribute(): string
     {
         return match (true) {
-            $this->nb_employee >= 250 => 'Grande entreprise',
-            $this->nb_employee >= 50  => 'Moyenne entreprise',
-            $this->nb_employee >= 10  => 'Petite entreprise',
-            default                   => 'Très petite entreprise',
+            $this->nb_employee >= 1000 => 'Grande entreprise',
+            $this->nb_employee >= 500  => 'Moyenne entreprise',
+            $this->nb_employee >= 100  => 'Petite entreprise',
+            default                    => 'Très petite entreprise',
         };
     }
 

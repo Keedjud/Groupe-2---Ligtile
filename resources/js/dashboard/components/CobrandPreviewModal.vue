@@ -3,10 +3,9 @@
 import { computed, watch, nextTick, ref } from 'vue'
 
 const props = defineProps({
-    primaryColor:   { type: String, required: true },
-    secondaryColor: { type: String, required: true },
-    logoUrl:        { type: String, required: true },
-    companyName:    { type: String, default: 'Entreprise' },
+    primaryColor: { type: String, required: true },
+    logoUrl:      { type: String, required: true },
+    companyName:  { type: String, default: 'Entreprise' },
 })
 
 const open = defineModel({ type: Boolean, required: true })
@@ -48,9 +47,7 @@ function accessibleText(hex) {
 
 const themeVars = computed(() => ({
     '--cobrand-primary':          props.primaryColor,
-    '--cobrand-secondary':        props.secondaryColor,
     '--cobrand-primary-text':     accessibleText(props.primaryColor),
-    '--cobrand-secondary-text':   accessibleText(props.secondaryColor),
     '--cobrand-primary-on-light': props.primaryColor,
 }))
 

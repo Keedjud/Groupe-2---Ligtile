@@ -29,6 +29,30 @@ const erreurEnvoi  = ref('')
 
 const flowTermine = computed(() => mailEnvoye.value === true)
 
+const collecteTerminee = computed(() => {
+  if (!props.collecte?.date_fin) return false
+  return new Date(props.collecte.date_fin) <= new Date()
+})
+
+// État du flux dérivé de la collecte (lien généré + envoi du kit persistés)
+watch(
+  () => props.collecte,
+  (c) => {
+    if (!collecteTerminee.value && (c?.lien_genere_le || c?.kit_envoye_le)) {
+      lienCoBrande.value = window.location.origin + '/' + c.jeton_public
+      lienGenere.value = true
+      mailEnvoye.value = !!c.kit_envoye_le
+      etapeRevele.value = 3
+    } else {
+      lienCoBrande.value = ''
+      lienGenere.value = false
+      mailEnvoye.value = false
+      etapeRevele.value = 1
+    }
+  },
+  { immediate: true }
+)
+
 watch(flowTermine, (val) => {
   emit('flow-termine', val)
 })
@@ -87,11 +111,18 @@ function fermerOverlay() {
   overlayNonVisible.value = false
 }
 
-// Étape 2 : génération du lien (calcul instantané depuis jeton_public)
-function genererLien() {
+// Étape 2 : génération du lien (affichage immédiat, persistance en arrière-plan)
+async function genererLien() {
+  if (collecteTerminee.value) return
   lienCoBrande.value = window.location.origin + '/' + props.collecte.jeton_public
   lienGenere.value = true
   etapeRevele.value = 3
+  try {
+    await fetchApi({
+      url: '/manage-collections/' + props.collecte.id + '/link/generate',
+      method: 'POST',
+    })
+  } catch { /* silencieux */ }
 }
 
 async function sauvegarderLienMemoire() {
@@ -112,7 +143,6 @@ async function envoyerMail() {
     await fetchApi({
       url: '/manage-collections/' + props.collecte.id + '/kit/send',
       method: 'POST',
-      // Timeout étendu (SMTP)
       timeout: 30000,
     })
     mailEnvoye.value = true
@@ -126,10 +156,14 @@ async function envoyerMail() {
 
 <template>
   <div class="relative">
-    <div class="rounded-[20px] bg-beige-50/60 p-3 flex flex-col gap-9">
+    <div class="rounded-[20px] bg-beige-50/60 p-3">
+      <div v-if="collecteTerminee" class="rounded-[20px] bg-white p-6 text-center font-sans text-small text-violet-950 shadow-[0_0_4px_rgba(0,0,0,0.15)]">
+        Cette collecte est terminée. Le lien co-brandé ne peut plus être généré ni envoyé.
+      </div>
+      <div v-else class="flex flex-col gap-9">
 
-      <!-- Étape 1 : Informations correctes ? -->
-      <div class="flex items-start gap-7">
+        <!-- Étape 1 : Informations correctes ? -->
+        <div class="flex items-start gap-7">
         <!-- Pastille violette -->
         <div class="flex h-9 w-9 shrink-0 items-center justify-center rounded-full bg-violet-500 font-sans text-regular text-black">
           1
@@ -164,7 +198,7 @@ async function envoyerMail() {
           <div class="flex h-9 w-9 shrink-0 items-center justify-center rounded-full bg-violet-500 font-sans text-regular text-black">
             2
           </div>
-          <div class="flex flex-col gap-3">
+          <div class="flex flex-col gap-9">
             <div class="flex items-center gap-4">
               <span class="font-sans text-h5">Générer le lien du site</span>
               <button
@@ -181,9 +215,9 @@ async function envoyerMail() {
               </span>
             </div>
             <!-- Champ lien co-brandé -->
-            <div v-if="lienCoBrande" class="flex items-center gap-2">
+            <div v-if="lienCoBrande" class="flex items-center gap-3">
               <label class="shrink-0 whitespace-nowrap font-sans text-small text-violet-950">Lien du site co-brandé :</label>
-              <div class="flex items-center gap-2 rounded-lg bg-white px-3 py-2 shadow-[0_0_4px_rgba(0,0,0,0.15)]">
+              <div class="flex items-center gap-4 rounded-lg bg-white px-4 py-3 shadow-[0_0_4px_rgba(0,0,0,0.15)]">
                 <span class="select-all font-sans text-small text-violet-900 break-all">{{ lienCoBrande }}</span>
                 <button
                   type="button"
@@ -242,6 +276,7 @@ async function envoyerMail() {
         </div>
       </Transition>
 
+      </div>
     </div>
 
     <!-- Overlay correction des infos -->

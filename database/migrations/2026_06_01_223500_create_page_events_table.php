@@ -10,7 +10,7 @@ return new class extends Migration
     {
         Schema::create('page_events', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('collection_id')->constrained()->restrictOnDelete();
+            $table->foreignId('collection_id')->constrained()->cascadeOnDelete();
             $table->uuid('session_id');
             $table->enum('event_type', ['prevention_entered', 'prevention_exited']);
             $table->boolean('engaged')->nullable();

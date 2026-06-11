@@ -50,7 +50,7 @@
 
             <div style="text-align:center;margin:28px 0;">
                 <a href="{{ $lienCoBrande }}"
-                   style="display:inline-block;background-color:{{ $couleurSecondaire }};color:#ffffff;text-decoration:none;font-size:15px;font-weight:bold;padding:14px 28px;border-radius:40px;">
+                   style="display:inline-block;background-color:{{ $couleurPrimaire }};color:#ffffff;text-decoration:none;font-size:15px;font-weight:bold;padding:14px 28px;border-radius:40px;">
                     Accéder au site de la collecte
                 </a>
             </div>

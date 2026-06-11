@@ -39,7 +39,7 @@ Plateforme multi-sites Laravel + Vue 3 destinée à faciliter l'organisation de 
 | Auth | Sanctum cookie (httpOnly, résistant XSS, même domaine) | Token Bearer en localStorage = mauvaise pratique |
 | Navigation | Hash-based sans Vue Router | Pattern maîtrisé, zéro librairie supplémentaire |
 | État partagé | Composable module-level (ref singleton) | Pas besoin de Pinia pour la taille du projet |
-| Co-branding | Variables CSS custom (`--cobrand-primary/secondary/*`) injectées sur `<html>` | Générées par `ColorPaletteService::fromTwo()` (PHP) + répliquées en JS, pas de CSS dupliqué par collecte |
+| Co-branding | Variables CSS custom (`--cobrand-primary*`) injectées sur `<html>` | Générées par `ColorPaletteService::fromPrimary()` (PHP, une seule couleur) + répliquées en JS, pas de CSS dupliqué par collecte |
 | Déploiement | GitHub Actions → push SSH → bare repo + hook | Logique de déploiement centralisée côté serveur |
 | DB locale | SQLite | Aucun serveur à installer, onboarding immédiat |
 | Questions quiz | Hard-codées dans `cobrand/constants/quizQuestions.js` | CTS n'a pas besoin d'éditer les questions via le dashboard |
@@ -146,7 +146,7 @@ app/Http/Controllers/
 └── Api/
     └── v1/
         ├── LabelCompanyController.php
-        ├── ApiTropheeController.php
+        ├── TropheeController.php
         └── ...              ← nouveaux controllers ici
 ```
 

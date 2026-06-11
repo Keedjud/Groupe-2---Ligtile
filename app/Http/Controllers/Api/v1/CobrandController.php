@@ -6,7 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Models\Collection;
 use App\Services\ColorPaletteService;
 
-class ApiCobrandController extends Controller
+class CobrandController extends Controller
 {
     public function show(string $token)
     {
@@ -14,7 +14,9 @@ class ApiCobrandController extends Controller
             ->with('company')
             ->firstOrFail();
 
-        if (now()->gt($collection->end_date->addDays(7)->endOfDay())) {
+        // Le site cobrandé est disponible dès la création de la collecte
+        // (la ligne existe en base) et jusqu'à la fin de la collecte incluse.
+        if (now()->gt($collection->end_date->endOfDay())) {
             abort(404);
         }
 
@@ -48,9 +50,8 @@ class ApiCobrandController extends Controller
                 'postal_code' => $collection->venue_postal_code,
                 'city'        => $collection->venue_city,
             ],
-            'theme'            => ColorPaletteService::fromTwo(
+            'theme'            => ColorPaletteService::fromPrimary(
                 $collection->primary_color,
-                $collection->secondary_color,
             ),
         ]);
     }

@@ -42,7 +42,6 @@ class CollectionKitMail extends Mailable
                 'lienCoBrande'      => $base . '/' . $this->collecte->public_token,
                 'lienKitComm'       => $this->collecte->kit_url ?: null,
                 'couleurPrimaire'   => $this->collecte->primary_color ?: '#681764',
-                'couleurSecondaire' => $this->collecte->secondary_color ?: '#681764',
                 'dateDebut'         => $this->formatDate($this->collecte->start_date),
                 'dateFin'           => $this->formatDate($this->collecte->end_date),
                 'logoUrl'           => $logoUrl,

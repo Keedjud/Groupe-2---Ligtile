@@ -21,30 +21,30 @@ const { isOpen, toggle, close } = useDisclosure();
         class="relative w-full bg-[var(--color-beige-50)] shadow-[0_4px_4px_rgba(0,0,0,0.10)]"
     >
         <div
-            class="flex h-[55px] w-full items-center justify-between px-4 py-1.5 lg:px-[60px]"
+            class="flex h-[67px] w-full items-center justify-between px-4 py-1.5 lg:px-[60px]"
         >
             <div class="flex min-w-0 items-center gap-3 lg:gap-[22px]">
                 <a href="#/accueil" class="shrink-0">
                     <img
                         :src="'/images/logos/logo-hug.png'"
                         alt="HUG - Hôpitaux Universitaires de Genève"
-                        class="h-7 w-auto"
+                        class="h-8 w-auto lg:h-12"
                     />
                 </a>
                 <span
-                    class="h-[30px] w-px shrink-0 bg-gris-50 lg:h-[35px]"
+                    class="h-6 w-px shrink-0 bg-gris-50 lg:h-[35px]"
                     aria-hidden="true"
                 ></span>
                 <img
                     v-if="logoUrl"
                     :src="logoUrl"
                     :alt="companyName"
-                    class="h-7 w-auto shrink-0"
+                    class="h-7 w-auto shrink-0 lg:h-10"
                 />
                 <span
                     v-else-if="companyName"
                     class="truncate text-h5 font-bold tracking-wide lg:text-h4"
-                    :style="{ color: 'var(--cobrand-primary, var(--cobrand-secondary))' }"
+                    :style="{ color: 'var(--cobrand-primary)' }"
                     >{{ companyName }}</span
                 >
                 <span
@@ -59,7 +59,7 @@ const { isOpen, toggle, close } = useDisclosure();
                     v-for="link in links"
                     :key="link.key"
                     :href="link.href"
-                    class="font-sans text-regular transition-colors hover:text-[var(--cobrand-secondary)]"
+                    class="font-sans text-regular transition-colors hover:text-[var(--cobrand-primary-dark)]"
                     :class="
                         current === link.key
                             ? 'font-bold text-[var(--cobrand-primary)]'

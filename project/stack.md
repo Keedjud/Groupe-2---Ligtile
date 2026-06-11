@@ -12,7 +12,7 @@
 | Sync avant PR | `git merge develop` obligatoire avant toute demande de review | Les conflits sont résolus par l'auteur, pas par le reviewer |
 | Branches empilées | Brancher depuis une PR en cours si les mêmes fichiers sont touchés | Évite les conflits entre deux tâches parallèles d'un même développeur |
 | CI sur `develop` | Workflow build-check (sans déploiement) | Détecte les erreurs de build avant qu'elles atteignent `main` |
-| Co-branding | Variables CSS custom (`--cobrand-primary/secondary/*`) injectées sur `<html>` | Générées par `ColorPaletteService::fromTwo()` (PHP) + répliquées en JS, pas de CSS dupliqué par collecte |
+| Co-branding | Variables CSS custom (`--cobrand-primary*`) injectées sur `<html>` | Générées par `ColorPaletteService::fromPrimary()` (PHP, une seule couleur) + répliquées en JS, pas de CSS dupliqué par collecte |
 | Architecture Vue | Multi-entry : 3 apps Vue indépendantes | Un espace = une app, rechargement complet uniquement entre espaces |
 | Navigation | Hash-based sans Vue Router | Pattern maîtrisé, aucune librairie supplémentaire |
 | État partagé | Composable module-level (ref singleton) | Pas besoin de Pinia pour la taille du projet |
