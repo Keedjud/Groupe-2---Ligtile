@@ -16,7 +16,7 @@ return new class extends Migration
             $table->foreignId('company_id')->constrained()->restrictOnDelete();
             $table->foreignId('user_id')->nullable()->constrained()->nullOnDelete();
             $table->string('contact_email', 100);
-            $table->string('contact_phone', 50)->nullable();
+            $table->string('contact_phone', 50);
             $table->string('venue_street', 255);
             $table->string('venue_number', 20);
             $table->string('venue_postal_code', 10);
@@ -25,7 +25,6 @@ return new class extends Migration
             $table->datetime('end_date');
             $table->integer('capacity');
             $table->string('primary_color');
-            $table->string('secondary_color');
             $table->string('logo_url');
             $table->string('onedoc_url');
             $table->string('kit_url');

@@ -120,7 +120,7 @@ const bloodTypes = [
 
                         <div class="flex flex-col items-center gap-3 pt-8 text-center sm:flex-row sm:items-center sm:gap-6 sm:pt-2 sm:text-left lg:pt-4">
                             <a href="#/quiz"
-                                class="inline-flex w-max items-center justify-center rounded-full bg-[var(--cobrand-primary)] px-8 py-3 text-regular text-[var(--cobrand-primary-text)] shadow transition hover:-translate-y-0.5 hover:bg-[var(--cobrand-secondary)] hover:shadow-lg">Réservez
+                                class="inline-flex w-max items-center justify-center rounded-full bg-[var(--cobrand-primary)] px-8 py-3 text-regular text-[var(--cobrand-primary-text)] shadow transition hover:-translate-y-0.5 hover:bg-[var(--cobrand-primary-dark)] hover:shadow-lg">Réservez
                                 votre place</a>
                             <p v-if="prochaineCollecte" class="whitespace-nowrap text-regular text-[var(--color-texte-primary-dark)]">
                                 Prochaine collecte : <span class="font-semibold capitalize">{{ prochaineCollecte }}</span>
@@ -266,7 +266,7 @@ const bloodTypes = [
             <div class="mt-16 py-8 text-center">
                 <p class="text-h1 font-semibold text-[var(--color-violet-900)]">Je veux donner mon sang</p>
                 <a href="#/quiz"
-                    class="mt-6 inline-flex rounded-full bg-[var(--cobrand-primary)] px-10 py-3 text-regular font-semibold text-[var(--cobrand-primary-text)] shadow transition hover:-translate-y-0.5 hover:bg-[var(--cobrand-secondary)] hover:shadow-lg">Réservez
+                    class="mt-6 inline-flex rounded-full bg-[var(--cobrand-primary)] px-10 py-3 text-regular font-semibold text-[var(--cobrand-primary-text)] shadow transition hover:-translate-y-0.5 hover:bg-[var(--cobrand-primary-dark)] hover:shadow-lg">Réservez
                     votre place</a>
             </div>
         </div>

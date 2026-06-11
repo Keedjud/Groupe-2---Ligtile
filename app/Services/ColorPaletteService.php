@@ -4,28 +4,21 @@ namespace App\Services;
 
 class ColorPaletteService
 {
-    private const FALLBACK_PRIMARY   = '#7c3aed';
-    private const FALLBACK_SECONDARY = '#ec4899';
+    private const FALLBACK_PRIMARY = '#7c3aed';
 
     private const LIGHT_BG        = '#efe7d9';
     private const CONTRAST_TARGET = 3.0;
 
-    public static function fromTwo(?string $primary, ?string $secondary): array
+    public static function fromPrimary(?string $primary): array
     {
-        $primary   = self::normalize($primary, self::FALLBACK_PRIMARY);
-        $secondary = self::normalize($secondary, self::FALLBACK_SECONDARY);
+        $primary = self::normalize($primary, self::FALLBACK_PRIMARY);
 
         return [
-            'primary'           => $primary,
-            'primary_light'     => self::lighten($primary, 60),
-            'primary_dark'      => self::darken($primary, 25),
-            'primary_text'      => self::accessibleText($primary),
-            'primary_on_light'  => self::readableOn($primary, self::LIGHT_BG, self::CONTRAST_TARGET),
-            'secondary'         => $secondary,
-            'secondary_light'   => self::lighten($secondary, 60),
-            'secondary_dark'    => self::darken($secondary, 25),
-            'secondary_text'    => self::accessibleText($secondary),
-            'secondary_on_light'=> self::readableOn($secondary, self::LIGHT_BG, self::CONTRAST_TARGET),
+            'primary'          => $primary,
+            'primary_light'    => self::lighten($primary, 60),
+            'primary_dark'     => self::darken($primary, 25),
+            'primary_text'     => self::accessibleText($primary),
+            'primary_on_light' => self::readableOn($primary, self::LIGHT_BG, self::CONTRAST_TARGET),
         ];
     }
 

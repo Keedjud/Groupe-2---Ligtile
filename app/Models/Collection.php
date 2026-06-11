@@ -12,7 +12,7 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
     'contact_email', 'contact_phone',
     'venue_street', 'venue_number', 'venue_postal_code', 'venue_city',
     'start_date', 'end_date', 'capacity',
-    'primary_color', 'secondary_color',
+    'primary_color',
     'logo_url', 'onedoc_url', 'kit_url', 'public_token',
     'link_generated_at', 'kit_sent_at',
 ])]

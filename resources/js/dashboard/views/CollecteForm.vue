@@ -28,7 +28,6 @@ const champVille        = ref('')
 const champEmail        = ref('')
 const champTelephone    = ref('')
 const couleurPrincipale = ref('#681764')
-const couleurSecondaire = ref('#C44444')
 const logoUrl           = ref(null)
 const champDateDebut    = ref('')
 const champDateFin      = ref('')
@@ -98,7 +97,6 @@ function deselectionnerEntreprise() {
   champKitUrl.value    = ''
   logoUrl.value        = null
   couleurPrincipale.value = '#681764'
-  couleurSecondaire.value = '#C44444'
 }
 
 // ─── Validation croisée des dates ────────────────────────────────────────────
@@ -123,7 +121,6 @@ onMounted(() => {
       champEmail.value        = collecte.contact_email
       champTelephone.value    = collecte.contact_phone
       couleurPrincipale.value = collecte.couleur_principale
-      couleurSecondaire.value = collecte.couleur_secondaire
       logoUrl.value           = collecte.logo_url
       champDateDebut.value    = (collecte.date_debut || '').slice(0, 10)
       champDateFin.value      = (collecte.date_fin   || '').slice(0, 10)
@@ -192,7 +189,6 @@ async function soumettre() {
     date_fin:           champDateFin.value,
     capacity:           Number(champCapacity.value),
     couleur_principale: couleurPrincipale.value,
-    couleur_secondaire: couleurSecondaire.value,
     logo_url:           logoUrl.value,
     onedoc_url:         champOnedocUrl.value.trim(),
     kit_url:            champKitUrl.value.trim(),
@@ -399,24 +395,20 @@ const nomEntreprisePourPreview = computed(() =>
               :class="{ 'ring-rouge-500 ring-1': champsInvalides.telephone }" />
           </div>
 
-          <!-- Couleurs + Logo -->
-          <div class="flex flex-wrap items-start gap-6">
-            <ColorField label="Couleur principale" v-model="couleurPrincipale" />
-            <ColorField label="Couleur secondaire" v-model="couleurSecondaire" />
+          <!-- Couleur + Logo + Aperçu (bouton à côté, visible dès le logo uploadé) -->
+          <div class="flex flex-wrap items-end gap-6">
+            <ColorField label="Couleur de l'entreprise" v-model="couleurPrincipale" />
             <LogoUpload v-model="logoUrl" />
-          </div>
-
-          <!-- Bouton prévisualisation cobrand -->
-          <Transition
-            enter-active-class="transition-all duration-300 ease-out"
-            enter-from-class="opacity-0 -translate-y-1"
-            enter-to-class="opacity-100 translate-y-0"
-            leave-active-class="transition-all duration-150 ease-in"
-            leave-from-class="opacity-100 translate-y-0"
-            leave-to-class="opacity-0 -translate-y-1"
-          >
-            <div v-if="peutPrevisualiser" class="flex items-center gap-3">
+            <Transition
+              enter-active-class="transition-all duration-300 ease-out"
+              enter-from-class="opacity-0 translate-y-1"
+              enter-to-class="opacity-100 translate-y-0"
+              leave-active-class="transition-all duration-150 ease-in"
+              leave-from-class="opacity-100 translate-y-0"
+              leave-to-class="opacity-0 translate-y-1"
+            >
               <button
+                v-if="peutPrevisualiser"
                 type="button"
                 class="flex items-center gap-2 rounded-[40px] px-5 py-2.5 font-sans text-small font-semibold shadow-[0_2px_8px_rgba(0,0,0,0.18)] transition hover:opacity-90 active:scale-95"
                 :style="{ backgroundColor: couleurPrincipale, color: couleurPrincipale ? (isLightColor(couleurPrincipale) ? '#000000' : '#ffffff') : '#ffffff' }"
@@ -428,8 +420,8 @@ const nomEntreprisePourPreview = computed(() =>
                 </svg>
                 Prévisualiser le site cobrandé
               </button>
-            </div>
-          </Transition>
+            </Transition>
+          </div>
 
           <!-- Dates -->
           <div class="flex flex-col gap-4 sm:flex-row sm:items-start">
@@ -525,7 +517,6 @@ const nomEntreprisePourPreview = computed(() =>
   <CobrandPreviewModal
     v-model="showPreview"
     :primaryColor="couleurPrincipale"
-    :secondaryColor="couleurSecondaire"
     :logoUrl="logoUrl || ''"
     :companyName="nomEntreprisePourPreview"
   />

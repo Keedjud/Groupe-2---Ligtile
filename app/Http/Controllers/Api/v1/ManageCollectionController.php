@@ -29,7 +29,6 @@ class ManageCollectionController extends Controller
             'end_date'          => ['required', 'date', 'after:start_date'],
             'capacity'          => ['required', 'integer', 'min:1'],
             'primary_color'     => ['required', 'string', 'max:10'],
-            'secondary_color'   => ['required', 'string', 'max:10'],
             'logo_url'          => ['required', 'string', 'max:255'],
             'onedoc_url'        => ['required', 'url', 'max:255'],
             'kit_url'           => ['required', 'url', 'max:255'],
@@ -128,7 +127,6 @@ class ManageCollectionController extends Controller
             'end_date'          => $valide['end_date'],
             'capacity'          => $valide['capacity'],
             'primary_color'     => $valide['primary_color'],
-            'secondary_color'   => $valide['secondary_color'],
             'logo_url'          => $valide['logo_url'],
             'onedoc_url'        => $valide['onedoc_url'],
             'kit_url'           => $valide['kit_url'],
@@ -162,7 +160,6 @@ class ManageCollectionController extends Controller
             'onedoc_url'        => $valide['onedoc_url'],
             'kit_url'           => $valide['kit_url'],
             'primary_color'     => $valide['primary_color'],
-            'secondary_color'   => $valide['secondary_color'],
             'logo_url'          => $valide['logo_url'],
         ]);
 
