@@ -28,18 +28,18 @@ const { isOpen, toggle, close } = useDisclosure();
                     <img
                         :src="'/images/logos/logo-hug.png'"
                         alt="HUG - Hôpitaux Universitaires de Genève"
-                        class="h-12 w-auto"
+                        class="h-8 w-auto lg:h-12"
                     />
                 </a>
                 <span
-                    class="h-[30px] w-px shrink-0 bg-gris-50 lg:h-[35px]"
+                    class="h-6 w-px shrink-0 bg-gris-50 lg:h-[35px]"
                     aria-hidden="true"
                 ></span>
                 <img
                     v-if="logoUrl"
                     :src="logoUrl"
                     :alt="companyName"
-                    class="h-10 w-auto shrink-0"
+                    class="h-7 w-auto shrink-0 lg:h-10"
                 />
                 <span
                     v-else-if="companyName"
