@@ -25,7 +25,7 @@
 
 ## 1. Contexte technique et stack
 
-La plateforme est une application web **multi-sites** permettant au CTS (Centre de Transfusion Sanguine, ici une instance fictive rattachée aux HUG de Genève) d'organiser des collectes de sang en entreprise. Elle se décompose en **trois espaces** servis par une seule et même application :
+La plateforme est une application web **multi-sites** permettant au CTS (Centre de Transfusion Sanguine) d'organiser des collectes de sang en entreprise. Elle se décompose en **trois espaces** servis par une seule et même application :
 
 - le **site public** vitrine (`/`) ;
 - le **dashboard CTS** protégé (`/dashboard`) ;
