@@ -171,6 +171,17 @@ function valider() {
   return Object.keys(e).length === 0
 }
 
+// Re-validation réactive : après une 1re tentative d'envoi (des erreurs sont affichées),
+// on rejoue la validation à chaque modification pour retirer le surlignage d'un champ corrigé.
+watch(
+  [
+    entrepriseSelectionnee, champRue, champNumero, champNpa, champVille,
+    champEmail, champTelephone, logoUrl, champCapacity, champOnedocUrl,
+    champKitUrl, champDateDebut, champDateFin,
+  ],
+  () => { if (Object.keys(champsInvalides.value).length > 0) valider() },
+)
+
 // ─── Envoi ───────────────────────────────────────────────────────────────────
 async function soumettre() {
   erreurServeur.value = ''

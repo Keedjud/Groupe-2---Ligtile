@@ -1,6 +1,6 @@
 <!-- CompanyDetail — fiche entreprise avec édition inline -->
 <script setup>
-import { ref, computed, onMounted } from 'vue'
+import { ref, computed, onMounted, watch } from 'vue'
 import DashboardLayout from '../layouts/DashboardLayout.vue'
 import { useCompanies } from '../composables/useCompanies.js'
 import { useOverlay }   from '../composables/useOverlay.js'
@@ -91,6 +91,12 @@ function valider() {
   champsInvalides.value = e
   return Object.keys(e).length === 0
 }
+
+// Re-validation réactive après une 1re tentative : retire le surlignage d'un champ dès qu'il est corrigé.
+watch(
+  [champNom, champNbEmployes, champRue, champNumero, champNpa, champVille, champEmail, champTelephone],
+  () => { if (Object.keys(champsInvalides.value).length > 0) valider() },
+)
 
 async function sauvegarder() {
   erreurServeur.value = ''
