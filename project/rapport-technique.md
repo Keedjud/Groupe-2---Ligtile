@@ -203,14 +203,16 @@ erDiagram
 public function getSizeLabelAttribute(): string
 {
     return match (true) {
-        $this->nb_employee >= 250 => 'Grande entreprise',
-        $this->nb_employee >= 50  => 'Moyenne entreprise',
-        $this->nb_employee >= 10  => 'Petite entreprise',
-        default                   => 'Très petite entreprise',
+        $this->nb_employee >= 1000 => 'Grande entreprise',
+        $this->nb_employee >= 500  => 'Moyenne entreprise',
+        $this->nb_employee >= 100  => 'Petite entreprise',
+        default                    => 'Très petite entreprise',
     };
 }
 ```
-*Légende : [app/Models/Company.php:21-29](app/Models/Company.php).*
+*Légende : [app/Models/Company.php:24-32](app/Models/Company.php).*
+
+> **Seuil métier.** Le seuil de 1000 employés n'est pas arbitraire : il sépare les **grandes entreprises**, pour lesquelles le CTS organise une collecte dédiée sur place, des **plus petites**, auxquelles le CTS réserve des créneaux dans une collecte publique existante. Ce seuil est cohérent avec la validation du formulaire de contact « grande entreprise » du site public (`employees_count >= 1000`).
 
 - **`contacts`** — coordonnées de contact d'une entreprise (relation `hasOne`).
 - **`labels`** / **`company_label`** — label CTS attribué à une entreprise sur une période (`start_date` → `end_date`, soit deux ans après la collecte). La pivot impose une **contrainte d'unicité** `(label_id, company_id)`.
