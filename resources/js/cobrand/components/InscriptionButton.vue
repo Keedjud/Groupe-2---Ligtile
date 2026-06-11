@@ -38,7 +38,9 @@ const emit = defineEmits(["click"]);
 
         <span
             class="absolute inset-0 z-10 flex items-center justify-center"
-            :style="{ color: enabled ? 'var(--cobrand-primary-text, #ffffff)' : '#ffffff' }"
+            :style="{             color: (enabled && ratio > 0) ? '#ffffff' : enabled ? 'var(--cobrand-primary-text, #ffffff)' : '#ffffff'
+ }"
+
             >{{ label }}</span
         >
     </button>
