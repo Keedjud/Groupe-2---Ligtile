@@ -23,10 +23,17 @@ function scrollToHashFragment() {
     return;
   }
 
-  const target = document.getElementById(fragment);
-  if (target) {
-    target.scrollIntoView({ behavior: 'smooth' });
-  }
+  // Small delay to let the DOM fully render after route change
+  requestAnimationFrame(() => {
+    setTimeout(() => {
+      const target = document.getElementById(fragment);
+      if (target) {
+        const headerOffset = 80;
+        const elementPosition = target.getBoundingClientRect().top + window.scrollY;
+        window.scrollTo({ top: elementPosition - headerOffset, behavior: 'smooth' });
+      }
+    }, 100);
+  });
 }
 
 onMounted(() => {
@@ -97,7 +104,7 @@ async function handleSubmit() {
     </section>
 
     <!-- ===== Section 2 : Comment se déroule une collecte ? (+ prévoir sur mobile) ===== -->
-    <section id="deroulement" class="bg-violet-100 px-4 py-12 lg:px-[60px] lg:py-[60px]">
+    <section id="deroulement" class="bg-violet-100 px-4 py-12 lg:px-[60px] lg:py-[60px] scroll-mt-20 lg:scroll-mt-0">
       <div class="flex flex-col gap-8 lg:flex-row lg:gap-[87px]">
         <!-- Colonne gauche -->
         <div class="flex flex-1 flex-col gap-[54px] lg:max-w-[737px]">
