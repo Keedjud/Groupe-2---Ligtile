@@ -451,6 +451,14 @@ const nomEntreprisePourPreview = computed(() =>
             </div>
           </div>
 
+          <!-- Rappel : portée des dates + fenêtre de disponibilité du site cobrandé -->
+          <div class="flex gap-2 rounded-lg border border-violet-200 bg-violet-50 px-3 py-2.5 font-sans text-xs text-violet-700">
+            <svg xmlns="http://www.w3.org/2000/svg" class="mt-0.5 h-4 w-4 shrink-0 text-violet-400" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/>
+            </svg>
+            <span>Ce sont les <strong>dates de la collecte</strong>. Le site cobrandé est accessible <strong>dès la création de la collecte</strong> et jusqu'à la <strong>fin de celle-ci</strong>.</span>
+          </div>
+
           <hr class="border-violet-100" />
 
           <!-- Capacité -->
