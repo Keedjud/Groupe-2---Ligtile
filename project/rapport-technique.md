@@ -1,4 +1,4 @@
-# Rapport technique — Plateforme Ligtile (collectes de sang CTS / HUG)
+# Rapport technique : Plateforme Ligtile (collectes de sang CTS / HUG)
 
 > **Périmètre de ce document.** Cette partie du rapport se concentre sur les aspects **techniques** du projet : le **modèle de données**, l'**architecture du code** et les **choix d'organisation et de gestion de projet sur GitHub**. La description fonctionnelle du produit (parcours utilisateur, justification des fonctionnalités) est traitée séparément par un autre membre de l'équipe.
 >
@@ -25,7 +25,7 @@
 
 ## 1. Contexte technique et stack
 
-La plateforme est une application web **multi-sites** permettant au CTS (Centre de Transfusion Sanguine, ici une instance fictive rattachée aux HUG de Genève) d'organiser des collectes de sang en entreprise. Elle se décompose en **trois espaces** servis par une seule et même application :
+La plateforme est une application web **multi-sites** permettant au CTS (Centre de Transfusion Sanguine) d'organiser des collectes de sang en entreprise. Elle se décompose en **trois espaces** servis par une seule et même application :
 
 - le **site public** vitrine (`/`) ;
 - le **dashboard CTS** protégé (`/dashboard`) ;
@@ -40,10 +40,10 @@ Le projet repose sur une architecture **API REST + SPA découplée**, choisie po
 | Front-end | Vue 3 (Composition API) | 3.5 |
 | Build / bundler | Vite + `laravel-vite-plugin` | Vite 8 |
 | Styling | Tailwind CSS | 4.0 |
-| Base de données | SQLite (dev) / MariaDB (prod) | — |
-| Qualité | Pint (PHP), ESLint + Prettier (JS) | — |
-| CI/CD | GitHub Actions | — |
-| Hébergement | Infomaniak (déploiement SSH) | — |
+| Base de données | SQLite (dev) / MariaDB (prod) | - |
+| Qualité | Pint (PHP), ESLint + Prettier (JS) | - |
+| CI/CD | GitHub Actions | - |
+| Hébergement | Infomaniak (déploiement SSH) | - |
 
 *Sources : [composer.json:11-27](composer.json), [package.json:13-29](package.json).*
 
@@ -55,10 +55,10 @@ Le projet repose sur une architecture **API REST + SPA découplée**, choisie po
 
 Le modèle de données s'organise autour de quatre domaines :
 
-1. **Domaine métier « entreprises »** — `addresses`, `companies`, `contacts`, ainsi que les labels et trophées attribués aux entreprises (`labels`, `trophees`) via des tables pivot (`company_label`, `company_trophee`).
-2. **Domaine métier « collectes »** — la table centrale `collections`, reliée à une entreprise et (optionnellement) à un utilisateur CTS.
-3. **Domaine « tracking »** — `quiz_events` et `page_events`, qui enregistrent de manière anonyme le comportement des employés sur les sites cobrandés, plus `contact_stats` pour le comptage des demandes.
-4. **Domaine « administration / framework »** — `users` (comptes CTS), et les tables techniques de Laravel (`sessions`, `cache`, `jobs`, `password_reset_tokens`).
+1. **Domaine métier « entreprises »** : `addresses`, `companies`, `contacts`, ainsi que les labels et trophées attribués aux entreprises (`labels`, `trophees`) via des tables pivot (`company_label`, `company_trophee`).
+2. **Domaine métier « collectes »** : la table centrale `collections`, reliée à une entreprise et (optionnellement) à un utilisateur CTS.
+3. **Domaine « tracking »** : `quiz_events` et `page_events`, qui enregistrent de manière anonyme le comportement des employés sur les sites cobrandés, plus `contact_stats` pour le comptage des demandes.
+4. **Domaine « administration / framework »** : `users` (comptes CTS), et les tables techniques de Laravel (`sessions`, `cache`, `jobs`, `password_reset_tokens`).
 
 L'ensemble du schéma est défini par des **migrations Laravel** versionnées dans `database/migrations/`, et les relations sont déclarées via **Eloquent** dans `app/Models/`.
 
@@ -146,7 +146,7 @@ erDiagram
         bigint company_id FK
         bigint user_id FK "nullable"
         string contact_email
-        string contact_phone "nullable"
+        string contact_phone
         string venue_street
         string venue_number
         string venue_postal_code
@@ -155,7 +155,6 @@ erDiagram
         datetime end_date
         int capacity
         string primary_color
-        string secondary_color
         string logo_url
         string onedoc_url
         string kit_url
@@ -196,8 +195,8 @@ erDiagram
 
 #### Domaine « entreprises »
 
-- **`addresses`** — adresse postale (NPA, ville, rue, numéro). Le NPA et le numéro de rue sont stockés en chaîne pour ne pas perdre les zéros initiaux et accepter les formats suisses. Référencée par `companies`.
-- **`companies`** — entreprise partenaire : `name` (unique), `nb_employee`, et FK vers `addresses`. Le modèle expose un **attribut calculé** `size_label` qui catégorise l'entreprise selon son effectif :
+- **`addresses`** : adresse postale (NPA, ville, rue, numéro). Le NPA et le numéro de rue sont stockés en chaîne pour ne pas perdre les zéros initiaux et accepter les formats suisses. Référencée par `companies`.
+- **`companies`** : entreprise partenaire, avec `name` (unique), `nb_employee` et une FK vers `addresses`. Le modèle expose un **attribut calculé** `size_label` qui catégorise l'entreprise selon son effectif :
 
 ```php
 public function getSizeLabelAttribute(): string
@@ -212,15 +211,15 @@ public function getSizeLabelAttribute(): string
 ```
 *Légende : [app/Models/Company.php:24-32](app/Models/Company.php).*
 
-> **Seuil métier.** Le seuil de 1000 employés n'est pas arbitraire : il sépare les **grandes entreprises**, pour lesquelles le CTS organise une collecte dédiée sur place, des **plus petites**, auxquelles le CTS réserve des créneaux dans une collecte publique existante. Ce seuil est cohérent avec la validation du formulaire de contact « grande entreprise » du site public (`employees_count >= 1000`).
+> **Seuil métier.** Le seuil de 1000 employés n'est pas arbitraire : il sépare les **grandes entreprises**, pour lesquelles le CTS organise une collecte dédiée sur place, des **plus petites**, auxquelles le CTS réserve des créneaux dans une collecte publique existante. Cette catégorie pilote notamment les messages d'aide affichés au CTS dans le formulaire de création de collecte (champ capacité, lien Onedoc).
 
-- **`contacts`** — coordonnées de contact d'une entreprise (relation `hasOne`).
-- **`labels`** / **`company_label`** — label CTS attribué à une entreprise sur une période (`start_date` → `end_date`, soit deux ans après la collecte). La pivot impose une **contrainte d'unicité** `(label_id, company_id)`.
-- **`trophees`** / **`company_trophee`** — trophées annuels attribués aux entreprises avec un `rank` (pour le podium du site public), également uniques sur `(company_id, trophee_id)`.
+- **`contacts`** : coordonnées de contact d'une entreprise (relation `hasOne`).
+- **`labels`** / **`company_label`** : il existe un **unique label CTS** ; la pivot `company_label` enregistre les **périodes successives** de labellisation d'une entreprise (`start_date` → `end_date`). Une entreprise peut donc avoir **plusieurs lignes** (un historique) : aucune contrainte d'unicité `(label_id, company_id)` n'est posée. La logique d'attribution est détaillée en [§2.4 i](#24-choix-de-conception-notables-et-justifications).
+- **`trophees`** / **`company_trophee`** : trophées annuels attribués aux entreprises avec un `rank` (pour le podium du site public), uniques sur `(company_id, trophee_id)`.
 
 #### Domaine « collectes »
 
-- **`collections`** — table centrale. Une collecte appartient à une `company` et, optionnellement, à l'`user` CTS qui l'a créée. Elle agrège trois groupes d'informations : **logistique** (`venue_*`, `start_date`, `end_date`, `capacity`), **co-branding** (`primary_color`, `secondary_color`, `logo_url`), et **liens externes** (`onedoc_url`, `kit_url`, `public_token`).
+- **`collections`** : table centrale. Une collecte appartient à une `company` et, optionnellement, à l'`user` CTS qui l'a créée. Elle agrège trois groupes d'informations : **logistique** (`venue_*`, `start_date`, `end_date`, `capacity`), **co-branding** (`primary_color`, `logo_url`), et **liens externes** (`onedoc_url`, `kit_url`, `public_token`).
 
 ```php
 $table->foreignId('company_id')->constrained()->restrictOnDelete();
@@ -231,20 +230,19 @@ $table->datetime('start_date');
 $table->datetime('end_date');
 $table->integer('capacity');
 $table->string('primary_color');
-$table->string('secondary_color');
 $table->string('logo_url');
 $table->string('onedoc_url');
 $table->string('kit_url');
 $table->string('public_token');
 ```
-*Légende : [database/migrations/2026_05_26_131534_collections.php:16-32](database/migrations/2026_05_26_131534_collections.php).*
+*Légende : [database/migrations/2026_05_26_131534_collections.php:16-31](database/migrations/2026_05_26_131534_collections.php). `contact_phone` (non montré) est `NOT NULL`, obligatoire dans le formulaire de création.*
 
 #### Domaine « tracking »
 
-- **`quiz_events`** — un événement par interaction de l'employé avec le quiz d'éligibilité. Le champ `event_type` est un **ENUM** de neuf valeurs, et un **index composite** `(collection_id, event_type, session_id)` accélère les agrégations du dashboard.
+- **`quiz_events`** : un événement par interaction de l'employé avec le quiz d'éligibilité. Le champ `event_type` est un **ENUM** de neuf valeurs, et un **index composite** `(collection_id, event_type, session_id)` accélère les agrégations du dashboard.
 
 ```php
-$table->foreignId('collection_id')->constrained()->restrictOnDelete();
+$table->foreignId('collection_id')->constrained()->cascadeOnDelete();
 $table->uuid('session_id');
 $table->enum('event_type', [
     'quiz_started', 'question_answered', 'question_skipped',
@@ -259,8 +257,8 @@ $table->index(['collection_id', 'event_type', 'session_id']);
 ```
 *Légende : [database/migrations/2026_06_01_223000_create_quiz_events_table.php:13-24](database/migrations/2026_06_01_223000_create_quiz_events_table.php).*
 
-- **`page_events`** — engagement sur la page de prévention (scrollytelling) : `prevention_entered` / `prevention_exited`, avec `engaged` (l'utilisateur a-t-il interagi ?) et `time_on_page` renseignés à la sortie.
-- **`contact_stats`** — table volontairement **minimale** (un `id` et un `created_at`) : elle ne sert qu'à compter les demandes de collecte (voir [§2.4](#24-choix-de-conception-notables-et-justifications)).
+- **`page_events`** : engagement sur la page de prévention (scrollytelling) : `prevention_entered` / `prevention_exited`, avec `engaged` (l'utilisateur a-t-il interagi ?) et `time_on_page` renseignés à la sortie.
+- **`contact_stats`** : table volontairement **minimale** (un `id` et un `created_at`) : elle ne sert qu'à compter les demandes de collecte (voir [§2.4](#24-choix-de-conception-notables-et-justifications)).
 
 ### 2.4 Choix de conception notables (et justifications)
 
@@ -268,7 +266,7 @@ Cette section ne décrit pas ce qui découle naturellement d'un schéma relation
 
 #### a) `contact_stats` : ne pas persister les données personnelles des formulaires
 
-C'est le choix le plus structurant du modèle. Les formulaires de contact du site public collectent des **données personnelles** (nom d'entreprise, email, téléphone, adresse). Plutôt que de les stocker en base, le contrôleur les **valide**, les **transmet par email** au CTS (et un email de confirmation à l'expéditeur), puis n'enregistre **qu'une ligne vide** dans `contact_stats` :
+C'est le choix le plus structurant du modèle. Les **deux formulaires de contact** du site public collectent des **données personnelles**, variables selon le formulaire : nom d'entreprise et email dans les deux cas, complétés par le téléphone et l'adresse pour le formulaire détaillé, ou par un message libre pour le formulaire simplifié. Plutôt que de les stocker en base, le contrôleur les **valide**, les **transmet par email** au CTS (et un email de confirmation à l'expéditeur), puis n'enregistre **qu'une ligne vide** dans `contact_stats` :
 
 ```php
 $validated = $request->validate([ /* … email, company_name, phone, address … */ ]);
@@ -279,9 +277,9 @@ try {
     Mail::to($validated['email'])->send(new ContactConfirmationMail($validated));
     // …
 ```
-*Légende : [app/Http/Controllers/Api/v1/ApiContactController.php:17-30](app/Http/Controllers/Api/v1/ApiContactController.php).*
+*Légende : [app/Http/Controllers/Api/v1/ContactController.php:17-30](app/Http/Controllers/Api/v1/ContactController.php).*
 
-**Pourquoi ?** Le seul besoin métier en base est le **KPI « nombre de demandes de collecte »** — un comptage daté suffit. Ne pas stocker les données personnelles élimine de fait toute obligation de conservation/suppression au sens nLPD/RGPD, et réduit la surface d'exposition. Le CTS travaille de toute façon depuis sa boîte mail pour le suivi des demandes. La table ne contient donc qu'un horodatage, sur lequel le dashboard filtre par année.
+**Pourquoi ?** Le seul besoin métier en base est le **KPI « nombre de demandes de collecte »** : un comptage daté suffit. Ne pas stocker les données personnelles élimine de fait toute obligation de conservation/suppression au sens nLPD/RGPD, et réduit la surface d'exposition. Le CTS travaille de toute façon depuis sa boîte mail pour le suivi des demandes. La table ne contient donc qu'un horodatage, sur lequel le dashboard filtre par année.
 
 #### b) Dénormalisation du lieu de collecte (`venue_*`) plutôt qu'une FK vers `addresses`
 
@@ -297,13 +295,13 @@ $nbInscrits = $collection->quizEvents()
     ->distinct()
     ->count('session_id');
 ```
-*Légende : [app/Http/Controllers/Api/v1/ApiCobrandController.php:21-24](app/Http/Controllers/Api/v1/ApiCobrandController.php).*
+*Légende : [app/Http/Controllers/Api/v1/CobrandController.php:23-26](app/Http/Controllers/Api/v1/CobrandController.php).*
 
 **Pourquoi ?** Comme il n'y a pas d'intégration à l'API Onedoc (un clic sur le lien = une inscription), la seule source de vérité fiable est le tracking. Stocker un compteur dénormalisé aurait introduit un risque d'incohérence (compteur à maintenir à chaque événement). Le calcul à la volée garantit que la valeur affichée correspond toujours exactement aux événements enregistrés.
 
 #### d) `public_token` plutôt que l'`id` numérique dans l'URL cobrandée
 
-Le site cobrandé est résolu par un **token opaque** (`public_token`) et non par l'`id` auto-incrémenté de la collecte. **Pourquoi ?** Un `id` séquentiel serait **énumérable** : n'importe qui pourrait parcourir `/1`, `/2`, `/3`… et découvrir toutes les collectes, y compris non encore publiées. Le token non devinable agit comme une **capability URL** — seul le détenteur du lien (distribué par l'entreprise dans son kit de communication) peut accéder au site.
+Le site cobrandé est résolu par un **token opaque** (`public_token`) et non par l'`id` auto-incrémenté de la collecte. **Pourquoi ?** Un `id` séquentiel serait **énumérable** : n'importe qui pourrait parcourir `/1`, `/2`, `/3`… et découvrir toutes les collectes, y compris non encore publiées. Le token non devinable agit comme une **capability URL** : seul le détenteur du lien (distribué par l'entreprise dans son kit de communication) peut accéder au site.
 
 #### e) Identifiant de session **anonyme** (UUID) pour le tracking
 
@@ -321,25 +319,17 @@ function ensureSessionId() {
 ```
 *Légende : [resources/js/cobrand/composables/useCobrandSession.js:36-43](resources/js/cobrand/composables/useCobrandSession.js).*
 
-**Pourquoi ?** Le `session_id` permet de **relier les événements d'un même parcours** (le quiz commencé puis complété par la même personne) sans jamais identifier l'employé. `sessionStorage` (et non `localStorage` ni un cookie) le rend **éphémère** : il disparaît à la fermeture de l'onglet. Les données de `quiz_events`/`page_events` sont donc anonymes — ni IP, ni nom, ni email — ce qui dispense de bannière cookie et limite l'exposition réglementaire.
+**Pourquoi ?** Le `session_id` permet de **relier les événements d'un même parcours** (le quiz commencé puis complété par la même personne) sans jamais identifier l'employé. `sessionStorage` (et non `localStorage` ni un cookie) le rend **éphémère** : il disparaît à la fermeture de l'onglet. Les données de `quiz_events`/`page_events` sont donc anonymes (ni IP, ni nom, ni email), ce qui dispense de bannière cookie et limite l'exposition réglementaire.
 
 #### f) Politiques de suppression des clés étrangères (`RESTRICT` / `CASCADE` / `SET NULL`)
 
 Les comportements à la suppression ont été choisis table par table, et non laissés par défaut :
 
-- `companies.address_id`, `collections.company_id`, pivots `company_label`/`company_trophee` → **`RESTRICT`** : on interdit la suppression d'une entité encore référencée (sécurité métier — on ne supprime pas une entreprise qui a des collectes).
-- `collections.user_id` → **`SET NULL`** : si un compte CTS est supprimé, ses collectes **subsistent** (historique préservé), simplement orphelines d'auteur.
+- `companies.address_id`, `collections.company_id`, pivots `company_label`/`company_trophee` → **`RESTRICT`** : on interdit la suppression d'une entité encore référencée (sécurité métier : on ne supprime pas une entreprise qui a des collectes).
+- `collections.user_id` → **`SET NULL`** : ce champ n'est qu'une **trace d'audit** (quel compte CTS a créé la collecte) : il est renseigné à la création mais n'est affiché nulle part dans l'interface. Si le compte est supprimé, ses collectes **subsistent** (historique préservé), simplement orphelines d'auteur.
 - `quiz_events.collection_id` / `page_events.collection_id` → **`CASCADE`** : supprimer une collecte purge ses événements de tracking, qui n'ont plus aucun sens sans elle.
 
-Ce dernier point a d'ailleurs fait l'objet d'une **migration correctrice dédiée** : les FK des tables d'événements étaient initialement en `RESTRICT`, ce qui rendait une collecte impossible à supprimer dès qu'elle avait généré le moindre événement. La migration les bascule en `CASCADE` :
-
-```php
-Schema::table('quiz_events', function (Blueprint $table) {
-    $table->dropForeign(['collection_id']);
-    $table->foreign('collection_id')->references('id')->on('collections')->cascadeOnDelete();
-});
-```
-*Légende : [database/migrations/2026_06_09_130016_change_events_collection_fk_to_cascade.php:14-17](database/migrations/2026_06_09_130016_change_events_collection_fk_to_cascade.php).*
+> **Note sur les migrations.** Le projet n'ayant **aucune donnée réelle à préserver** (la base est reconstruite à chaque déploiement via `migrate:fresh --seed`), nous **éditons directement les migrations initiales** plutôt que d'empiler des migrations correctrices. Le `CASCADE` des tables d'événements est donc déclaré directement dans leur migration de création, et non dans une migration `ALTER` séparée.
 
 #### g) Stabilité des `question_slug` (couplage front ↔ données)
 
@@ -348,6 +338,24 @@ Les questions du quiz sont **hard-codées** côté front dans `cobrand/constants
 #### h) Désactivation des `timestamps` Eloquent sur les tables d'événements
 
 Les modèles `QuizEvent` et `PageEvent` désactivent la gestion automatique des timestamps (`public $timestamps = false;`) et n'utilisent qu'un `created_at` rempli par la base (`useCurrent()`). **Pourquoi ?** Un événement est **immuable** : il est créé une fois et jamais modifié. Une colonne `updated_at` serait du bruit. Cela allège aussi marginalement l'écriture, sur les tables qui reçoivent le plus d'insertions.
+
+#### i) Label CTS unique et historique recalculé (`LabelService`)
+
+Il n'existe qu'**un seul label CTS**. Sa validité pour une entreprise court **2 ans à partir de la date de fin de chaque collecte** ; une nouvelle collecte tombant dans la fenêtre encore active **prolonge** le label, sinon une **nouvelle période** démarre. Plutôt que de maintenir ces périodes de façon incrémentale, l'historique est **reconstruit intégralement** depuis l'ensemble des collectes de l'entreprise à chaque changement, par un service dédié :
+
+```php
+public function synchronise(Company $company): void
+{
+    $label = Label::firstOrCreate(['name' => self::NOM_LABEL_CTS]);
+    $finsCollectes = $company->collections()->orderBy('end_date')->pluck('end_date');
+    // … fenêtre glissante de 2 ans → liste de périodes …
+    $company->labels()->detach($label->id);          // on remplace tout l'historique
+    // … réinsertion des périodes recalculées …
+}
+```
+*Légende : [app/Services/LabelService.php:26-60](app/Services/LabelService.php).*
+
+**Pourquoi recalculer plutôt qu'incrémenter ?** Une logique incrémentale devrait gérer séparément la création, la modification (date de fin changée) et la suppression d'une collecte. La reconstruction depuis la source de vérité (les collectes) rend ces trois cas **automatiquement corrects** et **déterministes** : le même jeu de collectes produit toujours le même historique. C'est aussi la raison du retrait de la contrainte d'unicité `(label_id, company_id)` ([§2.3](#23-description-des-tables)) : une entreprise peut légitimement cumuler plusieurs périodes (label perdu puis réobtenu). Le service est appelé par `ManageCollectionController` (création/édition/suppression) **et** par le seeder, garantissant une logique unique.
 
 ---
 
@@ -363,14 +371,15 @@ Groupe-2---Ligtile/
 │   ├── Http/Controllers/
 │   │   ├── Controller.php              ← classe de base
 │   │   └── Api/v1/                     ← TOUS les contrôleurs API, versionnés
-│   │       ├── ApiCobrandController.php
+│   │       ├── CobrandController.php
 │   │       ├── DashboardMetricsController.php
 │   │       ├── ManageCollectionController.php
 │   │       └── …
 │   ├── Models/                         ← modèles Eloquent (1 par table métier)
 │   ├── Mail/                           ← Mailables (contact, kit de communication)
 │   └── Services/
-│       └── ColorPaletteService.php     ← logique de palette co-branding (WCAG)
+│       ├── ColorPaletteService.php     ← palette co-branding accessible (WCAG)
+│       └── LabelService.php            ← attribution / recalcul du label CTS
 ├── routes/
 │   ├── web.php                         ← 3 routes Blade (public / dashboard / cobrand)
 │   ├── api.php                         ← inclut les 3 fichiers de routes API ci-dessous
@@ -381,11 +390,15 @@ Groupe-2---Ligtile/
 ├── database/
 │   └── migrations/                     ← schéma versionné
 ├── resources/
-│   ├── views/                          ← 3 vues Blade (1 par SPA)
+│   ├── views/                          ← vues Blade
+│   │   ├── {public,dashboard,cobrand}.blade.php   ← 1 hôte par SPA
+│   │   └── emails/                     ← templates e-mail (contact, kit de communication)
 │   └── js/
 │       ├── composables/                ← composables PARTAGÉS entre les 3 apps
-│       │   ├── api/useFetchApi.js      ← client HTTP maison
-│       │   └── router.js               ← routeur par hash
+│       │   ├── api/useFetchApi.js      ← client HTTP maison (wrapper fetch)
+│       │   ├── router.js               ← routeur par hash (useHashRoute)
+│       │   ├── useNavigation.js  useFormSubmit.js  useDisclosure.js
+│       │   └── useLabelCompanies.js  useMediaQuery.js
 │       ├── public/                     ← SPA site public
 │       ├── dashboard/                  ← SPA dashboard CTS
 │       └── cobrand/                    ← SPA sites cobrandés
@@ -443,7 +456,7 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::get('/analytics-stats', [DashboardMetricsController::class, 'overview']);
 });
 ```
-*Légende : [routes/api/dashboard.php:15-49](routes/api/dashboard.php).*
+*Légende : [routes/api/dashboard.php:15-50](routes/api/dashboard.php).*
 
 La connexion régénère la session (protection contre la fixation de session) :
 
@@ -457,24 +470,26 @@ if (Auth::attempt($credentials)) {
 
 #### Couche service
 
-La logique non triviale et réutilisable est extraite en **services**. Le cas emblématique est `ColorPaletteService`, qui, à partir des deux couleurs fournies par l'entreprise, dérive toute une palette accessible (variantes claires/foncées, et surtout couleur de texte lisible selon le **calcul de luminance relative WCAG 2.1**) :
+La logique non triviale et réutilisable est extraite en **services** (`app/Services/`). Deux exemples :
+
+- **`ColorPaletteService`** dérive, à partir de l'**unique couleur** fournie par l'entreprise, toute une palette accessible (variantes claires/foncées et surtout couleur de texte lisible selon le **calcul de luminance relative WCAG 2.1**) ;
+- **`LabelService`** centralise l'attribution et le recalcul du label CTS ([§2.4 i](#24-choix-de-conception-notables-et-justifications)), appelé aussi bien par le contrôleur de collectes que par le seeder.
 
 ```php
-public static function fromTwo(?string $primary, ?string $secondary): array
+public static function fromPrimary(?string $primary): array
 {
-    $primary   = self::normalize($primary, self::FALLBACK_PRIMARY);
-    $secondary = self::normalize($secondary, self::FALLBACK_SECONDARY);
+    $primary = self::normalize($primary, self::FALLBACK_PRIMARY);
 
     return [
         'primary'          => $primary,
         'primary_light'    => self::lighten($primary, 60),
         'primary_dark'     => self::darken($primary, 25),
         'primary_text'     => self::accessibleText($primary),
-        // …
+        'primary_on_light' => self::readableOn($primary, self::LIGHT_BG, self::CONTRAST_TARGET),
     ];
 }
 ```
-*Légende : [app/Services/ColorPaletteService.php:13-30](app/Services/ColorPaletteService.php).*
+*Légende : [app/Services/ColorPaletteService.php:12-23](app/Services/ColorPaletteService.php).*
 
 #### Compatibilité SQLite (dev) ↔ MariaDB (prod) dans les agrégations
 
@@ -550,7 +565,7 @@ onMounted(() => {
 
 #### État partagé : composables « module-level » (singletons)
 
-L'état partagé entre composants d'une même app est géré par des **`ref` déclarées au niveau module** d'un composable — donc des singletons, sans librairie de store. Exemple, le store du quiz, dont l'état de progression et les compteurs « anti-double-tir » d'événements sont partagés :
+L'état partagé entre composants d'une même app est géré par des **`ref` déclarées au niveau module** d'un composable, donc des singletons, sans librairie de store. Exemple, le store du quiz, dont l'état de progression et les compteurs « anti-double-tir » d'événements sont partagés :
 
 ```js
 const statuses = ref(quizQuestions.map((_, i) => (i === 0 ? "waiting" : "sleeping")));
@@ -582,7 +597,7 @@ fetch(fullUrl, {
 
 #### a) Trois SPA multi-entrées plutôt qu'une SPA monolithique
 
-**Le choix.** Un espace = une application Vue, compilée séparément, montée sur sa propre vue Blade. **Pourquoi ?** Les trois espaces n'ont quasiment **rien en commun** (publics différents, designs différents, le dashboard est protégé, le cobrand est thématisé dynamiquement). Les isoler évite de charger le code du dashboard pour un employé qui visite un site cobrandé, simplifie le routage (chaque app ne connaît que ses propres vues) et réduit la surface de bugs inter-espaces. Le seul compromis — un rechargement complet lors du passage d'un espace à l'autre — est acceptable car ces transitions sont rares et logiques (un employé ne va jamais sur le dashboard).
+**Le choix.** Un espace = une application Vue, compilée séparément, montée sur sa propre vue Blade. **Pourquoi ?** Les trois espaces n'ont quasiment **rien en commun** (publics différents, designs différents, le dashboard est protégé, le cobrand est thématisé dynamiquement). Les isoler évite de charger le code du dashboard pour un employé qui visite un site cobrandé, simplifie le routage (chaque app ne connaît que ses propres vues) et réduit la surface de bugs inter-espaces. Le seul compromis (un rechargement complet lors du passage d'un espace à l'autre) est acceptable car ces transitions sont rares et logiques (un employé ne va jamais sur le dashboard).
 
 #### b) Routage par hash, sans Vue Router
 
@@ -609,24 +624,24 @@ Route::get('/{cobrandToken}', fn(string $cobrandToken) => view('cobrand', ['cobr
 
 #### e) Fenêtre de disponibilité du site cobrandé calculée à la volée
 
-**Le choix.** Un site cobrandé n'est pas désactivé manuellement : il devient automatiquement inaccessible **7 jours après la fin de la collecte**, vérifié à chaque requête :
+**Le choix.** Un site cobrandé n'est pas activé/désactivé manuellement : il est accessible **dès la création de la collecte** (la ligne existe en base) et **jusqu'à la fin de la collecte**, vérifié à chaque requête :
 
 ```php
-if (now()->gt($collection->end_date->addDays(7)->endOfDay())) {
+if (now()->gt($collection->end_date->endOfDay())) {
     abort(404);
 }
 ```
-*Légende : [app/Http/Controllers/Api/v1/ApiCobrandController.php:17-19](app/Http/Controllers/Api/v1/ApiCobrandController.php).*
+*Légende : [app/Http/Controllers/Api/v1/CobrandController.php:19-21](app/Http/Controllers/Api/v1/CobrandController.php).*
 
-**Pourquoi ?** Aucune tâche planifiée ni champ d'état à maintenir : la disponibilité est une **fonction pure des dates** déjà présentes en base. Le délai de 7 jours laisse les retardataires finaliser leur inscription après la collecte.
+**Pourquoi ?** Aucune tâche planifiée ni champ d'état à maintenir : la disponibilité est une **fonction pure des dates** déjà présentes en base. La borne basse est implicite (présence de la collecte en base, donc sa création), la borne haute est la fin de la collecte.
 
 #### f) Calcul de contraste WCAG dupliqué PHP ↔ JS pour le co-branding
 
-**Le choix.** La palette accessible est calculée côté PHP (`ColorPaletteService`, [§3.2](#couche-service)) **et** répliquée côté client pour la prévisualisation temps réel dans le formulaire de création. Le co-branding lui-même passe par des **variables CSS** (`--cobrand-primary`, etc.) injectées sur la balise `<html>`, plutôt que par du CSS généré et dupliqué par collecte. **Pourquoi ?** Une seule feuille de style paramétrée par variables sert toutes les collectes : aucun CSS n'est dupliqué, et changer une couleur ne touche qu'une variable. La duplication PHP/JS du calcul WCAG est le prix à payer pour offrir un aperçu instantané au CTS (côté client) tout en garantissant la couleur servie au runtime (côté serveur, source de vérité).
+**Le choix.** L'entreprise ne fournit qu'**une seule couleur** ; toute la palette (variantes claires/foncées, couleurs de texte accessibles) en est **dérivée** par `ColorPaletteService` (côté PHP, [§3.2](#couche-service)) **et** répliquée côté client pour la prévisualisation temps réel du formulaire. Le co-branding passe par des **variables CSS** (`--cobrand-primary`, `--cobrand-primary-dark`, etc.) injectées sur la balise `<html>`, plutôt que par du CSS généré et dupliqué par collecte. **Pourquoi ?** Une couleur secondaire avait d'abord été prévue, mais elle ne servait que d'accent de survol : la dériver de la couleur principale (`primary-dark`) supprime un champ au CTS sans perte visuelle. Et une seule feuille de style paramétrée par variables sert toutes les collectes : aucun CSS dupliqué, changer une couleur ne touche qu'une variable. La duplication PHP/JS du calcul WCAG est le prix à payer pour offrir un aperçu instantané au CTS (côté client) tout en garantissant la couleur servie au runtime (côté serveur, source de vérité).
 
 #### g) Tracking fiable en sortie de page via `sendBeacon`
 
-**Le choix.** L'événement `prevention_exited` (avec le temps passé) doit partir **au moment où l'utilisateur quitte la page** — un `fetch` classique y est souvent annulé. Le composable utilise donc `navigator.sendBeacon`, avec repli sur `fetch({ keepalive: true })` :
+**Le choix.** L'événement `prevention_exited` (avec le temps passé) doit partir **au moment où l'utilisateur quitte la page** : un `fetch` classique y est souvent annulé. Le composable utilise donc `navigator.sendBeacon`, avec repli sur `fetch({ keepalive: true })` :
 
 ```js
 if (navigator.sendBeacon) {
@@ -641,7 +656,7 @@ fetch(url, { method: "POST", /* … */ keepalive: true }).catch(() => {});
 
 #### h) Endpoints de tracking publics mais limités en débit (`throttle`)
 
-**Le choix.** Les endpoints d'événements sont publics (aucune auth — ce sont des employés anonymes) mais protégés par un **rate-limit** :
+**Le choix.** Les endpoints d'événements sont publics (aucune auth : ce sont des employés anonymes) mais protégés par un **rate-limit** :
 
 ```php
 Route::post('/quiz/event', [QuizEventController::class, 'store'])->middleware('throttle:60,1');
@@ -663,13 +678,13 @@ Nous avons adopté un flux à trois niveaux, inspiré de Git Flow mais simplifi�
 
 | Branche | Rôle | CI déclenché |
 |---------|------|--------------|
-| `main` | Production — toujours stable | **Déploiement automatique** |
+| `main` | Production, toujours stable | **Déploiement automatique** |
 | `develop` | Intégration continue | Build check + linters |
-| `feature/*` | Nouvelle fonctionnalité | — |
-| `fix/*` | Correction de bug | — |
-| `chore/*` | Tâche technique (CI, config, dépendances) | — |
+| `feature/*` | Nouvelle fonctionnalité | - |
+| `fix/*` | Correction de bug | - |
+| `chore/*` | Tâche technique (CI, config, dépendances) | - |
 
-La règle structurante : **`develop` est la seule branche autorisée à être mergée dans `main`**, et l'on ne pousse jamais directement sur `main` ni `develop` — tout passe par une Pull Request avec **au moins une review**.
+La règle structurante : **`develop` est la seule branche autorisée à être mergée dans `main`**, et l'on ne pousse jamais directement sur `main` ni `develop` ; tout passe par une Pull Request avec **au moins une review**.
 
 ### 4.2 Règles de collaboration spécifiques
 
@@ -679,19 +694,19 @@ Au-delà du flux de base, deux règles ont été formalisées parce qu'elles ré
 
 **b) Branches empilées quand deux tâches touchent les mêmes fichiers.** Si une PR est en attente de review et que la tâche suivante touche les mêmes fichiers, on ne branche pas depuis `develop` mais **depuis la PR en cours**, et l'on cible cette PR comme base sur GitHub. *Pourquoi :* cela évite des conflits massifs entre deux travaux parallèles d'un même développeur, au prix d'un `rebase` + `--force-with-lease` une fois la première PR mergée.
 
-Ces règles, ainsi que les conventions de commit et de suppression de branches après merge, sont documentées dans le [README.md](README.md) du dépôt (section « Git — branches et workflow ») pour que chaque membre s'y réfère.
+Ces règles, ainsi que les conventions de commit et de suppression de branches après merge, sont documentées dans le [README.md](README.md) du dépôt (section sur les branches et le workflow Git) pour que chaque membre s'y réfère.
 
 ### 4.3 Intégration continue (GitHub Actions)
 
 Trois workflows automatisent la qualité et le déploiement. Ils sont **ciblés par branche**, ce qui est un choix délibéré : la validation tourne sur `develop` (en amont), le déploiement sur `main` (en aval).
 
-**1. Build check** — sur push et PR vers `develop` : installe les dépendances npm et lance `vite build`. Objectif : **détecter une erreur de compilation front avant qu'elle n'atteigne `main`**.
+**1. Build check** : sur push et PR vers `develop`, installe les dépendances npm et lance `vite build`. Objectif : **détecter une erreur de compilation front avant qu'elle n'atteigne `main`**.
 *Source : [.github/workflows/build-check.yml](.github/workflows/build-check.yml).*
 
-**2. Linter** — sur push et PR vers `develop` : lance **Pint** (formatage PHP), puis **Prettier** et **ESLint** sur le front.
+**2. Linter** : sur push et PR vers `develop`, lance **Pint** (formatage PHP), puis **Prettier** et **ESLint** sur le front.
 *Source : [.github/workflows/lint.yml:29-36](.github/workflows/lint.yml).*
 
-**3. Deploy** — sur push vers `main` uniquement (voir ci-dessous).
+**3. Deploy** : sur push vers `main` uniquement (voir ci-dessous).
 
 ### 4.4 Déploiement
 
@@ -709,7 +724,7 @@ Le déploiement est **entièrement automatisé** et déclenché par un merge sur
 ```
 *Légende : [.github/workflows/deploy.yml:17-30](.github/workflows/deploy.yml).*
 
-**Pourquoi cette approche (bare repo + hook plutôt qu'un script de déploiement dans Actions) ?** Toute la logique de mise en production (installation des dépendances de prod, build des assets, `migrate --force`, mise en cache de la config/routes/vues) vit dans un **hook `post-receive` côté serveur**, et non dans le workflow. Le workflow Actions reste donc **minimal et sans secret métier** — il ne sait que pousser du code. La logique de déploiement est centralisée là où elle s'exécute, et peut être ajustée sur le serveur sans modifier le dépôt. Les secrets (clé SSH, hôte, chemin) sont stockés dans les **GitHub Secrets**, jamais dans le code, et le `.env` de production n'est **jamais commité** — il est configuré directement sur le serveur.
+**Pourquoi cette approche (bare repo + hook plutôt qu'un script de déploiement dans Actions) ?** Toute la logique de mise en production (installation des dépendances de prod, build des assets, `migrate --force`, mise en cache de la config/routes/vues) vit dans un **hook `post-receive` côté serveur**, et non dans le workflow. Le workflow Actions reste donc **minimal et sans secret métier** : il ne sait que pousser du code. La logique de déploiement est centralisée là où elle s'exécute, et peut être ajustée sur le serveur sans modifier le dépôt. Les secrets (clé SSH, hôte, chemin) sont stockés dans les **GitHub Secrets**, jamais dans le code, et le `.env` de production n'est **jamais commité** : il est configuré directement sur le serveur.
 
 ### 4.5 Organisation à plusieurs
 
@@ -717,4 +732,4 @@ L'équipe (trois personnes) s'est répartie le travail par **espace fonctionnel 
 
 ---
 
-*Document rédigé pour le rapport final — partie technique. Le dépôt complet est accessible aux enseignants sur GitHub.*
+*Document rédigé pour le rapport final, partie technique. Le dépôt complet est accessible aux enseignants sur GitHub.*
