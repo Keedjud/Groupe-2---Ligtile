@@ -15,14 +15,19 @@ const badgeImg = "/images/classement/label-empty.png";
 
 const labelPivot = computed(() => props.company.labels?.[0]?.pivot ?? null)
 
+const formatDate = (d) =>
+    new Date(d).toLocaleDateString('fr-CH', {
+        day: '2-digit',
+        month: '2-digit',
+        year: 'numeric',
+    })
+
 const labelPhrase = computed(() => {
     const pivot = labelPivot.value
     if (!pivot?.start_date || !pivot?.end_date) return null
-    const startYear = new Date(pivot.start_date).getFullYear()
-    const endYear   = new Date(pivot.end_date).getFullYear()
-    const isActive  = new Date(pivot.end_date) >= new Date()
-    const verb      = isActive ? 'Est' : 'A été'
-    return `${verb} labelisé de ${startYear} à ${endYear}.`
+    const isActive = new Date(pivot.end_date) >= new Date()
+    const verb     = isActive ? 'Est' : 'A été'
+    return `${verb} labelisé du ${formatDate(pivot.start_date)} au ${formatDate(pivot.end_date)}.`
 })
 </script>
 

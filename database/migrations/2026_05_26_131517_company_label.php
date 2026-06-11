@@ -15,9 +15,11 @@ return new class extends Migration
             $table->id();
             $table->foreignId('label_id')->constrained()->restrictOnDelete();
             $table->foreignId('company_id')->constrained()->restrictOnDelete();
-            $table->unique(['label_id','company_id']);
-            $table->datetime('start_date');//doit correspondre à la date de collection
-            $table->datetime('end_date'); //2 ans après
+            // Pas de contrainte d'unicité (label_id, company_id) : une entreprise
+            // peut avoir plusieurs périodes de labellisation successives dans le temps
+            // (historique reconstruit par ManageCollectionController::synchroniserLabel).
+            $table->datetime('start_date'); // date de fin de la première collecte de la période
+            $table->datetime('end_date');   // 2 ans après la dernière collecte de la période
             $table->timestamps();
         });
     }
