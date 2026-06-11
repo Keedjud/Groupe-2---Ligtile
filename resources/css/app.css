@@ -136,8 +136,4 @@ html {
   --color-cobrand-primary-light:   var(--cobrand-primary-light);
   --color-cobrand-primary-dark:    var(--cobrand-primary-dark);
   --color-cobrand-primary-text:    var(--cobrand-primary-text);
-  --color-cobrand-secondary:       var(--cobrand-secondary);
-  --color-cobrand-secondary-light: var(--cobrand-secondary-light);
-  --color-cobrand-secondary-dark:  var(--cobrand-secondary-dark);
-  --color-cobrand-secondary-text:  var(--cobrand-secondary-text);
 }

@@ -4,17 +4,14 @@ namespace App\Http\Controllers\Api\v1;
 
 use App\Http\Controllers\Controller;
 use App\Models\Collection;
-use App\Models\Company;
-use App\Models\Label;
+use App\Services\LabelService;
 use Illuminate\Http\Request;
-use Illuminate\Support\Carbon;
-use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Str;
 
 class ManageCollectionController extends Controller
 {
-    /** Nom du label unique délivré par le CTS. */
-    private const NOM_LABEL_CTS = 'Label CTS';
+    public function __construct(private LabelService $labels) {}
+
     /** Règles communes création + édition (snapshot uniquement, sans données entreprise). */
     private function reglesValidation(): array
     {
@@ -29,7 +26,6 @@ class ManageCollectionController extends Controller
             'end_date'          => ['required', 'date', 'after:start_date'],
             'capacity'          => ['required', 'integer', 'min:1'],
             'primary_color'     => ['required', 'string', 'max:10'],
-            'secondary_color'   => ['required', 'string', 'max:10'],
             'logo_url'          => ['required', 'string', 'max:255'],
             'onedoc_url'        => ['required', 'url', 'max:255'],
             'kit_url'           => ['required', 'url', 'max:255'],
@@ -40,53 +36,6 @@ class ManageCollectionController extends Controller
     private function comptageInscrits(): array
     {
         return ['quizEvents as nb_inscrits' => fn ($q) => $q->where('event_type', 'onedoc_clicked')];
-    }
-
-    /**
-     * Recalcule l'historique de labellisation d'une entreprise à partir de
-     * l'ensemble de ses collectes.
-     *
-     * Règle : le label CTS est valable 2 ans à partir de la date de fin de
-     * chaque collecte. Une nouvelle collecte dont la date de fin tombe dans la
-     * fenêtre encore active prolonge le label ; au-delà (label échu), une
-     * nouvelle période démarre. L'historique est reconstruit intégralement à
-     * chaque appel, ce qui couvre la création, la modification et la suppression
-     * de collectes sans risque de dérive.
-     */
-    private function synchroniserLabel(Company $company): void
-    {
-        $label = Label::firstOrCreate(['name' => self::NOM_LABEL_CTS]);
-
-        $finsCollectes = $company->collections()
-            ->orderBy('end_date')
-            ->pluck('end_date');
-
-        // Reconstruit les périodes de label par fenêtre glissante de 2 ans.
-        $periodes = [];
-        foreach ($finsCollectes as $fin) {
-            $fin      = Carbon::parse($fin);
-            $finLabel = $fin->copy()->addYears(2);
-
-            $derniere = array_key_last($periodes);
-            if ($derniere !== null && $fin->lessThanOrEqualTo($periodes[$derniere]['end_date'])) {
-                // Collecte dans la fenêtre active → prolonge la période courante.
-                $periodes[$derniere]['end_date'] = $finLabel;
-            } else {
-                // Première collecte, ou label échu → nouvelle période.
-                $periodes[] = ['start_date' => $fin, 'end_date' => $finLabel];
-            }
-        }
-
-        // Remplace l'historique de label de l'entreprise pour ce label.
-        DB::transaction(function () use ($company, $label, $periodes) {
-            $company->labels()->detach($label->id);
-            foreach ($periodes as $p) {
-                $company->labels()->attach($label->id, [
-                    'start_date' => $p['start_date'],
-                    'end_date'   => $p['end_date'],
-                ]);
-            }
-        });
     }
 
     public function index()
@@ -128,14 +77,13 @@ class ManageCollectionController extends Controller
             'end_date'          => $valide['end_date'],
             'capacity'          => $valide['capacity'],
             'primary_color'     => $valide['primary_color'],
-            'secondary_color'   => $valide['secondary_color'],
             'logo_url'          => $valide['logo_url'],
             'onedoc_url'        => $valide['onedoc_url'],
             'kit_url'           => $valide['kit_url'],
             'public_token'      => Str::random(32),
         ]);
 
-        $this->synchroniserLabel($collecte->company);
+        $this->labels->synchronise($collecte->company);
 
         return response()->json(
             $collecte->load('company')->loadCount($this->comptageInscrits()),
@@ -162,11 +110,10 @@ class ManageCollectionController extends Controller
             'onedoc_url'        => $valide['onedoc_url'],
             'kit_url'           => $valide['kit_url'],
             'primary_color'     => $valide['primary_color'],
-            'secondary_color'   => $valide['secondary_color'],
             'logo_url'          => $valide['logo_url'],
         ]);
 
-        $this->synchroniserLabel($collecte->company);
+        $this->labels->synchronise($collecte->company);
 
         return response()->json(
             $collecte->load('company')->loadCount($this->comptageInscrits())
@@ -192,7 +139,7 @@ class ManageCollectionController extends Controller
         $collecte->delete();
 
         // Recalcule le label : la suppression peut raccourcir ou supprimer une période.
-        $this->synchroniserLabel($company);
+        $this->labels->synchronise($company);
 
         return response()->noContent();
     }

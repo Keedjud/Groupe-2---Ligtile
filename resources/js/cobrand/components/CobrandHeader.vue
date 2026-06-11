@@ -44,7 +44,7 @@ const { isOpen, toggle, close } = useDisclosure();
                 <span
                     v-else-if="companyName"
                     class="truncate text-h5 font-bold tracking-wide lg:text-h4"
-                    :style="{ color: 'var(--cobrand-primary, var(--cobrand-secondary))' }"
+                    :style="{ color: 'var(--cobrand-primary)' }"
                     >{{ companyName }}</span
                 >
                 <span
@@ -59,7 +59,7 @@ const { isOpen, toggle, close } = useDisclosure();
                     v-for="link in links"
                     :key="link.key"
                     :href="link.href"
-                    class="font-sans text-regular transition-colors hover:text-[var(--cobrand-secondary)]"
+                    class="font-sans text-regular transition-colors hover:text-[var(--cobrand-primary-dark)]"
                     :class="
                         current === link.key
                             ? 'font-bold text-[var(--cobrand-primary)]'

@@ -50,9 +50,8 @@ class CobrandController extends Controller
                 'postal_code' => $collection->venue_postal_code,
                 'city'        => $collection->venue_city,
             ],
-            'theme'            => ColorPaletteService::fromTwo(
+            'theme'            => ColorPaletteService::fromPrimary(
                 $collection->primary_color,
-                $collection->secondary_color,
             ),
         ]);
     }

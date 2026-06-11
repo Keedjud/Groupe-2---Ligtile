@@ -28,7 +28,7 @@ const legal = [
       <nav class="flex flex-col items-start gap-3 font-sans text-small text-violet-950
                   lg:flex-row lg:items-center lg:gap-x-6 lg:gap-y-2">
         <a v-for="l in legal" :key="l.label" :href="l.href"
-           class="py-2.5 hover:text-[var(--cobrand-secondary)] lg:py-0">
+           class="py-2.5 hover:text-[var(--cobrand-primary-dark)] lg:py-0">
           {{ l.label }}
         </a>
       </nav>
