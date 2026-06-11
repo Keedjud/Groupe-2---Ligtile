@@ -35,6 +35,7 @@ const { isOpen, toggle, close } = useDisclosure();
                     class="h-6 w-px shrink-0 bg-gris-50 lg:h-[35px]"
                     aria-hidden="true"
                 ></span>
+                <a href="#/accueil" >
                 <img
                     v-if="logoUrl"
                     :src="logoUrl"
@@ -52,6 +53,7 @@ const { isOpen, toggle, close } = useDisclosure();
                     class="h-7 w-28 shrink-0 rounded bg-gris-50"
                     aria-hidden="true"
                 ></span>
+            </a>
             </div>
 
             <nav class="hidden items-center gap-7 lg:flex">
