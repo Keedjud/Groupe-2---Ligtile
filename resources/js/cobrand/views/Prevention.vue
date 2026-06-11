@@ -125,8 +125,8 @@ function figureStyle(fig) {
     };
 }
 
-const dropActive = `${ART}/goutte-rouge-slider.png`;
-const dropInactive = `${ART}/goutte-grise-slider.png`;
+const dropActive = `${ART}/goutte-rouge-slider.svg`;
+const dropInactive = `${ART}/goutte-grise-slider.svg`;
 const arrowIcon = `${ART}/icon-arrow-slider.svg`;
 
 function arrowMaskStyle(flip) {
