@@ -132,22 +132,23 @@ const bloodTypes = [
                     </div>
                 </div>
 
-                <div class="order-1 flex w-full flex-row items-center justify-between gap-4 lg:order-2 lg:w-auto lg:justify-center lg:gap-0">
-                    <div class="relative h-[240px] w-[240px] shrink-0 lg:h-[340px] lg:w-[340px]">
-                        <svg viewBox="0 0 100 100" class="absolute inset-0 h-full w-full -rotate-90">
-                            <circle cx="50" cy="50" :r="RING_RADIUS" fill="none"
-                                stroke="var(--color-light-palette-gray)" stroke-width="4" opacity="0.35" />
-                            <circle cx="50" cy="50" :r="RING_RADIUS" fill="none"
-                                stroke="var(--accent)" stroke-width="4" stroke-linecap="round"
-                                :stroke-dasharray="ringCircumference" :stroke-dashoffset="ringOffset" />
-                        </svg>
-                        <img :src="mainImageSrc" alt=""
-                            class="absolute left-1/2 top-1/2 h-[175px] w-auto -translate-x-1/2 -translate-y-1/2 object-contain drop-shadow-[0_14px_22px_rgba(104,23,100,0.22)] lg:h-[250px]" />
-                    </div>
-                    <p class="text-center font-bold leading-none text-[color:var(--accent)] lg:mt-4">
-                        <span class="text-[88px] lg:text-[72px]">{{ tauxRemplissage }}</span><span class="align-top text-[48px] lg:text-[40px]">%</span>
-                    </p>
-                </div>
+                <div class="order-1 flex w-full justify-center mb-10 lg:mb-0 lg:order-2 lg:w-auto">
+    <div class="relative h-[240px] w-[240px] shrink-0 lg:h-[340px] lg:w-[340px]">
+        <svg viewBox="0 0 100 100" class="absolute inset-0 h-full w-full -rotate-90">
+            <circle cx="50" cy="50" :r="RING_RADIUS" fill="none"
+                stroke="var(--color-light-palette-gray)" stroke-width="4" opacity="0.35" />
+            <circle cx="50" cy="50" :r="RING_RADIUS" fill="none"
+                stroke="var(--accent)" stroke-width="4" stroke-linecap="round"
+                :stroke-dasharray="ringCircumference" :stroke-dashoffset="ringOffset" />
+        </svg>
+        <img :src="mainImageSrc" alt=""
+            class="absolute left-1/2 top-1/2 h-[175px] w-auto -translate-x-1/2 -translate-y-1/2 object-contain drop-shadow-[0_14px_22px_rgba(104,23,100,0.22)] lg:h-[250px]" />
+        <p class="absolute bottom-0 left-1/2 -translate-x-1/2 translate-y-full pt-2 text-center font-bold leading-none text-[color:var(--accent)]">
+            <span class="text-[50px] lg:text-[72px]">{{ tauxRemplissage }}</span><span class="align-top text-[28px] lg:text-[40px]">%</span>
+        </p>
+    </div>
+</div>
+
             </section>
 
             <section class="mt-16 py-8 lg:py-10">
@@ -235,12 +236,13 @@ const bloodTypes = [
                         </div>
                     </div>
                 </div>
-
+                <a href="https://www.hug.ch/don-du-sang/barometre-don-du-sang-geneve">
                 <button
 
                     class="mt-6 block w-max mx-auto rounded-full border border-[var(--color-light-palette-gray)] bg-[var(--color-light-palette-white)] px-4 py-2 text-regular text-[color:var(--accent)] shadow-[0px_0px_4px_0px_rgba(0,0,0,0.25)] transition hover:-translate-y-0.5 hover:bg-[var(--color-beige-25)] hover:shadow-md sm:mx-0">
-                    <a href="https://www.hug.ch/don-du-sang/barometre-don-du-sang-geneve">Consulter le baromètre complet des HUG</a>
+                   Consulter le baromètre complet des HUG
                 </button>
+            </a>
             </section>
 
 
