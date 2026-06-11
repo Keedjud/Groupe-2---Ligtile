@@ -74,6 +74,7 @@ function annulerEdition() {
 const regexEmail   = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
 const regexNpa     = /^\d{4}$/
 const regexNumero  = /^\d+[a-zA-Z]?$/
+const regexTel     = /^[+\d][\d\s()/.-]{5,}$/
 
 function valider() {
   const e = {}
@@ -84,6 +85,7 @@ function valider() {
   if (!regexNpa.test(champNpa.value.trim()))                      e.npa        = 'NPA invalide (4 chiffres).'
   if (!champVille.value.trim())                                    e.ville      = 'Ville requise.'
   if (!regexEmail.test(champEmail.value.trim()))                   e.email      = 'E-mail invalide.'
+  if (!regexTel.test(champTelephone.value.trim()))                e.telephone  = 'Téléphone requis (format valide).'
   champsInvalides.value = e
   return Object.keys(e).length === 0
 }
@@ -266,9 +268,10 @@ const aDesErreurs = computed(() => Object.keys(champsInvalides.value).length > 0
                 :class="{ 'ring-rouge-500 ring-1': champsInvalides.email }" />
             </div>
             <div class="flex flex-col gap-1">
-              <label class="font-sans text-small font-medium text-violet-800">Téléphone (optionnel)</label>
+              <label class="font-sans text-small font-medium text-violet-800">Téléphone</label>
               <input v-model="champTelephone" type="tel"
-                class="w-full rounded-lg bg-white px-3 py-2.5 font-sans text-small text-violet-950 shadow-[0_0_4px_rgba(0,0,0,0.25)] outline-none focus:ring-2 focus:ring-violet-400" />
+                class="w-full rounded-lg bg-white px-3 py-2.5 font-sans text-small text-violet-950 shadow-[0_0_4px_rgba(0,0,0,0.25)] outline-none focus:ring-2 focus:ring-violet-400"
+                :class="{ 'ring-rouge-500 ring-1': champsInvalides.telephone }" />
             </div>
 
             <!-- Actions -->

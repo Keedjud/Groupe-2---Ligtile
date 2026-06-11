@@ -70,7 +70,7 @@ export function useCompanies() {
         },
         contact: {
           email: donnees.contact.email,
-          phone: donnees.contact.telephone || null,
+          phone: donnees.contact.telephone,
         },
       }
       const reponse = await fetchApi({ url: '/companies', method: 'POST', data: payload })
@@ -117,7 +117,7 @@ export function useCompanies() {
         },
         contact: {
           email: donnees.contact.email,
-          phone: donnees.contact.telephone || null,
+          phone: donnees.contact.telephone,
         },
       }
       const reponse = await fetchApi({ url: `/companies/${id}`, method: 'PUT', data: payload })
