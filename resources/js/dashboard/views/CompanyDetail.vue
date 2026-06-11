@@ -45,6 +45,7 @@ const champNpa       = ref('')
 const champVille     = ref('')
 const champEmail     = ref('')
 const champTelephone = ref('')
+const champParticipeTrophee = ref(true)
 
 onMounted(async () => {
   entreprise.value = await chargerEntreprise(props.idEntreprise)
@@ -60,6 +61,7 @@ function ouvrirEdition() {
   champVille.value      = e.adresse.ville
   champEmail.value      = e.contact.email
   champTelephone.value  = e.contact.telephone
+  champParticipeTrophee.value = e.participe_trophee
   champsInvalides.value = {}
   erreurServeur.value   = ''
   modeEdition.value     = true
@@ -97,6 +99,7 @@ async function sauvegarder() {
     entreprise.value = await mettreAJourEntreprise(props.idEntreprise, {
       nom:        champNom.value.trim(),
       nb_employes: Number(champNbEmployes.value),
+      participe_trophee: champParticipeTrophee.value,
       adresse: {
         rue:    champRue.value.trim(),
         numero: champNumero.value.trim(),
@@ -197,6 +200,11 @@ const aDesErreurs = computed(() => Object.keys(champsInvalides.value).length > 0
               <p class="font-sans text-xs font-semibold uppercase tracking-wide text-violet-400">Téléphone</p>
               <p class="font-sans text-small text-violet-950">{{ entreprise.contact.telephone || '—' }}</p>
             </div>
+            <!-- Participation trophées -->
+            <div class="flex flex-col gap-1">
+              <p class="font-sans text-xs font-semibold uppercase tracking-wide text-violet-400">Trophées</p>
+              <p class="font-sans text-small text-violet-950">{{ entreprise.participe_trophee ? 'Participe au classement' : 'Ne participe pas' }}</p>
+            </div>
           </div>
         </template>
 
@@ -273,6 +281,12 @@ const aDesErreurs = computed(() => Object.keys(champsInvalides.value).length > 0
                 class="w-full rounded-lg bg-white px-3 py-2.5 font-sans text-small text-violet-950 shadow-[0_0_4px_rgba(0,0,0,0.25)] outline-none focus:ring-2 focus:ring-violet-400"
                 :class="{ 'ring-rouge-500 ring-1': champsInvalides.telephone }" />
             </div>
+
+            <!-- Participation aux trophées -->
+            <label class="flex items-center gap-2 font-sans text-small text-violet-950">
+              <input type="checkbox" v-model="champParticipeTrophee" class="shrink-0" />
+              <span>Cette entreprise participe au classement des trophées</span>
+            </label>
 
             <!-- Actions -->
             <div class="mt-2 flex flex-col gap-3 sm:flex-row sm:justify-end">

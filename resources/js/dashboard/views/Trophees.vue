@@ -36,11 +36,16 @@ onMounted(async () => {
 })
 
 // Autocomplete : filtre côté client, 20 résultats max
+// Seules les entreprises participant aux trophées ET ayant au moins une collecte sont éligibles.
+const entreprisesEligibles = computed(() =>
+  listeEntreprises.value.filter(e => e.participe_trophee && e.nb_collectes >= 1)
+)
+
 const suggestionsParRang = computed(() =>
   champsRangs.value.map(champ => {
     const q = champ.texte.trim().toLowerCase()
-    if (!q) return listeEntreprises.value.slice(0, 20)
-    return listeEntreprises.value.filter(e => e.nom.toLowerCase().includes(q)).slice(0, 20)
+    if (!q) return entreprisesEligibles.value.slice(0, 20)
+    return entreprisesEligibles.value.filter(e => e.nom.toLowerCase().includes(q)).slice(0, 20)
   })
 )
 
