@@ -397,13 +397,13 @@ function updateCardsIndex() {
                 </div>
                 <div>
                     <ul
-                        class="space-y-8 flex flex-col items-center lg:items-stretch"
+                        class="flex flex-col items-center gap-8 lg:gap-0 lg:items-stretch"
                     >
                         <li
-                            class="flex flex-col items-center text-center gap-4 lg:flex-row lg:items-center lg:text-left lg:gap-4 max-w-[369px] lg:max-w-none"
+                            class="flex flex-col items-center text-center gap-4 lg:flex-row lg:items-stretch lg:text-left lg:gap-4 max-w-[369px] lg:max-w-none"
                         >
                             <div
-                                class="relative flex items-center shrink-0 lg:min-h-[61px]"
+                                class="relative flex items-center shrink-0 lg:flex-col lg:items-center lg:self-stretch lg:min-h-[61px]"
                             >
                                 <span
                                     class="grid h-[101px] w-[101px] lg:h-[61px] lg:w-[61px] place-items-center rounded-full bg-violet-200 ring-1 ring-white shrink-0"
@@ -418,7 +418,7 @@ function updateCardsIndex() {
                                 </span>
 
                                 <span
-                                    class="hidden lg:block absolute left-1/2 top-full mt-2 h-9 w-[3px] -translate-x-1/2 rounded-full bg-violet-300"
+                                    class="hidden lg:block lg:flex-1 lg:min-h-[1.75rem] w-[3px] my-2 rounded-full bg-violet-300"
                                 ></span>
                             </div>
                             <div>
@@ -435,13 +435,13 @@ function updateCardsIndex() {
                         </li>
 
                         <span
-                            class="mt-2 h-9 block w-[3px] bg-violet-400 mx-auto my-[13px] rounded-full lg:hidden"
+                            class="h-9 block w-[3px] bg-violet-400 mx-auto rounded-full lg:hidden"
                         ></span>
                         <li
-                            class="flex flex-col items-center text-center gap-4 lg:flex-row lg:items-center lg:text-left lg:gap-4 max-w-[369px] lg:max-w-none"
+                            class="flex flex-col items-center text-center gap-4 lg:flex-row lg:items-stretch lg:text-left lg:gap-4 max-w-[369px] lg:max-w-none"
                         >
                             <div
-                                class="relative flex items-center shrink-0 lg:min-h-[61px]"
+                                class="relative flex items-center shrink-0 lg:flex-col lg:items-center lg:self-stretch lg:min-h-[61px]"
                             >
                                 <span
                                     class="grid h-[101px] w-[101px] lg:h-[61px] lg:w-[61px] place-items-center rounded-full bg-violet-200 ring-1 ring-white shrink-0"
@@ -455,7 +455,7 @@ function updateCardsIndex() {
                                     />
                                 </span>
                                 <span
-                                    class="hidden lg:block absolute left-1/2 top-full mt-2 h-9 w-[3px] -translate-x-1/2 rounded-full bg-violet-300"
+                                    class="hidden lg:block lg:flex-1 lg:min-h-[1.75rem] w-[3px] my-2 rounded-full bg-violet-300"
                                 ></span>
                             </div>
                             <div>
@@ -471,13 +471,13 @@ function updateCardsIndex() {
                             </div>
                         </li>
                         <span
-                            class="mt-2 h-9 block w-[3px] bg-violet-400 mx-auto my-[13px] rounded-full lg:hidden"
+                            class="h-9 block w-[3px] bg-violet-400 mx-auto rounded-full lg:hidden"
                         ></span>
                         <li
-                            class="flex flex-col items-center text-center gap-4 lg:flex-row lg:items-center lg:text-left lg:gap-4 max-w-[369px] lg:max-w-none"
+                            class="flex flex-col items-center text-center gap-4 lg:flex-row lg:items-stretch lg:text-left lg:gap-4 max-w-[369px] lg:max-w-none"
                         >
                             <div
-                                class="relative flex items-center shrink-0 lg:min-h-[61px]"
+                                class="relative flex items-center shrink-0 lg:flex-col lg:items-center lg:self-stretch lg:min-h-[61px]"
                             >
                                 <span
                                     class="grid h-[101px] w-[101px] lg:h-[61px] lg:w-[61px] place-items-center rounded-full bg-violet-200 ring-1 ring-white shrink-0"
@@ -491,7 +491,7 @@ function updateCardsIndex() {
                                     />
                                 </span>
                                 <span
-                                    class="hidden lg:block absolute left-1/2 top-full mt-2 h-9 w-[3px] -translate-x-1/2 rounded-full bg-violet-300"
+                                    class="hidden lg:block lg:flex-1 lg:min-h-[1.75rem] w-[3px] my-2 rounded-full bg-violet-300"
                                 ></span>
                             </div>
                             <div>
@@ -507,13 +507,13 @@ function updateCardsIndex() {
                             </div>
                         </li>
                         <span
-                            class="mt-2 h-9 block w-[3px] bg-violet-400 mx-auto my-[13px] rounded-full lg:hidden"
+                            class="h-9 block w-[3px] bg-violet-400 mx-auto rounded-full lg:hidden"
                         ></span>
                         <li
-                            class="flex flex-col items-center text-center gap-4 lg:flex-row lg:items-center lg:text-left lg:gap-4 max-w-[369px] lg:max-w-none"
+                            class="flex flex-col items-center text-center gap-4 lg:flex-row lg:items-stretch lg:text-left lg:gap-4 max-w-[369px] lg:max-w-none"
                         >
                             <div
-                                class="relative flex items-center shrink-0 lg:min-h-[61px]"
+                                class="relative flex items-center shrink-0 lg:flex-col lg:items-center lg:self-stretch lg:min-h-[61px]"
                             >
                                 <span
                                     class="grid h-[101px] w-[101px] lg:h-[61px] lg:w-[61px] place-items-center rounded-full bg-violet-200 ring-1 ring-white shrink-0"
