@@ -234,7 +234,7 @@ function updateCardsIndex() {
                         class="mt-8 flex flex-col items-center gap-4 lg:flex-row lg:items-center lg:gap-6 lg:flex-wrap"
                     >
                         <a
-                            href="#prendre-rdv"
+                            href="#prendre-rdv-form"
                             class="flex w-full justify-center lg:inline-flex lg:w-auto items-center gap-2 rounded-full bg-button-primary px-6 py-2.5 text-regular text-white"
                             >Organiser une collecte</a
                         >
@@ -597,7 +597,7 @@ function updateCardsIndex() {
 
                     <div
                         id="prendre-rdv-form"
-                        class="min-w-0 scroll-mt-24 lg:scroll-mt-28"
+                        class="min-w-0 scroll-mt-12 lg:scroll-mt-28"
                     >
                         <form
                             @submit.prevent="submit"
@@ -610,7 +610,7 @@ function updateCardsIndex() {
                                 Prendre <br class="lg:hidden" />rendez-vous
                             </h3>
 
-                            <div class="grid grid-cols-2 gap-3 mb-3">
+                            <div class="grid grid-cols-2 gap-3 mb-3 items-end">
                                 <div class="flex flex-col gap-1">
                                     <label
                                         for="rdv-company"
@@ -638,11 +638,12 @@ function updateCardsIndex() {
                                     <label
                                         for="rdv-employees"
                                         class="font-sans text-small font-medium text-violet-800"
-                                        >Nombre d'employés
+                                        >Nombre
+                                        <span class="whitespace-nowrap">d'employés
                                         <span
-                                            class="text-rouge-500 whitespace-nowrap"
+                                            class="text-rouge-500"
                                             >*</span
-                                        ></label
+                                        ></span></label
                                     >
                                     <input
                                         id="rdv-employees"
