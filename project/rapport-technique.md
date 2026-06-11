@@ -91,6 +91,7 @@ erDiagram
         bigint address_id FK
         string name UK
         int nb_employee
+        boolean participe_trophee
         timestamps created_updated
     }
 
@@ -98,7 +99,7 @@ erDiagram
         bigint id PK
         bigint company_id FK
         string email
-        string phone "nullable"
+        string phone
         timestamps created_updated
     }
 
@@ -196,7 +197,7 @@ erDiagram
 #### Domaine « entreprises »
 
 - **`addresses`** : adresse postale (NPA, ville, rue, numéro). Le NPA et le numéro de rue sont stockés en chaîne pour ne pas perdre les zéros initiaux et accepter les formats suisses. Référencée par `companies`.
-- **`companies`** : entreprise partenaire, avec `name` (unique), `nb_employee` et une FK vers `addresses`. Le modèle expose un **attribut calculé** `size_label` qui catégorise l'entreprise selon son effectif :
+- **`companies`** : entreprise partenaire, avec `name` (unique), `nb_employee`, le booléen `participe_trophee` (défaut `true` — éligibilité au classement des trophées) et une FK vers `addresses`. Le modèle expose un **attribut calculé** `size_label` qui catégorise l'entreprise selon son effectif :
 
 ```php
 public function getSizeLabelAttribute(): string
@@ -213,7 +214,7 @@ public function getSizeLabelAttribute(): string
 
 > **Seuil métier.** Le seuil de 1000 employés n'est pas arbitraire : il sépare les **grandes entreprises**, pour lesquelles le CTS organise une collecte dédiée sur place, des **plus petites**, auxquelles le CTS réserve des créneaux dans une collecte publique existante. Cette catégorie pilote notamment les messages d'aide affichés au CTS dans le formulaire de création de collecte (champ capacité, lien Onedoc).
 
-- **`contacts`** : coordonnées de contact d'une entreprise (relation `hasOne`).
+- **`contacts`** : coordonnées de contact d'une entreprise (relation `hasOne`). Le `phone` est désormais **obligatoire** (NOT NULL), aligné avec le formulaire de gestion des entreprises.
 - **`labels`** / **`company_label`** : il existe un **unique label CTS** ; la pivot `company_label` enregistre les **périodes successives** de labellisation d'une entreprise (`start_date` → `end_date`). Une entreprise peut donc avoir **plusieurs lignes** (un historique) : aucune contrainte d'unicité `(label_id, company_id)` n'est posée. La logique d'attribution est détaillée en [§2.4 i](#24-choix-de-conception-notables-et-justifications).
 - **`trophees`** / **`company_trophee`** : trophées annuels attribués aux entreprises avec un `rank` (pour le podium du site public), uniques sur `(company_id, trophee_id)`.
 
@@ -356,6 +357,10 @@ public function synchronise(Company $company): void
 *Légende : [app/Services/LabelService.php:26-60](app/Services/LabelService.php).*
 
 **Pourquoi recalculer plutôt qu'incrémenter ?** Une logique incrémentale devrait gérer séparément la création, la modification (date de fin changée) et la suppression d'une collecte. La reconstruction depuis la source de vérité (les collectes) rend ces trois cas **automatiquement corrects** et **déterministes** : le même jeu de collectes produit toujours le même historique. C'est aussi la raison du retrait de la contrainte d'unicité `(label_id, company_id)` ([§2.3](#23-description-des-tables)) : une entreprise peut légitimement cumuler plusieurs périodes (label perdu puis réobtenu). Le service est appelé par `ManageCollectionController` (création/édition/suppression) **et** par le seeder, garantissant une logique unique.
+
+#### j) Éligibilité aux trophées (`participe_trophee` + collecte requise)
+
+Un trophée ne peut être attribué qu'à une entreprise qui **participe au classement** (`participe_trophee`, booléen activé par défaut sur `companies`) **et** qui possède **au moins une collecte**. Ces deux règles sont validées côté serveur dans `ManageTropheeController` (création et édition d'un podium), et reflétées côté front : l'autocomplétion de sélection ne propose que les entreprises éligibles, et la section trophées publique ne montre que les entreprises **actuellement participantes** (pas d'historique : un retrait de participation masque rétroactivement l'entreprise). **Pourquoi ?** Décorréler la *participation* (un choix de l'entreprise, modifiable) de l'*attribution passée* évite de figer un classement, et exiger une collecte garantit qu'un trophée récompense une contribution réelle.
 
 ---
 
@@ -665,6 +670,14 @@ Route::post('/page/event', [PageEventController::class, 'store'])->middleware('t
 *Légende : [routes/api/cobrand.php:10-13](routes/api/cobrand.php).*
 
 **Pourquoi ?** Sans auth, ces routes seraient un vecteur de pollution des statistiques (envoi massif d'événements). La limite de 60 requêtes/minute couvre largement un parcours humain normal tout en bornant les abus. Chaque endpoint **valide strictement** son payload contre la liste blanche des `event_type` et des formats attendus avant insertion ([QuizEventController.php:14-21](app/Http/Controllers/Api/v1/QuizEventController.php)).
+
+#### i) Validation de formulaire réactive après la première soumission
+
+**Le choix.** Les formulaires du dashboard (collecte, entreprise, trophées) ne valident pas à chaque frappe, mais **à la soumission** ; une fois qu'une soumission a échoué et que des champs sont surlignés, un `watch` rejoue la validation à chaque modification pour **retirer le surlignage d'un champ dès qu'il est corrigé**. **Pourquoi ?** On évite d'afficher des erreurs avant que l'utilisateur ait fini de saisir, tout en lui donnant un retour immédiat une fois qu'il sait qu'il reste des erreurs à corriger. Le même pattern est utilisé par le formulaire de contact public.
+
+#### j) Étape de confirmation du kit avant envoi
+
+**Le choix.** Le flux de finalisation d'une collecte (`QuestionFlow.vue`) comporte une étape dédiée où l'admin doit **confirmer explicitement** (case à cocher) que le kit de communication a été réalisé et déposé sur le KDrive — l'URL renseignée plus tôt — **avant** de pouvoir déclencher l'envoi du mail à l'entreprise. **Pourquoi ?** L'email transmet ce lien KDrive ; ce garde-fou évite d'envoyer un kit qui ne serait pas encore prêt à l'adresse annoncée.
 
 ---
 
