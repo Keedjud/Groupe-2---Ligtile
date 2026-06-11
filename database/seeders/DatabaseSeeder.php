@@ -6,9 +6,9 @@ use App\Models\Address;
 use App\Models\Collection;
 use App\Models\Company;
 use App\Models\Contact;
-use App\Models\Label;
 use App\Models\Trophee;
 use App\Models\User;
+use App\Services\LabelService;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Str;
 
@@ -109,31 +109,13 @@ class DatabaseSeeder extends Seeder
         Collection::create(['company_id' => $sig->id, 'user_id' => $adminUser->id, 'contact_email' => 'contact@sig-ge.ch', 'contact_phone' => '+41 22 420 80 00', 'venue_street' => $addressSig->street, 'venue_number' => $addressSig->number, 'venue_postal_code' => $addressSig->postal_code, 'venue_city' => $addressSig->city, 'start_date' => '2026-02-01', 'end_date' => '2026-02-28', 'capacity' => 35, 'primary_color' => '#339966', 'logo_url' => '/images/logos/logo-hug.png', 'onedoc_url' => 'https://onedoc.hug.ch/collections/sig-2026', 'kit_url' => 'https://kdrive.infomaniak.com/app/share/3148979/d6f5b6ad-338f-45aa-80f1-e7e00e1127c2', 'public_token' => Str::random(32)]);
 
         // ===== LABELS =====
-        $label2023 = Label::create(['name' => 'Label CTS 2023']);
-        $ubs->labels()->attach($label2023->id, ['start_date' => '2023-02-01', 'end_date' => '2025-02-01']);
-        $coop->labels()->attach($label2023->id, ['start_date' => '2023-05-01', 'end_date' => '2025-05-01']);
-        $nestle->labels()->attach($label2023->id, ['start_date' => '2023-03-15', 'end_date' => '2025-03-15']);
-        $rolex->labels()->attach($label2023->id, ['start_date' => '2023-07-01', 'end_date' => '2025-07-01']);
-
-        $label2024 = Label::create(['name' => 'Label CTS 2024']);
-        $ubs->labels()->attach($label2024->id, ['start_date' => '2024-03-01', 'end_date' => '2026-03-01']);
-        $coop->labels()->attach($label2024->id, ['start_date' => '2024-06-01', 'end_date' => '2026-06-01']);
-        $swisscom->labels()->attach($label2024->id, ['start_date' => '2024-10-01', 'end_date' => '2026-10-01']);
-        $laTour->labels()->attach($label2024->id, ['start_date' => '2024-04-01', 'end_date' => '2026-04-01']);
-
-        $label2025 = Label::create(['name' => 'Label CTS 2025']);
-        $ubs->labels()->attach($label2025->id, ['start_date' => '2025-04-01', 'end_date' => '2027-04-01']);
-        $coop->labels()->attach($label2025->id, ['start_date' => '2025-07-01', 'end_date' => '2027-07-01']);
-        $migros->labels()->attach($label2025->id, ['start_date' => '2025-09-01', 'end_date' => '2027-09-01']);
-        $laPoste->labels()->attach($label2025->id, ['start_date' => '2025-01-15', 'end_date' => '2027-01-15']);
-
-        $label2026 = Label::create(['name' => 'Label CTS 2026']);
-        $ubs->labels()->attach($label2026->id, ['start_date' => '2026-05-01', 'end_date' => '2028-05-01']);
-        $nestle->labels()->attach($label2026->id, ['start_date' => '2026-05-15', 'end_date' => '2028-05-15']);
-        $migros->labels()->attach($label2026->id, ['start_date' => '2026-04-01', 'end_date' => '2028-04-01']);
-        $swisscom->labels()->attach($label2026->id, ['start_date' => '2026-05-01', 'end_date' => '2028-05-01']);
-        $swatch->labels()->attach($label2026->id, ['start_date' => '2026-03-01', 'end_date' => '2028-03-01']);
-        $sig->labels()->attach($label2026->id, ['start_date' => '2026-02-01', 'end_date' => '2028-02-01']);
+        // Le label CTS est unique ; l'historique de chaque entreprise est dérivé
+        // automatiquement de ses collectes (fenêtre glissante de 2 ans à partir de
+        // la date de fin de chaque collecte). Voir App\Services\LabelService.
+        $labelService = new LabelService();
+        foreach ([$ubs, $coop, $nestle, $rolex, $migros, $swisscom, $laPoste, $swatch, $laTour, $sig] as $entreprise) {
+            $labelService->synchronise($entreprise);
+        }
 
         // ===== TROPHEES =====
         $tropheeOr2021 = Trophee::create(['name' => 'Trophée Or 2021', 'year' => 2021]);
