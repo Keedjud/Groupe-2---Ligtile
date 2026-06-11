@@ -20,10 +20,10 @@ const { isOpen, toggle, close } = useDisclosure()
 
 <template>
   <header class="relative w-full bg-beige-50 shadow-[0_4px_4px_rgba(0,0,0,0.10)]">
-    <div class="flex h-[55px] w-full items-center justify-between px-4 py-1.5 lg:px-[60px]">
+    <div class="flex h-[67px] w-full items-center justify-between px-4 py-1.5 lg:px-[60px]">
 
       <a href="#/home" class="shrink-0">
-        <img :src="logo" alt="Logo HUG" class="h-7 w-auto" />
+        <img :src="logo" alt="Logo HUG" class="h-12 w-auto" />
       </a>
 
       <nav class="hidden items-center gap-7 lg:flex">

@@ -2,7 +2,7 @@
 import FictifBanner from "../components/FictifBanner.vue";
 import CobrandHeader from "../components/CobrandHeader.vue";
 import BackgroundMotifs from "../components/BackgroundMotifs.vue";
-import SiteFooter from "@/public/components/SiteFooter.vue";
+import CobrandFooter from "../components/CobrandFooter.vue";
 import FictifNotice from "@/public/components/FictifNotice.vue";
 
 defineProps({
@@ -33,7 +33,7 @@ defineProps({
             <slot />
         </main>
 
-        <SiteFooter class="relative z-10" />
+        <CobrandFooter class="relative z-10" />
         <FictifNotice class="relative z-10" />
     </div>
 </template>

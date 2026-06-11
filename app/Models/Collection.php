@@ -14,12 +14,15 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
     'start_date', 'end_date', 'capacity',
     'primary_color', 'secondary_color',
     'logo_url', 'onedoc_url', 'kit_url', 'public_token',
+    'link_generated_at', 'kit_sent_at',
 ])]
 class Collection extends Model
 {
     protected $casts = [
-        'start_date' => 'date',
-        'end_date'   => 'date',
+        'start_date'        => 'date',
+        'end_date'          => 'date',
+        'link_generated_at' => 'datetime',
+        'kit_sent_at'       => 'datetime',
     ];
 
     public function company(): BelongsTo

@@ -34,23 +34,20 @@ const collecteTerminee = computed(() => {
   return new Date(props.collecte.date_fin) <= new Date()
 })
 
+// État du flux dérivé de la collecte (lien généré + envoi du kit persistés)
 watch(
-  () => props.collecte?.jeton_public,
-  (jeton) => {
-    if (collecteTerminee.value) {
-      lienCoBrande.value = ''
-      lienGenere.value = false
-      etapeRevele.value = 1
-      return
-    }
-
-    if (jeton) {
-      lienCoBrande.value = window.location.origin + '/' + jeton
+  () => props.collecte,
+  (c) => {
+    if (!collecteTerminee.value && (c?.lien_genere_le || c?.kit_envoye_le)) {
+      lienCoBrande.value = window.location.origin + '/' + c.jeton_public
       lienGenere.value = true
-      etapeRevele.value = Math.max(etapeRevele.value, 2)
+      mailEnvoye.value = !!c.kit_envoye_le
+      etapeRevele.value = 3
     } else {
       lienCoBrande.value = ''
       lienGenere.value = false
+      mailEnvoye.value = false
+      etapeRevele.value = 1
     }
   },
   { immediate: true }
@@ -114,12 +111,18 @@ function fermerOverlay() {
   overlayNonVisible.value = false
 }
 
-// Étape 2 : génération du lien (calcul instantané depuis jeton_public)
-function genererLien() {
+// Étape 2 : génération du lien (affichage immédiat, persistance en arrière-plan)
+async function genererLien() {
   if (collecteTerminee.value) return
   lienCoBrande.value = window.location.origin + '/' + props.collecte.jeton_public
   lienGenere.value = true
   etapeRevele.value = 3
+  try {
+    await fetchApi({
+      url: '/manage-collections/' + props.collecte.id + '/link/generate',
+      method: 'POST',
+    })
+  } catch { /* silencieux */ }
 }
 
 async function sauvegarderLienMemoire() {
@@ -140,7 +143,6 @@ async function envoyerMail() {
     await fetchApi({
       url: '/manage-collections/' + props.collecte.id + '/kit/send',
       method: 'POST',
-      // Timeout étendu (SMTP)
       timeout: 30000,
     })
     mailEnvoye.value = true
@@ -189,7 +191,6 @@ async function envoyerMail() {
           </span>
         </div>
       </div>
-    </div>
 
       <!-- Étape 2 : Générer le lien co-brandé (révélé après Oui à l'étape 1) -->
       <Transition name="glisser">
@@ -197,7 +198,7 @@ async function envoyerMail() {
           <div class="flex h-9 w-9 shrink-0 items-center justify-center rounded-full bg-violet-500 font-sans text-regular text-black">
             2
           </div>
-          <div class="flex flex-col gap-3">
+          <div class="flex flex-col gap-9">
             <div class="flex items-center gap-4">
               <span class="font-sans text-h5">Générer le lien du site</span>
               <button
@@ -214,9 +215,9 @@ async function envoyerMail() {
               </span>
             </div>
             <!-- Champ lien co-brandé -->
-            <div v-if="lienCoBrande" class="flex items-center gap-2">
+            <div v-if="lienCoBrande" class="flex items-center gap-3">
               <label class="shrink-0 whitespace-nowrap font-sans text-small text-violet-950">Lien du site co-brandé :</label>
-              <div class="flex items-center gap-2 rounded-lg bg-white px-3 py-2 shadow-[0_0_4px_rgba(0,0,0,0.15)]">
+              <div class="flex items-center gap-4 rounded-lg bg-white px-4 py-3 shadow-[0_0_4px_rgba(0,0,0,0.15)]">
                 <span class="select-all font-sans text-small text-violet-900 break-all">{{ lienCoBrande }}</span>
                 <button
                   type="button"
@@ -275,6 +276,7 @@ async function envoyerMail() {
         </div>
       </Transition>
 
+      </div>
     </div>
 
     <!-- Overlay correction des infos -->
