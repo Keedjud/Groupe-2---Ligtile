@@ -244,7 +244,7 @@ async function handleSubmit() {
         <!-- Colonne droite : formulaire -->
         <div class="relative flex w-full max-w-[490px] flex-col items-center gap-5 rounded-lg border-2 border-violet-900/30 bg-form-bg px-8 py-8 shadow-[0_4px_4px_rgba(0,0,0,0.10)]">
           <h3 class="text-center font-sans text-h3 font-bold text-violet-900">
-            Une question ? <br />Organisons ensemble votre collecte.
+            Une question ?
           </h3>
 
           <!-- Formulaire ou confirmation -->

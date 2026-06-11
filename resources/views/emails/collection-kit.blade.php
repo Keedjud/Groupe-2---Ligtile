@@ -27,7 +27,7 @@
             <p style="font-size:15px;line-height:1.6;">
                 Voici les informations pour votre collecte de sang organisée avec le Centre de
                 Transfusion Sanguine. Vous trouverez ci-dessous le lien vers votre site dédié ainsi
-                que, si disponible, votre kit de communication co-brandé à diffuser auprès de vos
+                que votre kit de communication co-brandé à diffuser auprès de vos
                 collaboratrices et collaborateurs.
             </p>
             @if ($dateDebut || $dateFin)
