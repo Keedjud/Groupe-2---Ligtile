@@ -266,7 +266,7 @@ Cette section ne décrit pas ce qui découle naturellement d'un schéma relation
 
 #### a) `contact_stats` : ne pas persister les données personnelles des formulaires
 
-C'est le choix le plus structurant du modèle. Les formulaires de contact du site public collectent des **données personnelles** (nom d'entreprise, email, téléphone, adresse). Plutôt que de les stocker en base, le contrôleur les **valide**, les **transmet par email** au CTS (et un email de confirmation à l'expéditeur), puis n'enregistre **qu'une ligne vide** dans `contact_stats` :
+C'est le choix le plus structurant du modèle. Les **deux formulaires de contact** du site public collectent des **données personnelles**, variables selon le formulaire : nom d'entreprise et email dans les deux cas, complétés par le téléphone et l'adresse pour le formulaire détaillé, ou par un message libre pour le formulaire simplifié. Plutôt que de les stocker en base, le contrôleur les **valide**, les **transmet par email** au CTS (et un email de confirmation à l'expéditeur), puis n'enregistre **qu'une ligne vide** dans `contact_stats` :
 
 ```php
 $validated = $request->validate([ /* … email, company_name, phone, address … */ ]);
