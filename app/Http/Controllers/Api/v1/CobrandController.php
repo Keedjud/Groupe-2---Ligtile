@@ -6,7 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Models\Collection;
 use App\Services\ColorPaletteService;
 
-class ApiCobrandController extends Controller
+class CobrandController extends Controller
 {
     public function show(string $token)
     {

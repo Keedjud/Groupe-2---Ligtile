@@ -146,7 +146,7 @@ app/Http/Controllers/
 └── Api/
     └── v1/
         ├── LabelCompanyController.php
-        ├── ApiTropheeController.php
+        ├── TropheeController.php
         └── ...              ← nouveaux controllers ici
 ```
 
