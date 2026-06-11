@@ -29,7 +29,7 @@
             <p style="font-size:15px;line-height:1.6;">
                 Merci pour votre message, dans le cas d'une équipe contenant moins de 1 000 collaborateur.ice.s, il est
                 toujours possible d'organiser une visite de groupe dans nos locaux. Nous reviendrons rapidement vers
-                vous pour organiser votre visite.
+                vous pour organiser votre visite et/ou répondre à vos questions.
             </p>
             <p style="font-size:15px;line-height:1.6;margin-bottom:0;">
                 À bientôt,<br>
