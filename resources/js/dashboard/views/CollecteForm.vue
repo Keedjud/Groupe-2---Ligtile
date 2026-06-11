@@ -395,32 +395,36 @@ const nomEntreprisePourPreview = computed(() =>
               :class="{ 'ring-rouge-500 ring-1': champsInvalides.telephone }" />
           </div>
 
-          <!-- Couleur + Logo + Aperçu (bouton à côté, visible dès le logo uploadé) -->
-          <div class="flex flex-wrap items-end gap-6">
+          <!-- Couleur + Logo + Aperçu — labels alignés en haut, contrôles alignés dessous -->
+          <div class="flex flex-wrap items-start gap-6">
             <ColorField label="Couleur de l'entreprise" v-model="couleurPrincipale" />
             <LogoUpload v-model="logoUrl" />
-            <Transition
-              enter-active-class="transition-all duration-300 ease-out"
-              enter-from-class="opacity-0 translate-y-1"
-              enter-to-class="opacity-100 translate-y-0"
-              leave-active-class="transition-all duration-150 ease-in"
-              leave-from-class="opacity-100 translate-y-0"
-              leave-to-class="opacity-0 translate-y-1"
-            >
-              <button
-                v-if="peutPrevisualiser"
-                type="button"
-                class="flex items-center gap-2 rounded-[40px] px-5 py-2.5 font-sans text-small font-semibold shadow-[0_2px_8px_rgba(0,0,0,0.18)] transition hover:opacity-90 active:scale-95"
-                :style="{ backgroundColor: couleurPrincipale, color: couleurPrincipale ? (isLightColor(couleurPrincipale) ? '#000000' : '#ffffff') : '#ffffff' }"
-                @click="showPreview = true"
+            <!-- Label transparent pour aligner le bouton sur le swatch et le logo -->
+            <div class="flex flex-col gap-1">
+              <span class="select-none font-sans text-small font-medium text-transparent" aria-hidden="true">Aperçu</span>
+              <Transition
+                enter-active-class="transition-all duration-300 ease-out"
+                enter-from-class="opacity-0 translate-y-1"
+                enter-to-class="opacity-100 translate-y-0"
+                leave-active-class="transition-all duration-150 ease-in"
+                leave-from-class="opacity-100 translate-y-0"
+                leave-to-class="opacity-0 translate-y-1"
               >
-                <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
-                  <path stroke-linecap="round" stroke-linejoin="round" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/>
-                  <path stroke-linecap="round" stroke-linejoin="round" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"/>
-                </svg>
-                Prévisualiser le site cobrandé
-              </button>
-            </Transition>
+                <button
+                  v-if="peutPrevisualiser"
+                  type="button"
+                  class="flex items-center gap-2 rounded-[40px] px-5 py-2.5 font-sans text-small font-semibold shadow-[0_2px_8px_rgba(0,0,0,0.18)] transition hover:opacity-90 active:scale-95"
+                  :style="{ backgroundColor: couleurPrincipale, color: couleurPrincipale ? (isLightColor(couleurPrincipale) ? '#000000' : '#ffffff') : '#ffffff' }"
+                  @click="showPreview = true"
+                >
+                  <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/>
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"/>
+                  </svg>
+                  Prévisualiser le site cobrandé
+                </button>
+              </Transition>
+            </div>
           </div>
 
           <!-- Dates -->
