@@ -214,8 +214,8 @@ async function envoyerMail() {
           <div class="flex h-9 w-9 shrink-0 items-center justify-center rounded-full bg-violet-500 font-sans text-regular text-black">
             2
           </div>
-          <div class="flex flex-col gap-9">
-            <div class="flex items-center gap-4">
+          <div class="flex flex-col gap-4">
+            <div class="flex flex-wrap items-center gap-4">
               <span class="font-sans text-h5">Générer le lien du site</span>
               <button
                 type="button"
@@ -231,9 +231,9 @@ async function envoyerMail() {
               </span>
             </div>
             <!-- Champ lien co-brandé -->
-            <div v-if="lienCoBrande" class="flex items-center gap-3">
+            <div v-if="lienCoBrande" class="flex flex-col gap-2 sm:flex-row sm:items-center sm:gap-3">
               <label class="shrink-0 whitespace-nowrap font-sans text-small text-violet-950">Lien du site co-brandé :</label>
-              <div class="flex items-center gap-4 rounded-lg bg-white px-4 py-3 shadow-[0_0_4px_rgba(0,0,0,0.15)]">
+              <div class="flex w-full max-w-xl items-center gap-4 rounded-lg bg-white px-4 py-3 shadow-[0_0_4px_rgba(0,0,0,0.15)] sm:w-auto">
                 <span class="select-all font-sans text-small text-violet-900 break-all">{{ lienCoBrande }}</span>
                 <button
                   type="button"
@@ -262,7 +262,7 @@ async function envoyerMail() {
             3
           </div>
           <div class="flex flex-col gap-3">
-            <div class="flex items-center gap-4">
+            <div class="flex flex-wrap items-center gap-4">
               <span class="font-sans text-h5">Kit de communication prêt sur le KDrive</span>
               <span v-if="kitConfirme" class="inline-flex items-center gap-2 rounded-[40px] bg-vert-400 px-5 py-2 font-sans text-small text-white">
                 <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="3">
@@ -273,14 +273,14 @@ async function envoyerMail() {
             </div>
             <template v-if="!kitConfirme">
               <p class="font-sans text-small text-violet-700">
-                Vérifiez que le kit co-brandé a bien été réalisé et déposé dans le dossier KDrive ci-dessous — c'est ce lien qui sera transmis à l'entreprise à l'étape suivante.
+                Vérifiez que le kit co-brandé a bien été réalisé et déposé dans le dossier KDrive ci-dessous. C'est ce lien qui sera transmis à l'entreprise à l'étape suivante.
               </p>
               <a
                 v-if="collecte.kit_url"
                 :href="collecte.kit_url"
                 target="_blank"
                 rel="noopener"
-                class="w-max break-all rounded-lg bg-white px-4 py-3 font-sans text-small text-violet-900 underline shadow-[0_0_4px_rgba(0,0,0,0.15)]"
+                class="block w-full max-w-xl break-all rounded-lg bg-white px-4 py-3 font-sans text-small text-violet-900 underline shadow-[0_0_4px_rgba(0,0,0,0.15)]"
               >{{ collecte.kit_url }}</a>
               <label class="flex items-start gap-2 font-sans text-small text-violet-950">
                 <input type="checkbox" v-model="caseKitCochee" class="mt-1 shrink-0" />
@@ -304,7 +304,7 @@ async function envoyerMail() {
             4
           </div>
           <div class="flex flex-col gap-2">
-            <div class="flex items-center gap-4">
+            <div class="flex flex-wrap items-center gap-4">
               <span class="font-sans text-h5">Envoyer le kit par mail</span>
               <button
                 type="button"
