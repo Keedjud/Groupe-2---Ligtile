@@ -104,7 +104,7 @@ const message = computed(() => {
         return "Désolé, vous n'êtes pas éligible.";
     }
     if (!allMandatoryAnswered.value) {
-        return "Répondez aux questions obligatoires pour pouvoir vous inscrire.";
+        return "Répondez aux questions obligatoires pour vous inscrire.";
     }
     if (hasOptionalNegative.value) {
         return "Vous pouvez vous inscrire mais votre situation n'est pas idéale. Veuillez idéalement contacter le CTS.";
