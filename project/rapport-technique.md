@@ -1,4 +1,4 @@
-# Rapport technique — Plateforme Ligtile (collectes de sang CTS / HUG)
+# Rapport technique : Plateforme Ligtile (collectes de sang CTS / HUG)
 
 > **Périmètre de ce document.** Cette partie du rapport se concentre sur les aspects **techniques** du projet : le **modèle de données**, l'**architecture du code** et les **choix d'organisation et de gestion de projet sur GitHub**. La description fonctionnelle du produit (parcours utilisateur, justification des fonctionnalités) est traitée séparément par un autre membre de l'équipe.
 >
@@ -40,10 +40,10 @@ Le projet repose sur une architecture **API REST + SPA découplée**, choisie po
 | Front-end | Vue 3 (Composition API) | 3.5 |
 | Build / bundler | Vite + `laravel-vite-plugin` | Vite 8 |
 | Styling | Tailwind CSS | 4.0 |
-| Base de données | SQLite (dev) / MariaDB (prod) | — |
-| Qualité | Pint (PHP), ESLint + Prettier (JS) | — |
-| CI/CD | GitHub Actions | — |
-| Hébergement | Infomaniak (déploiement SSH) | — |
+| Base de données | SQLite (dev) / MariaDB (prod) | - |
+| Qualité | Pint (PHP), ESLint + Prettier (JS) | - |
+| CI/CD | GitHub Actions | - |
+| Hébergement | Infomaniak (déploiement SSH) | - |
 
 *Sources : [composer.json:11-27](composer.json), [package.json:13-29](package.json).*
 
@@ -55,10 +55,10 @@ Le projet repose sur une architecture **API REST + SPA découplée**, choisie po
 
 Le modèle de données s'organise autour de quatre domaines :
 
-1. **Domaine métier « entreprises »** — `addresses`, `companies`, `contacts`, ainsi que les labels et trophées attribués aux entreprises (`labels`, `trophees`) via des tables pivot (`company_label`, `company_trophee`).
-2. **Domaine métier « collectes »** — la table centrale `collections`, reliée à une entreprise et (optionnellement) à un utilisateur CTS.
-3. **Domaine « tracking »** — `quiz_events` et `page_events`, qui enregistrent de manière anonyme le comportement des employés sur les sites cobrandés, plus `contact_stats` pour le comptage des demandes.
-4. **Domaine « administration / framework »** — `users` (comptes CTS), et les tables techniques de Laravel (`sessions`, `cache`, `jobs`, `password_reset_tokens`).
+1. **Domaine métier « entreprises »** : `addresses`, `companies`, `contacts`, ainsi que les labels et trophées attribués aux entreprises (`labels`, `trophees`) via des tables pivot (`company_label`, `company_trophee`).
+2. **Domaine métier « collectes »** : la table centrale `collections`, reliée à une entreprise et (optionnellement) à un utilisateur CTS.
+3. **Domaine « tracking »** : `quiz_events` et `page_events`, qui enregistrent de manière anonyme le comportement des employés sur les sites cobrandés, plus `contact_stats` pour le comptage des demandes.
+4. **Domaine « administration / framework »** : `users` (comptes CTS), et les tables techniques de Laravel (`sessions`, `cache`, `jobs`, `password_reset_tokens`).
 
 L'ensemble du schéma est défini par des **migrations Laravel** versionnées dans `database/migrations/`, et les relations sont déclarées via **Eloquent** dans `app/Models/`.
 
@@ -195,8 +195,8 @@ erDiagram
 
 #### Domaine « entreprises »
 
-- **`addresses`** — adresse postale (NPA, ville, rue, numéro). Le NPA et le numéro de rue sont stockés en chaîne pour ne pas perdre les zéros initiaux et accepter les formats suisses. Référencée par `companies`.
-- **`companies`** — entreprise partenaire : `name` (unique), `nb_employee`, et FK vers `addresses`. Le modèle expose un **attribut calculé** `size_label` qui catégorise l'entreprise selon son effectif :
+- **`addresses`** : adresse postale (NPA, ville, rue, numéro). Le NPA et le numéro de rue sont stockés en chaîne pour ne pas perdre les zéros initiaux et accepter les formats suisses. Référencée par `companies`.
+- **`companies`** : entreprise partenaire, avec `name` (unique), `nb_employee` et une FK vers `addresses`. Le modèle expose un **attribut calculé** `size_label` qui catégorise l'entreprise selon son effectif :
 
 ```php
 public function getSizeLabelAttribute(): string
@@ -213,13 +213,13 @@ public function getSizeLabelAttribute(): string
 
 > **Seuil métier.** Le seuil de 1000 employés n'est pas arbitraire : il sépare les **grandes entreprises**, pour lesquelles le CTS organise une collecte dédiée sur place, des **plus petites**, auxquelles le CTS réserve des créneaux dans une collecte publique existante. Cette catégorie pilote notamment les messages d'aide affichés au CTS dans le formulaire de création de collecte (champ capacité, lien Onedoc).
 
-- **`contacts`** — coordonnées de contact d'une entreprise (relation `hasOne`).
-- **`labels`** / **`company_label`** — il existe un **unique label CTS** ; la pivot `company_label` enregistre les **périodes successives** de labellisation d'une entreprise (`start_date` → `end_date`). Une entreprise peut donc avoir **plusieurs lignes** (un historique) : aucune contrainte d'unicité `(label_id, company_id)` n'est posée. La logique d'attribution est détaillée en [§2.4 i](#24-choix-de-conception-notables-et-justifications).
-- **`trophees`** / **`company_trophee`** — trophées annuels attribués aux entreprises avec un `rank` (pour le podium du site public), uniques sur `(company_id, trophee_id)`.
+- **`contacts`** : coordonnées de contact d'une entreprise (relation `hasOne`).
+- **`labels`** / **`company_label`** : il existe un **unique label CTS** ; la pivot `company_label` enregistre les **périodes successives** de labellisation d'une entreprise (`start_date` → `end_date`). Une entreprise peut donc avoir **plusieurs lignes** (un historique) : aucune contrainte d'unicité `(label_id, company_id)` n'est posée. La logique d'attribution est détaillée en [§2.4 i](#24-choix-de-conception-notables-et-justifications).
+- **`trophees`** / **`company_trophee`** : trophées annuels attribués aux entreprises avec un `rank` (pour le podium du site public), uniques sur `(company_id, trophee_id)`.
 
 #### Domaine « collectes »
 
-- **`collections`** — table centrale. Une collecte appartient à une `company` et, optionnellement, à l'`user` CTS qui l'a créée. Elle agrège trois groupes d'informations : **logistique** (`venue_*`, `start_date`, `end_date`, `capacity`), **co-branding** (`primary_color`, `logo_url`), et **liens externes** (`onedoc_url`, `kit_url`, `public_token`).
+- **`collections`** : table centrale. Une collecte appartient à une `company` et, optionnellement, à l'`user` CTS qui l'a créée. Elle agrège trois groupes d'informations : **logistique** (`venue_*`, `start_date`, `end_date`, `capacity`), **co-branding** (`primary_color`, `logo_url`), et **liens externes** (`onedoc_url`, `kit_url`, `public_token`).
 
 ```php
 $table->foreignId('company_id')->constrained()->restrictOnDelete();
@@ -235,11 +235,11 @@ $table->string('onedoc_url');
 $table->string('kit_url');
 $table->string('public_token');
 ```
-*Légende : [database/migrations/2026_05_26_131534_collections.php:16-31](database/migrations/2026_05_26_131534_collections.php). `contact_phone` (non montré) est `NOT NULL` — il est obligatoire dans le formulaire de création.*
+*Légende : [database/migrations/2026_05_26_131534_collections.php:16-31](database/migrations/2026_05_26_131534_collections.php). `contact_phone` (non montré) est `NOT NULL`, obligatoire dans le formulaire de création.*
 
 #### Domaine « tracking »
 
-- **`quiz_events`** — un événement par interaction de l'employé avec le quiz d'éligibilité. Le champ `event_type` est un **ENUM** de neuf valeurs, et un **index composite** `(collection_id, event_type, session_id)` accélère les agrégations du dashboard.
+- **`quiz_events`** : un événement par interaction de l'employé avec le quiz d'éligibilité. Le champ `event_type` est un **ENUM** de neuf valeurs, et un **index composite** `(collection_id, event_type, session_id)` accélère les agrégations du dashboard.
 
 ```php
 $table->foreignId('collection_id')->constrained()->cascadeOnDelete();
@@ -257,8 +257,8 @@ $table->index(['collection_id', 'event_type', 'session_id']);
 ```
 *Légende : [database/migrations/2026_06_01_223000_create_quiz_events_table.php:13-24](database/migrations/2026_06_01_223000_create_quiz_events_table.php).*
 
-- **`page_events`** — engagement sur la page de prévention (scrollytelling) : `prevention_entered` / `prevention_exited`, avec `engaged` (l'utilisateur a-t-il interagi ?) et `time_on_page` renseignés à la sortie.
-- **`contact_stats`** — table volontairement **minimale** (un `id` et un `created_at`) : elle ne sert qu'à compter les demandes de collecte (voir [§2.4](#24-choix-de-conception-notables-et-justifications)).
+- **`page_events`** : engagement sur la page de prévention (scrollytelling) : `prevention_entered` / `prevention_exited`, avec `engaged` (l'utilisateur a-t-il interagi ?) et `time_on_page` renseignés à la sortie.
+- **`contact_stats`** : table volontairement **minimale** (un `id` et un `created_at`) : elle ne sert qu'à compter les demandes de collecte (voir [§2.4](#24-choix-de-conception-notables-et-justifications)).
 
 ### 2.4 Choix de conception notables (et justifications)
 
@@ -279,7 +279,7 @@ try {
 ```
 *Légende : [app/Http/Controllers/Api/v1/ContactController.php:17-30](app/Http/Controllers/Api/v1/ContactController.php).*
 
-**Pourquoi ?** Le seul besoin métier en base est le **KPI « nombre de demandes de collecte »** — un comptage daté suffit. Ne pas stocker les données personnelles élimine de fait toute obligation de conservation/suppression au sens nLPD/RGPD, et réduit la surface d'exposition. Le CTS travaille de toute façon depuis sa boîte mail pour le suivi des demandes. La table ne contient donc qu'un horodatage, sur lequel le dashboard filtre par année.
+**Pourquoi ?** Le seul besoin métier en base est le **KPI « nombre de demandes de collecte »** : un comptage daté suffit. Ne pas stocker les données personnelles élimine de fait toute obligation de conservation/suppression au sens nLPD/RGPD, et réduit la surface d'exposition. Le CTS travaille de toute façon depuis sa boîte mail pour le suivi des demandes. La table ne contient donc qu'un horodatage, sur lequel le dashboard filtre par année.
 
 #### b) Dénormalisation du lieu de collecte (`venue_*`) plutôt qu'une FK vers `addresses`
 
@@ -301,7 +301,7 @@ $nbInscrits = $collection->quizEvents()
 
 #### d) `public_token` plutôt que l'`id` numérique dans l'URL cobrandée
 
-Le site cobrandé est résolu par un **token opaque** (`public_token`) et non par l'`id` auto-incrémenté de la collecte. **Pourquoi ?** Un `id` séquentiel serait **énumérable** : n'importe qui pourrait parcourir `/1`, `/2`, `/3`… et découvrir toutes les collectes, y compris non encore publiées. Le token non devinable agit comme une **capability URL** — seul le détenteur du lien (distribué par l'entreprise dans son kit de communication) peut accéder au site.
+Le site cobrandé est résolu par un **token opaque** (`public_token`) et non par l'`id` auto-incrémenté de la collecte. **Pourquoi ?** Un `id` séquentiel serait **énumérable** : n'importe qui pourrait parcourir `/1`, `/2`, `/3`… et découvrir toutes les collectes, y compris non encore publiées. Le token non devinable agit comme une **capability URL** : seul le détenteur du lien (distribué par l'entreprise dans son kit de communication) peut accéder au site.
 
 #### e) Identifiant de session **anonyme** (UUID) pour le tracking
 
@@ -319,17 +319,17 @@ function ensureSessionId() {
 ```
 *Légende : [resources/js/cobrand/composables/useCobrandSession.js:36-43](resources/js/cobrand/composables/useCobrandSession.js).*
 
-**Pourquoi ?** Le `session_id` permet de **relier les événements d'un même parcours** (le quiz commencé puis complété par la même personne) sans jamais identifier l'employé. `sessionStorage` (et non `localStorage` ni un cookie) le rend **éphémère** : il disparaît à la fermeture de l'onglet. Les données de `quiz_events`/`page_events` sont donc anonymes — ni IP, ni nom, ni email — ce qui dispense de bannière cookie et limite l'exposition réglementaire.
+**Pourquoi ?** Le `session_id` permet de **relier les événements d'un même parcours** (le quiz commencé puis complété par la même personne) sans jamais identifier l'employé. `sessionStorage` (et non `localStorage` ni un cookie) le rend **éphémère** : il disparaît à la fermeture de l'onglet. Les données de `quiz_events`/`page_events` sont donc anonymes (ni IP, ni nom, ni email), ce qui dispense de bannière cookie et limite l'exposition réglementaire.
 
 #### f) Politiques de suppression des clés étrangères (`RESTRICT` / `CASCADE` / `SET NULL`)
 
 Les comportements à la suppression ont été choisis table par table, et non laissés par défaut :
 
-- `companies.address_id`, `collections.company_id`, pivots `company_label`/`company_trophee` → **`RESTRICT`** : on interdit la suppression d'une entité encore référencée (sécurité métier — on ne supprime pas une entreprise qui a des collectes).
-- `collections.user_id` → **`SET NULL`** : ce champ n'est qu'une **trace d'audit** (quel compte CTS a créé la collecte) — il est renseigné à la création mais n'est affiché nulle part dans l'interface. Si le compte est supprimé, ses collectes **subsistent** (historique préservé), simplement orphelines d'auteur.
+- `companies.address_id`, `collections.company_id`, pivots `company_label`/`company_trophee` → **`RESTRICT`** : on interdit la suppression d'une entité encore référencée (sécurité métier : on ne supprime pas une entreprise qui a des collectes).
+- `collections.user_id` → **`SET NULL`** : ce champ n'est qu'une **trace d'audit** (quel compte CTS a créé la collecte) : il est renseigné à la création mais n'est affiché nulle part dans l'interface. Si le compte est supprimé, ses collectes **subsistent** (historique préservé), simplement orphelines d'auteur.
 - `quiz_events.collection_id` / `page_events.collection_id` → **`CASCADE`** : supprimer une collecte purge ses événements de tracking, qui n'ont plus aucun sens sans elle.
 
-> **Note sur les migrations.** Le projet n'ayant **aucune donnée réelle à préserver** (la base est reconstruite à chaque déploiement via `migrate:fresh --seed`), nous **éditons directement les migrations initiales** plutôt que d'empiler des migrations correctrices. Le `CASCADE` des tables d'événements est donc déclaré directement dans leur migration de création — et non dans une migration `ALTER` séparée.
+> **Note sur les migrations.** Le projet n'ayant **aucune donnée réelle à préserver** (la base est reconstruite à chaque déploiement via `migrate:fresh --seed`), nous **éditons directement les migrations initiales** plutôt que d'empiler des migrations correctrices. Le `CASCADE` des tables d'événements est donc déclaré directement dans leur migration de création, et non dans une migration `ALTER` séparée.
 
 #### g) Stabilité des `question_slug` (couplage front ↔ données)
 
@@ -355,7 +355,7 @@ public function synchronise(Company $company): void
 ```
 *Légende : [app/Services/LabelService.php:26-60](app/Services/LabelService.php).*
 
-**Pourquoi recalculer plutôt qu'incrémenter ?** Une logique incrémentale devrait gérer séparément la création, la modification (date de fin changée) et la suppression d'une collecte. La reconstruction depuis la source de vérité — les collectes — rend ces trois cas **automatiquement corrects** et **déterministes** : le même jeu de collectes produit toujours le même historique. C'est aussi la raison du retrait de la contrainte d'unicité `(label_id, company_id)` ([§2.3](#23-description-des-tables)) — une entreprise peut légitimement cumuler plusieurs périodes (label perdu puis réobtenu). Le service est appelé par `ManageCollectionController` (création/édition/suppression) **et** par le seeder, garantissant une logique unique.
+**Pourquoi recalculer plutôt qu'incrémenter ?** Une logique incrémentale devrait gérer séparément la création, la modification (date de fin changée) et la suppression d'une collecte. La reconstruction depuis la source de vérité (les collectes) rend ces trois cas **automatiquement corrects** et **déterministes** : le même jeu de collectes produit toujours le même historique. C'est aussi la raison du retrait de la contrainte d'unicité `(label_id, company_id)` ([§2.3](#23-description-des-tables)) : une entreprise peut légitimement cumuler plusieurs périodes (label perdu puis réobtenu). Le service est appelé par `ManageCollectionController` (création/édition/suppression) **et** par le seeder, garantissant une logique unique.
 
 ---
 
@@ -565,7 +565,7 @@ onMounted(() => {
 
 #### État partagé : composables « module-level » (singletons)
 
-L'état partagé entre composants d'une même app est géré par des **`ref` déclarées au niveau module** d'un composable — donc des singletons, sans librairie de store. Exemple, le store du quiz, dont l'état de progression et les compteurs « anti-double-tir » d'événements sont partagés :
+L'état partagé entre composants d'une même app est géré par des **`ref` déclarées au niveau module** d'un composable, donc des singletons, sans librairie de store. Exemple, le store du quiz, dont l'état de progression et les compteurs « anti-double-tir » d'événements sont partagés :
 
 ```js
 const statuses = ref(quizQuestions.map((_, i) => (i === 0 ? "waiting" : "sleeping")));
@@ -597,7 +597,7 @@ fetch(fullUrl, {
 
 #### a) Trois SPA multi-entrées plutôt qu'une SPA monolithique
 
-**Le choix.** Un espace = une application Vue, compilée séparément, montée sur sa propre vue Blade. **Pourquoi ?** Les trois espaces n'ont quasiment **rien en commun** (publics différents, designs différents, le dashboard est protégé, le cobrand est thématisé dynamiquement). Les isoler évite de charger le code du dashboard pour un employé qui visite un site cobrandé, simplifie le routage (chaque app ne connaît que ses propres vues) et réduit la surface de bugs inter-espaces. Le seul compromis — un rechargement complet lors du passage d'un espace à l'autre — est acceptable car ces transitions sont rares et logiques (un employé ne va jamais sur le dashboard).
+**Le choix.** Un espace = une application Vue, compilée séparément, montée sur sa propre vue Blade. **Pourquoi ?** Les trois espaces n'ont quasiment **rien en commun** (publics différents, designs différents, le dashboard est protégé, le cobrand est thématisé dynamiquement). Les isoler évite de charger le code du dashboard pour un employé qui visite un site cobrandé, simplifie le routage (chaque app ne connaît que ses propres vues) et réduit la surface de bugs inter-espaces. Le seul compromis (un rechargement complet lors du passage d'un espace à l'autre) est acceptable car ces transitions sont rares et logiques (un employé ne va jamais sur le dashboard).
 
 #### b) Routage par hash, sans Vue Router
 
@@ -637,11 +637,11 @@ if (now()->gt($collection->end_date->endOfDay())) {
 
 #### f) Calcul de contraste WCAG dupliqué PHP ↔ JS pour le co-branding
 
-**Le choix.** L'entreprise ne fournit qu'**une seule couleur** ; toute la palette (variantes claires/foncées, couleurs de texte accessibles) en est **dérivée** par `ColorPaletteService` (côté PHP, [§3.2](#couche-service)) **et** répliquée côté client pour la prévisualisation temps réel du formulaire. Le co-branding passe par des **variables CSS** (`--cobrand-primary`, `--cobrand-primary-dark`, etc.) injectées sur la balise `<html>`, plutôt que par du CSS généré et dupliqué par collecte. **Pourquoi ?** Une couleur secondaire avait d'abord été prévue, mais elle ne servait que d'accent de survol : la dériver de la couleur principale (`primary-dark`) supprime un champ au CTS sans perte visuelle. Et une seule feuille de style paramétrée par variables sert toutes les collectes — aucun CSS dupliqué, changer une couleur ne touche qu'une variable. La duplication PHP/JS du calcul WCAG est le prix à payer pour offrir un aperçu instantané au CTS (côté client) tout en garantissant la couleur servie au runtime (côté serveur, source de vérité).
+**Le choix.** L'entreprise ne fournit qu'**une seule couleur** ; toute la palette (variantes claires/foncées, couleurs de texte accessibles) en est **dérivée** par `ColorPaletteService` (côté PHP, [§3.2](#couche-service)) **et** répliquée côté client pour la prévisualisation temps réel du formulaire. Le co-branding passe par des **variables CSS** (`--cobrand-primary`, `--cobrand-primary-dark`, etc.) injectées sur la balise `<html>`, plutôt que par du CSS généré et dupliqué par collecte. **Pourquoi ?** Une couleur secondaire avait d'abord été prévue, mais elle ne servait que d'accent de survol : la dériver de la couleur principale (`primary-dark`) supprime un champ au CTS sans perte visuelle. Et une seule feuille de style paramétrée par variables sert toutes les collectes : aucun CSS dupliqué, changer une couleur ne touche qu'une variable. La duplication PHP/JS du calcul WCAG est le prix à payer pour offrir un aperçu instantané au CTS (côté client) tout en garantissant la couleur servie au runtime (côté serveur, source de vérité).
 
 #### g) Tracking fiable en sortie de page via `sendBeacon`
 
-**Le choix.** L'événement `prevention_exited` (avec le temps passé) doit partir **au moment où l'utilisateur quitte la page** — un `fetch` classique y est souvent annulé. Le composable utilise donc `navigator.sendBeacon`, avec repli sur `fetch({ keepalive: true })` :
+**Le choix.** L'événement `prevention_exited` (avec le temps passé) doit partir **au moment où l'utilisateur quitte la page** : un `fetch` classique y est souvent annulé. Le composable utilise donc `navigator.sendBeacon`, avec repli sur `fetch({ keepalive: true })` :
 
 ```js
 if (navigator.sendBeacon) {
@@ -656,7 +656,7 @@ fetch(url, { method: "POST", /* … */ keepalive: true }).catch(() => {});
 
 #### h) Endpoints de tracking publics mais limités en débit (`throttle`)
 
-**Le choix.** Les endpoints d'événements sont publics (aucune auth — ce sont des employés anonymes) mais protégés par un **rate-limit** :
+**Le choix.** Les endpoints d'événements sont publics (aucune auth : ce sont des employés anonymes) mais protégés par un **rate-limit** :
 
 ```php
 Route::post('/quiz/event', [QuizEventController::class, 'store'])->middleware('throttle:60,1');
@@ -678,13 +678,13 @@ Nous avons adopté un flux à trois niveaux, inspiré de Git Flow mais simplifi�
 
 | Branche | Rôle | CI déclenché |
 |---------|------|--------------|
-| `main` | Production — toujours stable | **Déploiement automatique** |
+| `main` | Production, toujours stable | **Déploiement automatique** |
 | `develop` | Intégration continue | Build check + linters |
-| `feature/*` | Nouvelle fonctionnalité | — |
-| `fix/*` | Correction de bug | — |
-| `chore/*` | Tâche technique (CI, config, dépendances) | — |
+| `feature/*` | Nouvelle fonctionnalité | - |
+| `fix/*` | Correction de bug | - |
+| `chore/*` | Tâche technique (CI, config, dépendances) | - |
 
-La règle structurante : **`develop` est la seule branche autorisée à être mergée dans `main`**, et l'on ne pousse jamais directement sur `main` ni `develop` — tout passe par une Pull Request avec **au moins une review**.
+La règle structurante : **`develop` est la seule branche autorisée à être mergée dans `main`**, et l'on ne pousse jamais directement sur `main` ni `develop` ; tout passe par une Pull Request avec **au moins une review**.
 
 ### 4.2 Règles de collaboration spécifiques
 
@@ -694,19 +694,19 @@ Au-delà du flux de base, deux règles ont été formalisées parce qu'elles ré
 
 **b) Branches empilées quand deux tâches touchent les mêmes fichiers.** Si une PR est en attente de review et que la tâche suivante touche les mêmes fichiers, on ne branche pas depuis `develop` mais **depuis la PR en cours**, et l'on cible cette PR comme base sur GitHub. *Pourquoi :* cela évite des conflits massifs entre deux travaux parallèles d'un même développeur, au prix d'un `rebase` + `--force-with-lease` une fois la première PR mergée.
 
-Ces règles, ainsi que les conventions de commit et de suppression de branches après merge, sont documentées dans le [README.md](README.md) du dépôt (section « Git — branches et workflow ») pour que chaque membre s'y réfère.
+Ces règles, ainsi que les conventions de commit et de suppression de branches après merge, sont documentées dans le [README.md](README.md) du dépôt (section sur les branches et le workflow Git) pour que chaque membre s'y réfère.
 
 ### 4.3 Intégration continue (GitHub Actions)
 
 Trois workflows automatisent la qualité et le déploiement. Ils sont **ciblés par branche**, ce qui est un choix délibéré : la validation tourne sur `develop` (en amont), le déploiement sur `main` (en aval).
 
-**1. Build check** — sur push et PR vers `develop` : installe les dépendances npm et lance `vite build`. Objectif : **détecter une erreur de compilation front avant qu'elle n'atteigne `main`**.
+**1. Build check** : sur push et PR vers `develop`, installe les dépendances npm et lance `vite build`. Objectif : **détecter une erreur de compilation front avant qu'elle n'atteigne `main`**.
 *Source : [.github/workflows/build-check.yml](.github/workflows/build-check.yml).*
 
-**2. Linter** — sur push et PR vers `develop` : lance **Pint** (formatage PHP), puis **Prettier** et **ESLint** sur le front.
+**2. Linter** : sur push et PR vers `develop`, lance **Pint** (formatage PHP), puis **Prettier** et **ESLint** sur le front.
 *Source : [.github/workflows/lint.yml:29-36](.github/workflows/lint.yml).*
 
-**3. Deploy** — sur push vers `main` uniquement (voir ci-dessous).
+**3. Deploy** : sur push vers `main` uniquement (voir ci-dessous).
 
 ### 4.4 Déploiement
 
@@ -724,7 +724,7 @@ Le déploiement est **entièrement automatisé** et déclenché par un merge sur
 ```
 *Légende : [.github/workflows/deploy.yml:17-30](.github/workflows/deploy.yml).*
 
-**Pourquoi cette approche (bare repo + hook plutôt qu'un script de déploiement dans Actions) ?** Toute la logique de mise en production (installation des dépendances de prod, build des assets, `migrate --force`, mise en cache de la config/routes/vues) vit dans un **hook `post-receive` côté serveur**, et non dans le workflow. Le workflow Actions reste donc **minimal et sans secret métier** — il ne sait que pousser du code. La logique de déploiement est centralisée là où elle s'exécute, et peut être ajustée sur le serveur sans modifier le dépôt. Les secrets (clé SSH, hôte, chemin) sont stockés dans les **GitHub Secrets**, jamais dans le code, et le `.env` de production n'est **jamais commité** — il est configuré directement sur le serveur.
+**Pourquoi cette approche (bare repo + hook plutôt qu'un script de déploiement dans Actions) ?** Toute la logique de mise en production (installation des dépendances de prod, build des assets, `migrate --force`, mise en cache de la config/routes/vues) vit dans un **hook `post-receive` côté serveur**, et non dans le workflow. Le workflow Actions reste donc **minimal et sans secret métier** : il ne sait que pousser du code. La logique de déploiement est centralisée là où elle s'exécute, et peut être ajustée sur le serveur sans modifier le dépôt. Les secrets (clé SSH, hôte, chemin) sont stockés dans les **GitHub Secrets**, jamais dans le code, et le `.env` de production n'est **jamais commité** : il est configuré directement sur le serveur.
 
 ### 4.5 Organisation à plusieurs
 
@@ -732,4 +732,4 @@ L'équipe (trois personnes) s'est répartie le travail par **espace fonctionnel 
 
 ---
 
-*Document rédigé pour le rapport final — partie technique. Le dépôt complet est accessible aux enseignants sur GitHub.*
+*Document rédigé pour le rapport final, partie technique. Le dépôt complet est accessible aux enseignants sur GitHub.*
