@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Api\v1;
 
 use App\Http\Controllers\Controller;
 use App\Models\Collection;
+use App\Models\Company;
 use App\Services\LabelService;
 use Illuminate\Http\Request;
 use Illuminate\Support\Str;
@@ -60,8 +61,15 @@ class ManageCollectionController extends Controller
         $rules               = $this->reglesValidation();
         $rules['company_id'] = ['required', 'integer', 'exists:companies,id'];
 
+        // La capacité ne peut pas dépasser l'effectif de l'entreprise.
+        $nbEmployee = Company::find($request->input('company_id'))?->nb_employee;
+        if ($nbEmployee !== null) {
+            $rules['capacity'][] = 'max:' . $nbEmployee;
+        }
+
         $valide = $request->validate($rules, [
             'end_date.after' => 'La date de fin doit être postérieure à la date de début.',
+            'capacity.max'   => "La capacité ne peut pas dépasser l'effectif de l'entreprise ({$nbEmployee} employé·es).",
         ]);
 
         $collecte = Collection::create([
@@ -93,8 +101,17 @@ class ManageCollectionController extends Controller
 
     public function update(Request $request, Collection $collecte)
     {
-        $valide = $request->validate($this->reglesValidation(), [
+        $rules = $this->reglesValidation();
+
+        // La capacité ne peut pas dépasser l'effectif de l'entreprise.
+        $nbEmployee = $collecte->company?->nb_employee;
+        if ($nbEmployee !== null) {
+            $rules['capacity'][] = 'max:' . $nbEmployee;
+        }
+
+        $valide = $request->validate($rules, [
             'end_date.after' => 'La date de fin doit être postérieure à la date de début.',
+            'capacity.max'   => "La capacité ne peut pas dépasser l'effectif de l'entreprise ({$nbEmployee} employé·es).",
         ]);
 
         $collecte->update([
